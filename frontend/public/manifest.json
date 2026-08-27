@@ -1,0 +1,18 @@
+{
+  "name": "Leofit - Gestión de Pedidos",
+  "short_name": "Leofit",
+  "description": "Sistema PWA de Gestión de Pedidos e Inventario para Leofit",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#F1FAEE",
+  "theme_color": "#E63946",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%23E63946'/><text x='50' y='60' font-size='38' font-weight='bold' fill='white' text-anchor='middle'>LF</text></svg>",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
