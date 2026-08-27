@@ -5,13 +5,13 @@
 
 ### 1. DATOS DEL EQUIPO (Grupo 01)
 
-| N° | Apellidos y Nombres | Responsabilidad Inicial | Contacto |
-|:---|:---------------------|:------------------------|:---------|
-| 1 | Cárdenas Fernández Víctor Leandro | Back-End / Base de Datos | 975946653 |
-| 2 | Dávila Morales Jim Alessandro | Calidad / Despliegue | 946952995 |
-| 3 | Roman Delgado Harley Anthony | UX / Front-End | 924835284 |
-| 4 | Loayza Rodriguez Lady Luz | UX / Front-End | 960188015 |
-| 5 | Rojas Sanchez Daniel Enrique | Gestión / Análisis | 936287931 |
+| N° | Apellidos y Nombres | Responsabilidad Inicial |
+|:---|:---------------------|:------------------------|
+| 1 | Cárdenas Fernández Víctor Leandro | Back-End / Base de Datos |
+| 2 | Dávila Morales Jim Alessandro | Calidad / Despliegue |
+| 3 | Roman Delgado Harley Anthony | UX / Front-End |
+| 4 | Loayza Rodriguez Lady Luz | UX / Front-End |
+| 5 | Rojas Sanchez Daniel Enrique | Gestión / Análisis |
 
 ---
 
