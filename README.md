@@ -17,13 +17,13 @@ Este repositorio contiene la aplicación completa **Progressive Web App (PWA)** 
 
 ## 👥 2. Integrantes del Equipo (Grupo 01 - UTP)
 
-| N° | Integrante | Rol Principal | Contacto |
-|:---|:---|:---|:---|
-| 1 | **Cárdenas Fernández Víctor Leandro** | Back-End / Base de Datos | 975946653 |
-| 2 | **Dávila Morales Jim Alessandro** | Calidad / DevOps / Despliegue | 946952995 |
-| 3 | **Roman Delgado Harley Anthony** | UX / Front-End | 924835284 |
-| 4 | **Loayza Rodriguez Lady Luz** | UX / Front-End / Coordinación | 960188015 |
-| 5 | **Rojas Sanchez Daniel Enrique** | Gestión / Análisis Funcional | 936287931 |
+| N° | Integrante | Rol Principal |
+|:---|:---|:---|
+| 1 | **Cárdenas Fernández Víctor Leandro** | Back-End / Base de Datos |
+| 2 | **Dávila Morales Jim Alessandro** | Calidad / DevOps / Despliegue |
+| 3 | **Roman Delgado Harley Anthony** | UX / Front-End |
+| 4 | **Loayza Rodriguez Lady Luz** | UX / Front-End / Coordinación |
+| 5 | **Rojas Sanchez Daniel Enrique** | Gestión / Análisis Funcional |
 
 ---
 
