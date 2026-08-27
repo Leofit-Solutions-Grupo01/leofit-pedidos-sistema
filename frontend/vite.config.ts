@@ -9,8 +9,8 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
-  // Relative base path ensures smooth deployment on GitHub Pages
-  base: './',
+  // Base path configured for GitHub Pages repository 'leofit-pedidos-sistema'
+  base: '/leofit-pedidos-sistema/',
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
