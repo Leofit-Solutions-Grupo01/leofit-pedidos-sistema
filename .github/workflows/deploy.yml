@@ -8,12 +8,10 @@ on:
 
 permissions:
   contents: write
-  pages: write
-  id-token: write
 
 concurrency:
   group: 'pages'
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   build-and-deploy:
@@ -48,12 +46,3 @@ jobs:
           folder: frontend/dist
           branch: gh-pages
           clean: true
-
-      - name: Upload Pages Artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: frontend/dist
-
-      - name: Deploy to GitHub Pages Environment
-        uses: actions/deploy-pages@v4
-        continue-on-error: true
