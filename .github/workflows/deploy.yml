@@ -1,4 +1,4 @@
-name: Deploy Frontend to GitHub Pages
+name: Deploy to GitHub Pages
 
 on:
   push:
@@ -13,7 +13,7 @@ permissions:
 
 concurrency:
   group: 'pages'
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   build-and-deploy:
@@ -37,16 +37,23 @@ jobs:
 
       - name: Prepare SPA & Jekyll configuration
         run: |
-          # Copy SPA 404 handler to dist for client-side routing
           if [ -f "frontend/public/404.html" ]; then
             cp frontend/public/404.html frontend/dist/404.html
           fi
-          # Disable Jekyll
           touch frontend/dist/.nojekyll
 
-      - name: Deploy to gh-pages branch
+      - name: Deploy to gh-pages Branch
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: frontend/dist
           branch: gh-pages
           clean: true
+
+      - name: Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: frontend/dist
+
+      - name: Deploy to GitHub Pages Environment
+        uses: actions/deploy-pages@v4
+        continue-on-error: true
