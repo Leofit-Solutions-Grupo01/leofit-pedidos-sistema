@@ -27,6 +27,15 @@ jobs:
             cd ..
           fi
 
+      - name: Run Frontend Unit Tests
+        run: |
+          if [ -d "frontend" ] && [ -f "frontend/package.json" ]; then
+            cd frontend
+            npm ci
+            npm test
+            cd ..
+          fi
+
       - name: Check for Uncommitted Env Files
         run: |
           if git ls-files --error-unmatch .env .env.local .env.production 2>/dev/null; then
