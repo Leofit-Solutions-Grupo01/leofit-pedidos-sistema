@@ -60,7 +60,8 @@ Leofit-Solutions-Grupo01/
 │   ├── 03_Acta_Reunion_1 (.md | .docx | .pdf)         # Minuta de primera reunión con Víctor
 │   ├── 04_Glosario (.md | .docx | .pdf)               # Glosario técnico y del negocio
 │   ├── 05_Preguntas_Criticas_Panel (.md | .docx | .pdf) # Análisis de KPIs operativos
-│   └── 06_Especificacion_PWA_Prompt (.md | .docx | .pdf)# Especificación técnica PWA
+│   ├── 06_Especificacion_PWA_Prompt (.md | .docx | .pdf)# Especificación técnica PWA
+│   └── 07_Arquitectura_Sistema (.md | .docx | .pdf)   # Documento de Arquitectura de Software (SAD - Modelo 4+1)
 │
 ├── 📁 diagrams/                       # Diagramas de procesos y arquitectura (PNG Alta Res)
 │   ├── 01_BPMN_AS-IS.png              # Diagrama BPMN del flujo manual actual
