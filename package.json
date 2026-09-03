@@ -1,0 +1,26 @@
+{
+  "name": "leofit-pedidos-sistema",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sistema de Gestión de Pedidos Multicanal - LeoFit Solutions",
+  "scripts": {
+    "dev": "npm --prefix frontend run dev",
+    "build": "npm --prefix frontend run build",
+    "test": "npm --prefix frontend test",
+    "preview": "npm --prefix frontend run preview",
+    "install:frontend": "npm --prefix frontend install"
+  },
+  "workspaces": [
+    "frontend"
+  ],
+  "keywords": [
+    "pwa",
+    "leofit",
+    "react",
+    "vitest",
+    "tailwindcss",
+    "pos"
+  ],
+  "author": "LeoFit Solutions - Grupo 01",
+  "license": "MIT"
+}
