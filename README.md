@@ -1,4 +1,4 @@
-# Leofit Solutions - Sistema de Gestión de Pedidos & Inventario
+# Leofit Solutions - Sistema de Gestión de Pedidos & Control de Inventario
 
 [![Status: In Development](https://img.shields.io/badge/Status-In%20Development%20(v1.0.0--beta)-yellow.svg)](https://github.com/Leofit-Solutions-Grupo01/leofit-pedidos-sistema)
 [![Tests: Passing](https://img.shields.io/badge/Tests-Passing-brightgreen.svg)](file:///c:/Users/Loayza/Downloads/leofit-pedidos-sistema/frontend/src/__tests__/mockData.test.ts)
@@ -9,166 +9,158 @@
 
 ---
 
-## 📌 1. ¿Qué es el proyecto?
+## 1. Descripción del Proyecto
 
-**Leofit Solutions** es una plataforma web progresiva (PWA) para la gestión centralizada de pedidos multicanal y control de inventario en tiempo real, diseñada a medida para la PYME textil deportiva **Leofit**.
-
----
-
-## 🎯 2. ¿Para quién es y qué problema resuelve?
-
-* **Público Objetivo:** Dueño y equipo operativo de **Leofit**, PYME familiar peruana confeccionista y comercializadora de ropa deportiva (oversized, compresión, joggers, accesorios).
-* **Problema que resuelve:** 
-  * Eliminación del desorden operativo causado por la toma manual de pedidos en cuadernos y chats dispersos de WhatsApp.
-  * Prevención de quiebres de stock y sobreventas gracias a alertas visuales de inventario crítico (< 5 unidades).
-  * Reducción de retrasos en entregas mediante el cálculo automático de pedidos **"En Riesgo"** y seguimiento en tiempo real de estados de preparación y despacho.
+**Leofit Solutions** es una plataforma web progresiva (PWA) orientada a la gestión centralizada de pedidos multicanal y al control de inventario en tiempo real. La solución ha sido diseñada a medida para la micro y pequeña empresa (MYPE) de confección y comercialización textil deportiva **Leofit**.
 
 ---
 
-## 👥 3. Integrantes del Equipo (Grupo 01 - UTP)
+## 2. Justificación y Alcance de la Solución
+
+* **Población Objetivo:** Administración y personal operativo de la empresa **Leofit**, dedicada a la confección y venta de indumentaria deportiva (líneas oversized, prendas de compresión, joggers y accesorios).
+* **Problemática Abordada:**
+  * Mitigación de errores operativos derivados del registro manual en soportes físicos y conversaciones dispersas de mensajería instantánea.
+  * Prevención de quiebres de stock y sobreventas mediante la supervisión en tiempo real y alertas de existencias críticas (menos de 5 unidades).
+  * Optimización de los tiempos de preparación y despacho mediante la clasificación automática de pedidos en riesgo y la trazabilidad de estados del ciclo de vida de la orden.
+
+---
+
+## 3. Equipo de Trabajo y Asignación de Roles (UTP - Grupo 01)
 
 | N° | Integrante | Rol Principal |
 |:---|:---|:---|
 | 1 | **Cárdenas Fernández Víctor Leandro** | Back-End / Base de Datos |
 | 2 | **Dávila Morales Jim Alessandro** | Calidad / DevOps / Despliegue |
 | 3 | **Roman Delgado Harley Anthony** | UX / Front-End |
-| 4 | **Loayza Rodriguez Lady Luz** | UX / Front-End / Coordinación |
+| 4 | **Loayza Rodriguez Lady Luz** | UX / Front-End / Coordinación General |
 | 5 | **Rojas Sanchez Daniel Enrique** | Gestión / Análisis Funcional |
 
 ---
 
-## 📁 4. Estructura del Repositorio y Documentación
+## 4. Estructura del Repositorio y Entregables Documentales
 
 ```text
 Leofit-Solutions-Grupo01/
 ├── .github/
 │   └── workflows/
-│       ├── deploy.yml                 # Despliegue automático a GitHub Pages
-│       └── security-scan.yml          # Auditoría, escaneo de secretos y CI tests
-├── .env.example                       # Plantilla de variables de entorno
-├── .gitignore                         # Exclusiones de Git
-├── CHANGELOG.md                       # Historial de cambios y versiones (SemVer)
-├── CODE_OF_CONDUCT.md                 # Código de conducta para la comunidad
-├── CONTRIBUTING.md                    # Guía de contribución y flujo Git
-├── LICENSE                            # Licencia MIT
-├── README.md                          # Documentación principal
-├── SECURITY.md                        # Políticas de seguridad y reporte responsable
+│       ├── deploy.yml                 # Pipeline de despliegue continuo a GitHub Pages
+│       └── security-scan.yml          # Auditoría de dependencias, escaneo de secretos y CI
+├── .env.example                       # Plantilla de configuración de variables de entorno
+├── .gitignore                         # Exclusiones de control de versiones
+├── CHANGELOG.md                       # Registro histórico de versiones bajo estándar SemVer
+├── CODE_OF_CONDUCT.md                 # Código de conducta para el equipo de desarrollo
+├── CONTRIBUTING.md                    # Guía de contribución y flujo de trabajo en Git
+├── LICENSE                            # Licencia de uso MIT
+├── README.md                          # Memoria descriptiva principal
+├── SECURITY.md                        # Políticas de seguridad y reporte de vulnerabilidades
 │
-├── 📁 docs/                           # Documentación formal en MD, Word (.docx) y PDF (.pdf)
-│   ├── 01_Ficha_Identificacion (.md | .docx | .pdf)   # Ficha de mapeo oficial UTP
-│   ├── 02_Requerimientos (.md | .docx | .pdf)         # Requerimientos RF y RNF
-│   ├── 03_Acta_Reunion_1 (.md | .docx | .pdf)         # Minuta de primera reunión con Víctor
-│   ├── 04_Glosario (.md | .docx | .pdf)               # Glosario técnico y del negocio
-│   ├── 05_Preguntas_Criticas_Panel (.md | .docx | .pdf) # Análisis de KPIs operativos
-│   ├── 06_Especificacion_PWA_Prompt (.md | .docx | .pdf)# Especificación técnica PWA
-│   └── 07_Arquitectura_Sistema (.md | .docx | .pdf)   # Documento de Arquitectura de Software (SAD - Modelo 4+1)
+├── docs/                              # Documentación formal en formatos MD, Word (.docx) y PDF
+│   ├── 01_Ficha_Identificacion        # Ficha institucional de identificación del proyecto
+│   ├── 02_Requerimientos              # Especificación de Requerimientos de Software (ERS)
+│   ├── 03_Acta_Reunion_1              # Minuta de la reunión inicial con el socio de negocio
+│   ├── 04_Glosario                    # Glosario de terminología técnica y del negocio
+│   ├── 05_Preguntas_Criticas_Panel    # Respuestas y fundamentación técnica ante el panel
+│   ├── 06_Especificacion_PWA_Prompt   # Especificación de interfaz y componentes PWA
+│   └── 07_Arquitectura_Sistema        # Documento de Arquitectura de Software (SAD - Modelo 4+1)
 │
-├── 📁 diagrams/                       # Diagramas de procesos y arquitectura (PNG Alta Res)
-│   ├── 01_BPMN_AS-IS.png              # Diagrama BPMN del flujo manual actual
-│   ├── 02_Mapa_Riesgos.png            # Matriz de evaluación de riesgos y mitigación
-│   ├── 03_Arquitectura_Inicial.png    # Arquitectura del sistema web multicapa
-│   ├── 04_Flujo_Proceso_Pedidos.png   # Flujo digital del proceso de pedidos (TO-BE)
-│   └── 05_Matriz_RF_RNF.png           # Matriz visual de requerimientos RF y RNF
+├── diagrams/                          # Modelos visuales de procesos y arquitectura (PNG)
+│   ├── 01_BPMN_AS-IS.png              # Diagrama BPMN del proceso manual actual
+│   ├── 02_Mapa_Riesgos.png            # Matriz de riesgos y planes de mitigación
+│   ├── 03_Arquitectura_Inicial.png    # Diagrama de arquitectura física y lógica multicapa
+│   ├── 04_Flujo_Proceso_Pedidos.png   # Diagrama del flujo operativo digitalizado (TO-BE)
+│   └── 05_Matriz_RF_RNF.png           # Matriz de trazabilidad de requerimientos
 │
-├── 📁 frontend/                       # Aplicación Web React 19 + TypeScript + TailwindCSS
-│   ├── public/
-│   │   ├── 404.html                   # Manejador SPA para GitHub Pages
-│   │   └── manifest.json              # Configuración PWA (instalable en móvil)
-│   ├── src/
-│   │   ├── __tests__/                 # Pruebas unitarias con Vitest
-│   │   ├── components/                # Componentes (Navbar, Modal, Badge, MontoPrivado)
-│   │   ├── context/                   # AppContext (sesión, pedidos e inventario)
-│   │   ├── data/                      # mockData inicial de pedidos y productos
-│   │   ├── pages/                     # Login, Dashboard, PedidosLista, PedidoForm, ProductosGestion
-│   │   ├── App.tsx                    # Enrutador principal de vistas
-│   │   └── main.tsx                   # Punto de entrada de React
-│   ├── 📁 mockups/                    # Diseños UI de referencia
-│   ├── index.html                     # HTML principal con Google Fonts y Material Icons
-│   └── vite.config.ts                 # Configuración Vite adaptada a GitHub Pages
+├── frontend/                          # Aplicación cliente en React 19 + TypeScript + TailwindCSS
+│   ├── public/                        # Manifiesto PWA, iconos y manejador SPA
+│   ├── src/                           # Código fuente, vistas, componentes y contexto
+│   │   ├── __tests__/                 # Batería de pruebas unitarias automatizadas
+│   │   ├── components/                # Componentes modulares de interfaz
+│   │   ├── context/                   # Gestión de estado global de sesión y datos
+│   │   ├── data/                      # Modelos y dataset de validación
+│   │   └── pages/                     # Módulos: Login, Dashboard, Pedidos y Productos
+│   ├── mockups/                       # Diseños de interfaz de usuario de referencia
+│   └── vite.config.ts                 # Configuración del empaquetador Vite
 │
-├── 📁 backend/                        # Arquitectura y servicios de API REST
+├── backend/                           # Especificación de servicios y endpoints de la API REST
 │   └── README.md
 │
-├── 📁 evidence/                       # Evidencias de la empresa y entrevistas
-│   ├── 📁 semana_1/
-│   │   ├── Evidencia_Contacto.png     # Captura de WhatsApp con el dueño
-│   │   └── Ficha_Mapeo_Original.pdf   # PDF oficial completado Semana 1
-│   └── 📁 semana_2/
-│       └── .gitkeep
+├── database/                          # Diseño relacional, diccionario de datos y scripts SQL
+│   └── README.md
 │
-└── 📁 database/                       # Persistencia relacional
-    └── README.md                      # Modelo Entidad-Relación y diccionario SQL
+└── evidence/                          # Registro de evidencias de contacto y mapeo
+    ├── semana_1/                      # Evidencias recopiladas en la Semana 1
+    └── semana_2/                      # Evidencias recopiladas en la Semana 2
 ```
 
 ---
 
-## 📊 5. Diagramas del Proyecto
+## 5. Modelado y Diagramas de Ingeniería
 
 * **BPMN Proceso Actual (AS-IS):** [`diagrams/01_BPMN_AS-IS.png`](file:///c:/Users/Loayza/Downloads/leofit-pedidos-sistema/diagrams/01_BPMN_AS-IS.png)
-* **Mapa de Riesgos:** [`diagrams/02_Mapa_Riesgos.png`](file:///c:/Users/Loayza/Downloads/leofit-pedidos-sistema/diagrams/02_Mapa_Riesgos.png)
+* **Matriz de Riesgos:** [`diagrams/02_Mapa_Riesgos.png`](file:///c:/Users/Loayza/Downloads/leofit-pedidos-sistema/diagrams/02_Mapa_Riesgos.png)
 * **Arquitectura del Sistema:** [`diagrams/03_Arquitectura_Inicial.png`](file:///c:/Users/Loayza/Downloads/leofit-pedidos-sistema/diagrams/03_Arquitectura_Inicial.png)
-* **Flujo del Proceso Digital (TO-BE):** [`diagrams/04_Flujo_Proceso_Pedidos.png`](file:///c:/Users/Loayza/Downloads/leofit-pedidos-sistema/diagrams/04_Flujo_Proceso_Pedidos.png)
+* **Flujo del Proceso Digitalizado (TO-BE):** [`diagrams/04_Flujo_Proceso_Pedidos.png`](file:///c:/Users/Loayza/Downloads/leofit-pedidos-sistema/diagrams/04_Flujo_Proceso_Pedidos.png)
 * **Matriz de Requerimientos (RF y RNF):** [`diagrams/05_Matriz_RF_RNF.png`](file:///c:/Users/Loayza/Downloads/leofit-pedidos-sistema/diagrams/05_Matriz_RF_RNF.png)
 
 ---
 
-## 🚀 6. Instalación y Ejecución Local
+## 6. Procedimiento de Instalación y Ejecución en Entorno Local
 
-### Comandos Rápidos
+### Instrucciones de Despliegue Local
 
 ```bash
-# 1. Clonar el repositorio
+# 1. Clonación del repositorio
 git clone https://github.com/Leofit-Solutions-Grupo01/leofit-pedidos-sistema.git
 cd leofit-pedidos-sistema/frontend
 
-# 2. Instalar dependencias
+# 2. Instalación de dependencias
 npm install
 
-# 3. Iniciar servidor de desarrollo en vivo
+# 3. Inicialización del servidor de desarrollo
 npm run dev
 
-# 4. Ejecutar pruebas unitarias automatizadas
+# 4. Ejecución de la suite de pruebas unitarias
 npm test
 
-# 5. Compilar para producción
+# 5. Generación del paquete de producción
 npm run build
 ```
 
-* **Credenciales de Acceso Demo:**
-  * **Usuario:** `victor@leofit.com`
+* **Credenciales de Acceso para Demostración:**
+  * **Usuario Administrador:** `victor@leofit.com`
   * **Contraseña:** `leofit2026`
 
 ---
 
-## 🧪 7. Pruebas y Calidad de Código
+## 7. Aseguramiento de la Calidad y Pruebas Unitarias
 
-El proyecto cuenta con validación de modelos y lógica de negocio mediante **Vitest**:
+El proyecto cuenta con un entorno de verificación automatizada implementado con **Vitest** para la validación estricta de la lógica de negocio y consistencia de modelos de datos:
 
 ```bash
 cd frontend
 npm test
 ```
 
-Los flujos de integración continua en [`.github/workflows/security-scan.yml`](file:///c:/Users/Loayza/Downloads/leofit-pedidos-sistema/.github/workflows/security-scan.yml) ejecutan automáticamente las pruebas y la auditoría de dependencias ante cada push y pull request a la rama `main`.
+Los flujos de integración continua configurados en [`.github/workflows/security-scan.yml`](file:///c:/Users/Loayza/Downloads/leofit-pedidos-sistema/.github/workflows/security-scan.yml) ejecutan de forma automática la auditoría de dependencias y las pruebas unitarias ante cada confirmación (`push`) y solicitud de extracción (`pull request`) dirigidas a la rama `main`.
 
 ---
 
-## 🌐 8. Despliegue en Vivo
+## 8. Entorno de Despliegue en Producción
 
-La aplicación web está desplegada y lista para ser utilizada en:
-👉 **[https://leofit-solutions-grupo01.github.io/leofit-pedidos-sistema/](https://leofit-solutions-grupo01.github.io/leofit-pedidos-sistema/)**
-
----
-
-## 🤝 9. Comunidad y Gobernanza
-
-* **¿Cómo contribuir?** Consulta nuestra [Guía de Contribución](file:///c:/Users/Loayza/Downloads/leofit-pedidos-sistema/CONTRIBUTING.md).
-* **Código de Conducta:** Revisa nuestro [Código de Conducta](file:///c:/Users/Loayza/Downloads/leofit-pedidos-sistema/CODE_OF_CONDUCT.md).
-* **Historial de Cambios:** Consulta el [CHANGELOG](file:///c:/Users/Loayza/Downloads/leofit-pedidos-sistema/CHANGELOG.md).
-* **Seguridad:** Revisa las políticas y reporte responsable en [SECURITY.md](file:///c:/Users/Loayza/Downloads/leofit-pedidos-sistema/SECURITY.md).
+La aplicación web progresiva se encuentra desplegada y disponible para su evaluación en:
+* URL de Acceso: **[https://leofit-solutions-grupo01.github.io/leofit-pedidos-sistema/](https://leofit-solutions-grupo01.github.io/leofit-pedidos-sistema/)**
 
 ---
 
-## 📄 10. Licencia
+## 9. Estándares de Gobernanza y Contribución
 
-Este proyecto está bajo la Licencia **MIT**. Consulta el archivo [`LICENSE`](file:///c:/Users/Loayza/Downloads/leofit-pedidos-sistema/LICENSE) para más detalles.
+* **Guía de Contribución:** Consultar [`CONTRIBUTING.md`](file:///c:/Users/Loayza/Downloads/leofit-pedidos-sistema/CONTRIBUTING.md) para conocer las pautas de versionamiento y ramas de trabajo.
+* **Código de Conducta:** Consultar [`CODE_OF_CONDUCT.md`](file:///c:/Users/Loayza/Downloads/leofit-pedidos-sistema/CODE_OF_CONDUCT.md).
+* **Historial de Modificaciones:** Consultar [`CHANGELOG.md`](file:///c:/Users/Loayza/Downloads/leofit-pedidos-sistema/CHANGELOG.md).
+* **Seguridad de la Información:** Consultar [`SECURITY.md`](file:///c:/Users/Loayza/Downloads/leofit-pedidos-sistema/SECURITY.md).
+
+---
+
+## 10. Licencia
+
+Este software se distribuye bajo los términos de la Licencia **MIT**. Para más detalles, consulte el archivo [`LICENSE`](file:///c:/Users/Loayza/Downloads/leofit-pedidos-sistema/LICENSE).
