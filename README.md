@@ -61,7 +61,8 @@ Leofit-Solutions-Grupo01/
 │   ├── 04_Glosario                    # Glosario de terminología técnica y del negocio
 │   ├── 05_Preguntas_Criticas_Panel    # Respuestas y fundamentación técnica ante el panel
 │   ├── 06_Especificacion_PWA_Prompt   # Especificación de interfaz y componentes PWA
-│   └── 07_Arquitectura_Sistema        # Documento de Arquitectura de Software (SAD - Modelo 4+1)
+│   ├── 07_Arquitectura_Sistema        # Documento de Arquitectura de Software (SAD - Modelo 4+1)
+│   └── 08_Normalizacion_Base_Datos    # Normalización Relacional (1FN, 2FN, 3FN y BCNF)
 │
 ├── diagrams/                          # Modelos visuales de procesos y arquitectura (PNG)
 │   ├── 01_BPMN_AS-IS.png              # Diagrama BPMN del proceso manual actual
