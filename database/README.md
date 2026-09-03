@@ -184,3 +184,17 @@ erDiagram
 * `CREATE INDEX idx_orders_created_at ON orders(created_at);`
 * `CREATE INDEX idx_variants_product ON product_variants(product_id);`
 * `CREATE INDEX idx_clients_phone ON clients(phone);`
+
+---
+
+## 5. Proceso Formal de Normalización (1FN, 2FN, 3FN y BCNF)
+
+El esquema relacional fue diseñado siguiendo rigurosamente las reglas de normalización de Edgar F. Codd:
+
+1. **Primera Forma Normal (1FN):** Eliminación de grupos repetitivos y campos multivaluados de pedidos antiguos; atomicidad de atributos y definición de claves primarias únicas.
+2. **Segunda Forma Normal (2FN):** Descomposición de dependencias parciales en claves compuestas, separando productos, variantes e items de pedido.
+3. **Tercera Forma Normal (3FN):** Eliminación de dependencias transitivas ($X \to Y \to Z$), aislando clientes, categorías y auditoría de pedidos.
+4. **Forma Normal de Boyce-Codd (BCNF):** Toda dependencia funcional está determinada por superclaves (`id`, `sku`, `order_number`, `email`).
+5. **Desnormalización Controlada de Alto Rendimiento:** Persistencia de `unit_price` inmutable en `order_items` para preservar el histórico contable ante subidas de precios, y persistencia indexada de `total_amount` en `orders` para consultas inmediatas del Dashboard en $O(1)$.
+
+*Para consultar el informe metodológico completo y justificación matemática, revisar [`docs/08_Normalizacion_Base_Datos.md`](file:///c:/Users/Loayza/Downloads/leofit-pedidos-sistema/docs/08_Normalizacion_Base_Datos.md).*
