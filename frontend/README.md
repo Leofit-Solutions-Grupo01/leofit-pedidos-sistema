@@ -49,10 +49,11 @@ En la carpeta [`mockups/`](file:///c:/Users/Loayza/Downloads/leofit-pedidos-sist
 
 ---
 
-## 4. Stack Tecnológico Sugerido para Frontend
+## 4. Stack Tecnológico Implementado en Frontend
 
-* **Framework:** React 18+ con Vite (compilación ultrarrápida y estándar de la industria).
-* **Enrutamiento:** React Router DOM v6+.
-* **Gestión de Estado:** Zustand o Context API para el estado global del carrito de pedidos y sesión.
-* **Peticiones HTTP:** Axios con interceptores para inyección automática del token JWT.
-* **Componentes / Estilos:** Vanilla CSS / CSS Modules o Tailwind CSS para máxima velocidad de desarrollo y diseño responsive.
+* **Framework & Bundler:** React 19 + TypeScript + Vite 6 (compilación ultrarrápida en menos de 1 segundo).
+* **Diseño y Estilos:** TailwindCSS v4 con sistema de tokens y componentes responsivos.
+* **Iconografía y Tipografía:** Google Material Symbols + Inter Font.
+* **Gestión de Estado:** React Context API (`AppContext`) con persistencia local para pedidos, inventario, métricas y autenticación.
+* **PWA (Progressive Web App):** `manifest.json` y soporte offline para instalación directa en Android e iOS.
+* **Pruebas Automatizadas:** Vitest para validación unitaria de modelos de datos y lógica de cálculo.
