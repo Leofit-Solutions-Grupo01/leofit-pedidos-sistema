@@ -116,16 +116,13 @@ Leofit-Solutions-Grupo01/
 
 ### Comandos Rápidos
 
-Puedes ejecutar los comandos directamente desde la raíz del proyecto o dentro de la carpeta `frontend/`:
-
 ```bash
 # 1. Clonar el repositorio
 git clone https://github.com/Leofit-Solutions-Grupo01/leofit-pedidos-sistema.git
-cd leofit-pedidos-sistema
+cd leofit-pedidos-sistema/frontend
 
 # 2. Instalar dependencias
-npm --prefix frontend install
-# o simplemente: cd frontend && npm install
+npm install
 
 # 3. Iniciar servidor de desarrollo en vivo
 npm run dev
