@@ -4,75 +4,68 @@ Este documento establece las políticas de divulgación responsable de vulnerabi
 
 ---
 
-## 🔒 1. Versiones Soportadas
+## 1. Versiones con Soporte Activo
 
 Actualmente se proporciona soporte y parches de seguridad para las siguientes versiones activas:
 
-| Versión | ¿Soportada? |
+| Versión | Estado de Soporte |
 | :--- | :---: |
-| `1.0.x-beta` | ✅ Sí |
-| `< 1.0.0` | ❌ No |
+| `1.0.x-beta` | Soportada (Activa) |
+| `< 1.0.0` | No compatible |
 
 ---
 
-## 🛡️ 2. Reporte Responsable de Vulnerabilidades
+## 2. Procedimiento de Reporte Responsable de Vulnerabilidades
 
-Si descubres una vulnerabilidad de seguridad en este proyecto, te solicitamos **no divulgarla públicamente** a través de *Issues* abiertos o foros públicos. En su lugar, sigue el siguiente procedimiento:
+Si se identifica una vulnerabilidad de seguridad en este proyecto, se solicita no divulgarla públicamente a través de incidencias abiertas o foros públicos. En su lugar, se debe proceder según el siguiente protocolo:
 
-1. **Contacto Privado:** Envía un correo electrónico detallado al equipo de seguridad a `seguridad@leofit.com` o contacta a los mantenedores principales del repositorio de manera confidencial.
-2. **Información requerida:**
-   - Descripción detallada de la vulnerabilidad.
-   - Pasos exactos o prueba de concepto (*PoC*) para reproducirla.
+1. **Contacto Confidencial:** Enviar un correo electrónico formal al equipo de seguridad a `seguridad@leofit.com` o comunicarse directamente con los mantenedores principales del repositorio.
+2. **Información Requerida:**
+   - Descripción técnica detallada del hallazgo.
+   - Pasos estructurados o prueba de concepto (*PoC*) para su reproducción.
    - Componente afectado (Frontend, Backend, Base de Datos, CI/CD).
-   - Impacto potencial estimado.
+   - Estimación del nivel de severidad e impacto potencial.
 3. **Compromiso de Respuesta:**
-   - Acuse de recibo inicial en un plazo máximo de **48 horas**.
-   - Evaluación y plan de mitigación en un plazo no mayor a **7 días laborables**.
-   - Notificación una vez que el parche de seguridad sea desplegado.
+   - Acuse de recibo formal en un plazo máximo de 48 horas.
+   - Plan de evaluación y mitigación en un lapso no mayor a 7 días hábiles.
+   - Notificación de cierre una vez desplegado el parche correctivo.
 
 ---
 
-## 🌐 3. Reglas Críticas para GitHub Pages y Frontend
+## 3. Directrices de Seguridad para Frontend y GitHub Pages
 
-1. **Nunca incluir credenciales o secretos en el Frontend:**
-   * El código publicado en GitHub Pages es **100% público** y accesible desde el navegador del cliente (HTML, CSS, JS, bundle).
-   * **NUNCA** coloques contraseñas de bases de datos, claves privadas (`JWT_SECRET`), tokens maestros ni llaves de API sensibles en archivos del frontend ni en variables `VITE_*`.
-   * Las variables `VITE_*` se embeben públicamente en el bundle compilado.
-
-2. **Manejo de Rutas y Enlaces Relativos:**
-   * Configuración de base path relativa (`base: './'`) en `vite.config.ts` para evitar fallos de carga de recursos y errores MIME.
-   * Manejador de redirección SPA `404.html` en `frontend/public/` para evitar caídas de navegación al recargar subrutas.
-
-3. **Protección contra Cross-Site Scripting (XSS):**
-   * Usar React / Vanilla DOM con `textContent` en lugar de `innerHTML` o `dangerouslySetInnerHTML`.
-   * Sanitizar cualquier entrada de texto proveniente de usuarios o APIs antes de renderizarla.
-
-4. **Políticas de Seguridad en Cabeceras (CSP):**
-   * Configurar meta-etiquetas de Content Security Policy (CSP) en `index.html` para permitir únicamente conexiones seguras hacia el backend.
+1. **Ausencia Estricta de Secretos en el Cliente:**
+   - El código fuente publicado en GitHub Pages es de dominio público y accesible desde el navegador web (código HTML, CSS, JavaScript y bundles).
+   - Queda terminantemente prohibido almacenar credenciales de base de datos, claves privadas (`JWT_SECRET`), tokens maestros o llaves de API sensibles en archivos del frontend o en variables de entorno expuestas (`VITE_*`).
+2. **Enrutamiento Seguro y Resiliencia SPA:**
+   - Empleo de rutas relativas (`base: './'`) en `vite.config.ts` para evitar fallos de resolución de recursos estáticos.
+   - Implementación del manejador de respaldo `404.html` en `frontend/public/` para garantizar la persistencia de navegación en recargas de página.
+3. **Mitigación de Ataques Cross-Site Scripting (XSS):**
+   - Utilización de React DOM con asignación mediante `textContent` en sustitución de `innerHTML` o `dangerouslySetInnerHTML`.
+   - Sanitización rigurosa de toda entrada suministrada por el usuario o retornada por servicios externos.
+4. **Política de Seguridad de Contenidos (CSP):**
+   - Inclusión de directivas Content Security Policy (CSP) en las cabeceras HTML para restringir las conexiones salientes exclusivamente a endpoints autorizados.
 
 ---
 
-## 🗄️ 4. Reglas de Seguridad en Backend y Base de Datos
+## 4. Directrices de Seguridad en Backend y Persistencia
 
-1. **Autenticación y Hashing de Contraseñas:**
-   * Utilizar siempre `bcrypt` con un factor de salting (cost) de al menos 10 para todas las contraseñas de usuarios.
-   * Firmar los tokens JWT con un secreto robusto y definir expiración máxima de 7 días.
-
-2. **Control de Acceso y CORS Estricto:**
-   * Limitar el middleware `cors()` únicamente a los orígenes autorizados (ej. `http://localhost:5173` en desarrollo y el dominio exacto de GitHub Pages en producción).
-
+1. **Autenticación y Cifrado de Contraseñas:**
+   - Uso obligatorio de la librería `bcrypt` con un factor de salting (cost) no menor a 10 para el almacenamiento de contraseñas.
+   - Firma criptográfica de tokens JWT con algoritmos HMAC-SHA256 y vigencia máxima de 7 días.
+2. **Control de Acceso y Política CORS:**
+   - Restricción estricta del middleware `cors()` únicamente a los orígenes autorizados de desarrollo y al dominio oficial de producción en GitHub Pages.
 3. **Prevención de Inyecciones SQL:**
-   * Utilizar siempre ORM (Prisma / Sequelize) o sentencias preparadas (*Prepared Statements* / consultas parametrizadas).
-
-4. **Rate Limiting:**
-   * Implementar `express-rate-limit` en los endpoints de `/api/auth/login` para prevenir ataques de fuerza bruta.
+   - Utilización exclusiva de ORM (Prisma / Sequelize) y sentencias parametrizadas (*Prepared Statements*) para cualquier interacción con la base de datos relacional.
+4. **Protección contra Fuerza Bruta (Rate Limiting):**
+   - Implementación de límites de tasa de peticiones (`express-rate-limit`) en los endpoints críticos de autenticación (`/api/auth/login`).
 
 ---
 
-## 📋 5. Lista de Verificación de Archivos Ignorados (`.gitignore`)
+## 5. Control de Exclusiones y Archivos Sensibles (.gitignore)
 
-Asegurarse de que los siguientes archivos nunca sean comiteados:
+Se debe garantizar que los siguientes artefactos permanezcan permanentemente fuera del control de versiones:
 * `.env`, `.env.local`, `.env.production`
 * `node_modules/`
-* Archivos `.pem`, `.key`, `.cert`
-* Carpetas de build local (`dist/`, `build/`)
+* Certificados y claves privadas (`.pem`, `.key`, `.cert`)
+* Directorios de compilación local (`dist/`, `build/`)

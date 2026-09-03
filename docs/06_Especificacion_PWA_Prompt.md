@@ -1,4 +1,4 @@
-🚀 PROMPT DEFINITIVO PARA LEOFIT (SIN EMOJIS)
+# PROMPT DEFINITIVO PARA LEOFIT (SIN EMOJIS)
 text
 Genera una aplicación web completa tipo PWA (Progressive Web App) con React.js, TailwindCSS y Node.js para gestionar pedidos de una tienda de ropa deportiva llamada "Leofit".
 

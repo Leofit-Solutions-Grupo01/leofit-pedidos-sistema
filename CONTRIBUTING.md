@@ -1,110 +1,107 @@
 # Guía de Contribución - Leofit Solutions
 
-¡Gracias por tu interés en contribuir al proyecto **Leofit Solutions - Sistema de Gestión de Pedidos & Inventario**! Este documento describe los lineamientos y directrices para proponer mejoras, reportar errores y enviar código.
+Este documento describe los lineamientos y directrices para proponer mejoras, reportar observaciones y enviar contribuciones al proyecto **Leofit Solutions - Sistema de Gestión de Pedidos & Inventario**.
 
 ---
 
-## 🧭 Tabla de Contenidos
-1. [Código de Conducta](#-código-de-conducta)
-2. [¿Cómo puedo contribuir?](#-cómo-puedo-contribuir)
-3. [Flujo de Trabajo con Git](#-flujo-de-trabajo-con-git)
-4. [Configuración del Entorno de Desarrollo](#-configuración-del-entorno-de-desarrollo)
-5. [Estándares de Código y Commits](#-estándares-de-código-y-commits)
-6. [Ejecución de Pruebas](#-ejecución-de-pruebas)
-7. [Proceso de Pull Request (PR)](#-proceso-de-pull-request-pr)
+## 1. Tabla de Contenidos
+1. [Código de Conducta](#2-código-de-conducta)
+2. [Modalidades de Contribución](#3-modalidades-de-contribución)
+3. [Flujo de Trabajo con Git](#4-flujo-de-trabajo-con-git)
+4. [Configuración del Entorno de Desarrollo](#5-configuración-del-entorno-de-desarrollo)
+5. [Estándares de Código y Mensajes de Confirmación](#6-estándares-de-código-y-mensajes-de-confirmación)
+6. [Ejecución de Pruebas Automatizadas](#7-ejecución-de-pruebas-automatizadas)
+7. [Proceso de Solicitud de Extracción (Pull Request)](#8-proceso-de-solicitud-de-extracción-pull-request)
 
 ---
 
-## 📜 Código de Conducta
-Al participar en este proyecto, te comprometes a adherirte al [Código de Conducta](CODE_OF_CONDUCT.md). Por favor, léelo antes de interactuar con el equipo o la comunidad.
+## 2. Código de Conducta
+Al participar en este proyecto, los colaboradores se comprometen a adherirse a las directrices establecidas en el [Código de Conducta](CODE_OF_CONDUCT.md).
 
 ---
 
-## 💡 ¿Cómo puedo contribuir?
+## 3. Modalidades de Contribución
 
-* **Reportando Errores (Bugs):** Abre un *Issue* en GitHub describiendo el comportamiento esperado, el comportamiento observado, pasos exactos para reproducirlo y capturas de pantalla si aplica.
-* **Proponiendo Mejoras o Nuevas Funcionalidades:** Abre un *Issue* de tipo *Feature Request* detallando la justificación del cambio y el valor que aporta al negocio de Leofit.
-* **Enviando Código:** Corrige errores abiertos o implementa funcionalidades aprobadas mediante un Pull Request.
+* **Reporte de Errores (Bugs):** Abrir un *Issue* en GitHub detallando el comportamiento esperado, el comportamiento observado, pasos de reproducción y capturas de pantalla de soporte.
+* **Propuesta de Nuevas Funcionalidades:** Abrir un *Issue* de tipo *Feature Request* justificando el cambio y el valor aportado a la operativa del negocio.
+* **Envío de Código:** Subsanar incidencias abiertas o implementar funcionalidades previamente aprobadas a través de una Solicitud de Extracción (*Pull Request*).
 
 ---
 
-## 🌿 Flujo de Trabajo con Git
+## 4. Flujo de Trabajo con Git
 
-Trabajamos con el modelo de ramas basado en características:
+El desarrollo se organiza bajo el modelo de ramas por funcionalidad (*Feature Branches*):
 
-1. **Haz un Fork** del repositorio a tu cuenta personal (o clona el repo oficial si eres miembro del equipo).
-2. **Crea una rama descriptiva** a partir de `main`:
+1. Realizar una bifurcación (*Fork*) o clonar el repositorio principal si se cuenta con permisos de colaborador.
+2. Crear una rama descriptiva a partir de `main`:
    ```bash
    git checkout -b feature/nombre-de-la-funcionalidad
-   # o para correcciones:
+   # o para correcciones de errores:
    git checkout -b fix/descripcion-del-bug
    ```
-3. Realiza tus cambios manteniendo commits atómicos y claros.
-4. Sube tu rama a tu repositorio remoto:
+3. Realizar los cambios manteniendo confirmaciones atómicas, coherentes y ordenadas.
+4. Publicar la rama en el repositorio remoto:
    ```bash
    git push origin feature/nombre-de-la-funcionalidad
    ```
-5. Abre un **Pull Request** hacia la rama `main`.
+5. Abrir una Solicitud de Extracción (*Pull Request*) dirigida a la rama `main`.
 
 ---
 
-## 💻 Configuración del Entorno de Desarrollo
+## 5. Configuración del Entorno de Desarrollo
 
 ### Requisitos Previos
 * **Node.js**: v20.x o v22.x LTS
 * **npm**: v10.x o superior
 * **Git**: v2.x
 
-### Instalación y Ejecución
+### Procedimiento de Instalación y Ejecución
 
 ```bash
 # 1. Clonar el repositorio
 git clone https://github.com/Leofit-Solutions-Grupo01/leofit-pedidos-sistema.git
-cd leofit-pedidos-sistema
+cd leofit-pedidos-sistema/frontend
 
-# 2. Instalar dependencias del frontend
-cd frontend
+# 2. Instalar dependencias
 npm install
 
-# 3. Iniciar el servidor de desarrollo
+# 3. Iniciar el servidor de desarrollo local
 npm run dev
 
 # 4. Compilar para producción (validación de build)
 npm run build
 ```
 
-La aplicación estará disponible en `http://localhost:5173`.
-
 ---
 
-## 📝 Estándares de Código y Commits
+## 6. Estándares de Código y Mensajes de Confirmación
 
 ### Convención de Commits (Conventional Commits)
-Los mensajes de commit deben seguir el siguiente formato:
+Los mensajes de confirmación deben apegarse a la siguiente estructura formal:
 
 ```text
 <tipo>(<alcance opcional>): <descripción corta en imperativo>
 ```
 
-**Tipos permitidos:**
-* `feat`: Nueva funcionalidad (ej. `feat(pedidos): agregar filtro por estado de entrega`).
-* `fix`: Corrección de bug (ej. `fix(auth): corregir redirección tras login`).
-* `docs`: Cambios en la documentación (ej. `docs: actualizar guía de despliegue`).
-* `style`: Formateo de código, estilos CSS o UI sin alterar lógica.
-* `refactor`: Refactorización de código sin añadir funcionalidades ni corregir bugs.
-* `test`: Adición o modificación de pruebas unitarias o de integración.
-* `chore`: Tareas de mantenimiento, dependencias o configuración de build.
+**Tipos estandarizados:**
+* `feat`: Incorporación de una nueva funcionalidad.
+* `fix`: Corrección de un defecto o error de software.
+* `docs`: Modificaciones exclusivas en documentación técnica o académica.
+* `style`: Ajustes de formato o estilos visuales sin alteración de lógica.
+* `refactor`: Refactorización de código sin adición de funciones ni arreglo de bugs.
+* `test`: Adición o actualización de pruebas unitarias o de integración.
+* `chore`: Labores de mantenimiento de dependencias, scripts o configuración de compilación.
 
-### Estilo de Código
-* Utilizar TypeScript estricto. Evitar el uso de `any`.
-* Componentes funcionales con Hooks en React.
-* Clases utilitarias de TailwindCSS para consistencia visual.
+### Estilo de Programación
+* Empleo estricto de TypeScript; prohibido el uso indiscriminado del tipo `any`.
+* Componentes funcionales modulares basados en React Hooks.
+* Clases utilitarias de TailwindCSS para consistencia visual de la interfaz.
 
 ---
 
-## 🧪 Ejecución de Pruebas
+## 7. Ejecución de Pruebas Automatizadas
 
-Antes de enviar un Pull Request, asegúrate de que todas las pruebas pasen localmente:
+Antes de someter cualquier Pull Request, se debe verificar la ejecución satisfactoria de la suite de pruebas unitarias:
 
 ```bash
 cd frontend
@@ -113,9 +110,9 @@ npm test
 
 ---
 
-## 🚀 Proceso de Pull Request (PR)
+## 8. Proceso de Solicitud de Extracción (Pull Request)
 
-1. Asegúrate de que el código compila limpiamente (`npm run build`) y pasa las pruebas (`npm test`).
-2. Actualiza la documentación en `/docs` o `README.md` si tu cambio altera el comportamiento o la arquitectura.
-3. Asigna a al menos un revisor del equipo para su aprobación (*Code Review*).
-4. Verifica que los flujos de GitHub Actions (CI/CD y Security Scan) finalicen en verde.
+1. Verificar que la aplicación compile sin advertencias (`npm run build`) y que todas las pruebas pasen (`npm test`).
+2. Actualizar la documentación técnica en `/docs` o `README.md` si los cambios impactan la arquitectura o el flujo del sistema.
+3. Asignar al menos un revisor del equipo para la revisión formal de código (*Code Review*).
+4. Comprobar que los pipelines de integración continua en GitHub Actions finalicen en estado exitoso (*Passing*).
