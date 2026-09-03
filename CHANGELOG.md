@@ -32,6 +32,7 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
   - `04_Glosario`: Definiciones de negocio y terminología técnica.
   - `05_Preguntas_Criticas_Panel`: Análisis de contingencias, KPIs y decisiones de diseño.
   - `06_Especificacion_PWA_Prompt`: Especificación completa del frontend PWA.
+  - `07_Arquitectura_Sistema`: Documento formal de Arquitectura de Software (SAD) basado en el modelo de vistas 4+1 y registros ADR.
 - **Diagramas de Arquitectura y Procesos (/diagrams):**
   - BPMN AS-IS (proceso manual actual).
   - Flujo de Proceso TO-BE (digitalizado).
