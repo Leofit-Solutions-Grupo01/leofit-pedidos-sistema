@@ -17,20 +17,91 @@ Este directorio contiene el diseño del modelo de datos, diccionario de tablas, 
 
 ## 2. Diagrama Entidad-Relación Lógico (ERD)
 
-```
- [ USERS ] (Administrador)
-     │
- [ CLIENTS ] 1 ─────── N [ ORDERS ] 1 ─────── N [ ORDER_ITEMS ]
-                            │                          │
-                            │ 1                        │ N
-                            ▼                          ▼ 1
-                 [ ORDER_STATUS_HISTORY ]     [ PRODUCT_VARIANTS ] (Talla/Color/Stock)
-                                                       │ N
-                                                       ▼ 1
-                                                  [ PRODUCTS ]
-                                                       │ N
-                                                       ▼ 1
-                                                 [ CATEGORIES ]
+```mermaid
+erDiagram
+    USERS ||--o{ ORDERS : "registra / audita"
+    CLIENTS ||--o{ ORDERS : "realiza"
+    CATEGORIES ||--|{ PRODUCTS : "clasifica"
+    PRODUCTS ||--|{ PRODUCT_VARIANTS : "posee"
+    PRODUCT_VARIANTS ||--o{ ORDER_ITEMS : "incluido_en"
+    ORDERS ||--|{ ORDER_ITEMS : "contiene"
+    ORDERS ||--|{ ORDER_STATUS_HISTORY : "registra_historial"
+
+    USERS {
+        int id PK
+        string name
+        string email UK
+        string password_hash
+        enum role "ADMIN, OPERATOR"
+        datetime created_at
+    }
+
+    CATEGORIES {
+        int id PK
+        string name
+        text description
+    }
+
+    PRODUCTS {
+        int id PK
+        int category_id FK
+        string name
+        text description
+        decimal base_price
+        string image_url
+        boolean is_active
+    }
+
+    PRODUCT_VARIANTS {
+        int id PK
+        int product_id FK
+        string size "S, M, L, XL"
+        string color
+        string sku UK
+        int stock
+        int alert_threshold
+    }
+
+    CLIENTS {
+        int id PK
+        string full_name
+        string phone
+        text address
+        string district
+        text reference
+    }
+
+    ORDERS {
+        int id PK
+        string order_number UK
+        int client_id FK
+        enum status "RECIBIDO, PREPARACION, EN_CAMINO, ENTREGADO, CANCELADO"
+        decimal subtotal
+        decimal shipping_cost
+        decimal total_amount
+        enum payment_method "YAPE, PLIN, TRANSFERENCIA, CONTRAENTREGA"
+        text notes
+        datetime created_at
+        datetime updated_at
+    }
+
+    ORDER_ITEMS {
+        int id PK
+        int order_id FK
+        int variant_id FK
+        int quantity
+        decimal unit_price
+        decimal subtotal
+    }
+
+    ORDER_STATUS_HISTORY {
+        int id PK
+        int order_id FK
+        string previous_status
+        string new_status
+        datetime changed_at
+        text comments
+    }
 ```
 
 ---

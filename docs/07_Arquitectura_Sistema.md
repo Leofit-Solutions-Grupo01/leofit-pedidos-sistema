@@ -14,14 +14,14 @@
 | **Proyecto:** | Sistema Web Progresivo (PWA) de Gestión de Pedidos & Control de Inventario en Tiempo Real |
 | **Empresa Beneficiaria:** | **Leofit** (PYME textil deportiva - confección y comercialización) |
 | **Dueño de la Empresa:** | Víctor Leandro Cárdenas Fernández |
-| **Versión del Documento:** | 1.0.0 |
+| **Versión del Documento:** | 1.1.0 |
 | **Fecha:** | Septiembre 2026 |
 
 ### Equipo de Desarrollo (Grupo 01):
 1. **Cárdenas Fernández Víctor Leandro** — Back-End / Base de Datos
 2. **Dávila Morales Jim Alessandro** — Calidad / DevOps / Despliegue
 3. **Roman Delgado Harley Anthony** — UX / Front-End
-4. **Loayza Rodriguez Lady Luz** — UX / Front-End / Coordinación
+4. **Loayza Rodriguez Lady Luz** — UX / Front-End / Coordinación General
 5. **Rojas Sanchez Daniel Enrique** — Gestión / Análisis Funcional
 
 ---
@@ -33,9 +33,9 @@ El presente documento describe la arquitectura técnica integral, los patrones d
 
 ### 2.2. Contexto del Negocio y Problemática
 Leofit gestionaba la recepción de pedidos a través de múltiples canales desarticulados (WhatsApp personal, llamadas telefónicas, mensajes directos de Instagram) registrando la información en cuadernos físicos o notas sueltas. Esta operativa generaba:
-* Sobreventa de prendas sin stock real disponible en el taller/almacén.
+* Sobreventa de prendas sin stock real disponible en el taller o almacén.
 * Retrasos y confusiones en el empaque y despacho de pedidos.
-* Cero trazabilidad del estado del pedido (`Recibido` ➔ `Preparación` ➔ `En Camino` ➔ `Entregado`).
+* Cero trazabilidad del estado del pedido (`Recibido` -> `Preparación` -> `En Camino` -> `Entregado`).
 * Falta de métricas consolidadas sobre el flujo de caja e ingresos diarios.
 
 ### 2.3. Objetivos Arquitectónicos
@@ -49,21 +49,34 @@ Leofit gestionaba la recepción de pedidos a través de múltiples canales desar
 
 ## 3. Atributos de Calidad (Requerimientos No Funcionales)
 
-```
-                       ┌───────────────────────────────────────┐
-                       │    ATRIBUTOS DE CALIDAD DEL SISTEMA   │
-                       └───────────────────┬───────────────────┘
-            ┌──────────────────┬───────────┴───────────┬──────────────────┐
-            ▼                  ▼                       ▼                  ▼
-    ┌──────────────┐   ┌──────────────┐        ┌──────────────┐   ┌──────────────┐
-    │ Rendimiento  │   │  Seguridad   │        │ Disponibilidad│   │  Usabilidad  │
-    │  (≤ 500 ms)  │   │ (JWT+Bcrypt) │        │ (99% Uptime) │   │(Mobile-First)│
-    └──────────────┘   └──────────────┘        └──────────────┘   └──────────────┘
+```mermaid
+mindmap
+  root((Atributos de Calidad))
+    Rendimiento
+      Latencia API <= 500ms
+      Carga inicial PWA < 1.5s
+      Build ultrarrápido con Vite
+    Seguridad
+      Cifrado de contraseñas Bcrypt
+      Autenticación Stateless JWT
+      Políticas CORS y Sanitización
+    Disponibilidad
+      99% Uptime en horario comercial
+      Despliegue distribuido en CDN
+      Estrategia Offline con PWA
+    Usabilidad
+      Metodología Mobile-First
+      Accesibilidad WCAG AA
+      Control de Roles RBAC
+    Mantenibilidad
+      TypeScript estricto
+      Pruebas unitarias con Vitest
+      Arquitectura en capas
 ```
 
 | Atributo | Requerimiento / Métrica | Estrategia de Implementación |
 |:---|:---|:---|
-| **Rendimiento** | Tiempo de carga inicial < 1.5s; tiempo de respuesta API ≤ 500 ms. | Compilación con Vite, bundle modular, minificación con Rollup, índices en base de datos. |
+| **Rendimiento** | Tiempo de carga inicial < 1.5s; tiempo de respuesta API <= 500 ms. | Compilación con Vite, bundle modular, minificación con Rollup, índices en base de datos. |
 | **Seguridad** | Autenticación stateless y cifrado robusto de credenciales. | Tokens JWT firmados, contraseñas hasheadas con `bcrypt` (10 rounds), validación de inputs con schemas, CORS estricto. |
 | **Disponibilidad** | 99% de disponibilidad en horario comercial (08:00 - 22:00). | Despliegue en infraestructuras PaaS/Cloud de alta disponibilidad (GitHub Pages / Vercel + Render/Railway). |
 | **Escalabilidad** | Capacidad de soportar picos de venta de temporada (campañas deportivas). | Arquitectura stateless en API REST que permite replicación horizontal de contenedores. |
@@ -74,176 +87,263 @@ Leofit gestionaba la recepción de pedidos a través de múltiples canales desar
 
 ## 4. Vistas Arquitectónicas (Modelo 4+1 de Kruchten)
 
-```
-                                  ┌─────────────────────────┐
-                                  │   VISTA DE ESCENARIOS   │
-                                  │     (Casos de Uso)      │
-                                  └────────────┬────────────┘
-                                               │
-             ┌─────────────────────────────────┼─────────────────────────────────┐
-             │                                 │                                 │
-             ▼                                 ▼                                 ▼
-   ┌───────────────────┐             ┌───────────────────┐             ┌───────────────────┐
-   │    VISTA LÓGICA   │             │ VISTA DE PROCESOS │             │ VISTA DE DESARROLLO│
-   │  (Capas y Módulos)│             │  (Concurrencia y  │             │   (Estructura de  │
-   │                   │             │   Transacciones)  │             │    Directorios)   │
-   └─────────┬─────────┘             └─────────┬─────────┘             └─────────┬─────────┘
-             │                                 │                                 │
-             └─────────────────────────────────┼─────────────────────────────────┘
-                                               │
-                                               ▼
-                                     ┌───────────────────┐
-                                     │    VISTA FÍSICA   │
-                                     │  (Infraestructura │
-                                     │   y Despliegue)   │
-                                     └───────────────────┘
+```mermaid
+flowchart TD
+    subgraph Escenarios ["Vista de Escenarios (+1)"]
+        CU["Casos de Uso Críticos\n(Registrar Pedido, Control de Stock, Auditoría)"]
+    end
+
+    subgraph Arquitectura ["Vistas de Ingeniería"]
+        VL["Vista Lógica\n(Arquitectura Multicapa & Componentes)"]
+        VP["Vista de Procesos\n(Transacciones ACID & Máquina de Estados)"]
+        VD["Vista de Desarrollo\n(Monorepo Modular & CI/CD)"]
+        VF["Vista Física\n(Infraestructura Cloud & Despliegue)"]
+    end
+
+    CU --> VL
+    CU --> VP
+    CU --> VD
+    CU --> VF
 ```
 
 ---
 
-### 4.1. Vista Lógica: Arquitectura Multicapa
+### 4.1. Vista Lógica: Arquitectura Multicapa y Flujo de Información
 
-El sistema implementa una arquitectura desacoplada en cuatro niveles principales:
+```mermaid
+flowchart TB
+    subgraph Presentacion ["1. Capa de Presentación (Frontend PWA)"]
+        UI_Login["Módulo Login & Acceso"]
+        UI_Dash["Dashboard & KPIs"]
+        UI_Orders["Gestor de Pedidos"]
+        UI_Products["Control de Inventario"]
+        AppContext["Estado Global (AppContext / Cache)"]
+        
+        UI_Login --> AppContext
+        UI_Dash --> AppContext
+        UI_Orders --> AppContext
+        UI_Products --> AppContext
+    end
 
-```
-┌─────────────────────────────────────────────────────────────────────────────┐
-│ 1. CAPA DE PRESENTACIÓN (Frontend PWA - React 19 + TypeScript + Tailwind)   │
-│    ├── Páginas: Login, Dashboard, PedidosLista, PedidoForm, ProductosGestion│
-│    ├── Componentes Reutilizables: Navbar, Modal, Badge, StatCard            │
-│    └── Estado Global: AppContext (Autenticación, Carrito, Pedidos, Stock)   │
-└──────────────────────────────────────┬──────────────────────────────────────┘
-                                       │ HTTPS / JSON (REST API)
-┌──────────────────────────────────────▼──────────────────────────────────────┐
-│ 2. CAPA DE APLICACIÓN / SERVICIOS (Backend API - Node.js + Express)         │
-│    ├── Routers & Controllers: Auth, Orders, Products, Clients, Dashboard    │
-│    ├── Middlewares: AuthGuard (JWT), InputValidator (Zod), RateLimiter, CORS│
-│    └── Services / Lógica de Negocio: OrderService, InventoryEngine, KPIEngine│
-└──────────────────────────────────────┬──────────────────────────────────────┘
-                                       │ SQL Queries / ORM Mapping
-┌──────────────────────────────────────▼──────────────────────────────────────┐
-│ 3. CAPA DE ACCESO A DATOS (Data Access Layer - Prisma ORM / Sequelize)      │
-│    ├── Modelos / Entidades: User, Product, Variant, Client, Order, OrderItem│
-│    └── Transacciones ACID: Descuento atómico de stock y auditoría de estado │
-└──────────────────────────────────────┬──────────────────────────────────────┘
-                                       │ TCP / Pool de Conexiones
-┌──────────────────────────────────────▼──────────────────────────────────────┐
-│ 4. CAPA DE PERSISTENCIA (Base de Datos Relacional - PostgreSQL / MySQL)     │
-│    └── Tablas relacionales con índices optimizados y restricciones FK       │
-└─────────────────────────────────────────────────────────────────────────────┘
-```
+    subgraph Aplicacion ["2. Capa de Aplicación (API REST Node.js / Express)"]
+        Router["Enrutador Principal & CORS"]
+        AuthMiddleware["Middleware JWT & RBAC Guard"]
+        Validator["Validador de Schemas (Zod)"]
+        
+        subgraph Servicios ["Servicios de Negocio"]
+            AuthSvc["AuthService"]
+            OrderSvc["OrderService"]
+            StockSvc["InventoryEngine"]
+            ReportSvc["KPIService"]
+        end
 
----
+        Router --> AuthMiddleware --> Validator
+        Validator --> AuthSvc
+        Validator --> OrderSvc
+        Validator --> StockSvc
+        Validator --> ReportSvc
+    end
 
-### 4.2. Vista de Procesos: Transaccionalidad Concurrente de Pedidos
+    subgraph Persistencia ["3. Capa de Acceso a Datos & Base de Datos"]
+        ORM["Mapeador Objeto-Relacional (Prisma / Sequelize)"]
+        DB[(Base de Datos Relacional SQL\nPostgreSQL / MySQL)]
+        
+        Servicios --> ORM
+        ORM --> DB
+    end
 
-Uno de los requerimientos más críticos es asegurar que no se vendan prendas que ya no tienen existencias físicas en el almacén. El siguiente flujo detalla el procesamiento concurrente y atómico:
-
-```
-[ Cliente / Operador ]           [ API Controller ]             [ OrderService ]           [ Base de Datos ]
-        │                               │                               │                          │
-        │── 1. POST /api/orders ───────>│                               │                          │
-        │   (payload con items y datos) │── 2. Validar JWT & Schema ───>│                          │
-        │                               │                               │── 3. INICIAR TRANSACCIÓN ─>│
-        │                               │                               │                          │
-        │                               │                               │── 4. Bloquear y verificar│
-        │                               │                               │      stock por SKU ─────>│
-        │                               │                               │                          │
-        │                               │                               │<── Stock Disponible? ────│
-        │                               │                               │                          │
-        │                               │                  [ SI ]       │                          │
-        │                               │                    │          │── 5. Descontar Stock ────>│
-        │                               │                    │          │── 6. Insertar Order ─────>│
-        │                               │                    │          │── 7. Insertar Items ─────>│
-        │                               │                    │          │── 8. Registrar Auditoría─>│
-        │                               │                    │          │── 9. COMMIT TRANSACCIÓN ─>│
-        │                               │                    │          │                          │
-        │                               │<── Order Creado con Éxito ────│                          │
-        │<── 201 Created (Order Data) ──│                               │                          │
-        │                               │                  [ NO ]       │                          │
-        │                               │                    │          │── ROLLBACK TRANSACCIÓN ──>│
-        │<── 409 Conflict (Sin Stock) ──│<── Error: Stock Insuficiente ─│                          │
+    Presentacion -- "HTTPS / JSON (Bearer Token)" --> Aplicacion
 ```
 
 ---
 
-### 4.3. Vista de Desarrollo: Estructura Modular del Proyecto
+### 4.2. Vista de Procesos: Secuencia Transaccional Atómica de Creación de Pedido
 
-La estructura del código fuente está organizada bajo una arquitectura modular y mantenible:
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Operador as Dueño / Operador
+    participant PWA as PWA Frontend (React)
+    participant API as API Controller (Express)
+    participant Service as OrderService
+    participant DB as Base de Datos (SQL)
 
-```text
-leofit-pedidos-sistema/
-├── package.json               # Configuración raíz de scripts y workspaces de ejecución
-├── index.html                 # Punto de entrada SPA compilado para GitHub Pages
-├── assets/                    # Bundle optimizado de JavaScript (257 KB) y CSS (32 KB)
-├── docs/                      # Documentación formal (SAD, ERS, Glosario, Ficha, Actas)
-├── diagrams/                  # Diagramas de arquitectura, BPMN, riesgos y matriz RF/RNF
-├── database/                  # Modelo Entidad-Relación, esquemas y scripts SQL
-├── backend/                   # Arquitectura y diseño de la API REST Node.js/Express
-├── frontend/                  # Código fuente de la aplicación cliente (React 19 + Vite)
-│   ├── public/                # Manifest PWA, iconos y manejador 404 SPA
-│   ├── src/
-│   │   ├── __tests__/         # Pruebas unitarias automatizadas con Vitest
-│   │   ├── components/        # Componentes reutilizables (Navbar, Badges, Modales)
-│   │   ├── context/           # AppContext (estado global, persistencia, roles)
-│   │   ├── data/              # Modelos y mockData de inicialización
-│   │   ├── pages/             # Vistas de Login, Dashboard, Pedidos e Inventario
-│   │   ├── types/             # Definiciones e interfaces estrictas de TypeScript
-│   │   ├── App.tsx            # Enrutador principal de la aplicación
-│   │   └── main.tsx           # Punto de montaje React DOM
-│   ├── package.json           # Dependencias frontend (React 19, TailwindCSS, Vitest)
-│   └── vite.config.ts         # Configuración del bundler y ruta base de despliegue
-└── .github/workflows/         # Pipelines CI/CD (Deploy a Pages + Security Scan)
+    Operador->>PWA: Ingresa datos del cliente y prendas
+    PWA->>PWA: Valida formulario y autocalcula subtotal/delivery
+    PWA->>API: POST /api/orders (Payload + JWT Token)
+    API->>API: Valida autenticación y schema de datos
+    API->>Service: createOrder(orderData)
+    
+    rect rgb(240, 248, 255)
+        note right of Service: Inicio de Transacción ACID
+        Service->>DB: BEGIN TRANSACTION
+        Service->>DB: SELECT stock FROM product_variants WHERE id IN (...) FOR UPDATE
+        
+        alt Stock Insuficiente en alguna variante
+            DB-->>Service: Existencias < Unidades solicitadas
+            Service->>DB: ROLLBACK TRANSACTION
+            Service-->>API: Error: Stock Insuficiente
+            API-->>PWA: 409 Conflict (Detalle de prenda sin stock)
+            PWA-->>Operador: Alerta visual de stock no disponible
+        else Stock Disponible
+            DB-->>Service: Existencias verificadas
+            Service->>DB: UPDATE product_variants SET stock = stock - qty WHERE id = ...
+            Service->>DB: INSERT INTO orders (order_number, client_id, total, status, ...)
+            Service->>DB: INSERT INTO order_items (order_id, variant_id, qty, unit_price, ...)
+            Service->>DB: INSERT INTO order_status_history (order_id, status, changed_at, ...)
+            Service->>DB: COMMIT TRANSACTION
+            note right of Service: Transacción Completada con Éxito
+            Service-->>API: Orden creada satisfactoriamente
+            API-->>PWA: 201 Created (Order Object + Ticket Formateado)
+            PWA-->>Operador: Notificación de éxito y opción de compartir ticket WhatsApp
+        end
+    end
 ```
 
 ---
 
-### 4.4. Vista Física / Despliegue (Topología de Infraestructura)
+### 4.3. Máquina de Estados del Ciclo de Vida del Pedido
 
-```
-                            ┌────────────────────────┐
-                            │   DISPOSITIVO USUARIO  │
-                            │   (Móvil / Escritorio) │
-                            └───────────┬────────────┘
-                                        │
-                                        │ HTTPS / TLS 1.3
-                                        ▼
-                            ┌────────────────────────┐
-                            │    CDN / GITHUB PAGES  │
-                            │  (Assets Estáticos PWA)│
-                            └───────────┬────────────┘
-                                        │
-                                        │ REST API (JSON)
-                                        ▼
-                            ┌────────────────────────┐
-                            │    REVERSE PROXY       │
-                            │    (Nginx / Cloudflare)│
-                            └───────────┬────────────┘
-                                        │
-                                        ▼
-                            ┌────────────────────────┐
-                            │  APP SERVER (NODE.JS)  │
-                            │  Runtime Docker/PaaS   │
-                            │  (Express + API REST)  │
-                            └───────────┬────────────┘
-                                        │ Connection Pool (SSL)
-                                        ▼
-                            ┌────────────────────────┐
-                            │    MANAGED DATABASE    │
-                            │  (PostgreSQL / MySQL)  │
-                            │  Multi-AZ + Backups    │
-                            └────────────────────────┘
+```mermaid
+stateDiagram-v2
+    [*] --> RECIBIDO: Registro de Pedido por WhatsApp/Llamada/Local
+    
+    RECIBIDO --> PREPARACION: Confirmación de Pago & Inicio de Empaque
+    RECIBIDO --> CANCELADO: Cliente Desiste / Inconsistencia de Pago
+    
+    PREPARACION --> EN_CAMINO: Asignación a Motorizado / Courier
+    PREPARACION --> CANCELADO: Incidencia Crítica en Taller
+    
+    EN_CAMINO --> ENTREGADO: Confirmación de Recepción por Cliente
+    EN_CAMINO --> PREPARACION: Reintento de Entrega por Dirección Errónea
+    
+    ENTREGADO --> [*]: Pedido Cerrado con Éxito
+    
+    CANCELADO --> [*]: Reposición Automática de Stock en Almacén
 ```
 
 ---
 
-### 4.5. Vista de Escenarios (+1 Casos de Uso Críticos)
+### 4.4. Vista Física / Topología de Despliegue en Producción
 
-| Caso de Uso | Realización Arquitectónica | Componentes Involucrados |
-|:---|:---|:---|
-| **CU-01: Autenticación con Roles** | Verificación de credenciales con hash Bcrypt; generación de token JWT con expiración; renderizado condicional por rol (`Dueño` vs `Operador`). | `AuthService`, `Login.tsx`, `AppContext`, `AuthGuardMiddleware`. |
-| **CU-02: Registro Ágil de Pedido** | Cálculo reactivo de totales en cliente; petición POST atómica; validación de inventario en backend; decremento de stock; emisión de ticket formateado para WhatsApp. | `PedidoForm.tsx`, `OrderController`, `InventoryEngine`, `database.orders`. |
-| **CU-03: Transición de Estados** | Máquina de estados finitos (`Recibido` ➔ `En Preparación` ➔ `En Camino` ➔ `Entregado`); inserción de log en tabla de auditoría; actualización en tiempo real en la lista. | `PedidosLista.tsx`, `OrderService`, `order_status_history`. |
-| **CU-04: Alerta de Stock Crítico** | Evaluación de umbral (`stock < 5`); inyección de badges visuales pulsantes; bloqueo preventivo de pedidos que excedan el saldo disponible. | `ProductosGestion.tsx`, `Dashboard.tsx`, `product_variants`. |
+```mermaid
+flowchart LR
+    subgraph Clientes ["Dispositivos Clientes"]
+        Mobile["Smartphone Android / iOS\n(PWA Instalada)"]
+        Desktop["Navegador Web Desktop\n(Panel Administrativo)"]
+    end
+
+    subgraph CDN ["Red de Distribución (Edge / CDN)"]
+        GHPages["GitHub Pages / Vercel CDN\n(HTML5, CSS3, JS Bundles)"]
+    end
+
+    subgraph CloudApp ["Capa de Aplicación Cloud (PaaS)"]
+        ReverseProxy["Reverse Proxy / SSL TLS 1.3\n(Cloudflare / Nginx)"]
+        NodeRuntime["Node.js 22 LTS Runtime\n(Express REST API Server)"]
+        ReverseProxy --> NodeRuntime
+    end
+
+    subgraph CloudDB ["Persistencia Gestionada"]
+        SQLDB[(Managed PostgreSQL / MySQL\nPool de Conexiones + Backups Diarios)]
+    end
+
+    Mobile -- "HTTPS" --> GHPages
+    Desktop -- "HTTPS" --> GHPages
+    Mobile -- "REST API (JSON / HTTPS)" --> ReverseProxy
+    Desktop -- "REST API (JSON / HTTPS)" --> ReverseProxy
+    NodeRuntime -- "Encrypted TCP / SSL" --> SQLDB
+```
+
+---
+
+### 4.5. Vista de Datos: Modelo Entidad-Relación (ERD)
+
+```mermaid
+erDiagram
+    USERS ||--o{ ORDERS : "registra / audita"
+    CLIENTS ||--o{ ORDERS : "realiza"
+    CATEGORIES ||--|{ PRODUCTS : "clasifica"
+    PRODUCTS ||--|{ PRODUCT_VARIANTS : "posee"
+    PRODUCT_VARIANTS ||--o{ ORDER_ITEMS : "incluido_en"
+    ORDERS ||--|{ ORDER_ITEMS : "contiene"
+    ORDERS ||--|{ ORDER_STATUS_HISTORY : "registra_historial"
+
+    USERS {
+        int id PK
+        string name
+        string email UK
+        string password_hash
+        enum role "ADMIN, OPERATOR"
+        datetime created_at
+    }
+
+    CATEGORIES {
+        int id PK
+        string name
+        text description
+    }
+
+    PRODUCTS {
+        int id PK
+        int category_id FK
+        string name
+        text description
+        decimal base_price
+        string image_url
+        boolean is_active
+    }
+
+    PRODUCT_VARIANTS {
+        int id PK
+        int product_id FK
+        string size "S, M, L, XL"
+        string color
+        string sku UK
+        int stock
+        int alert_threshold
+    }
+
+    CLIENTS {
+        int id PK
+        string full_name
+        string phone
+        text address
+        string district
+        text reference
+    }
+
+    ORDERS {
+        int id PK
+        string order_number UK
+        int client_id FK
+        enum status "RECIBIDO, PREPARACION, EN_CAMINO, ENTREGADO, CANCELADO"
+        decimal subtotal
+        decimal shipping_cost
+        decimal total_amount
+        enum payment_method "YAPE, PLIN, TRANSFERENCIA, CONTRAENTREGA"
+        text notes
+        datetime created_at
+        datetime updated_at
+    }
+
+    ORDER_ITEMS {
+        int id PK
+        int order_id FK
+        int variant_id FK
+        int quantity
+        decimal unit_price
+        decimal subtotal
+    }
+
+    ORDER_STATUS_HISTORY {
+        int id PK
+        int order_id FK
+        string previous_status
+        string new_status
+        datetime changed_at
+        text comments
+    }
+```
 
 ---
 
