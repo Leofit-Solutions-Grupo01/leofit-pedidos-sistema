@@ -19,9 +19,21 @@ Este directorio contiene la arquitectura, lógica de negocio y servicios del bac
 
 ## 2. Arquitectura de Software en Capas
 
-El backend sigue un patrón arquitectónico en capas para garantizar la separación de responsabilidades, mantenibilidad y facilidad de pruebas:
-
+```mermaid
+flowchart TD
+    Client(["Cliente / PWA (Frontend)"]) -->|HTTPS JSON Request| Routes["Routes /api/..."]
+    
+    subgraph CoreBackend ["Núcleo Backend (Express.js)"]
+        Routes --> Middlewares["Middlewares (Auth JWT, Zod Validator, CORS)"]
+        Middlewares --> Controllers["Controllers (HTTP Request/Response)"]
+        Controllers --> Services["Services (Lógica de Negocio & Transacciones)"]
+        Services --> ORM["ORM / Data Access Layer (Prisma/Sequelize)"]
+    end
+    
+    ORM -->|Prepared SQL Queries| DB[("Base de Datos Relacional (PostgreSQL/MySQL)")]
 ```
+
+```text
 backend/
 ├── src/
 │   ├── config/             # Configuración de variables de entorno y base de datos
@@ -73,6 +85,20 @@ backend/
    Al crear un pedido con múltiples prendas, la inserción del pedido y el descuento de unidades en cada variante de producto se ejecutan dentro de una misma transacción. Si una prenda no tiene stock suficiente, toda la operación se revierte (*rollback*).
 2. **Validación de Transición de Estados:**
    Un pedido no puede pasar a `Entregado` sin antes haber transitado por `En Preparación` o `En Camino`.
+
+```mermaid
+stateDiagram-v2
+    [*] --> RECIBIDO
+    RECIBIDO --> PREPARACION: Inicia Empaque
+    RECIBIDO --> CANCELADO: Cancelación / Inconsistencia
+    PREPARACION --> EN_CAMINO: Despacho a Courier
+    PREPARACION --> CANCELADO: Incidencia en Taller
+    EN_CAMINO --> ENTREGADO: Confirmación de Entrega
+    EN_CAMINO --> PREPARACION: Reintento de Entrega
+    ENTREGADO --> [*]
+    CANCELADO --> [*]: Reposición de Stock
+```
+
 3. **Manejo Centralizado de Excepciones:**
    Todos los errores HTTP devuelven un formato estructurado y predecible:
    ```json

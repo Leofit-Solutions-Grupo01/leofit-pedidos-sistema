@@ -57,3 +57,32 @@ En la carpeta [`mockups/`](file:///c:/Users/Loayza/Downloads/leofit-pedidos-sist
 * **Gestión de Estado:** React Context API (`AppContext`) con persistencia local para pedidos, inventario, métricas y autenticación.
 * **PWA (Progressive Web App):** `manifest.json` y soporte offline para instalación directa en Android e iOS.
 * **Pruebas Automatizadas:** Vitest para validación unitaria de modelos de datos y lógica de cálculo.
+
+---
+
+## 5. Arquitectura de Componentes y Flujo de Datos
+
+```mermaid
+flowchart TD
+    App["App.tsx (Enrutador Principal)"] --> Provider["AppContext.Provider (Sesión, Pedidos, Stock)"]
+    
+    subgraph Layout ["Estructura y Componentes Base"]
+        Provider --> Navbar["Navbar (Navegación, Rol & Perfil)"]
+        Provider --> Views["Vistas Activas"]
+    end
+    
+    subgraph Modulos ["Módulos de la Aplicación"]
+        Views --> Login["Login.tsx"]
+        Views --> Dashboard["Dashboard.tsx (StatCards, Pedidos en Riesgo)"]
+        Views --> PedidosLista["PedidosLista.tsx (Filtros, Buscador, Acciones)"]
+        Views --> PedidoForm["PedidoForm.tsx (Selector Prendas, Autocalculado)"]
+        Views --> ProductosGestion["ProductosGestion.tsx (CRUD, Alerta Stock)"]
+    end
+
+    subgraph UIComponents ["Componentes Reutilizables"]
+        Dashboard --> MontoPrivado["MontoPrivado.tsx"]
+        PedidosLista --> Badge["Badge.tsx (Estados de Pedido)"]
+        PedidosLista --> Modal["Modal.tsx (Detalle de Pedido / Ticket)"]
+        ProductosGestion --> ModalStock["Modal.tsx (Edición de Stock)"]
+    end
+```

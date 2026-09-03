@@ -16,13 +16,36 @@ El presente documento describe los Requerimientos Funcionales (RF) y No Funciona
 
 ## 2. Requerimientos Funcionales (RF)
 
+```mermaid
+mindmap
+  root((Requerimientos Leofit))
+    Modulos Principales
+      Autenticacion RF01
+      Catalogo de Productos RF02
+      Control de Inventario RF03
+      Toma Agil de Pedidos RF04
+      Trazabilidad de Estados RF05
+      Directorio de Clientes RF06
+    Soporte Operativo
+      Filtros y Busqueda RF07
+      Emision de Tickets RF08
+      Dashboard de KPIs RF09
+      Auditoria de Cambios RF10
+    Atributos No Funcionales
+      Latencia RNF01
+      Seguridad JWT RNF02
+      Mobile First RNF03
+      Disponibilidad RNF04
+      Atomicidad ACID RNF07
+```
+
 | Código | Requerimiento Funcional | Descripción | Prioridad | Actor Principal | Criterio de Aceptación |
 |:---|:---|:---|:---:|:---|:---|
 | **RF-01** | **Autenticación y Control de Acceso** | El sistema debe permitir el inicio de sesión seguro del Administrador mediante correo y contraseña encriptada (JWT/Bcrypt). | Alta | Administrador | Solo usuarios autenticados pueden acceder al dashboard y modificar datos. |
 | **RF-02** | **Gestión de Catálogo de Productos** | Permitir crear, leer, actualizar y deshabilitar (CRUD) productos con atributos: Nombre, Categoría, Talla (S, M, L, XL), Color, Precio Unitario, Costo y Foto. | Alta | Administrador | Los cambios se reflejan inmediatamente en el listado y validan campos obligatorios. |
 | **RF-03** | **Control de Stock en Tiempo Real** | El sistema debe registrar las unidades disponibles por variante (talla/color), descontando automáticamente el stock al registrar un pedido y reponiéndolo si se cancela. | Alta | Administrador / Sistema | Alerta visual cuando el stock de un producto sea menor a 3 unidades. |
 | **RF-04** | **Registro Ágil de Pedidos** | Formulario rápido para ingresar un pedido: Selección de cliente existente o nuevo, selección de productos, cantidades, costo de envío, método de pago y dirección de entrega. | Alta | Administrador | Asigna un código único correlativo (ej. `#ORD-2026-001`) y calcula subtotal y total. |
-| **RF-05** | **Gestión de Estados del Pedido** | Flujo de estados del ciclo de vida del pedido con transiciones válidas: `Recibido` ➔ `En Preparación` ➔ `En Camino` ➔ `Entregado` (o `Cancelado`). | Alta | Administrador | Registro de fecha y hora exacta de cada cambio de estado. |
+| **RF-05** | **Gestión de Estados del Pedido** | Flujo de estados del ciclo de vida del pedido con transiciones válidas: `Recibido` -> `En Preparación` -> `En Camino` -> `Entregado` (o `Cancelado`). | Alta | Administrador | Registro de fecha y hora exacta de cada cambio de estado. |
 | **RF-06** | **Directorio y Gestión de Clientes** | Registro de datos clave de clientes: Nombre completo, teléfono WhatsApp, dirección, referencia de entrega y distrito. | Media | Administrador | Búsqueda predictiva por nombre o teléfono durante la creación del pedido. |
 | **RF-07** | **Búsqueda y Filtros Avanzados** | Listado de pedidos con filtros combinados por estado, rango de fechas, cliente o código de pedido. | Media | Administrador | Los resultados se actualizan en menos de 1 segundo en la interfaz. |
 | **RF-08** | **Generación de Resumen de Pedido (Ticket)** | Capacidad de exportar o previsualizar un resumen digital formateado del pedido para ser compartido por WhatsApp o impreso. | Media | Administrador | Genera un texto o vista limpia con detalle de productos, montos y dirección. |
