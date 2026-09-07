@@ -32,9 +32,9 @@ El diseño de la base de datos para el **Sistema de Gestión de Pedidos de Leofi
 ### 2.1. Objetivos del Proceso de Normalización
 1. **Eliminación de Redundancia de Datos:** Minimizar la duplicidad innecesaria de información para optimizar el almacenamiento y el uso de memoria RAM del motor SQL.
 2. **Prevención de Anomalías Operativas:**
-   - **Anomalía de Inserción:** Imposibilidad de registrar una nueva prenda o cliente sin que exista una orden de compra previa.
-   - **Anomalía de Modificación:** Inconsistencias derivadas de actualizar el número telefónico o dirección de un cliente en un pedido pero omitirlo en otros.
-   - **Anomalía de Eliminación:** Pérdida no intencionada del historial de un cliente o catálogo de productos al eliminar un pedido cancelado.
+  - **Anomalía de Inserción:** Imposibilidad de registrar una nueva prenda o cliente sin que exista una orden de compra previa.
+  - **Anomalía de Modificación:** Inconsistencias derivadas de actualizar el número telefónico o dirección de un cliente en un pedido pero omitirlo en otros.
+  - **Anomalía de Eliminación:** Pérdida no intencionada del historial de un cliente o catálogo de productos al eliminar un pedido cancelado.
 3. **Garantía de Integridad Referencial:** Establecer restricciones estrictas de claves foráneas (*Foreign Keys*) para evitar registros huérfanos.
 
 ---
@@ -43,16 +43,16 @@ El diseño de la base de datos para el **Sistema de Gestión de Pedidos de Leofi
 
 ```mermaid
 flowchart TD
-    UNF["0FN: Estado No Normalizado\n(Tabla plana desestructurada de cuaderno/Excel)"]
-    FN1["1FN: Primera Forma Normal\n(Atomicidad de atributos y eliminación de grupos repetitivos)"]
-    FN2["2FN: Segunda Forma Normal\n(Eliminación de dependencias funcionales parciales)"]
-    FN3["3FN: Tercera Forma Normal\n(Eliminación de dependencias transitivas entre atributos no clave)"]
-    BCNF["BCNF / Esquema Óptimo Normalizado\n(Todo determinante es superclave + Desnormalización histórica controlada)"]
+  UNF["0FN: Estado No Normalizado\n(Tabla plana desestructurada de cuaderno/Excel)"]
+  FN1["1FN: Primera Forma Normal\n(Atomicidad de atributos y eliminación de grupos repetitivos)"]
+  FN2["2FN: Segunda Forma Normal\n(Eliminación de dependencias funcionales parciales)"]
+  FN3["3FN: Tercera Forma Normal\n(Eliminación de dependencias transitivas entre atributos no clave)"]
+  BCNF["BCNF / Esquema Óptimo Normalizado\n(Todo determinante es superclave + Desnormalización histórica controlada)"]
 
-    UNF -->|Atomicidad y PK| FN1
-    FN1 -->|Dependencia funcional completa| FN2
-    FN2 -->|Eliminar dependencias transitivas| FN3
-    FN3 -->|Determinantes estrictos| BCNF
+  UNF -->|Atomicidad y PK| FN1
+  FN1 -->|Dependencia funcional completa| FN2
+  FN2 -->|Eliminar dependencias transitivas| FN3
+  FN3 -->|Determinantes estrictos| BCNF
 ```
 
 ---
@@ -94,9 +94,9 @@ Una relación está en **2FN** si está en 1FN y todo atributo que no forma part
 #### Análisis de Dependencias Funcionales Parciales en 1FN:
 * Clave Primaria Compuesta: `{NroPedido, CodigoPrenda, Talla, Color}`
 * Dependencias Parciales Detectadas:
-  * `{CodigoPrenda} -> {PrendaNombre, PrendaCategoria}` (Depende únicamente de la prenda, no del número de pedido).
-  * `{NroPedido} -> {Fecha, ClienteNombre, ClienteTelefono, ClienteDireccion, ClienteDistrito, MetodoPago, Estado}` (Depende únicamente de la orden).
-  * `{CodigoPrenda, Talla, Color} -> {Stock, SKU}` (Depende de la variante específica).
+ * `{CodigoPrenda} -> {PrendaNombre, PrendaCategoria}` (Depende únicamente de la prenda, no del número de pedido).
+ * `{NroPedido} -> {Fecha, ClienteNombre, ClienteTelefono, ClienteDireccion, ClienteDistrito, MetodoPago, Estado}` (Depende únicamente de la orden).
+ * `{CodigoPrenda, Talla, Color} -> {Stock, SKU}` (Depende de la variante específica).
 
 #### Descomposición en 2FN:
 Se separan las entidades para que cada atributo no clave dependa de la totalidad de su identificador:
@@ -115,23 +115,23 @@ Una relación está en **3FN** si está en 2FN y ningún atributo no clave depen
 
 #### Análisis de Dependencias Transitivas Detectadas en 2FN:
 1. En `CABECERA_PEDIDO`:
-   - `id_pedido -> client_id -> {full_name, phone, address, district, reference}`
-   - El nombre y teléfono del cliente dependen de `client_id`, no directamente de `id_pedido`.
+  - `id_pedido -> client_id -> {full_name, phone, address, district, reference}`
+  - El nombre y teléfono del cliente dependen de `client_id`, no directamente de `id_pedido`.
 2. En `CATALOGO_PRENDAS`:
-   - `id_producto -> category_id -> {category_name, category_description}`
-   - La descripción de la categoría depende del identificador de categoría, no de la prenda.
+  - `id_producto -> category_id -> {category_name, category_description}`
+  - La descripción de la categoría depende del identificador de categoría, no de la prenda.
 
 #### Descomposición en 3FN:
 Se extraen las entidades independientes para eliminar toda transitividad:
 
 ```mermaid
 erDiagram
-    CLIENTS ||--o{ ORDERS : "realiza"
-    CATEGORIES ||--|{ PRODUCTS : "clasifica"
-    PRODUCTS ||--|{ PRODUCT_VARIANTS : "posee"
-    ORDERS ||--|{ ORDER_ITEMS : "contiene"
-    PRODUCT_VARIANTS ||--o{ ORDER_ITEMS : "referencia"
-    ORDERS ||--|{ ORDER_STATUS_HISTORY : "registra"
+  CLIENTS ||--o{ ORDERS: "realiza"
+  CATEGORIES ||--|{ PRODUCTS: "clasifica"
+  PRODUCTS ||--|{ PRODUCT_VARIANTS: "posee"
+  ORDERS ||--|{ ORDER_ITEMS: "contiene"
+  PRODUCT_VARIANTS ||--o{ ORDER_ITEMS: "referencia"
+  ORDERS ||--|{ ORDER_STATUS_HISTORY: "registra"
 ```
 
 1. **`clients`** (`id_cliente PK`, `full_name`, `phone`, `address`, `district`, `reference`)

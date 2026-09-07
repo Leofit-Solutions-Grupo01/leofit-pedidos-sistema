@@ -18,25 +18,25 @@ El presente documento describe los Requerimientos Funcionales (RF) y No Funciona
 
 ```mermaid
 mindmap
-  root((Requerimientos Leofit))
-    Modulos Principales
-      Autenticacion RF01
-      Catalogo de Productos RF02
-      Control de Inventario RF03
-      Toma Agil de Pedidos RF04
-      Trazabilidad de Estados RF05
-      Directorio de Clientes RF06
-    Soporte Operativo
-      Filtros y Busqueda RF07
-      Emision de Tickets RF08
-      Dashboard de KPIs RF09
-      Auditoria de Cambios RF10
-    Atributos No Funcionales
-      Latencia RNF01
-      Seguridad JWT RNF02
-      Mobile First RNF03
-      Disponibilidad RNF04
-      Atomicidad ACID RNF07
+ root((Requerimientos Leofit))
+  Modulos Principales
+   Autenticacion RF01
+   Catalogo de Productos RF02
+   Control de Inventario RF03
+   Toma Agil de Pedidos RF04
+   Trazabilidad de Estados RF05
+   Directorio de Clientes RF06
+  Soporte Operativo
+   Filtros y Busqueda RF07
+   Emision de Tickets RF08
+   Dashboard de KPIs RF09
+   Auditoria de Cambios RF10
+  Atributos No Funcionales
+   Latencia RNF01
+   Seguridad JWT RNF02
+   Mobile First RNF03
+   Disponibilidad RNF04
+   Atomicidad ACID RNF07
 ```
 
 | Código | Requerimiento Funcional | Descripción | Prioridad | Actor Principal | Criterio de Aceptación |
@@ -72,16 +72,16 @@ mindmap
 ## 4. Historias de Usuario Principales (User Stories)
 
 * **HU-01: Registro de un nuevo pedido**
-  * *Como* administrador de Leofit,
-  * *Quiero* registrar un pedido en menos de 1 minuto ingresando cliente y prendas solicitadas,
-  * *Para* evitar escribir en papel y asegurar que el stock se descuente al instante.
+ * *Como* administrador de Leofit,
+ * *Quiero* registrar un pedido en menos de 1 minuto ingresando cliente y prendas solicitadas,
+ * *Para* evitar escribir en papel y asegurar que el stock se descuente al instante.
 
 * **HU-02: Actualización de estado de entrega**
-  * *Como* operador logístico / administrador,
-  * *Quiero* cambiar el estado de un pedido a "En Camino" con un solo clic,
-  * *Para* tener control exacto de qué paquetes están con el repartidor.
+ * *Como* operador logístico / administrador,
+ * *Quiero* cambiar el estado de un pedido a "En Camino" con un solo clic,
+ * *Para* tener control exacto de qué paquetes están con el repartidor.
 
 * **HU-03: Consulta de inventario deportivo**
-  * *Como* administrador de Leofit,
-  * *Quiero* consultar rápidamente cuántas camisetas de talla M quedan disponibles,
-  * *Para* responder de inmediato al cliente interesado sin tener que buscar físicamente la prenda.
+ * *Como* administrador de Leofit,
+ * *Quiero* consultar rápidamente cuántas camisetas de talla M quedan disponibles,
+ * *Para* responder de inmediato al cliente interesado sin tener que buscar físicamente la prenda.

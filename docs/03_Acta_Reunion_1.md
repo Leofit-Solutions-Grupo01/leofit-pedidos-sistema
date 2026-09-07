@@ -43,21 +43,21 @@ Comprender a profundidad el modelo operativo actual de Leofit, relevar los cuell
 ### 5. Puntos Clave Discutidos
 
 1. **Dinámica de Ventas:**
-   * Las ventas se concentran tras realizar publicaciones en Facebook Marketplace y grupos de fitness/gimnasio.
-   * Los clientes escriben por WhatsApp solicitando modelos, tallas (S, M, L, XL) y disponibilidad de colores.
-   * Víctor atiende mientras prepara pedidos o realiza compras de insumos, lo que genera demoras de 30 a 90 minutos en responder.
+  * Las ventas se concentran tras realizar publicaciones en Facebook Marketplace y grupos de fitness/gimnasio.
+  * Los clientes escriben por WhatsApp solicitando modelos, tallas (S, M, L, XL) y disponibilidad de colores.
+  * Víctor atiende mientras prepara pedidos o realiza compras de insumos, lo que genera demoras de 30 a 90 minutos en responder.
 
 2. **Control de Inventario:**
-   * Actualmente no existe una hoja de cálculo ni sistema; el stock se consulta yendo físicamente al estante o calculando de memoria.
-   * Se han presentado casos donde se confirma una venta y al empaquetar se descubre que la talla solicitada está agotada.
+  * Actualmente no existe una hoja de cálculo ni sistema; el stock se consulta yendo físicamente al estante o calculando de memoria.
+  * Se han presentado casos donde se confirma una venta y al empaquetar se descubre que la talla solicitada está agotada.
 
 3. **Registro y Despacho:**
-   * Los pedidos confirmados se anotan en un cuaderno físico con nombre, teléfono, prendas y dirección.
-   * En ocasiones la letra ilegible o el extravío de notas ha causado errores en la entrega del delivery tercerizado.
+  * Los pedidos confirmados se anotan en un cuaderno físico con nombre, teléfono, prendas y dirección.
+  * En ocasiones la letra ilegible o el extravío de notas ha causado errores en la entrega del delivery tercerizado.
 
 4. **Validación de la Propuesta:**
-   * Víctor aprueba con entusiasmo el desarrollo de un sistema web responsivo (PWA/panel web) que pueda usar desde su smartphone y laptop.
-   * Reitera que la prioridad absoluta es: **facilidad de uso**, **rapidez al crear pedidos** y **control claro del stock**.
+  * Víctor aprueba con entusiasmo el desarrollo de un sistema web responsivo (PWA/panel web) que pueda usar desde su smartphone y laptop.
+  * Reitera que la prioridad absoluta es: **facilidad de uso**, **rapidez al crear pedidos** y **control claro del stock**.
 
 ---
 

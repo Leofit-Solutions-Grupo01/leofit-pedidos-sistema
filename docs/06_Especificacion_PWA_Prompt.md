@@ -45,12 +45,12 @@ La solución debe ser una PWA porque:
 **Elementos:**
 - Barra superior: Logo "Leofit" (izquierda), nombre del usuario "Víctor" (derecha) con icono de persona
 - 4 tarjetas resumen en grid (2x2 en celular, 4 en fila en desktop):
-  - "Pedidos Hoy: 12" (icono de calendario, color azul #1D3557)
-  - "Pendientes: 5" (icono de reloj, color amarillo #F4A100)
-  - "En Camino: 3" (icono de camión, color naranja #E67E22)
-  - "Entregados: 4" (icono de check, color verde #27AE60)
+ - "Pedidos Hoy: 12" (icono de calendario, color azul #1D3557)
+ - "Pendientes: 5" (icono de reloj, color amarillo #F4A100)
+ - "En Camino: 3" (icono de camión, color naranja #E67E22)
+ - "Entregados: 4" (icono de check, color verde #27AE60)
 - Tabla "Últimos Pedidos" con columnas: N° Pedido | Cliente | Fecha | Total | Estado
-  - Estados con colores: Recibido (azul #3498DB), Preparación (amarillo #F1C40F), Camino (naranja #E67E22), Entregado (verde #2ECC71)
+ - Estados con colores: Recibido (azul #3498DB), Preparación (amarillo #F1C40F), Camino (naranja #E67E22), Entregado (verde #2ECC71)
 - Botón flotante "Nuevo Pedido" (color rojo #E63946, redondeado, con icono de +)
 - **Lógica:** Mostrar datos estáticos de ejemplo (hardcodeados para la demo). Los números de las tarjetas deben ser dinámicos (calcularse a partir de los pedidos).
 
@@ -60,9 +60,9 @@ La solución debe ser una PWA porque:
 - Título: "Historial de Pedidos"
 - Barra de búsqueda: "Buscar por cliente..." (input con icono de lupa)
 - Filtros en línea:
-  - Estado: dropdown (Todos, Recibido, Preparación, Camino, Entregado)
-  - Fecha: input type="date" (desde) y type="date" (hasta)
-  - Botón "Aplicar Filtros" (pequeño, gris)
+ - Estado: dropdown (Todos, Recibido, Preparación, Camino, Entregado)
+ - Fecha: input type="date" (desde) y type="date" (hasta)
+ - Botón "Aplicar Filtros" (pequeño, gris)
 - Tabla de pedidos con columnas: N° | Cliente | Fecha | Total | Estado | Acciones
 - En "Acciones": botones iconos: "Ver Detalle" (icono de ojo) y "Actualizar Estado" (icono de editar)
 - Paginación en la parte inferior: Anterior | 1 | 2 | 3 | ... | Siguiente
@@ -73,18 +73,18 @@ La solución debe ser una PWA porque:
 **Elementos:**
 - Título: "Registrar Nuevo Pedido"
 - Sección "Datos del Cliente" (card con fondo gris claro):
-  - Campo: "Nombre Completo" (type="text", required, placeholder: "ej. Juan Pérez")
-  - Campo: "Teléfono" (type="tel", required, placeholder: "ej. 987654321")
-  - Campo: "Dirección" (type="text", required, placeholder: "ej. Av. Siempreviva 123")
+ - Campo: "Nombre Completo" (type="text", required, placeholder: "ej. Juan Pérez")
+ - Campo: "Teléfono" (type="tel", required, placeholder: "ej. 987654321")
+ - Campo: "Dirección" (type="text", required, placeholder: "ej. Av. Siempreviva 123")
 - Sección "Productos" (card separada):
-  - Selector: "Producto" (dropdown con opciones: Camiseta Deportiva, Pantalón Jogger, Zapatillas Running, Gorra, Mochila)
-  - Campo: "Cantidad" (type="number", min="1", default="1")
-  - Botón "+ Agregar Producto" (color gris, pequeño, con icono de +)
-  - Tabla de productos agregados con: Producto | Cantidad | Subtotal
-  - Total a pagar (calculado automáticamente, mostrado en negrita y grande)
+ - Selector: "Producto" (dropdown con opciones: Camiseta Deportiva, Pantalón Jogger, Zapatillas Running, Gorra, Mochila)
+ - Campo: "Cantidad" (type="number", min="1", default="1")
+ - Botón "+ Agregar Producto" (color gris, pequeño, con icono de +)
+ - Tabla de productos agregados con: Producto | Cantidad | Subtotal
+ - Total a pagar (calculado automáticamente, mostrado en negrita y grande)
 - Botones:
-  - "Guardar Pedido" (verde #27AE60, grande, con icono de guardar)
-  - "Cancelar" (gris #95A5A6, pequeño)
+ - "Guardar Pedido" (verde #27AE60, grande, con icono de guardar)
+ - "Cancelar" (gris #95A5A6, pequeño)
 - Fecha actual: mostrar automáticamente (no editable) en formato "DD/MM/YYYY"
 - **Lógica:** Agregar productos a una lista, calcular total automáticamente. Validar campos obligatorios antes de guardar (mostrar alerta). Guardar el pedido en un array en memoria.
 
@@ -96,15 +96,15 @@ La solución debe ser una PWA porque:
 - Tabla con columnas: Nombre | Categoría | Talla | Color | Precio (S/) | Stock | Acciones
 - En "Acciones": botones "Editar" (icono de editar) y "Eliminar" (icono de basurero)
 - Modal (popup) al hacer clic en "+ Nuevo Producto" o "Editar":
-  - Título: "Agregar Producto" o "Editar Producto"
-  - Campos:
-    - Nombre (text, required)
-    - Categoría (dropdown: Deportiva, Casual, Accesorios)
-    - Talla (dropdown: S, M, L, XL, Único)
-    - Color (input color, o dropdown con colores predefinidos)
-    - Precio (number, required, min="0", step="0.01")
-    - Stock (number, required, min="0")
-  - Botones: "Guardar" (verde) y "Cancelar" (gris)
+ - Título: "Agregar Producto" o "Editar Producto"
+ - Campos:
+  - Nombre (text, required)
+  - Categoría (dropdown: Deportiva, Casual, Accesorios)
+  - Talla (dropdown: S, M, L, XL, Único)
+  - Color (input color, o dropdown con colores predefinidos)
+  - Precio (number, required, min="0", step="0.01")
+  - Stock (number, required, min="0")
+ - Botones: "Guardar" (verde) y "Cancelar" (gris)
 - Confirmación al eliminar: modal con mensaje "¿Eliminar producto X?" y botones "Sí" (rojo) / "No" (gris)
 - **Lógica:** Agregar, editar y eliminar productos de un array en memoria. Mostrar confirmación antes de eliminar.
 
