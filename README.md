@@ -109,22 +109,32 @@ Leofit-Solutions-Grupo01/
 │  └── README.md
 │
 ├── database/             # Diseño relacional, diccionario de datos y scripts SQL
-│  └── README.md
+│  ├── README.md           # Documentación y diccionario de datos
+│  ├── schema.sql          # Script DDL de creación de tablas, relaciones e índices
+│  └── seeds.sql           # Script DML de datos iniciales y catálogo demo
 │
 └── evidence/             # Registro de evidencias de contacto y mapeo
-  ├── semana_1/           # Evidencias recopiladas en la Semana 1
-  └── semana_2/           # Evidencias recopiladas en la Semana 2
+   ├── semana_1/           # Evidencias recopiladas en la Semana 1
+   └── semana_2/           # Evidencias recopiladas en la Semana 2
 ```
 
 ---
 
 ## 5. Modelado y Diagramas de Ingeniería
 
-* **BPMN Proceso Actual (AS-IS):** [`diagrams/01_BPMN_AS-IS.png`](file:///c:/Users/Loayza/Downloads/leofit-pedidos-sistema/diagrams/01_BPMN_AS-IS.png)
-* **Matriz de Riesgos:** [`diagrams/02_Mapa_Riesgos.png`](file:///c:/Users/Loayza/Downloads/leofit-pedidos-sistema/diagrams/02_Mapa_Riesgos.png)
-* **Arquitectura del Sistema:** [`diagrams/03_Arquitectura_Inicial.png`](file:///c:/Users/Loayza/Downloads/leofit-pedidos-sistema/diagrams/03_Arquitectura_Inicial.png)
-* **Flujo del Proceso Digitalizado (TO-BE):** [`diagrams/04_Flujo_Proceso_Pedidos.png`](file:///c:/Users/Loayza/Downloads/leofit-pedidos-sistema/diagrams/04_Flujo_Proceso_Pedidos.png)
-* **Matriz de Requerimientos (RF y RNF):** [`diagrams/05_Matriz_RF_RNF.png`](file:///c:/Users/Loayza/Downloads/leofit-pedidos-sistema/diagrams/05_Matriz_RF_RNF.png)
+Todos los modelos visuales han sido generados en alta resolución y se encuentran disponibles en la carpeta [`diagrams/`](diagrams/):
+
+1. **BPMN Proceso Actual (AS-IS):** [`diagrams/01_BPMN_AS-IS.png`](diagrams/01_BPMN_AS-IS.png) - Flujo operativo manual actual y puntos de dolor.
+2. **Matriz de Riesgos y Mapa de Calor:** [`diagrams/02_Mapa_Riesgos.png`](diagrams/02_Mapa_Riesgos.png) - Evaluación de probabilidad vs impacto (5x5).
+3. **Arquitectura del Sistema (SAD):** [`diagrams/03_Arquitectura_Inicial.png`](diagrams/03_Arquitectura_Inicial.png) - Arquitectura multicapa cliente-servidor y PWA.
+4. **Flujo del Proceso Digitalizado (TO-BE):** [`diagrams/04_Flujo_Proceso_Pedidos.png`](diagrams/04_Flujo_Proceso_Pedidos.png) - Proceso optimizado con la PWA.
+5. **Matriz de Requerimientos (RF y RNF):** [`diagrams/05_Matriz_RF_RNF.png`](diagrams/05_Matriz_RF_RNF.png) - Trazabilidad de requisitos funcionales y no funcionales.
+6. **Modelo Lean Canvas:** [`diagrams/06_Lean_Canvas.png`](diagrams/06_Lean_Canvas.png) - Mapeo de negocio en 9 bloques estratégicos.
+7. **Cronograma Gantt y Plan de Sprints:** [`diagrams/07_Cronograma_Gantt.png`](diagrams/07_Cronograma_Gantt.png) - Planificación temporal de Sprints 0 a 4.
+8. **Tablero Kanban con Límites WIP:** [`diagrams/08_Tablero_Kanban.png`](diagrams/08_Tablero_Kanban.png) - Gestión visual de tareas del equipo de desarrollo.
+9. **Wireframes Mobile-First de Baja Fidelidad:** [`diagrams/09_Wireframes_Baja_Fidelidad.png`](diagrams/09_Wireframes_Baja_Fidelidad.png) - Blueprint de Login, Dashboard, Pedidos y Productos.
+10. **Flujo de Navegación del Usuario (User Flow):** [`diagrams/10_User_Flow_Navegacion.png`](diagrams/10_User_Flow_Navegacion.png) - Diagrama de interacción y rutas de la PWA.
+11. **Modelo Entidad-Relación (ERD 3FN / BCNF):** [`diagrams/12_Modelo_Entidad_Relacion.png`](diagrams/12_Modelo_Entidad_Relacion.png) - Esquema lógico relacional y llaves foráneas.
 
 ---
 
