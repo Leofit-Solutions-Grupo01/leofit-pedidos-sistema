@@ -1,4 +1,58 @@
-# UNIVERSIDAD TECNOLÓGICA DEL PERÚ
+# -*- coding: utf-8 -*-
+import os
+import glob
+import re
+import docx
+from docx.shared import Inches, Pt, RGBColor
+from docx.enum.text import WD_ALIGN_PARAGRAPH
+from docx.enum.table import WD_TABLE_ALIGNMENT
+from docx.oxml import parse_xml
+from docx.oxml.ns import nsdecls
+import win32com.client
+import pythoncom
+
+def remove_emojis_from_string(text):
+    # Regex to match emojis and symbols
+    pattern = re.compile(
+        "["
+        "\U00010000-\U0010ffff"
+        "\u2600-\u27bf"
+        "\u2300-\u23ff"
+        "\u2b50-\u2b55"
+        "\u200d"
+        "\ufe0f"
+        "]+",
+        flags=re.UNICODE
+    )
+    cleaned = pattern.sub("", text)
+    # Also clean up accidental double spaces left behind
+    cleaned = cleaned.replace("  ", " ").replace(" :", ":")
+    return cleaned
+
+def clean_all_markdown_files():
+    print("Iniciando saneamiento de emojis en todos los archivos Markdown...")
+    for md_file in glob.glob("**/*.md", recursive=True):
+        if "node_modules" in md_file or ".git" in md_file:
+            continue
+        with open(md_file, "r", encoding="utf-8", errors="ignore") as f:
+            content = f.read()
+        
+        cleaned = remove_emojis_from_string(content)
+        
+        # Write back if changed
+        if cleaned != content:
+            with open(md_file, "w", encoding="utf-8") as f:
+                f.write(cleaned)
+            print(f"Saneado y removidos emojis de: {md_file}")
+
+def update_full_apf1_report():
+    print("Actualizando y enriqueciendo el informe maestro APF1...")
+    report_path = os.path.join("docs", "INFORME_FINAL_APF1_LEOFIT.md")
+    
+    sections = []
+    
+    # 1. Carátula y Metadatos Institucionales
+    sections.append("""# UNIVERSIDAD TECNOLÓGICA DEL PERÚ
 ## FACULTAD DE INGENIERÍA DE SISTEMAS E INFORMÁTICA
 ### CURSO INTEGRADOR II: SOFTWARE (100000S12F)
 
@@ -72,7 +126,10 @@
    - 7.3. [Código Optimizado y Evidencia de Pruebas Unitarias Automatizadas](#73-código-optimizado-y-evidencia-de-pruebas-unitarias-automatizadas)
    - 7.4. [Estrategias WPO (Web Performance Optimization) y Métricas Cuantitativas](#74-estrategias-wpo-web-performance-optimization-y-métricas-cuantitativas)
 8. [Referencias Bibliográficas (Normas IEEE y APA)](#8-referencias-bibliográficas-normas-ieee-y-apa)
+""")
 
+    # 2. Sección 1: Análisis Empresarial
+    sections.append("""
 # 1. ANÁLISIS EMPRESARIAL
 
 ## 1.1. Introducción y Contexto del Sector
@@ -137,7 +194,10 @@ Como consecuencia directa, las empresas enfrentan problemas críticos de pérdid
 | **Registro de Transacciones** | Anotaciones en libretas de papel. | Registro en base de datos relacional con ID único. | 100% de trazabilidad y cero extravío de pedidos. |
 | **Liquidación de Importes** | Cálculo mental o con calculadora básica. | Liquidación algorítmica reactiva de fletes y totales. | Cero discrepancias contables en liquidaciones. |
 | **Monitoreo de Despacho** | Notificaciones manuales tardías e informales. | Tablero de control con actualización de estados en vivo. | Disminución del 90% de llamadas por seguimiento. |
+""")
 
+    # 3. Sección 2: Planificación y Requerimientos
+    sections.append("""
 # 2. PLANIFICACIÓN Y GESTIÓN DEL PROYECTO
 
 ## 2.1. Acta de Constitución del Proyecto (Project Charter - Versión Ágil)
@@ -313,7 +373,10 @@ Fase 5: Cierre y Sustentación Final      [01/11/2026 - 08/11/2026] -> Planifica
 | **RNF-008** | Seguridad | Protección de rutas administrativas | Las funciones de modificación de inventario deben requerir autenticación. | Rutas protegidas que deniegan acceso a usuarios no autenticados. | Alta | Pruebas de navegación sin credenciales de sesión. | Validado |
 | **RNF-009** | Confiabilidad | Suite de pruebas automatizadas | Las funciones críticas de cálculo y estado deben estar respaldadas por pruebas. | Cobertura de pruebas unitarias $\ge 80\%$ y 100% de tests aprobados. | Alta | Ejecución de `vitest run` en pipeline de CI/CD. | Validado |
 | **RNF-010** | Accesibilidad | Estándares visuales y contraste | Elementos visuales legibles con contraste cromático adecuado. | Cumplimiento de pautas WCAG 2.1 nivel AA (contraste $\ge 4.5:1$). | Media | Evaluación con extensiones Axe y Lighthouse Accessibility. | Validado |
+""")
 
+    # 4. Sección 3 a 8
+    sections.append("""
 # 3. SELECCIÓN Y CONFIGURACIÓN DE HERRAMIENTAS DE DESARROLLO
 
 ## 3.1. Selección de Herramientas y Matriz de Decisión Multicriterio
@@ -422,7 +485,7 @@ Los mockups interactivos están implementados en el código de la PWA y archivad
 
 ## 5.2. Mapa de Riesgos (Matriz de Probabilidad-Impacto 5x5 y Heatmap)
 
-| ID | Riesgo Identificado | Probabilidad (1-5) | Impacto (1-5) | Severidad ($P 	imes I$) | Nivel de Criticidad |
+| ID | Riesgo Identificado | Probabilidad (1-5) | Impacto (1-5) | Severidad ($P \times I$) | Nivel de Criticidad |
 |:---:|:---|:---:|:---:|:---:|:---:|
 | **R1** | Disponibilidad limitada del Stakeholder | 3 | 4 | **12** | **Medio - Alto** |
 | **R2** | Curva de aprendizaje técnica | 2 | 3 | **6** | **Bajo** |
@@ -463,20 +526,20 @@ Impacto
 
 | KPI | Nombre del Indicador | Meta Cuantitativa | Método de Cálculo |
 |:---|:---|:---:|:---|
-| **KPI-01** | Tiempo de Ciclo de Pedido | $\le 3	ext{ minutos}$ | Tiempo transcurrido desde el inicio de selección hasta la confirmación de la orden. |
-| **KPI-02** | Tasa de Error en Despachos | $< 1\%$ | (Pedidos con reclamo o error de dirección / Total de pedidos despachados) $	imes 100$. |
-| **KPI-03** | Tasa de Conversión de Carrito | $\ge 40\%$ | (Órdenes confirmadas / Carritos de compra iniciados) $	imes 100$. |
+| **KPI-01** | Tiempo de Ciclo de Pedido | $\le 3\text{ minutos}$ | Tiempo transcurrido desde el inicio de selección hasta la confirmación de la orden. |
+| **KPI-02** | Tasa de Error en Despachos | $< 1\%$ | (Pedidos con reclamo o error de dirección / Total de pedidos despachados) $\times 100$. |
+| **KPI-03** | Tasa de Conversión de Carrito | $\ge 40\%$ | (Órdenes confirmadas / Carritos de compra iniciados) $\times 100$. |
 | **KPI-04** | Puntuación Google Lighthouse | $\ge 95/100$ | Puntaje global de auditoría automatizada en Performance, SEO y Accesibilidad. |
-| **KPI-05** | Tiempo de Carga Inicial (LCP) | $< 1.2	ext{ s}$ | Métrica Core Web Vitals en red móvil 4G estándar. |
+| **KPI-05** | Tiempo de Carga Inicial (LCP) | $< 1.2\text{ s}$ | Métrica Core Web Vitals en red móvil 4G estándar. |
 
 ## 6.2. Definición Formal de SLA (Service Level Agreement) y SLO (Service Level Objective)
 
 | Componente del Servicio | Indicador SLI | Objetivo SLO | Compromiso SLA | Acción Correctiva / Penalización |
 |:---|:---|:---:|:---:|:---|
 | **Disponibilidad del Sistema** | Tiempo en línea mensual | $99.8\%$ | $\ge 99.5\%$ | Redirección inmediata a CDN secundaria si la caída supera los 15 min. |
-| **Latencia de Respuesta** | Tiempo de renderizado P95 | $< 500	ext{ ms}$ | $< 800	ext{ ms}$ | Optimización y depuración de hooks de renderizado en React. |
-| **Tiempo de Recuperación (RTO)** | Tiempo máx. de restauración | $< 1	ext{ hora}$ | $< 2	ext{ horas}$ | Despliegue automático de la última versión estable desde GitHub. |
-| **Punto de Recuperación (RPO)** | Antigüedad máx. de datos perdidos | $< 5	ext{ min}$ | $< 15	ext{ min}$ | Sincronización continua de estado con LocalStorage y Cloud DB. |
+| **Latencia de Respuesta** | Tiempo de renderizado P95 | $< 500\text{ ms}$ | $< 800\text{ ms}$ | Optimización y depuración de hooks de renderizado en React. |
+| **Tiempo de Recuperación (RTO)** | Tiempo máx. de restauración | $< 1\text{ hora}$ | $< 2\text{ horas}$ | Despliegue automático de la última versión estable desde GitHub. |
+| **Punto de Recuperación (RPO)** | Antigüedad máx. de datos perdidos | $< 5\text{ min}$ | $< 15\text{ min}$ | Sincronización continua de estado con LocalStorage y Cloud DB. |
 
 ## 6.3. Plan de Medición, Monitoreo y Observabilidad
 
@@ -587,3 +650,162 @@ describe('Integridad de Datos Iniciales de LeoFit', () => {
 6. **IEEE Computer Society. (1998).** *IEEE Std 830-1998: IEEE Recommended Practice for Software Requirements Specifications.* IEEE.
 7. **Pressman, R. S., & Maxim, B. R. (2020).** *Software Engineering: A Practitioner's Approach (9th ed.).* McGraw-Hill.
 8. **Sommerville, I. (2016).** *Software Engineering (10th ed.).* Pearson.
+""")
+
+    full_text = "".join(sections)
+    with open(report_path, "w", encoding="utf-8") as f:
+        f.write(full_text)
+    print(f"Informe maestro actualizado: {report_path}")
+    return report_path, full_text
+
+def build_all_docx_and_pdf():
+    # 1. Build APF1 master
+    md_path, text = update_full_apf1_report()
+    docx_path = os.path.join("docs", "INFORME_FINAL_APF1_LEOFIT.docx")
+    pdf_path = os.path.join("docs", "INFORME_FINAL_APF1_LEOFIT.pdf")
+    
+    convert_md_to_docx(text, docx_path)
+    
+    # 2. Convert all docx in docs to PDF using Word COM
+    try:
+        pythoncom.CoInitialize()
+        word = win32com.client.DispatchEx("Word.Application")
+        word.Visible = False
+        
+        for docx_file in glob.glob("docs/*.docx"):
+            pdf_target = docx_file.replace(".docx", ".pdf")
+            abs_docx = os.path.abspath(docx_file)
+            abs_pdf = os.path.abspath(pdf_target)
+            print(f"Convirtiendo {docx_file} a PDF...")
+            wb = word.Documents.Open(abs_docx)
+            wb.SaveAs(abs_pdf, FileFormat=17) # 17 = wdFormatPDF
+            wb.Close()
+            print(f"Generado exitosamente: {pdf_target}")
+            
+        word.Quit()
+    except Exception as e:
+        print(f"Error en conversión Word COM: {e}")
+
+def convert_md_to_docx(markdown_text, output_docx_path):
+    doc = docx.Document()
+    
+    # Page setup - Margins
+    for section in doc.sections:
+        section.top_margin = Inches(1.0)
+        section.bottom_margin = Inches(1.0)
+        section.left_margin = Inches(1.0)
+        section.right_margin = Inches(1.0)
+        
+    # Styles
+    styles = doc.styles
+    normal_style = styles['Normal']
+    normal_style.font.name = 'Calibri'
+    normal_style.font.size = Pt(11)
+    normal_style.font.color.rgb = RGBColor(30, 41, 59) # Slate 800
+    
+    lines = markdown_text.split('\n')
+    i = 0
+    in_table = False
+    table_rows = []
+    
+    while i < len(lines):
+        line = lines[i]
+        
+        # Table detection
+        if line.strip().startswith('|') and line.strip().endswith('|'):
+            if not in_table:
+                in_table = True
+                table_rows = []
+            if not all(c in '|:- ' for c in line.strip()):
+                cells = [c.strip() for c in line.strip().split('|')[1:-1]]
+                table_rows.append(cells)
+            i += 1
+            continue
+        else:
+            if in_table:
+                if table_rows:
+                    cols_count = max(len(r) for r in table_rows)
+                    t = doc.add_table(rows=len(table_rows), cols=cols_count)
+                    t.alignment = WD_TABLE_ALIGNMENT.CENTER
+                    for r_idx, row in enumerate(table_rows):
+                        for c_idx, cell_value in enumerate(row):
+                            if c_idx < cols_count:
+                                cell = t.cell(r_idx, c_idx)
+                                cell.text = cell_value.replace('<br>', '\n')
+                                if r_idx == 0:
+                                    shading = parse_xml(r'<w:shd {} w:fill="0F172A"/>'.format(nsdecls('w')))
+                                    cell._tc.get_or_add_tcPr().append(shading)
+                                    for p in cell.paragraphs:
+                                        for r in p.runs:
+                                            r.font.bold = True
+                                            r.font.color.rgb = RGBColor(255, 255, 255)
+                                else:
+                                    if r_idx % 2 == 1:
+                                        shading = parse_xml(r'<w:shd {} w:fill="F8FAFC"/>'.format(nsdecls('w')))
+                                        cell._tc.get_or_add_tcPr().append(shading)
+                    doc.add_paragraph()
+                in_table = False
+                table_rows = []
+                
+        # Headings
+        if line.startswith('# '):
+            p = doc.add_paragraph()
+            p.paragraph_format.space_before = Pt(16)
+            p.paragraph_format.space_after = Pt(6)
+            run = p.add_run(line[2:].strip())
+            run.font.name = 'Calibri'
+            run.font.size = Pt(18)
+            run.font.bold = True
+            run.font.color.rgb = RGBColor(15, 23, 42)
+        elif line.startswith('## '):
+            p = doc.add_paragraph()
+            p.paragraph_format.space_before = Pt(12)
+            p.paragraph_format.space_after = Pt(4)
+            run = p.add_run(line[3:].strip())
+            run.font.name = 'Calibri'
+            run.font.size = Pt(14)
+            run.font.bold = True
+            run.font.color.rgb = RGBColor(249, 115, 22) # Orange
+        elif line.startswith('### '):
+            p = doc.add_paragraph()
+            p.paragraph_format.space_before = Pt(8)
+            p.paragraph_format.space_after = Pt(2)
+            run = p.add_run(line[4:].strip())
+            run.font.name = 'Calibri'
+            run.font.size = Pt(12)
+            run.font.bold = True
+            run.font.color.rgb = RGBColor(30, 41, 59)
+        elif line.startswith('* ') or line.startswith('- '):
+            p = doc.add_paragraph(style='List Bullet')
+            p.paragraph_format.space_after = Pt(2)
+            p.add_run(line[2:].strip().replace('**', ''))
+        elif line.strip().startswith('```'):
+            code_lines = []
+            i += 1
+            while i < len(lines) and not lines[i].strip().startswith('```'):
+                code_lines.append(lines[i])
+                i += 1
+            p = doc.add_paragraph()
+            p.paragraph_format.space_before = Pt(4)
+            p.paragraph_format.space_after = Pt(6)
+            shading = parse_xml(r'<w:shd {} w:fill="F1F5F9"/>'.format(nsdecls('w')))
+            p._p.get_or_add_pPr().append(shading)
+            run = p.add_run('\n'.join(code_lines))
+            run.font.name = 'Consolas'
+            run.font.size = Pt(9.5)
+            run.font.color.rgb = RGBColor(15, 23, 42)
+        elif line.strip() == '---':
+            pass
+        elif line.strip():
+            p = doc.add_paragraph()
+            p.paragraph_format.space_after = Pt(4)
+            p.add_run(line.strip().replace('**', '').replace('*', ''))
+            
+        i += 1
+        
+    doc.save(output_docx_path)
+    print(f"Documento Word guardado en: {output_docx_path}")
+
+if __name__ == '__main__':
+    clean_all_markdown_files()
+    build_all_docx_and_pdf()

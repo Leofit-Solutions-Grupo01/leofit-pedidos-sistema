@@ -24,7 +24,7 @@
 * **Producto o Servicio Principal:** Ropa deportiva para entrenamiento y gimnasio (camisetas técnicas, shorts, pantalones deportivos, licras y accesorios).
 * **Descripción breve de la organización:** PYME familiar peruana enfocada en la confección y venta de indumentaria deportiva. Actualmente opera de manera exclusiva a través de redes sociales (Facebook) y mensajería instantánea (WhatsApp).
 * **¿Por qué eligieron esta organización?**
-  Es un negocio familiar con alto potencial de crecimiento que busca profesionalizar su gestión operativa y expandir su alcance comercial. Al operar únicamente mediante un perfil de Facebook y un número de WhatsApp, la capacidad de respuesta se satura y se generan ineficiencias críticas. Representa un caso de estudio real, accesible y de impacto directo para el equipo.
+ Es un negocio familiar con alto potencial de crecimiento que busca profesionalizar su gestión operativa y expandir su alcance comercial. Al operar únicamente mediante un perfil de Facebook y un número de WhatsApp, la capacidad de respuesta se satura y se generan ineficiencias críticas. Representa un caso de estudio real, accesible y de impacto directo para el equipo.
 
 ---
 
@@ -44,21 +44,21 @@
 
 #### Guía de la primera conversación con el dueño:
 1. **¿Qué proceso genera actualmente más demoras, errores o retrabajo?**
-   > *"Contestar llamadas telefónicas y mensajes de WhatsApp. Al ser un proceso virtual manual y no estandarizado, genera demoras en la respuesta, desconfianza en los clientes y sobrecarga operativa."*
+  > *"Contestar llamadas telefónicas y mensajes de WhatsApp. Al ser un proceso virtual manual y no estandarizado, genera demoras en la respuesta, desconfianza en los clientes y sobrecarga operativa."*
 2. **¿Cómo se realiza hoy ese proceso y con qué herramientas?**
-   > *"Se realiza de manera 100% manual y reactiva utilizando el celular personal, WhatsApp, llamadas directas y publicaciones en Facebook Marketplace."*
+  > *"Se realiza de manera 100% manual y reactiva utilizando el celular personal, WhatsApp, llamadas directas y publicaciones en Facebook Marketplace."*
 3. **¿Quiénes participan y quién es el principal afectado?**
-   > *"Participan Víctor Raúl (dueño) y los clientes. El afectado principal es Víctor por la sobrecarga y el estrés de perder ventas, y los clientes por la lentitud de respuesta."*
+  > *"Participan Víctor Raúl (dueño) y los clientes. El afectado principal es Víctor por la sobrecarga y el estrés de perder ventas, y los clientes por la lentitud de respuesta."*
 4. **¿Con qué frecuencia ocurre el problema?**
-   > *"Diariamente, intensificándose cada vez que se publican nuevos modelos o promociones."*
+  > *"Diariamente, intensificándose cada vez que se publican nuevos modelos o promociones."*
 5. **¿Qué consecuencia genera?**
-   > *"Pérdida de tiempo, pérdida de clientes potenciales que desisten de comprar por demora, riesgo de error o pérdida de direcciones al anotar en libretas o notas de celular."*
+  > *"Pérdida de tiempo, pérdida de clientes potenciales que desisten de comprar por demora, riesgo de error o pérdida de direcciones al anotar en libretas o notas de celular."*
 6. **¿Qué evidencia puede compartir la organización?**
-   > *"Registros manuales de pedidos, capturas de chats y confirmación de volumen de consultas no atendidas a tiempo."*
+  > *"Registros manuales de pedidos, capturas de chats y confirmación de volumen de consultas no atendidas a tiempo."*
 7. **¿Qué resultado esperaría mejorar con una solución informática?**
-   > *"Ahorrar al menos 60% del tiempo en la gestión de pedidos, no perder pedidos, tener control claro del stock disponible y brindar seguimiento profesional al cliente."*
+  > *"Ahorrar al menos 60% del tiempo en la gestión de pedidos, no perder pedidos, tener control claro del stock disponible y brindar seguimiento profesional al cliente."*
 8. **¿Quién validará el prototipo o la solución?**
-   > *"Víctor Raúl Cárdenas Ramírez (dueño y usuario final)."*
+  > *"Víctor Raúl Cárdenas Ramírez (dueño y usuario final)."*
 
 ---
 
