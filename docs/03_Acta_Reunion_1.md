@@ -1,77 +1,72 @@
-# ACTA DE REUNIÓN N° 01
-## Entrevista Inicial de Levantamiento de Información y Validación de Problema
+# UNIVERSIDAD TECNOLÓGICA DEL PERÚ
+## FACULTAD DE INGENIERÍA DE SISTEMAS E INFORMÁTICA
+### CURSO INTEGRADOR II: SOFTWARE (100000S12F)
 
 ---
 
-### 1. Datos Generales
-* **Proyecto:** Sistema Web de Gestión de Pedidos e Inventario para "Leofit"
-* **Fecha:** 15 de Agosto de 2026
-* **Hora de Inicio:** 10:00 AM | **Hora de Fin:** 11:30 AM
-* **Modalidad / Lugar:** Presencial (Taller/Almacén de Leofit, Lima) y coordinación vía WhatsApp
-* **Convocado por:** Equipo de Desarrollo Grupo 01 (Curso Integrador II: Software - UTP)
+# ACTA FORMAL DE REUNIÓN N° 01
+## LEVANTAMIENTO DE INFORMACIÓN Y VALIDACIÓN DEL PROBLEMA DE NEGOCIO
 
 ---
 
-### 2. Participantes
+### 1. DATOS GENERALES DE LA SESIÓN
 
-| Nombre Completo | Rol / Cargo | Entidad | Asistencia |
+* **Proyecto:** Sistema Web PWA de Gestión y Toma de Pedidos Multicanal para LeoFit.
+* **Fecha:** 15 de Agosto de 2026.
+* **Hora de Inicio:** 10:00 AM | **Hora de Finalización:** 11:30 AM.
+* **Lugar / Modalidad:** Presencial (Taller y Almacén de LeoFit, Lima) con apoyo audiovisual virtual.
+* **Convocado por:** Equipo de Desarrollo Grupo 01 - UTP.
+
+---
+
+### 2. ASISTENCIA Y CONTROL DE PARTICIPANTES
+
+| Apellidos y Nombres | Rol en la Reunión | Entidad / Organización | Estado de Asistencia |
 |:---|:---|:---|:---:|
-| **Victor Raúl Cárdenas Ramírez** | Dueño y Operador Principal | Leofit | Presente |
-| **Lady Luz Loayza Rodriguez** | Líder de Proyecto / UX Front-End | Grupo 01 (UTP) | Presente |
-| **Víctor Leandro Cárdenas Fernández** | Arquitecto Back-End / Base de Datos | Grupo 01 (UTP) | Presente |
-| **Jim Alessandro Dávila Morales** | Especialista QA / DevOps | Grupo 01 (UTP) | Presente |
-| **Harley Anthony Roman Delgado** | Diseñador UX/UI / Front-End | Grupo 01 (UTP) | Presente |
-| **Daniel Enrique Rojas Sanchez** | Analista Funcional / Scrum Master | Grupo 01 (UTP) | Presente |
+| **Víctor Raúl Cárdenas Ramírez** | Gerente General / Dueño del Negocio | LeoFit Indumentaria Deportiva | Presente |
+| **Lady Luz Loayza Rodriguez** | Scrum Master / Líder de Proyecto | Grupo 01 - UTP | Presente |
+| **Víctor Leandro Cárdenas Fernández** | Product Owner / Arquitecto Back-End | Grupo 01 - UTP | Presente |
+| **Harley Anthony Roman Delgado** | Front-End Lead / Diseñador UI | Grupo 01 - UTP | Presente |
+| **Jim Alessandro Dávila Morales** | Especialista QA / Testing | Grupo 01 - UTP | Presente |
+| **Daniel Enrique Rojas Sanchez** | Analista de Negocio / Procesos | Grupo 01 - UTP | Presente |
 
 ---
 
-### 3. Objetivo de la Reunión
-Comprender a profundidad el modelo operativo actual de Leofit, relevar los cuellos de botella en la atención de pedidos por canales digitales y definir el alcance viable para el Producto Mínimo Viable (MVP) a desarrollar durante el ciclo académico.
+### 3. AGENDA DE LA REUNIÓN
+
+1. Presentación formal del equipo de desarrollo de la Universidad Tecnológica del Perú.
+2. Descripción del modelo de negocio de LeoFit y diagnóstico de los canales de venta actuales.
+3. Identificación detallada de los cuellos de botella en la atención de pedidos y control de inventario.
+4. Definición preliminar del alcance de la solución informática (Progressive Web App).
+5. Acuerdos de colaboración, cronograma de reuniones de Sprint y entrega de insumos de información.
 
 ---
 
-### 4. Agenda Tratada
-1. Presentación del equipo de trabajo y objetivos del proyecto.
-2. Explicación por parte de Víctor sobre la dinámica diaria de ventas de Leofit.
-3. Observación y mapeo del proceso actual (recepción de mensajes, verificación de prendas, anotación en libreta y despacho).
-4. Identificación de puntos de dolor (*pain points*) y riesgos operacionales.
-5. Delimitación del alcance inicial (lo que incluirá y no incluirá el sistema).
-6. Acuerdos sobre el canal de comunicación, entrega de evidencias y próximas validaciones.
+### 4. PUNTOS TRATADOS Y DIAGNÓSTICO OPERATIVO
+
+* **Flujo Comercial Actual (AS-IS):** El señor Víctor Raúl Cárdenas explicó que todas las ventas se canalizan manualmente por WhatsApp y Facebook. El proceso de enviar fotos individuales de prendas, responder sobre tallas disponibles y verificar el stock físico en estanterías toma en promedio 25 minutos por cada cliente.
+* **Errores y Pérdidas Identificadas:** Se constató que las anotaciones manuscritas en libretas de papel originan confusiones en las tallas seleccionadas, direcciones de entrega incompletas y, ocasionalmente, la confirmación de prendas que ya no se encuentran en stock físico.
+* **Propuesta de Solución Tecnológica:** El equipo propuso el desarrollo de una PWA interactiva que permita al cliente consultar el catálogo con stock actualizado en tiempo real y enviar una orden formal consolidada, optimizando el tiempo del administrador para enfocarse en la preparación y despacho de paquetes.
 
 ---
 
-### 5. Puntos Clave Discutidos
+### 5. ACUERDOS Y COMPROMISOS ADQUIRIDOS
 
-1. **Dinámica de Ventas:**
-  * Las ventas se concentran tras realizar publicaciones en Facebook Marketplace y grupos de fitness/gimnasio.
-  * Los clientes escriben por WhatsApp solicitando modelos, tallas (S, M, L, XL) y disponibilidad de colores.
-  * Víctor atiende mientras prepara pedidos o realiza compras de insumos, lo que genera demoras de 30 a 90 minutos en responder.
-
-2. **Control de Inventario:**
-  * Actualmente no existe una hoja de cálculo ni sistema; el stock se consulta yendo físicamente al estante o calculando de memoria.
-  * Se han presentado casos donde se confirma una venta y al empaquetar se descubre que la talla solicitada está agotada.
-
-3. **Registro y Despacho:**
-  * Los pedidos confirmados se anotan en un cuaderno físico con nombre, teléfono, prendas y dirección.
-  * En ocasiones la letra ilegible o el extravío de notas ha causado errores en la entrega del delivery tercerizado.
-
-4. **Validación de la Propuesta:**
-  * Víctor aprueba con entusiasmo el desarrollo de un sistema web responsivo (PWA/panel web) que pueda usar desde su smartphone y laptop.
-  * Reitera que la prioridad absoluta es: **facilidad de uso**, **rapidez al crear pedidos** y **control claro del stock**.
+| N° | Descripción del Acuerdo / Entregable | Responsable Asignado | Fecha Límite |
+|:---:|:---|:---|:---:|
+| **1** | Redacción y formalización de la Ficha de Mapeo de Empresa y Problema. | Grupo 01 (Daniel Rojas / Lady Loayza) | 20/08/2026 |
+| **2** | Entrega de catálogo fotográfico de prendas y datos anonimizados de pedidos pasados. | Víctor Raúl Cárdenas (LeoFit) | 22/08/2026 |
+| **3** | Elaboración de wireframes y primeros mockups de interfaz de usuario. | Harley Roman / Lady Loayza | 25/08/2026 |
+| **4** | Diseño del modelo de datos normalizado y especificación de requerimientos IEEE 830. | Víctor Cárdenas / Jim Dávila | 28/08/2026 |
 
 ---
 
-### 6. Acuerdos y Compromisos
+### 6. CONFORMIDAD Y CIERRE
 
-| Compromiso | Responsable | Fecha Límite |
-|:---|:---|:---:|
-| Formalización de la Ficha de Mapeo de Empresa y Problema | Grupo 01 | 20/08/2026 |
-| Envío de fotos del cuaderno de notas anonimizado y catálogo actual de prendas | Victor Raúl Cárdenas | 22/08/2026 |
-| Elaboración de los primeros wireframes y mockups de pantalla para validación | Lady Loayza / Harley Roman | 26/08/2026 |
-| Diseño del esquema preliminar de base de datos relacional | Víctor Cárdenas / Jim Dávila | 28/08/2026 |
-| Segunda reunión de validación de mockups y flujo de estados | Todo el equipo | Semana 2 |
+Habiéndose cumplido con la agenda establecida y en señal de mutua conformidad con los acuerdos registrados, se suscribe la presente acta formal a los quince días del mes de agosto del año dos mil veintiséis.
 
----
-
-### 7. Conformidad
-Se da por concluida la reunión en señal de mutua conformidad entre el representante de Leofit y los integrantes del Grupo 01.
+```text
+_________________________________________          _________________________________________
+     Víctor Raúl Cárdenas Ramírez                             Lady Luz Loayza Rodriguez
+    Gerente General - LeoFit Sport                         Scrum Master - Grupo 01 UTP
+```
