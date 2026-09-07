@@ -85,14 +85,23 @@ Leofit-Solutions-Grupo01/
 │  ├── 05_Preguntas_Criticas_Panel  # Respuestas y fundamentación técnica ante el panel
 │  ├── 06_Especificacion_PWA_Prompt  # Especificación de interfaz y componentes PWA
 │  ├── 07_Arquitectura_Sistema    # Documento de Arquitectura de Software (SAD - Modelo 4+1)
-│  └── 08_Normalizacion_Base_Datos  # Normalización Relacional (1FN, 2FN, 3FN y BCNF)
+│  ├── 08_Normalizacion_Base_Datos  # Normalización Relacional (1FN, 2FN, 3FN y BCNF)
+│  ├── 09_Guion_Video_Demo_Remotion # Guion técnico de video demo y plantilla Remotion Code-First
+│  └── INFORME_FINAL_APF1_LEOFIT   # Informe Maestro Consolidado APF1 (Word / PDF / MD)
 │
 ├── diagrams/             # Modelos visuales de procesos y arquitectura (PNG)
 │  ├── 01_BPMN_AS-IS.png       # Diagrama BPMN del proceso manual actual
 │  ├── 02_Mapa_Riesgos.png      # Matriz de riesgos y planes de mitigación
 │  ├── 03_Arquitectura_Inicial.png  # Diagrama de arquitectura física y lógica multicapa
 │  ├── 04_Flujo_Proceso_Pedidos.png  # Diagrama del flujo operativo digitalizado (TO-BE)
-│  └── 05_Matriz_RF_RNF.png      # Matriz de trazabilidad de requerimientos
+│  ├── 05_Matriz_RF_RNF.png      # Matriz de trazabilidad de requerimientos
+│  ├── 06_Lean_Canvas.png      # Modelo Lean Canvas de 9 bloques
+│  ├── 07_Cronograma_Gantt.png   # Cronograma Gantt y plan de 5 Sprints
+│  ├── 08_Tablero_Kanban.png     # Tablero ágil Kanban con límites WIP
+│  ├── 09_Wireframes_Baja_Fidelidad.png # Wireframes de baja fidelidad Mobile-First
+│  ├── 10_User_Flow_Navegacion.png # Flujo de interacción y navegación de la PWA
+│  ├── 11_Arquitectura_C4_Model.png # Diagrama C4 Nivel 2 (Contenedores de Software)
+│  └── 12_Modelo_Entidad_Relacion.png # Modelo Entidad-Relación en 3FN/BCNF
 │
 ├── frontend/             # Aplicación cliente en React 19 + TypeScript + TailwindCSS
 │  ├── public/            # Manifiesto PWA, iconos y manejador SPA
@@ -134,7 +143,8 @@ Todos los modelos visuales han sido generados en alta resolución y se encuentra
 8. **Tablero Kanban con Límites WIP:** [`diagrams/08_Tablero_Kanban.png`](diagrams/08_Tablero_Kanban.png) - Gestión visual de tareas del equipo de desarrollo.
 9. **Wireframes Mobile-First de Baja Fidelidad:** [`diagrams/09_Wireframes_Baja_Fidelidad.png`](diagrams/09_Wireframes_Baja_Fidelidad.png) - Blueprint de Login, Dashboard, Pedidos y Productos.
 10. **Flujo de Navegación del Usuario (User Flow):** [`diagrams/10_User_Flow_Navegacion.png`](diagrams/10_User_Flow_Navegacion.png) - Diagrama de interacción y rutas de la PWA.
-11. **Modelo Entidad-Relación (ERD 3FN / BCNF):** [`diagrams/12_Modelo_Entidad_Relacion.png`](diagrams/12_Modelo_Entidad_Relacion.png) - Esquema lógico relacional y llaves foráneas.
+11. **Diagrama C4 Model Nivel 2 (Contenedores):** [`diagrams/11_Arquitectura_C4_Model.png`](diagrams/11_Arquitectura_C4_Model.png) - Arquitectura de contenedores según estándar C4 / IcePanel.
+12. **Modelo Entidad-Relación (ERD 3FN / BCNF):** [`diagrams/12_Modelo_Entidad_Relacion.png`](diagrams/12_Modelo_Entidad_Relacion.png) - Esquema lógico relacional y llaves foráneas.
 
 ---
 
