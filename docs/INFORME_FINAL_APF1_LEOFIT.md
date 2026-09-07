@@ -17,11 +17,11 @@
 * **Empresa Beneficiaria:** LeoFit Indumentaria & Nutrición Deportiva
 * **Representante de la Organización:** Víctor Raúl Cárdenas Ramírez (Gerente General / Administrador)
 * **Integrantes del Equipo de Desarrollo (Grupo 01):**
-  1. **Loayza Huaylinos, Lady Luz** - Scrum Master / Coordinadora General / Especialista UX-UI
+  1. **Loayza Rodriguez, Lady Luz** - Scrum Master / Coordinadora General / Especialista UX-UI
   2. **Cárdenas Fernández, Víctor Leandro** - Product Owner / Arquitecto Back-End y Base de Datos
-  3. **Román Gómez, José Armando** - Líder Front-End / Especialista PWA y Optimización WPO
-  4. **Dávila Romero, Jorge Daniel** - Ingeniero de Aseguramiento de Calidad (QA) / Testing y CI/CD
-  5. **Rojas Mendoza, Carlos David** - Analista de Negocio / Modelado de Procesos y Requisitos
+  3. **Roman Delgado, Harley Anthony** - Líder Front-End / Especialista PWA y Optimización WPO
+  4. **Dávila Morales, Jim Alessandro** - Ingeniero de Aseguramiento de Calidad (QA) / Testing y CI/CD
+  5. **Rojas Sanchez, Daniel Enrique** - Analista de Negocio / Modelado de Procesos y Requisitos
 * **Ciclo Académico:** 2026-II
 * **Versión del Documento:** 1.0.0 (Formal Académica)
 * **Fecha de Emisión:** Septiembre de 2026
@@ -188,9 +188,9 @@ Fase 5: Cierre y Sustentación Final      [01/11/2026 - 08/11/2026] -> Planifica
 |:---|:---|:---|:---:|
 | **Víctor Leandro Cárdenas** | Product Owner | Priorización del Backlog y validación de historias con el Stakeholder. | **A / R** |
 | **Lady Luz Loayza** | Scrum Master | Facilitación del marco ágil, remoción de impedimentos y diseño UX/UI. | **A / R** |
-| **José Armando Román** | Front-End Lead | Construcción de componentes React, lógica PWA y optimizaciones WPO. | **R** |
-| **Jorge Daniel Dávila** | QA Engineer | Creación de casos de prueba automatizados con Vitest y soporte CI/CD. | **R** |
-| **Carlos David Rojas** | Business Analyst | Especificación funcional, modelado de procesos y documentación técnica. | **R** |
+| **Harley Anthony Roman** | Front-End Lead | Construcción de componentes React, lógica PWA y optimizaciones WPO. | **R** |
+| **Jim Alessandro Dávila** | QA Engineer | Creación de casos de prueba automatizados con Vitest y soporte CI/CD. | **R** |
+| **Daniel Enrique Rojas** | Business Analyst | Especificación funcional, modelado de procesos y documentación técnica. | **R** |
 
 *(R: Responsable de ejecución, A: Aprobador/Accountable, C: Consultado, I: Informado)*
 
