@@ -95,56 +95,86 @@ export default function PedidoForm() {
   }
 
   return (
-    <div className="pt-14 pb-24 min-h-screen bg-[#F1FAEE]">
+    <div className={`pt-16 pb-24 min-h-screen ${modoAccesible ? "bg-[#E2E8F0]" : "bg-[#F1FAEE]"}`}>
       <div className="max-w-2xl mx-auto px-4 py-5">
         <div className="flex items-center justify-between mb-5">
-          <h1 className="text-2xl font-black text-[#1D3557]">Nuevo Pedido</h1>
-          <span className="text-xs text-gray-400 font-mono bg-white px-3 py-1.5 rounded-xl border border-gray-100">{fechaHoy}</span>
+          <h1 className="text-2xl sm:text-3xl font-black text-slate-900">Nuevo Pedido</h1>
+          <span className="text-xs sm:text-sm text-slate-700 font-mono font-bold bg-white px-3.5 py-2 rounded-xl border border-slate-300 shadow-sm">{fechaHoy}</span>
         </div>
 
         {errores.length > 0 && (
-          <div className="bg-red-50 border-2 border-red-100 rounded-2xl p-4 mb-4">
+          <div className="bg-red-100 border-2 border-red-400 rounded-2xl p-4 mb-5 shadow-sm">
             {errores.map((e, i) => (
-              <div key={i} className="flex items-start gap-2 mb-1 last:mb-0">
-                <span className="material-icons text-[#E63946] mt-0.5" style={{ fontSize: "14px" }}>error_outline</span>
-                <p className="text-xs text-red-600 font-medium">{e}</p>
+              <div key={i} className="flex items-start gap-2.5 mb-1.5 last:mb-0">
+                <span className="material-icons text-red-700 mt-0.5" style={{ fontSize: "18px" }}>error_outline</span>
+                <p className="text-sm text-red-950 font-black">{e}</p>
               </div>
             ))}
           </div>
         )}
 
         {/* Cliente */}
-        <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 mb-4">
-          <h2 className="text-sm font-bold text-[#1D3557] mb-4 flex items-center gap-2">
-            <span className="inline-flex items-center justify-center w-7 h-7 bg-[#E63946]/10 rounded-lg">
-              <span className="material-icons text-[#E63946]" style={{ fontSize: "16px" }}>person</span>
+        <div className="bg-white rounded-3xl p-5 shadow-sm border border-slate-200 mb-5">
+          <h2 className="text-base font-black text-slate-900 mb-4 flex items-center gap-2.5">
+            <span className="inline-flex items-center justify-center w-8 h-8 bg-red-100 rounded-xl border border-red-200">
+              <span className="material-icons text-red-600" style={{ fontSize: "20px" }}>person</span>
             </span>
             Datos del Cliente
           </h2>
-          <div className="space-y-3">
+          <div className="space-y-4">
             <div>
-              <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Nombre Completo *</label>
-              <input type="text" value={nombre} onChange={(e) => setNombre(e.target.value)} placeholder="ej. Juan Pérez" required
-                className="w-full px-3.5 py-2.5 border-2 border-gray-100 rounded-xl text-sm placeholder-gray-300 focus:outline-none focus:border-[#E63946] focus:ring-4 focus:ring-[#E63946]/10 transition-all" />
+              <label className="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1.5">
+                Nombre Completo <span className="text-red-600">*</span>
+              </label>
+              <input
+                type="text"
+                value={nombre}
+                onChange={(e) => setNombre(e.target.value)}
+                placeholder="ej. Carlos Mendoza"
+                className="w-full px-4 py-3 bg-slate-50 border-2 border-slate-200 rounded-2xl text-base font-bold text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#0F223D] focus:bg-white transition-all shadow-inner"
+              />
             </div>
             <div>
-              <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Teléfono *</label>
-              <input type="tel" value={telefono} onChange={(e) => setTelefono(e.target.value)} placeholder="ej. 987654321" required
-                className="w-full px-3.5 py-2.5 border-2 border-gray-100 rounded-xl text-sm placeholder-gray-300 focus:outline-none focus:border-[#E63946] focus:ring-4 focus:ring-[#E63946]/10 transition-all" />
+              <label className="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1.5">
+                Teléfono WhatsApp <span className="text-red-600">*</span>
+              </label>
+              <input
+                type="tel"
+                value={telefono}
+                onChange={(e) => setTelefono(e.target.value)}
+                placeholder="ej. 987654321"
+                className="w-full px-4 py-3 bg-slate-50 border-2 border-slate-200 rounded-2xl text-base font-bold text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#0F223D] focus:bg-white transition-all shadow-inner"
+              />
             </div>
             <div>
-              <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Dirección de Entrega *</label>
-              <input type="text" value={direccion} onChange={(e) => setDireccion(e.target.value)} placeholder="ej. Av. Siempreviva 123, Lima" required
-                className="w-full px-3.5 py-2.5 border-2 border-gray-100 rounded-xl text-sm placeholder-gray-300 focus:outline-none focus:border-[#E63946] focus:ring-4 focus:ring-[#E63946]/10 transition-all" />
+              <label className="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1.5">
+                Dirección de Entrega / Distrito <span className="text-red-600">*</span>
+              </label>
+              <input
+                type="text"
+                value={direccion}
+                onChange={(e) => setDireccion(e.target.value)}
+                placeholder="ej. Av. Arequipa 1234, Lince"
+                className="w-full px-4 py-3 bg-slate-50 border-2 border-slate-200 rounded-2xl text-base font-bold text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#0F223D] focus:bg-white transition-all shadow-inner"
+              />
             </div>
             <div>
-              <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Canal de venta</label>
-              <div className="flex gap-2">
+              <label className="block text-xs font-black text-slate-700 uppercase tracking-wider mb-2">Canal de Venta</label>
+              <div className="grid grid-cols-3 gap-2">
                 {CANALES.map((c) => (
-                  <button key={c} type="button"
+                  <button
+                    key={c}
+                    type="button"
                     onClick={() => setCanal(c)}
-                    className={`flex-1 py-2 rounded-xl text-xs font-bold border-2 transition-all ${canal === c ? "bg-[#1D3557] text-white border-[#1D3557]" : "border-gray-100 text-gray-400 hover:border-gray-200"}`}
+                    className={`py-3 px-2 rounded-2xl text-sm font-black border-2 transition-all flex items-center justify-center gap-1.5 ${
+                      canal === c
+                        ? "bg-[#0F223D] border-[#0F223D] text-white shadow-md ring-2 ring-slate-300"
+                        : "bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100"
+                    }`}
                   >
+                    <span className="material-icons" style={{ fontSize: "16px" }}>
+                      {c === "WhatsApp" ? "chat" : c === "Llamada" ? "call" : "laptop"}
+                    </span>
                     {c}
                   </button>
                 ))}
@@ -154,115 +184,147 @@ export default function PedidoForm() {
         </div>
 
         {/* Productos */}
-        <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 mb-4">
-          <h2 className="text-sm font-bold text-[#1D3557] mb-4 flex items-center gap-2">
-            <span className="inline-flex items-center justify-center w-7 h-7 bg-[#E63946]/10 rounded-lg">
-              <span className="material-icons text-[#E63946]" style={{ fontSize: "16px" }}>inventory_2</span>
+        <div className="bg-white rounded-3xl p-5 shadow-sm border border-slate-200 mb-5">
+          <h2 className="text-base font-black text-slate-900 mb-4 flex items-center gap-2.5">
+            <span className="inline-flex items-center justify-center w-8 h-8 bg-blue-100 rounded-xl border border-blue-200">
+              <span className="material-icons text-blue-700" style={{ fontSize: "20px" }}>inventory_2</span>
             </span>
-            Productos
+            Selección de Prendas
           </h2>
-          <div className="flex gap-2 mb-4">
-            <select value={productoSeleccionado} onChange={(e) => setProductoSeleccionado(e.target.value)}
-              className="flex-1 text-sm border-2 border-gray-100 rounded-xl px-3 py-2.5 focus:outline-none focus:border-[#E63946] bg-[#F1FAEE] font-medium text-[#1D3557] min-w-0">
+          <div className="flex flex-col sm:flex-row gap-2.5 mb-4">
+            <select
+              value={productoSeleccionado}
+              onChange={(e) => setProductoSeleccionado(e.target.value)}
+              className="flex-1 text-sm sm:text-base border-2 border-slate-300 rounded-2xl px-4 py-3 focus:outline-none focus:border-[#0F223D] bg-slate-50 font-bold text-slate-900"
+            >
               {productos.map((p) => (
                 <option key={p.id} value={p.id}>
-                  {p.nombre} — S/{p.precio.toFixed(2)} {p.stock <= 5 ? `(stock: ${p.stock})` : ""}
+                  {p.nombre} — S/{p.precio.toFixed(2)} {p.stock <= 5 ? `(⚠️ Stock: ${p.stock})` : `(Stock: ${p.stock})`}
                 </option>
               ))}
             </select>
-            <input type="number" min="1" value={cantidad} onChange={(e) => setCantidad(Math.max(1, parseInt(e.target.value) || 1))}
-              className="w-16 text-sm border-2 border-gray-100 rounded-xl px-2 py-2.5 text-center focus:outline-none focus:border-[#E63946] font-bold text-[#1D3557]" />
-            <button onClick={agregarItem}
-              className="px-3.5 py-2.5 bg-[#1D3557] hover:bg-[#1D3557]/80 text-white rounded-xl font-bold transition-colors flex items-center shrink-0">
-              <span className="material-icons" style={{ fontSize: "18px" }}>add</span>
-            </button>
+            <div className="flex gap-2">
+              <input
+                type="number"
+                min="1"
+                value={cantidad}
+                onChange={(e) => setCantidad(Math.max(1, parseInt(e.target.value) || 1))}
+                className="w-20 text-base border-2 border-slate-300 rounded-2xl px-3 py-3 text-center focus:outline-none focus:border-[#0F223D] font-black text-slate-900 bg-slate-50"
+              />
+              <button
+                onClick={agregarItem}
+                className="flex-1 sm:flex-initial px-5 py-3 bg-[#0F223D] hover:bg-[#1D3557] text-white rounded-2xl font-black transition-all flex items-center justify-center gap-1.5 shadow-md shadow-slate-400/30"
+              >
+                <span className="material-icons" style={{ fontSize: "20px" }}>add</span>
+                <span>Agregar</span>
+              </button>
+            </div>
           </div>
 
           {items.length > 0 ? (
-            <div className="border-2 border-gray-100 rounded-xl overflow-hidden">
+            <div className="border-2 border-slate-200 rounded-2xl overflow-hidden shadow-inner">
               <table className="w-full">
                 <thead>
-                  <tr className="bg-[#F1FAEE]">
-                    <th className="px-3 py-2.5 text-left text-[10px] font-bold text-gray-400 uppercase tracking-wider">Producto</th>
-                    <th className="px-3 py-2.5 text-center text-[10px] font-bold text-gray-400 uppercase tracking-wider">Cant.</th>
-                    <th className="px-3 py-2.5 text-right text-[10px] font-bold text-gray-400 uppercase tracking-wider">Subtotal</th>
-                    <th className="px-3 py-2.5" />
+                  <tr className="bg-slate-100 text-slate-700">
+                    <th className="px-4 py-3 text-left text-xs font-black uppercase">Prenda</th>
+                    <th className="px-3 py-3 text-center text-xs font-black uppercase">Cant.</th>
+                    <th className="px-4 py-3 text-right text-xs font-black uppercase">Subtotal</th>
+                    <th className="px-3 py-3 text-center text-xs font-black uppercase">Quitar</th>
                   </tr>
                 </thead>
                 <tbody>
                   {items.map((item, i) => (
-                    <tr key={item.productoId} className={i < items.length - 1 ? "border-b border-gray-50" : ""}>
-                      <td className="px-3 py-3 text-sm font-semibold text-[#1A1A1A]">{item.nombre}</td>
-                      <td className="px-3 py-3 text-sm text-center text-gray-500 font-semibold">{item.cantidad}</td>
-                      <td className="px-3 py-3 text-sm text-right font-bold text-[#1D3557]">S/{(item.cantidad * item.precio).toFixed(2)}</td>
-                      <td className="px-3 py-3 text-right">
-                        <button onClick={() => quitarItem(item.productoId)} className="p-1 hover:bg-red-50 rounded-lg transition-colors" aria-label="Quitar">
-                          <span className="material-icons text-red-300" style={{ fontSize: "16px" }}>close</span>
+                    <tr key={item.productoId} className={`transition-colors hover:bg-slate-50 ${i < items.length - 1 ? "border-b border-slate-200" : ""}`}>
+                      <td className="px-4 py-3.5 text-sm font-black text-slate-900">{item.nombre}</td>
+                      <td className="px-3 py-3.5 text-sm text-center text-slate-800 font-black">{item.cantidad}</td>
+                      <td className="px-4 py-3.5 text-sm text-right font-black text-slate-950">S/{(item.cantidad * item.precio).toFixed(2)}</td>
+                      <td className="px-3 py-3.5 text-center">
+                        <button
+                          onClick={() => quitarItem(item.productoId)}
+                          className="p-2 hover:bg-red-100 text-red-600 rounded-xl transition-colors"
+                          aria-label="Quitar producto"
+                        >
+                          <span className="material-icons" style={{ fontSize: "20px" }}>delete</span>
                         </button>
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
+
               {/* Desglose económico */}
-              <div className="border-t border-gray-100 px-4 py-3 space-y-2">
-                <div className="flex items-center justify-between text-sm text-gray-500">
-                  <span>Subtotal productos</span>
-                  <span>S/{subtotal.toFixed(2)}</span>
+              <div className="border-t-2 border-slate-200 bg-slate-50 p-4 space-y-3">
+                <div className="flex items-center justify-between text-sm font-bold text-slate-700">
+                  <span>Subtotal prendas</span>
+                  <span className="text-base font-black text-slate-900">S/{subtotal.toFixed(2)}</span>
                 </div>
-                <div className="flex items-center justify-between">
-                  <label className="text-sm text-gray-500">Delivery (S/)</label>
-                  <input type="number" min="0" step="1" value={costoDelivery}
+                <div className="flex items-center justify-between text-sm font-bold text-slate-700">
+                  <label>Costo de Envío / Delivery (S/)</label>
+                  <input
+                    type="number"
+                    min="0"
+                    step="1"
+                    value={costoDelivery}
                     onChange={(e) => setCostoDelivery(Math.max(0, parseFloat(e.target.value) || 0))}
-                    className="w-20 text-sm border border-gray-200 rounded-lg px-2 py-1 text-right focus:outline-none focus:border-[#E63946]" />
+                    className="w-24 text-base font-black border-2 border-slate-300 rounded-xl px-3 py-1.5 text-right focus:outline-none focus:border-[#0F223D] bg-white text-slate-900 shadow-sm"
+                  />
                 </div>
-                <div className="flex items-center justify-between">
-                  <label className="text-sm text-gray-500">Descuento (S/)</label>
-                  <input type="number" min="0" step="1" value={descuento}
+                <div className="flex items-center justify-between text-sm font-bold text-slate-700">
+                  <label>Descuento Especial (S/)</label>
+                  <input
+                    type="number"
+                    min="0"
+                    step="1"
+                    value={descuento}
                     onChange={(e) => setDescuento(Math.max(0, parseFloat(e.target.value) || 0))}
-                    className="w-20 text-sm border border-gray-200 rounded-lg px-2 py-1 text-right focus:outline-none focus:border-[#27AE60]" />
+                    className="w-24 text-base font-black border-2 border-emerald-400 rounded-xl px-3 py-1.5 text-right focus:outline-none focus:border-emerald-600 bg-white text-emerald-900 shadow-sm"
+                  />
                 </div>
-                <div className="flex items-center justify-between bg-[#1D3557] rounded-xl px-4 py-3">
-                  <span className="text-sm font-bold text-white/70">Total a cobrar</span>
-                  <span className="text-2xl font-black text-[#E63946]">S/{total.toFixed(2)}</span>
+                <div className="flex items-center justify-between bg-[#0F223D] rounded-2xl px-5 py-4 text-white shadow-md">
+                  <span className="text-base font-black text-slate-200">Total a cobrar</span>
+                  <span className="text-3xl font-black text-amber-400">S/{total.toFixed(2)}</span>
                 </div>
               </div>
             </div>
           ) : (
-            <div className="border-2 border-dashed border-gray-200 rounded-xl py-8 text-center">
-              <span className="material-icons text-gray-200 text-4xl block mb-2">add_shopping_cart</span>
-              <p className="text-xs text-gray-400 font-medium">Agrega productos al pedido</p>
+            <div className="border-2 border-dashed border-slate-300 rounded-2xl py-8 text-center bg-slate-50">
+              <span className="material-icons text-slate-300 text-5xl block mb-2">add_shopping_cart</span>
+              <p className="text-sm text-slate-600 font-bold">Agrega al menos una prenda para continuar</p>
             </div>
           )}
         </div>
 
         {/* Notas */}
-        <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 mb-4">
-          <h2 className="text-sm font-bold text-[#1D3557] mb-3 flex items-center gap-2">
-            <span className="inline-flex items-center justify-center w-7 h-7 bg-[#F1C40F]/20 rounded-lg">
-              <span className="material-icons text-[#B7950B]" style={{ fontSize: "16px" }}>notes</span>
+        <div className="bg-white rounded-3xl p-5 shadow-sm border border-slate-200 mb-6">
+          <h2 className="text-base font-black text-slate-900 mb-3 flex items-center gap-2.5">
+            <span className="inline-flex items-center justify-center w-8 h-8 bg-amber-100 rounded-xl border border-amber-200">
+              <span className="material-icons text-amber-700" style={{ fontSize: "20px" }}>notes</span>
             </span>
-            Notas del pedido
-            <span className="text-[10px] text-gray-400 font-medium ml-1">(opcional)</span>
+            Notas del Pedido
+            <span className="text-xs text-slate-500 font-bold ml-1">(opcional)</span>
           </h2>
           <textarea
             value={notas}
             onChange={(e) => setNotas(e.target.value)}
-            placeholder="ej. Cliente prefiere entrega por la mañana, paga contra entrega, talla especial..."
+            placeholder="ej. Entregar por la mañana, pago contra entrega con Yape..."
             rows={3}
-            className="w-full px-3.5 py-2.5 border-2 border-gray-100 rounded-xl text-sm placeholder-gray-300 focus:outline-none focus:border-[#E63946] focus:ring-4 focus:ring-[#E63946]/10 transition-all resize-none"
+            className="w-full px-4 py-3 bg-slate-50 border-2 border-slate-200 rounded-2xl text-sm sm:text-base font-bold text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#0F223D] focus:bg-white transition-all resize-none shadow-inner"
           />
         </div>
 
         {/* Actions */}
-        <div className="flex gap-3">
-          <button onClick={() => navegarA("dashboard")}
-            className="flex-1 py-3.5 border-2 border-gray-200 text-gray-400 font-bold rounded-2xl hover:bg-gray-50 transition-colors">
+        <div className="flex gap-4">
+          <button
+            onClick={() => navegarA("dashboard")}
+            className="flex-1 py-4 border-2 border-slate-300 text-slate-700 font-black text-base rounded-2xl hover:bg-slate-100 transition-colors shadow-sm"
+          >
             Cancelar
           </button>
-          <button onClick={handleGuardar}
-            className="flex-[2] py-3.5 bg-[#27AE60] hover:bg-[#219150] active:scale-[0.98] text-white font-bold rounded-2xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-[#27AE60]/30">
-            <span className="material-icons" style={{ fontSize: "18px" }}>save</span>
+          <button
+            onClick={handleGuardar}
+            className="flex-[2] py-4 bg-emerald-700 hover:bg-emerald-800 active:scale-[0.98] text-white font-black text-base rounded-2xl transition-all flex items-center justify-center gap-2 shadow-xl shadow-emerald-700/30 ring-2 ring-white"
+          >
+            <span className="material-icons" style={{ fontSize: "22px" }}>save</span>
             Guardar Pedido
           </button>
         </div>

@@ -10,7 +10,9 @@ interface AppContextType {
   productos: Producto[];
   filtroInicial: EstadoPedido | "Todos";
   privacidad: boolean;
+  modoAccesible: boolean;
   togglePrivacidad: () => void;
+  toggleAccesible: () => void;
   iniciarSesion: (email: string, password: string) => boolean;
   cerrarSesion: () => void;
   navegarA: (pagina: Pagina) => void;
@@ -25,6 +27,7 @@ interface AppContextType {
 const AppContext = createContext<AppContextType | null>(null);
 
 const SESSION_KEY = "leofit_session";
+const ACCESIBLE_KEY = "leofit_modo_accesible";
 const INACTIVIDAD_MS = 30 * 60 * 1000; // 30 minutos
 
 export function AppProvider({ children }: { children: ReactNode }) {
@@ -34,8 +37,18 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [productos, setProductos] = useState<Producto[]>(productosIniciales);
   const [filtroInicial, setFiltroInicial] = useState<EstadoPedido | "Todos">("Todos");
   const [privacidad, setPrivacidad] = useState(false);
+  const [modoAccesible, setModoAccesible] = useState<boolean>(() => {
+    return localStorage.getItem(ACCESIBLE_KEY) === "true";
+  });
 
   const togglePrivacidad = () => setPrivacidad((v) => !v);
+  const toggleAccesible = () => {
+    setModoAccesible((prev) => {
+      const nuevo = !prev;
+      localStorage.setItem(ACCESIBLE_KEY, String(nuevo));
+      return nuevo;
+    });
+  };
 
   // Restaurar sesión al montar (sessionStorage: persiste durante la sesión del navegador,
   // se borra al cerrar la pestaña — equilibrio entre conveniencia y seguridad)
@@ -114,7 +127,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
   return (
     <AppContext.Provider
       value={{
-        autenticado, paginaActual, pedidos, productos, filtroInicial, privacidad, togglePrivacidad,
+        autenticado, paginaActual, pedidos, productos, filtroInicial, privacidad, modoAccesible,
+        togglePrivacidad, toggleAccesible,
         iniciarSesion, cerrarSesion, navegarA, navegarAConFiltro,
         agregarPedido, actualizarEstadoPedido,
         agregarProducto, editarProducto, eliminarProducto,

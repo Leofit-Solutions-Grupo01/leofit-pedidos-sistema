@@ -1,11 +1,11 @@
 import { EstadoPedido } from "../../data/mockData";
 
-const configs: Record<EstadoPedido, { className: string; label: string }> = {
-  Recibido:     { className: "bg-[#3498DB]/15 text-[#3498DB] border border-[#3498DB]/30",    label: "Recibido" },
-  "Preparación":{ className: "bg-[#F1C40F]/15 text-[#B7950B] border border-[#F1C40F]/40",   label: "Preparación" },
-  Camino:       { className: "bg-[#E67E22]/15 text-[#E67E22] border border-[#E67E22]/30",    label: "En Camino" },
-  Entregado:    { className: "bg-[#27AE60]/15 text-[#27AE60] border border-[#27AE60]/30",    label: "Entregado" },
-  Cancelado:    { className: "bg-gray-100 text-gray-400 border border-gray-200",              label: "Cancelado" },
+const configs: Record<EstadoPedido, { bg: string; text: string; border: string; icon: string; label: string }> = {
+  Recibido:     { bg: "bg-blue-100", text: "text-blue-950", border: "border-blue-400", icon: "inbox", label: "Recibido" },
+  "Preparación":{ bg: "bg-amber-100", text: "text-amber-950", border: "border-amber-400", icon: "inventory_2", label: "Preparación" },
+  Camino:       { bg: "bg-orange-100", text: "text-orange-950", border: "border-orange-400", icon: "local_shipping", label: "En Camino" },
+  Entregado:    { bg: "bg-emerald-100", text: "text-emerald-950", border: "border-emerald-500", icon: "check_circle", label: "Entregado" },
+  Cancelado:    { bg: "bg-slate-200", text: "text-slate-800", border: "border-slate-400", icon: "cancel", label: "Cancelado" },
 };
 
 interface BadgeProps {
@@ -14,17 +14,19 @@ interface BadgeProps {
 }
 
 export default function Badge({ estado, enRiesgo = false }: BadgeProps) {
-  const { className, label } = configs[estado];
+  const cfg = configs[estado] || configs.Recibido;
   return (
-    <span className="inline-flex items-center gap-1">
-      <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold whitespace-nowrap ${className}`}>
-        {label}
+    <span className="inline-flex items-center gap-1.5 flex-wrap">
+      <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-black border ${cfg.bg} ${cfg.text} ${cfg.border} shadow-sm`}>
+        <span className="material-icons" style={{ fontSize: "14px" }}>{cfg.icon}</span>
+        {cfg.label}
       </span>
       {enRiesgo && (
         <span
-          className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-[#E63946]/10 text-[#E63946] border border-[#E63946]/20 whitespace-nowrap"
+          className="inline-flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-black bg-red-600 text-white border border-red-700 shadow-sm animate-pulse"
           title="Este pedido lleva más de 24 horas sin actualizarse"
         >
+          <span className="material-icons" style={{ fontSize: "14px" }}>warning</span>
           En Riesgo
         </span>
       )}
