@@ -121,7 +121,7 @@ function topProductos(pedidos: Pedido[]) {
 }
 
 export default function Dashboard() {
-  const { pedidos, productos, navegarA, navegarAConFiltro, actualizarEstadoPedido, privacidad } = useApp();
+  const { pedidos, productos, navegarA, navegarAConFiltro, actualizarEstadoPedido, privacidad, modoAccesible } = useApp();
   const isOnline = useOnlineStatus();
   const [editandoId, setEditandoId] = useState<string | null>(null);
   const [ahora, setAhora] = useState(new Date());
@@ -140,23 +140,23 @@ export default function Dashboard() {
   const ingresosTotal = calcularIngresos(pedidos);
   const productosStockBajo = productos.filter((p) => p.stock <= 5);
   const top3 = topProductos(pedidos);
-  const ultimosPedidos = pedidos.filter((p) => p.estado !== "Cancelado").slice(0, 5);
+  const ultimosPedidos = [...pedidos].slice(0, 5);
 
   const estadosPipeline: { estado: EstadoPedido; label: string; bg: string; color: string }[] = [
-    { estado: "Recibido",    label: "Recibido",    bg: "bg-[#3498DB]", color: "#3498DB" },
-    { estado: "Preparación", label: "Preparación", bg: "bg-[#F1C40F]", color: "#B7950B" },
-    { estado: "Camino",      label: "En Camino",   bg: "bg-[#E67E22]", color: "#E67E22" },
-    { estado: "Entregado",   label: "Entregado",   bg: "bg-[#27AE60]", color: "#27AE60" },
+    { estado: "Recibido", label: "Recibido", bg: "bg-[#3498DB]", color: "#3498DB" },
+    { estado: "Preparación", label: "En Preparación", bg: "bg-[#F1C40F]", color: "#B7950B" },
+    { estado: "Camino", label: "En Camino", bg: "bg-[#E67E22]", color: "#E67E22" },
+    { estado: "Entregado", label: "Entregado", bg: "bg-[#27AE60]", color: "#27AE60" },
   ];
 
   const kpis = [
     {
       label: "Creados hoy",
-      icon: "event",
+      icon: "calendar_today",
       valor: pedidosHoy.length,
-      color: "text-[#1D3557]",
-      bg: "bg-[#1D3557]/10",
-      border: "border-[#1D3557]/20",
+      color: "text-[#0F223D]",
+      bg: "bg-blue-100",
+      border: "border-blue-300",
       filtro: "Todos" as const,
       tooltip: "Pedidos CREADOS hoy (no entregados). Se reinicia a medianoche. Incluye WhatsApp, llamadas y sistema.",
     },
@@ -164,9 +164,9 @@ export default function Dashboard() {
       label: "Pendientes",
       icon: "schedule",
       valor: pedidosActivos.filter((p) => p.estado === "Recibido" || p.estado === "Preparación").length,
-      color: pedidosEnRiesgo.length > 0 ? "text-[#E63946]" : "text-[#E67E22]",
-      bg: pedidosEnRiesgo.length > 0 ? "bg-[#E63946]/10" : "bg-[#E67E22]/10",
-      border: pedidosEnRiesgo.length > 0 ? "border-[#E63946]/30" : "border-[#E67E22]/20",
+      color: pedidosEnRiesgo.length > 0 ? "text-red-700" : "text-amber-800",
+      bg: pedidosEnRiesgo.length > 0 ? "bg-red-100" : "bg-amber-100",
+      border: pedidosEnRiesgo.length > 0 ? "border-red-400" : "border-amber-300",
       filtro: "Recibido" as EstadoPedido,
       alerta: pedidosEnRiesgo.length > 0,
       tooltip: "Pedidos en estado Recibido o Preparación. Los que llevan más de 24h se marcan como 'En Riesgo'. Solo Víctor decide cuándo avanzarlos.",
@@ -175,9 +175,9 @@ export default function Dashboard() {
       label: "En Camino",
       icon: "local_shipping",
       valor: pedidosActivos.filter((p) => p.estado === "Camino").length,
-      color: "text-[#3498DB]",
-      bg: "bg-[#3498DB]/10",
-      border: "border-[#3498DB]/20",
+      color: "text-blue-900",
+      bg: "bg-blue-100",
+      border: "border-blue-400",
       filtro: "Camino" as EstadoPedido,
       tooltip: "Pedidos ya enviados con el delivery. Actualmente el estado se actualiza manualmente. El delivery confirma por WhatsApp.",
     },
@@ -185,9 +185,9 @@ export default function Dashboard() {
       label: "Entregados",
       icon: "check_circle",
       valor: pedidosActivos.filter((p) => p.estado === "Entregado").length,
-      color: "text-[#27AE60]",
-      bg: "bg-[#27AE60]/10",
-      border: "border-[#27AE60]/20",
+      color: "text-emerald-900",
+      bg: "bg-emerald-100",
+      border: "border-emerald-400",
       filtro: "Entregado" as EstadoPedido,
       tooltip: "Víctor confirma la entrega al recibir notificación del delivery. Si hay reclamo, el pedido puede marcarse como Cancelado.",
     },
@@ -199,59 +199,57 @@ export default function Dashboard() {
   }, [actualizarEstadoPedido]);
 
   return (
-    <div className="pt-14 pb-24 min-h-screen bg-[#F1FAEE]">
-      <div className="max-w-2xl mx-auto px-4 py-4 space-y-3">
+    <div className={`pt-16 pb-24 min-h-screen ${modoAccesible ? "bg-[#E2E8F0]" : "bg-[#F1FAEE]"}`}>
+      <div className="max-w-2xl mx-auto px-4 py-4 space-y-4">
 
         {/* Offline banner */}
         {!isOnline && (
-          <div className="bg-yellow-50 border-2 border-yellow-200 rounded-2xl px-4 py-3 flex items-center gap-3">
-            <span className="material-icons text-yellow-500" style={{ fontSize: "20px" }}>wifi_off</span>
+          <div className="bg-amber-100 border-2 border-amber-400 rounded-2xl px-4 py-3 flex items-center gap-3">
+            <span className="material-icons text-amber-800" style={{ fontSize: "24px" }}>wifi_off</span>
             <div>
-              <p className="text-sm font-bold text-yellow-800">Sin conexión a internet</p>
-              <p className="text-xs text-yellow-600 font-medium">Mostrando datos guardados en caché. Los cambios se sincronizarán al reconectarse.</p>
+              <p className="text-base font-black text-amber-950">Sin conexión a internet</p>
+              <p className="text-sm text-amber-900 font-semibold">Mostrando datos guardados en caché. Los cambios se sincronizarán al reconectarse.</p>
             </div>
           </div>
         )}
 
         {/* Greeting + Revenue hero */}
-        <div className="bg-[#1D3557] rounded-3xl p-5 text-white overflow-hidden relative">
-          <div className="absolute top-0 right-0 w-36 h-36 bg-white/5 rounded-full -translate-y-10 translate-x-10" />
-          <div className="absolute bottom-0 right-16 w-24 h-24 bg-[#E63946]/15 rounded-full translate-y-8" />
+        <div className="bg-[#0F223D] rounded-3xl p-6 text-white overflow-hidden relative shadow-xl border border-slate-700">
           <div className="flex items-start justify-between mb-4">
             <div>
-              <p className="text-white/50 text-xs font-semibold uppercase tracking-widest">{saludo()}, Víctor</p>
-              <p className="text-white/30 text-xs font-medium mt-0.5">
+              <p className="text-amber-400 text-sm font-black uppercase tracking-wider">{saludo()}, Víctor</p>
+              <p className="text-slate-200 text-sm font-bold mt-1">
                 {ahora.toLocaleDateString("es-PE", { weekday: "long", day: "numeric", month: "long" })}
                 {" · "}
                 {ahora.toLocaleTimeString("es-PE", { hour: "2-digit", minute: "2-digit" })}
               </p>
             </div>
             {/* indicador "en vivo" */}
-            <div className="flex items-center gap-1.5 bg-white/10 rounded-full px-2.5 py-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#27AE60] animate-pulse" />
-              <span className="text-[10px] font-bold text-white/60">EN VIVO</span>
+            <div className="flex items-center gap-2 bg-white/20 rounded-full px-3 py-1.5 border border-white/30">
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="text-xs font-black text-white">EN VIVO</span>
             </div>
           </div>
-          <div className="flex items-end justify-between relative">
+          <div className="flex items-end justify-between relative pt-2">
             <div>
-              <p className="text-white/40 text-xs font-semibold mb-0.5">Ingresos totales cobrados</p>
+              <p className="text-slate-300 text-sm font-bold mb-1">Ingresos totales cobrados</p>
               <MontoPrivado
                 valor={ingresosTotal}
                 privacidad={privacidad}
-                className="text-3xl font-black text-white leading-none block"
+                className={`${modoAccesible ? "text-4xl" : "text-3xl"} font-black text-white leading-none block`}
               />
-              <p className="text-white/30 text-[11px] font-medium mt-1">
+              <p className="text-slate-300 text-xs font-bold mt-2">
                 {pedidos.filter((p) => p.estado === "Entregado").length} pedidos entregados · {pedidos.filter((p) => p.estado === "Cancelado").length} cancelados
               </p>
             </div>
             <div className="text-right">
-              <p className="text-white/40 text-xs font-semibold mb-0.5">Hoy</p>
+              <p className="text-slate-300 text-sm font-bold mb-1">Hoy</p>
               <MontoPrivado
                 valor={ingresosHoy}
                 privacidad={privacidad}
-                className={`text-2xl font-black block ${ingresosHoy > 0 ? "text-[#27AE60]" : "text-white/30"}`}
+                className={`${modoAccesible ? "text-3xl" : "text-2xl"} font-black block ${ingresosHoy > 0 ? "text-emerald-400" : "text-slate-400"}`}
               />
-              <p className="text-white/30 text-[11px] font-medium mt-1">
+              <p className="text-slate-300 text-xs font-bold mt-2">
                 {pedidosHoy.length} pedido{pedidosHoy.length !== 1 ? "s" : ""}
               </p>
             </div>
@@ -259,7 +257,7 @@ export default function Dashboard() {
         </div>
 
         {/* KPI strip — cada tarjeta es clickeable y navega al historial filtrado */}
-        <div className="grid grid-cols-4 gap-2">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {kpis.map((kpi) => (
             <KpiCard
               key={kpi.label}
@@ -278,47 +276,48 @@ export default function Dashboard() {
 
         {/* Alerta: pedidos En Riesgo */}
         {pedidosEnRiesgo.length > 0 && (
-          <div className="bg-[#E63946]/8 border-2 border-[#E63946]/25 rounded-2xl p-4">
-            <div className="flex items-center gap-2 mb-3">
-              <div className="w-8 h-8 bg-[#E63946] rounded-xl flex items-center justify-center shrink-0">
-                <span className="material-icons text-white" style={{ fontSize: "18px" }}>warning</span>
+          <div className="bg-red-50 border-2 border-red-300 rounded-3xl p-5 shadow-sm">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-10 h-10 bg-red-600 rounded-2xl flex items-center justify-center shrink-0 shadow-md">
+                <span className="material-icons text-white" style={{ fontSize: "22px" }}>warning</span>
               </div>
               <div>
-                <p className="text-sm font-bold text-[#E63946]">
+                <p className="text-base font-black text-red-950">
                   {pedidosEnRiesgo.length} pedido{pedidosEnRiesgo.length !== 1 ? "s" : ""} En Riesgo
                 </p>
-                <p className="text-[11px] text-[#E63946]/70 font-medium">Llevan más de 24 h sin actualizarse</p>
+                <p className="text-xs text-red-800 font-bold">Llevan más de 24 h sin actualizarse</p>
               </div>
               <button
                 onClick={() => navegarAConFiltro("pedidos", "Recibido")}
-                className="ml-auto text-xs text-[#E63946] font-bold hover:underline flex items-center gap-0.5 shrink-0"
+                className="ml-auto text-sm text-red-800 font-black hover:underline flex items-center gap-1 shrink-0 bg-red-100 px-3 py-1.5 rounded-xl border border-red-200"
               >
                 Ver todos
-                <span className="material-icons" style={{ fontSize: "14px" }}>chevron_right</span>
+                <span className="material-icons" style={{ fontSize: "16px" }}>chevron_right</span>
               </button>
             </div>
-            <div className="space-y-2">
+            <div className="space-y-2.5">
               {pedidosEnRiesgo.slice(0, 3).map((p) => {
                 const diasAtraso = Math.floor((new Date(HOY).getTime() - new Date(p.fecha).getTime()) / 86_400_000);
                 return (
-                  <div key={p.id} className="bg-white rounded-xl px-3 py-2.5 flex items-center gap-3">
+                  <div key={p.id} className="bg-white rounded-2xl px-4 py-3 flex items-center gap-3 border border-red-100 shadow-sm">
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-1.5">
-                        <span className="text-xs font-mono font-bold text-gray-400">{p.numero}</span>
-                        <span className="text-xs font-semibold text-[#1A1A1A] truncate">{p.cliente.nombre}</span>
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm font-mono font-black text-slate-700">{p.numero}</span>
+                        <span className="text-base font-black text-slate-950 truncate">{p.cliente.nombre}</span>
                       </div>
-                      {p.notas && <p className="text-[10px] text-gray-400 truncate mt-0.5">{p.notas}</p>}
+                      {p.notas && <p className="text-xs text-slate-600 font-semibold truncate mt-0.5">{p.notas}</p>}
                     </div>
-                    <span className="text-[10px] font-bold text-[#E63946] bg-[#E63946]/10 rounded-full px-2 py-0.5 whitespace-nowrap shrink-0">
+                    <span className="text-xs font-black text-red-800 bg-red-100 border border-red-200 rounded-full px-2.5 py-1 whitespace-nowrap shrink-0">
                       {diasAtraso}d atraso
                     </span>
                     <a
                       href={`tel:${p.cliente.telefono}`}
-                      className="p-1.5 bg-[#27AE60] rounded-xl shrink-0"
+                      className="p-2.5 bg-emerald-700 hover:bg-emerald-800 rounded-xl shrink-0 shadow-md text-white flex items-center justify-center"
                       aria-label={`Llamar a ${p.cliente.nombre}`}
+                      title={`Llamar a ${p.cliente.nombre} (${p.cliente.telefono})`}
                       onClick={(e) => e.stopPropagation()}
                     >
-                      <span className="material-icons text-white" style={{ fontSize: "16px" }}>call</span>
+                      <span className="material-icons text-white" style={{ fontSize: "20px" }}>call</span>
                     </a>
                   </div>
                 );
@@ -330,29 +329,31 @@ export default function Dashboard() {
         {/* Alerta: stock bajo */}
         {productosStockBajo.length > 0 && (
           <div
-            className="bg-[#F1C40F]/8 border-2 border-[#F1C40F]/30 rounded-2xl px-4 py-3 flex items-center gap-3 cursor-pointer active:scale-[0.99] transition-transform"
+            className="bg-amber-50 border-2 border-amber-300 rounded-3xl px-5 py-4 flex items-center gap-3 cursor-pointer active:scale-[0.99] transition-transform shadow-sm"
             onClick={() => navegarA("productos")}
           >
-            <span className="material-icons text-[#B7950B]" style={{ fontSize: "20px" }}>inventory</span>
+            <div className="w-10 h-10 bg-amber-500 rounded-2xl flex items-center justify-center shrink-0">
+              <span className="material-icons text-white" style={{ fontSize: "22px" }}>inventory</span>
+            </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-bold text-[#B7950B]">
+              <p className="text-base font-black text-amber-950">
                 {productosStockBajo.length} producto{productosStockBajo.length !== 1 ? "s" : ""} con stock bajo
               </p>
-              <p className="text-[11px] text-[#B7950B]/70 font-medium truncate">
-                {productosStockBajo.map((p) => `${p.nombre} (${p.stock})`).join(", ")}
+              <p className="text-xs text-amber-900 font-bold truncate">
+                {productosStockBajo.map((p) => `${p.nombre} (${p.stock} uds)`).join(", ")}
               </p>
             </div>
-            <span className="material-icons text-[#B7950B]/50" style={{ fontSize: "18px" }}>chevron_right</span>
+            <span className="material-icons text-amber-800" style={{ fontSize: "22px" }}>chevron_right</span>
           </div>
         )}
 
         {/* Pipeline de estados */}
-        <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
+        <div className="bg-white rounded-3xl p-5 shadow-sm border border-slate-200">
           <div className="flex items-center gap-2 mb-3">
-            <h2 className="text-sm font-bold text-[#1D3557]">Pipeline de pedidos activos</h2>
+            <h2 className="text-base font-black text-slate-900">Pipeline de pedidos activos</h2>
             <InfoTooltip texto="Distribución de todos los pedidos activos por estado. Los cancelados no se contabilizan." />
           </div>
-          <div className="flex gap-1 h-2.5 rounded-full overflow-hidden mb-3 bg-gray-100">
+          <div className="flex gap-1 h-3 rounded-full overflow-hidden mb-4 bg-slate-100 border border-slate-200">
             {estadosPipeline.map(({ estado, bg }) => {
               const cant = pedidosActivos.filter((p) => p.estado === estado).length;
               const pct = pedidosActivos.length > 0 ? (cant / pedidosActivos.length) * 100 : 0;
@@ -360,7 +361,7 @@ export default function Dashboard() {
               return <div key={estado} className={`${bg} h-full`} style={{ width: `${pct}%` }} />;
             })}
           </div>
-          <div className="grid grid-cols-2 gap-x-4 gap-y-2">
+          <div className="grid grid-cols-2 gap-x-4 gap-y-2.5">
             {estadosPipeline.map(({ estado, label, bg, color }) => {
               const cant = pedidosActivos.filter((p) => p.estado === estado).length;
               const pct = pedidosActivos.length > 0 ? Math.round((cant / pedidosActivos.length) * 100) : 0;
@@ -368,111 +369,79 @@ export default function Dashboard() {
                 <button
                   key={estado}
                   onClick={() => navegarAConFiltro("pedidos", estado)}
-                  className="flex items-center gap-2 hover:opacity-70 transition-opacity text-left"
+                  className="flex items-center gap-2.5 p-2 rounded-xl hover:bg-slate-100 transition-colors text-left border border-transparent hover:border-slate-200"
                 >
-                  <div className={`w-2 h-2 rounded-full ${bg} shrink-0`} />
-                  <span className="text-xs text-gray-500 font-medium flex-1">{label}</span>
-                  <span className="text-xs font-black" style={{ color }}>{cant}</span>
-                  <span className="text-[10px] text-gray-300 font-semibold w-7 text-right">{pct}%</span>
+                  <div className={`w-3.5 h-3.5 rounded-full ${bg} shrink-0 border border-slate-300`} />
+                  <span className="text-xs font-bold text-slate-700 flex-1">{label}</span>
+                  <span className="text-sm font-black" style={{ color }}>{cant}</span>
+                  <span className="text-xs text-slate-500 font-bold w-9 text-right">({pct}%)</span>
                 </button>
               );
             })}
           </div>
         </div>
 
-        {/* Top productos */}
-        <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
-          <h2 className="text-sm font-bold text-[#1D3557] mb-3">Productos más vendidos</h2>
-          {top3.length === 0 ? (
-            <p className="text-xs text-gray-400 text-center py-4">Sin ventas registradas aún</p>
-          ) : (
-            <div className="space-y-3">
-              {top3.map((prod, i) => {
-                const pct = Math.round((prod.cantidad / top3[0].cantidad) * 100);
-                const medalColor = ["text-[#F1C40F]", "text-gray-400", "text-[#CD7F32]"][i];
-                return (
-                  <div key={prod.nombre}>
-                    <div className="flex items-center justify-between mb-1">
-                      <div className="flex items-center gap-1.5">
-                        <span className={`material-icons ${medalColor}`} style={{ fontSize: "15px" }}>emoji_events</span>
-                        <span className="text-sm font-semibold text-[#1A1A1A]">{prod.nombre}</span>
-                      </div>
-                      <div className="text-right">
-                        <span className="text-xs font-black text-[#1D3557]">{prod.cantidad} uds</span>
-                        <span className="text-[10px] text-gray-400 font-medium ml-1.5">S/{prod.ingresos.toFixed(0)}</span>
-                      </div>
-                    </div>
-                    <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                      <div className="h-full bg-[#E63946] rounded-full" style={{ width: `${pct}%`, opacity: 1 - i * 0.2 }} />
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          )}
-        </div>
-
         {/* Acciones rápidas */}
-        <div className="grid grid-cols-3 gap-2">
+        <div className="grid grid-cols-3 gap-3">
           {[
-            { label: "Nuevo Pedido", icon: "add_circle", pagina: "nuevo-pedido" as const, color: "text-[#E63946]", bg: "bg-[#E63946]/10" },
-            { label: "Ver Pedidos", icon: "receipt_long", pagina: "pedidos" as const, color: "text-[#3498DB]", bg: "bg-[#3498DB]/10" },
-            { label: "Productos", icon: "inventory_2", pagina: "productos" as const, color: "text-[#27AE60]", bg: "bg-[#27AE60]/10" },
+            { label: "Nuevo Pedido", icon: "add_circle", pagina: "nuevo-pedido" as const, color: "text-[#E63946]", bg: "bg-red-100 border-red-200" },
+            { label: "Ver Pedidos", icon: "receipt_long", pagina: "pedidos" as const, color: "text-[#1D3557]", bg: "bg-blue-100 border-blue-200" },
+            { label: "Productos", icon: "inventory_2", pagina: "productos" as const, color: "text-emerald-800", bg: "bg-emerald-100 border-emerald-200" },
           ].map((acc) => (
             <button
               key={acc.label}
               onClick={() => navegarA(acc.pagina)}
-              className="bg-white rounded-2xl p-3 flex flex-col items-center gap-2 shadow-sm border border-gray-100 hover:shadow-md active:scale-95 transition-all"
+              className={`bg-white rounded-3xl p-4 flex flex-col items-center gap-2 shadow-sm border ${acc.bg} hover:shadow-md active:scale-95 transition-all`}
             >
-              <div className={`w-10 h-10 ${acc.bg} rounded-xl flex items-center justify-center`}>
-                <span className={`material-icons ${acc.color}`} style={{ fontSize: "22px" }}>{acc.icon}</span>
+              <div className="w-12 h-12 rounded-2xl flex items-center justify-center bg-slate-50 border border-slate-200 shadow-inner">
+                <span className={`material-icons ${acc.color}`} style={{ fontSize: "28px" }}>{acc.icon}</span>
               </div>
-              <span className="text-[11px] font-bold text-gray-600 leading-tight text-center">{acc.label}</span>
+              <span className="text-xs font-black text-slate-800 leading-tight text-center">{acc.label}</span>
             </button>
           ))}
         </div>
 
         {/* Últimos pedidos — con cambio de estado directo desde el dashboard */}
-        <div className="bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-100">
-          <div className="flex items-center justify-between px-4 py-3.5 border-b border-gray-100">
+        <div className="bg-white rounded-3xl shadow-sm overflow-hidden border border-slate-200">
+          <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100 bg-slate-50/50">
             <div className="flex items-center gap-2">
-              <h2 className="font-bold text-[#1D3557]">Últimos Pedidos</h2>
+              <h2 className="font-black text-base text-slate-900">Últimos Pedidos</h2>
               <InfoTooltip texto="Pedidos más recientes, ordenados por fecha de creación. Toca el icono de editar para cambiar el estado sin salir del dashboard." />
             </div>
-            <button onClick={() => navegarA("pedidos")} className="text-xs text-[#E63946] font-bold hover:underline flex items-center gap-0.5">
-              Ver todos <span className="material-icons" style={{ fontSize: "14px" }}>chevron_right</span>
+            <button onClick={() => navegarA("pedidos")} className="text-xs text-[#E63946] font-black hover:underline flex items-center gap-1 bg-red-50 px-2.5 py-1 rounded-xl border border-red-100">
+              Ver todos <span className="material-icons" style={{ fontSize: "16px" }}>chevron_right</span>
             </button>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="bg-[#F1FAEE]">
-                  <th className="px-4 py-2.5 text-left text-[10px] font-bold text-gray-400 uppercase tracking-wider">N°</th>
-                  <th className="px-4 py-2.5 text-left text-[10px] font-bold text-gray-400 uppercase tracking-wider">Cliente</th>
-                  <th className="px-4 py-2.5 text-right text-[10px] font-bold text-gray-400 uppercase tracking-wider">Total</th>
-                  <th className="px-4 py-2.5 text-left text-[10px] font-bold text-gray-400 uppercase tracking-wider">Estado</th>
-                  <th className="px-4 py-2.5" />
+                <tr className="bg-slate-100 text-slate-700">
+                  <th className="px-4 py-3 text-left text-xs font-black uppercase tracking-wider">N°</th>
+                  <th className="px-4 py-3 text-left text-xs font-black uppercase tracking-wider">Cliente</th>
+                  <th className="px-4 py-3 text-right text-xs font-black uppercase tracking-wider">Total</th>
+                  <th className="px-4 py-3 text-left text-xs font-black uppercase tracking-wider">Estado</th>
+                  <th className="px-4 py-3 text-center text-xs font-black uppercase tracking-wider">Acción</th>
                 </tr>
               </thead>
               <tbody>
                 {ultimosPedidos.map((pedido, i) => (
-                  <tr key={pedido.id} className={`transition-colors hover:bg-[#F1FAEE]/60 ${i < ultimosPedidos.length - 1 ? "border-b border-gray-50" : ""}`}>
-                    <td className="px-4 py-3 font-mono text-xs font-semibold text-gray-500">{pedido.numero}</td>
-                    <td className="px-4 py-3">
-                      <div className="text-sm font-semibold text-[#1A1A1A] max-w-[100px] truncate">{pedido.cliente.nombre}</div>
-                      <div className="text-[10px] text-gray-400 mt-0.5">{pedido.fecha}</div>
+                  <tr key={pedido.id} className={`transition-colors hover:bg-blue-50/40 ${i < ultimosPedidos.length - 1 ? "border-b border-slate-100" : ""}`}>
+                    <td className="px-4 py-3.5 font-mono text-xs font-black text-slate-700">{pedido.numero}</td>
+                    <td className="px-4 py-3.5">
+                      <div className="text-sm font-black text-slate-950 max-w-[140px] truncate">{pedido.cliente.nombre}</div>
+                      <div className="text-xs font-bold text-slate-500 mt-0.5">{pedido.fecha}</div>
                     </td>
-                    <td className="px-4 py-3 text-right">
-                      <MontoPrivado valor={pedido.total} privacidad={privacidad} className="text-sm font-black text-[#1D3557]" />
+                    <td className="px-4 py-3.5 text-right">
+                      <MontoPrivado valor={pedido.total} privacidad={privacidad} className="text-sm font-black text-slate-900" />
                     </td>
-                    <td className="px-4 py-3">
+                    <td className="px-4 py-3.5">
                       {editandoId === pedido.id ? (
                         <select
                           value={pedido.estado}
                           onChange={(e) => handleCambioEstado(pedido.id, e.target.value as EstadoPedido)}
                           onBlur={() => setEditandoId(null)}
                           autoFocus
-                          className="text-xs border-2 border-[#E63946] rounded-lg px-1.5 py-1 focus:outline-none"
+                          className="text-xs font-black border-2 border-[#E63946] rounded-xl px-2 py-1.5 focus:outline-none bg-white shadow-md"
                         >
                           {(["Recibido", "Preparación", "Camino", "Entregado", "Cancelado"] as EstadoPedido[]).map((e) => (
                             <option key={e}>{e}</option>
@@ -482,13 +451,14 @@ export default function Dashboard() {
                         <Badge estado={pedido.estado as EstadoPedido} enRiesgo={estaEnRiesgo(pedido)} />
                       )}
                     </td>
-                    <td className="px-4 py-3">
+                    <td className="px-4 py-3.5 text-center">
                       <button
                         onClick={() => setEditandoId(editandoId === pedido.id ? null : pedido.id)}
-                        className="p-1.5 rounded-xl hover:bg-[#1D3557]/10 transition-colors"
+                        className="p-2 rounded-xl bg-slate-100 hover:bg-[#0F223D] hover:text-white text-slate-700 transition-colors border border-slate-200"
                         aria-label="Cambiar estado"
+                        title="Cambiar estado del pedido"
                       >
-                        <span className="material-icons text-[#1D3557]/30" style={{ fontSize: "16px" }}>edit</span>
+                        <span className="material-icons" style={{ fontSize: "18px" }}>edit</span>
                       </button>
                     </td>
                   </tr>
@@ -500,12 +470,14 @@ export default function Dashboard() {
 
       </div>
 
+      {/* Floating Action Button */}
       <button
         onClick={() => navegarA("nuevo-pedido")}
-        className="fixed bottom-20 right-4 bg-[#E63946] hover:bg-[#C62828] active:scale-95 text-white w-14 h-14 rounded-full shadow-xl shadow-[#E63946]/40 flex items-center justify-center transition-all z-30"
+        className="fixed bottom-20 right-4 bg-[#E63946] hover:bg-[#C62828] active:scale-95 text-white w-16 h-16 rounded-full shadow-2xl shadow-red-500/50 flex items-center justify-center transition-all z-30 ring-4 ring-white"
         aria-label="Nuevo pedido"
+        title="Crear un nuevo pedido"
       >
-        <span className="material-icons text-2xl">add</span>
+        <span className="material-icons text-3xl font-bold">add</span>
       </button>
     </div>
   );
