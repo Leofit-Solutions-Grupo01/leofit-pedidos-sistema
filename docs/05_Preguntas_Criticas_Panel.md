@@ -316,7 +316,7 @@ Para el repositorio
 
 ¿El Dashboard muestra un loading o skeleton mientras se cargan los datos?
 
-🎯 PREGUNTAS MÁS CRÍTICAS (TOP 10)
+PREGUNTAS MÁS CRÍTICAS (TOP 10)
 Si tienes que priorizar, estas son las que debes responder primero:
 
 #	Pregunta	Impacto
