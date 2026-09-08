@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useApp } from "../context/AppContext";
-import { Pedido } from "../data/mockData";
+import { Pedido, TipoEnvio, AgenciaEncomienda } from "../data/mockData";
 
 const CANALES = ["WhatsApp", "Llamada", "Sistema"] as const;
+const AGENCIAS: AgenciaEncomienda[] = ["Shalom", "Olva Courier", "Marvisur", "Flores Hermanos", "Otra"];
 
 interface ItemTemp {
   productoId: string;
@@ -16,6 +17,10 @@ export default function PedidoForm() {
   const [nombre, setNombre] = useState("");
   const [telefono, setTelefono] = useState("");
   const [direccion, setDireccion] = useState("");
+  const [tipoEnvio, setTipoEnvio] = useState<TipoEnvio>("Local");
+  const [ciudadDestino, setCiudadDestino] = useState("");
+  const [agenciaEncomienda, setAgenciaEncomienda] = useState<AgenciaEncomienda>("Shalom");
+  const [numeroGuia, setNumeroGuia] = useState("");
   const [canal, setCanal] = useState<typeof CANALES[number]>("WhatsApp");
   const [notas, setNotas] = useState("");
   const [costoDelivery, setCostoDelivery] = useState(8);
@@ -30,6 +35,15 @@ export default function PedidoForm() {
 
   const subtotal = items.reduce((acc, item) => acc + item.cantidad * item.precio, 0);
   const total = Math.max(0, subtotal + costoDelivery - descuento);
+
+  const handleTipoEnvioChange = (nuevoTipo: TipoEnvio) => {
+    setTipoEnvio(nuevoTipo);
+    if (nuevoTipo === "Nacional" && costoDelivery === 8) {
+      setCostoDelivery(15); // Tarifa base interprovincial sugerida
+    } else if (nuevoTipo === "Local" && costoDelivery === 15) {
+      setCostoDelivery(8); // Tarifa Lima local
+    }
+  };
 
   // Genera número de pedido en formato LFT-NNN
   const siguienteNumero = () => {
@@ -57,7 +71,8 @@ export default function PedidoForm() {
     const errList: string[] = [];
     if (!nombre.trim()) errList.push("El nombre del cliente es obligatorio.");
     if (!telefono.trim()) errList.push("El teléfono es obligatorio.");
-    if (!direccion.trim()) errList.push("La dirección de entrega es obligatoria.");
+    if (!direccion.trim()) errList.push("La dirección de entrega o agencia es obligatoria.");
+    if (tipoEnvio === "Nacional" && !ciudadDestino.trim()) errList.push("Indica la ciudad/departamento de destino para el envío nacional.");
     if (items.length === 0) errList.push("Agrega al menos un producto al pedido.");
     if (errList.length > 0) { setErrores(errList); return; }
     setErrores([]);
@@ -67,6 +82,10 @@ export default function PedidoForm() {
       numero: siguienteNumero(),
       canal,
       cliente: { nombre, telefono, direccion },
+      tipoEnvio,
+      ciudadDestino: tipoEnvio === "Nacional" ? ciudadDestino : "Lima Capital",
+      agenciaEncomienda: tipoEnvio === "Nacional" ? agenciaEncomienda : undefined,
+      numeroGuia: tipoEnvio === "Nacional" && numeroGuia.trim() ? numeroGuia.trim() : undefined,
       items: items.map((i) => ({ productoId: i.productoId, nombre: i.nombre, cantidad: i.cantidad, precio: i.precio })),
       total,
       costoDelivery,
@@ -113,6 +132,100 @@ export default function PedidoForm() {
           </div>
         )}
 
+        {/* Modalidad de Envío */}
+        <div className="bg-white rounded-3xl p-5 shadow-sm border border-slate-200 mb-5">
+          <h2 className="text-base font-bold text-slate-900 mb-3 flex items-center gap-2.5">
+            <span className="inline-flex items-center justify-center w-8 h-8 bg-blue-100 rounded-xl border border-blue-200">
+              <span className="material-icons text-blue-700" style={{ fontSize: "20px" }}>local_shipping</span>
+            </span>
+            Modalidad de Despacho y Destino
+          </h2>
+          <div className="grid grid-cols-2 gap-3 mb-4">
+            <button
+              type="button"
+              onClick={() => handleTipoEnvioChange("Local")}
+              className={`p-3.5 rounded-2xl border-2 text-left transition-all flex flex-col gap-1 ${
+                tipoEnvio === "Local"
+                  ? "border-[#0F223D] bg-[#0F223D] text-white shadow-md ring-2 ring-slate-300"
+                  : "border-slate-200 bg-slate-50 text-slate-700 hover:bg-slate-100"
+              }`}
+            >
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-bold">Lima Capital</span>
+                <span className="material-icons" style={{ fontSize: "18px" }}>two_wheeler</span>
+              </div>
+              <span className={`text-xs ${tipoEnvio === "Local" ? "text-slate-300" : "text-slate-500"}`}>
+                Reparto directo con Víctor / Motorizado
+              </span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => handleTipoEnvioChange("Nacional")}
+              className={`p-3.5 rounded-2xl border-2 text-left transition-all flex flex-col gap-1 ${
+                tipoEnvio === "Nacional"
+                  ? "border-[#0F223D] bg-[#0F223D] text-white shadow-md ring-2 ring-slate-300"
+                  : "border-slate-200 bg-slate-50 text-slate-700 hover:bg-slate-100"
+              }`}
+            >
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-bold">Provincia / Nacional</span>
+                <span className="material-icons" style={{ fontSize: "18px" }}>domain</span>
+              </div>
+              <span className={`text-xs ${tipoEnvio === "Nacional" ? "text-slate-300" : "text-slate-500"}`}>
+                Empresa de encomienda (Shalom, Olva)
+              </span>
+            </button>
+          </div>
+
+          {/* Campos adicionales para Envío Nacional */}
+          {tipoEnvio === "Nacional" && (
+            <div className="bg-slate-50 rounded-2xl p-4 border border-slate-200 space-y-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">
+                    Ciudad / Departamento de Destino <span className="text-red-600">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={ciudadDestino}
+                    onChange={(e) => setCiudadDestino(e.target.value)}
+                    placeholder="ej. Trujillo, Arequipa, Cusco"
+                    className="w-full px-3.5 py-2.5 bg-white border-2 border-slate-300 rounded-xl text-sm font-medium text-slate-900 focus:outline-none focus:border-[#0F223D]"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">
+                    Empresa de Encomienda
+                  </label>
+                  <select
+                    value={agenciaEncomienda}
+                    onChange={(e) => setAgenciaEncomienda(e.target.value as AgenciaEncomienda)}
+                    className="w-full px-3.5 py-2.5 bg-white border-2 border-slate-300 rounded-xl text-sm font-semibold text-slate-900 focus:outline-none focus:border-[#0F223D]"
+                  >
+                    {AGENCIAS.map((ag) => (
+                      <option key={ag} value={ag}>{ag}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">
+                  N° Guía de Remisión / Clave (si ya fue despachado)
+                </label>
+                <input
+                  type="text"
+                  value={numeroGuia}
+                  onChange={(e) => setNumeroGuia(e.target.value)}
+                  placeholder="ej. SH-789412 o OLV-993210"
+                  className="w-full px-3.5 py-2.5 bg-white border-2 border-slate-300 rounded-xl text-sm font-mono font-medium text-slate-900 focus:outline-none focus:border-[#0F223D]"
+                />
+              </div>
+            </div>
+          )}
+        </div>
+
         {/* Cliente */}
         <div className="bg-white rounded-3xl p-5 shadow-sm border border-slate-200 mb-5">
           <h2 className="text-base font-bold text-slate-900 mb-4 flex items-center gap-2.5">
@@ -148,13 +261,13 @@ export default function PedidoForm() {
             </div>
             <div>
               <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
-                Dirección de Entrega / Distrito <span className="text-red-600">*</span>
+                {tipoEnvio === "Nacional" ? "Dirección de Agencia de Destino *" : "Dirección de Entrega en Lima *"}
               </label>
               <input
                 type="text"
                 value={direccion}
                 onChange={(e) => setDireccion(e.target.value)}
-                placeholder="ej. Av. Arequipa 1234, Lince"
+                placeholder={tipoEnvio === "Nacional" ? "ej. Agencia Shalom - Av. España 1020, Trujillo" : "ej. Av. Arequipa 1234, Lince"}
                 className="w-full px-4 py-3 bg-slate-50 border-2 border-slate-200 rounded-2xl text-base font-medium text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#0F223D] focus:bg-white transition-all shadow-inner"
               />
             </div>
@@ -259,7 +372,9 @@ export default function PedidoForm() {
                   <span className="text-base font-bold font-mono text-slate-900">S/{subtotal.toFixed(2)}</span>
                 </div>
                 <div className="flex items-center justify-between text-sm font-semibold text-slate-700">
-                  <label>Costo de Envío / Delivery (S/)</label>
+                  <label>
+                    {tipoEnvio === "Nacional" ? "Costo Encomienda / Envío (S/)" : "Costo Delivery Local (S/)"}
+                  </label>
                   <input
                     type="number"
                     min="0"
@@ -306,7 +421,7 @@ export default function PedidoForm() {
           <textarea
             value={notas}
             onChange={(e) => setNotas(e.target.value)}
-            placeholder="ej. Entregar por la mañana, pago contra entrega con Yape..."
+            placeholder="ej. Entregar en horario de oficina, llamar antes de enviar a agencia Shalom..."
             rows={3}
             className="w-full px-4 py-3 bg-slate-50 border-2 border-slate-200 rounded-2xl text-sm sm:text-base font-normal text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#0F223D] focus:bg-white transition-all resize-none shadow-inner leading-relaxed"
           />

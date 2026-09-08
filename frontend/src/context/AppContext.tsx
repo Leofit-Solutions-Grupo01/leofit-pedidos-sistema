@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { Pedido, Producto, EstadoPedido, pedidosIniciales, productosIniciales } from "../data/mockData";
 
-type Pagina = "login" | "dashboard" | "pedidos" | "nuevo-pedido" | "productos";
+type Pagina = "login" | "dashboard" | "pedidos" | "nuevo-pedido" | "productos" | "rastreo";
 
 interface AppContextType {
   autenticado: boolean;

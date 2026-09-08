@@ -133,9 +133,21 @@ export default function PedidosLista() {
                     >
                       {/* Left: order # + client */}
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 mb-1">
+                        <div className="flex items-center gap-2 mb-1 flex-wrap">
                           <span className="font-mono text-xs font-semibold text-slate-700 shrink-0 bg-slate-100 px-2 py-0.5 rounded-lg border border-slate-200">{pedido.numero}</span>
                           <span className="text-base font-semibold text-slate-900 truncate">{pedido.cliente.nombre}</span>
+                          {pedido.tipoEnvio === "Nacional" ? (
+                            <span className="text-[10px] font-bold bg-blue-100 text-blue-900 border border-blue-300 px-2 py-0.5 rounded-md flex items-center gap-1">
+                              <span className="material-icons" style={{ fontSize: "12px" }}>domain</span>
+                              {pedido.agenciaEncomienda || "Encomienda"}
+                              {pedido.ciudadDestino ? ` · ${pedido.ciudadDestino}` : ""}
+                            </span>
+                          ) : (
+                            <span className="text-[10px] font-bold bg-slate-100 text-slate-700 border border-slate-200 px-1.5 py-0.5 rounded-md flex items-center gap-0.5">
+                              <span className="material-icons" style={{ fontSize: "12px" }}>two_wheeler</span>
+                              Lima
+                            </span>
+                          )}
                         </div>
                         <div className="flex items-center gap-2">
                           <Badge estado={pedido.estado} enRiesgo={enRiesgo} />
@@ -154,6 +166,24 @@ export default function PedidosLista() {
                     {/* Expanded detail */}
                     {expandido && (
                       <div className="bg-slate-50 px-5 py-5 border-t-2 border-slate-200 space-y-3.5">
+                        {/* Dispatch info if national */}
+                        {pedido.tipoEnvio === "Nacional" && (
+                          <div className="bg-blue-50 border border-blue-200 rounded-2xl p-3.5 flex items-center justify-between">
+                            <div>
+                              <p className="text-xs font-semibold text-blue-950 uppercase tracking-wider mb-0.5">Envío Nacional por Encomienda</p>
+                              <p className="text-sm font-bold text-blue-900">
+                                {pedido.agenciaEncomienda || "Agencia"} · {pedido.ciudadDestino || "Provincia"}
+                              </p>
+                              {pedido.numeroGuia && (
+                                <p className="text-xs text-blue-800 font-mono font-medium mt-0.5">
+                                  N° Guía / Clave: <span className="font-bold">{pedido.numeroGuia}</span>
+                                </p>
+                              )}
+                            </div>
+                            <span className="material-icons text-blue-700 text-2xl">local_shipping</span>
+                          </div>
+                        )}
+
                         {/* Contact */}
                         <div className="flex items-center justify-between bg-white p-3.5 rounded-2xl border border-slate-200 shadow-sm">
                           <div>
@@ -170,7 +200,9 @@ export default function PedidosLista() {
                           </a>
                         </div>
                         <div className="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-sm">
-                          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-0.5">Dirección de Entrega</p>
+                          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-0.5">
+                            {pedido.tipoEnvio === "Nacional" ? "Agencia de Entrega / Destino" : "Dirección de Entrega"}
+                          </p>
                           <p className="text-sm font-normal text-slate-800 leading-relaxed">{pedido.cliente.direccion}</p>
                         </div>
                         {/* Canal */}

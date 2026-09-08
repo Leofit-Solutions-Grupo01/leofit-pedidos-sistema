@@ -5,6 +5,7 @@ import Dashboard from "./pages/Dashboard";
 import PedidosLista from "./pages/PedidosLista";
 import PedidoForm from "./pages/PedidoForm";
 import ProductosGestion from "./pages/ProductosGestion";
+import RastreoPublico from "./pages/RastreoPublico";
 
 function AppContent() {
   const { autenticado, paginaActual } = useApp();
@@ -18,6 +19,7 @@ function AppContent() {
       {paginaActual === "pedidos" && <PedidosLista />}
       {paginaActual === "nuevo-pedido" && <PedidoForm />}
       {paginaActual === "productos" && <ProductosGestion />}
+      {paginaActual === "rastreo" && <RastreoPublico />}
     </div>
   );
 }
