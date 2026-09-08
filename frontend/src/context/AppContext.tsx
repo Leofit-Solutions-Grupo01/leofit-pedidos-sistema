@@ -103,7 +103,19 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setPaginaActual(pagina);
   };
 
-  const agregarPedido = (pedido: Pedido) => setPedidos((prev) => [pedido, ...prev]);
+  const agregarPedido = (pedido: Pedido) => {
+    setPedidos((prev) => [pedido, ...prev]);
+    // Descontar inventario automáticamente
+    setProductos((prev) =>
+      prev.map((prod) => {
+        const itemComprado = pedido.items.find((it) => it.productoId === prod.id);
+        if (itemComprado) {
+          return { ...prod, stock: Math.max(0, prod.stock - itemComprado.cantidad) };
+        }
+        return prod;
+      })
+    );
+  };
 
   const actualizarEstadoPedido = (id: string, estado: EstadoPedido) => {
     setPedidos((prev) =>
