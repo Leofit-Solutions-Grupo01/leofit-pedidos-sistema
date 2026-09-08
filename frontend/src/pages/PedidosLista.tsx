@@ -1,14 +1,13 @@
 import { useState, useMemo, useEffect } from "react";
 import { useApp } from "../context/AppContext";
 import Badge from "../components/common/Badge";
-import MontoPrivado from "../components/common/MontoPrivado";
 import { EstadoPedido, estaEnRiesgo } from "../data/mockData";
 
 const ESTADOS: (EstadoPedido | "Todos")[] = ["Todos", "Recibido", "Preparación", "Camino", "Entregado", "Cancelado"];
 const POR_PAGINA = 10;
 
 export default function PedidosLista() {
-  const { pedidos, actualizarEstadoPedido, filtroInicial, privacidad, modoAccesible } = useApp();
+  const { pedidos, actualizarEstadoPedido, filtroInicial, modoAccesible } = useApp();
   const [busqueda, setBusqueda] = useState("");
   const [filtroEstado, setFiltroEstado] = useState<EstadoPedido | "Todos">("Todos");
   const [desde, setDesde] = useState("");
@@ -154,7 +153,7 @@ export default function PedidosLista() {
                       </div>
                       {/* Right: total + expand */}
                       <div className="flex flex-col items-end shrink-0 gap-0.5 sm:gap-1">
-                        <MontoPrivado valor={pedido.total} privacidad={privacidad} className="text-sm sm:text-base font-bold font-mono text-slate-900" />
+                        <span className="text-sm sm:text-base font-bold font-mono text-slate-900">S/{pedido.total.toFixed(2)}</span>
                         <span className="text-[11px] sm:text-xs font-normal text-slate-500">{pedido.fecha}</span>
                       </div>
                       <span className="material-icons text-slate-400 transition-transform mt-0.5 sm:mt-0" style={{ fontSize: "20px", transform: expandido ? "rotate(180deg)" : "rotate(0deg)" }}>
@@ -216,25 +215,25 @@ export default function PedidosLista() {
                             {pedido.items.map((item) => (
                               <div key={item.productoId} className="flex items-center justify-between text-xs sm:text-sm">
                                 <span className="text-slate-800 font-medium">{item.nombre} × {item.cantidad}</span>
-                                <MontoPrivado valor={item.cantidad * item.precio} privacidad={privacidad} className="font-bold font-mono text-slate-900" />
+                                <span className="font-bold font-mono text-slate-900">S/{(item.cantidad * item.precio).toFixed(2)}</span>
                               </div>
                             ))}
                           </div>
                           {pedido.costoDelivery > 0 && (
                             <div className="flex items-center justify-between text-xs sm:text-sm mt-2 text-slate-600 font-medium">
                               <span>Delivery</span>
-                              <MontoPrivado valor={pedido.costoDelivery} privacidad={privacidad} className="font-mono" />
+                              <span className="font-mono font-medium text-slate-900">S/{pedido.costoDelivery.toFixed(2)}</span>
                             </div>
                           )}
                           {pedido.descuento > 0 && (
                             <div className="flex items-center justify-between text-xs sm:text-sm mt-1 text-emerald-700 font-medium">
                               <span>Descuento</span>
-                              <span>-<MontoPrivado valor={pedido.descuento} privacidad={privacidad} className="font-mono" /></span>
+                              <span className="font-mono font-semibold">-S/{pedido.descuento.toFixed(2)}</span>
                             </div>
                           )}
                           <div className="flex items-center justify-between mt-3 pt-3 border-t-2 border-slate-200">
                             <span className="text-sm sm:text-base font-bold text-slate-900">Total</span>
-                            <MontoPrivado valor={pedido.total} privacidad={privacidad} className="text-lg sm:text-xl font-bold font-mono text-[#E63946]" />
+                            <span className="text-lg sm:text-xl font-bold font-mono text-[#E63946]">S/{pedido.total.toFixed(2)}</span>
                           </div>
                         </div>
                         {/* Notas */}
