@@ -198,8 +198,8 @@ export default function Dashboard() {
   }, [actualizarEstadoPedido]);
 
   return (
-    <div className={`pt-16 pb-24 min-h-screen ${modoAccesible ? "bg-[#E2E8F0]" : "bg-[#F1FAEE]"}`}>
-      <div className="max-w-2xl mx-auto px-4 py-4 space-y-4">
+    <div className={`pt-16 pb-32 sm:pb-28 min-h-screen ${modoAccesible ? "bg-[#E2E8F0]" : "bg-[#F1FAEE]"}`}>
+      <div className="max-w-5xl mx-auto px-3 sm:px-6 py-4 space-y-4 sm:space-y-5">
 
         {/* Offline banner */}
         {!isOnline && (
@@ -213,23 +213,23 @@ export default function Dashboard() {
         )}
 
         {/* Greeting + Revenue hero */}
-        <div className="bg-[#0F223D] rounded-3xl p-6 text-white overflow-hidden relative shadow-xl border border-slate-700">
-          <div className="flex items-start justify-between mb-4">
+        <div className="bg-[#0F223D] rounded-3xl p-5 sm:p-6 text-white overflow-hidden relative shadow-xl border border-slate-700">
+          <div className="flex items-start justify-between gap-2 mb-4">
             <div>
               <p className="text-amber-400 text-xs font-bold uppercase tracking-wider">{saludo()}, Víctor</p>
-              <p className="text-slate-200 text-sm font-medium mt-1">
+              <p className="text-slate-200 text-xs sm:text-sm font-medium mt-0.5">
                 {ahora.toLocaleDateString("es-PE", { weekday: "long", day: "numeric", month: "long" })}
                 {" · "}
                 {ahora.toLocaleTimeString("es-PE", { hour: "2-digit", minute: "2-digit" })}
               </p>
             </div>
             {/* indicador "en vivo" */}
-            <div className="flex items-center gap-2 bg-white/20 rounded-full px-3 py-1.5 border border-white/30">
-              <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
-              <span className="text-xs font-bold text-white tracking-wide">EN VIVO</span>
+            <div className="flex items-center gap-1.5 bg-white/20 rounded-full px-2.5 sm:px-3 py-1 sm:py-1.5 border border-white/30 shrink-0">
+              <span className="w-2 sm:w-2.5 h-2 sm:h-2.5 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="text-[10px] sm:text-xs font-bold text-white tracking-wide">EN VIVO</span>
             </div>
           </div>
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 relative pt-2">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 relative pt-1 sm:pt-2">
             <div>
               <p className="text-slate-300 text-xs sm:text-sm font-medium mb-1">Ingresos totales cobrados</p>
               <MontoPrivado
@@ -255,8 +255,8 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* KPI strip — cada tarjeta es clickeable y navega al historial filtrado */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        {/* KPI strip */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3">
           {kpis.map((kpi) => (
             <KpiCard
               key={kpi.label}
@@ -275,22 +275,22 @@ export default function Dashboard() {
 
         {/* Alerta: pedidos En Riesgo */}
         {pedidosEnRiesgo.length > 0 && (
-          <div className="bg-red-50 border-2 border-red-300 rounded-3xl p-5 shadow-sm">
-            <div className="flex items-center gap-3 mb-3">
-              <div className="w-10 h-10 bg-red-600 rounded-2xl flex items-center justify-center shrink-0 shadow-md">
-                <span className="material-icons text-white" style={{ fontSize: "22px" }}>warning</span>
+          <div className="bg-red-50 border-2 border-red-300 rounded-3xl p-4 sm:p-5 shadow-sm">
+            <div className="flex items-center gap-2.5 sm:gap-3 mb-3">
+              <div className="w-9 h-9 sm:w-10 sm:h-10 bg-red-600 rounded-2xl flex items-center justify-center shrink-0 shadow-md">
+                <span className="material-icons text-white" style={{ fontSize: "20px" }}>warning</span>
               </div>
-              <div>
-                <p className="text-base font-bold text-red-950">
+              <div className="flex-1 min-w-0">
+                <p className="text-sm sm:text-base font-bold text-red-950">
                   {pedidosEnRiesgo.length} pedido{pedidosEnRiesgo.length !== 1 ? "s" : ""} En Riesgo
                 </p>
                 <p className="text-xs text-red-800 font-medium">Llevan más de 24 h sin actualizarse</p>
               </div>
               <button
                 onClick={() => navegarAConFiltro("pedidos", "Recibido")}
-                className="ml-auto text-xs text-red-800 font-bold hover:underline flex items-center gap-1 shrink-0 bg-red-100 px-3 py-1.5 rounded-xl border border-red-200"
+                className="text-xs text-red-800 font-bold hover:underline flex items-center gap-0.5 sm:gap-1 shrink-0 bg-red-100 px-2.5 sm:px-3 py-1.5 rounded-xl border border-red-200"
               >
-                Ver todos
+                <span>Ver todos</span>
                 <span className="material-icons" style={{ fontSize: "16px" }}>chevron_right</span>
               </button>
             </div>
@@ -298,25 +298,25 @@ export default function Dashboard() {
               {pedidosEnRiesgo.slice(0, 3).map((p) => {
                 const diasAtraso = Math.floor((new Date(HOY).getTime() - new Date(p.fecha).getTime()) / 86_400_000);
                 return (
-                  <div key={p.id} className="bg-white rounded-2xl px-4 py-3 flex items-center gap-3 border border-red-100 shadow-sm">
+                  <div key={p.id} className="bg-white rounded-2xl px-3.5 sm:px-4 py-3 flex items-center gap-2.5 sm:gap-3 border border-red-100 shadow-sm">
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
                         <span className="text-xs font-mono font-bold text-slate-700">{p.numero}</span>
-                        <span className="text-sm font-semibold text-slate-900 truncate">{p.cliente.nombre}</span>
+                        <span className="text-xs sm:text-sm font-semibold text-slate-900 truncate max-w-[120px] sm:max-w-none">{p.cliente.nombre}</span>
                       </div>
                       {p.notas && <p className="text-xs text-slate-600 font-normal truncate mt-0.5">{p.notas}</p>}
                     </div>
-                    <span className="text-xs font-bold text-red-800 bg-red-100 border border-red-200 rounded-full px-2.5 py-1 whitespace-nowrap shrink-0">
+                    <span className="text-[11px] sm:text-xs font-bold text-red-800 bg-red-100 border border-red-200 rounded-full px-2 sm:px-2.5 py-0.5 sm:py-1 whitespace-nowrap shrink-0">
                       {diasAtraso}d atraso
                     </span>
                     <a
                       href={`tel:${p.cliente.telefono}`}
-                      className="p-2.5 bg-emerald-700 hover:bg-emerald-800 rounded-xl shrink-0 shadow-md text-white flex items-center justify-center"
+                      className="p-2 sm:p-2.5 bg-emerald-700 hover:bg-emerald-800 rounded-xl shrink-0 shadow-md text-white flex items-center justify-center"
                       aria-label={`Llamar a ${p.cliente.nombre}`}
                       title={`Llamar a ${p.cliente.nombre} (${p.cliente.telefono})`}
                       onClick={(e) => e.stopPropagation()}
                     >
-                      <span className="material-icons text-white" style={{ fontSize: "20px" }}>call</span>
+                      <span className="material-icons text-white" style={{ fontSize: "18px" }}>call</span>
                     </a>
                   </div>
                 );
@@ -328,28 +328,28 @@ export default function Dashboard() {
         {/* Alerta: stock bajo */}
         {productosStockBajo.length > 0 && (
           <div
-            className="bg-amber-50 border-2 border-amber-300 rounded-3xl px-5 py-4 flex items-center gap-3 cursor-pointer active:scale-[0.99] transition-transform shadow-sm"
+            className="bg-amber-50 border-2 border-amber-300 rounded-3xl px-4 sm:px-5 py-3.5 sm:py-4 flex items-center gap-3 cursor-pointer active:scale-[0.99] transition-transform shadow-sm"
             onClick={() => navegarA("productos")}
           >
-            <div className="w-10 h-10 bg-amber-500 rounded-2xl flex items-center justify-center shrink-0">
-              <span className="material-icons text-white" style={{ fontSize: "22px" }}>inventory</span>
+            <div className="w-9 h-9 sm:w-10 sm:h-10 bg-amber-500 rounded-2xl flex items-center justify-center shrink-0">
+              <span className="material-icons text-white" style={{ fontSize: "20px" }}>inventory</span>
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-base font-bold text-amber-950">
+              <p className="text-sm sm:text-base font-bold text-amber-950">
                 {productosStockBajo.length} producto{productosStockBajo.length !== 1 ? "s" : ""} con stock bajo
               </p>
               <p className="text-xs text-amber-900 font-medium truncate">
                 {productosStockBajo.map((p) => `${p.nombre} (${p.stock} uds)`).join(", ")}
               </p>
             </div>
-            <span className="material-icons text-amber-800" style={{ fontSize: "22px" }}>chevron_right</span>
+            <span className="material-icons text-amber-800" style={{ fontSize: "20px" }}>chevron_right</span>
           </div>
         )}
 
         {/* Pipeline de estados */}
-        <div className="bg-white rounded-3xl p-5 shadow-sm border border-slate-200">
+        <div className="bg-white rounded-3xl p-4 sm:p-5 shadow-sm border border-slate-200">
           <div className="flex items-center gap-2 mb-3">
-            <h2 className="text-base font-bold text-slate-900">Pipeline de pedidos activos</h2>
+            <h2 className="text-sm sm:text-base font-bold text-slate-900">Pipeline de pedidos activos</h2>
             <InfoTooltip texto="Distribución de todos los pedidos activos por estado. Los cancelados no se contabilizan." />
           </div>
           <div className="flex gap-1 h-3 rounded-full overflow-hidden mb-4 bg-slate-100 border border-slate-200">
@@ -360,7 +360,7 @@ export default function Dashboard() {
               return <div key={estado} className={`${bg} h-full`} style={{ width: `${pct}%` }} />;
             })}
           </div>
-          <div className="grid grid-cols-2 gap-x-4 gap-y-2.5">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3">
             {estadosPipeline.map(({ estado, label, bg, color }) => {
               const cant = pedidosActivos.filter((p) => p.estado === estado).length;
               const pct = pedidosActivos.length > 0 ? Math.round((cant / pedidosActivos.length) * 100) : 0;
@@ -368,50 +368,104 @@ export default function Dashboard() {
                 <button
                   key={estado}
                   onClick={() => navegarAConFiltro("pedidos", estado)}
-                  className="flex items-center gap-2.5 p-2 rounded-xl hover:bg-slate-100 transition-colors text-left border border-transparent hover:border-slate-200"
+                  className="flex items-center gap-2 p-2 rounded-xl hover:bg-slate-100 transition-colors text-left border border-slate-100 hover:border-slate-200"
                 >
-                  <div className={`w-3.5 h-3.5 rounded-full ${bg} shrink-0 border border-slate-300`} />
-                  <span className="text-xs font-semibold text-slate-700 flex-1">{label}</span>
-                  <span className="text-sm font-bold font-mono" style={{ color }}>{cant}</span>
-                  <span className="text-xs text-slate-500 font-medium w-9 text-right">({pct}%)</span>
+                  <div className={`w-3 h-3 rounded-full ${bg} shrink-0 border border-slate-300`} />
+                  <span className="text-xs font-semibold text-slate-700 flex-1 truncate">{label}</span>
+                  <span className="text-xs sm:text-sm font-bold font-mono shrink-0" style={{ color }}>{cant}</span>
+                  <span className="text-[11px] text-slate-500 font-medium shrink-0">({pct}%)</span>
                 </button>
               );
             })}
           </div>
         </div>
 
-        {/* Acciones rápidas */}
-        <div className="grid grid-cols-3 gap-3">
+        {/* Acciones rápidas (Responsive: Stack on narrow mobile, horizontal on sm+) */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3">
           {[
-            { label: "Nuevo Pedido", icon: "add_circle", pagina: "nuevo-pedido" as const, color: "text-[#E63946]", bg: "bg-red-100 border-red-200" },
-            { label: "Ver Pedidos", icon: "receipt_long", pagina: "pedidos" as const, color: "text-[#1D3557]", bg: "bg-blue-100 border-blue-200" },
-            { label: "Productos", icon: "inventory_2", pagina: "productos" as const, color: "text-emerald-800", bg: "bg-emerald-100 border-emerald-200" },
+            { label: "Nuevo Pedido", desc: "Registrar venta", icon: "add_circle", pagina: "nuevo-pedido" as const, color: "text-[#E63946]", bg: "bg-red-50 border-red-200" },
+            { label: "Ver Pedidos", desc: "Historial completo", icon: "receipt_long", pagina: "pedidos" as const, color: "text-[#1D3557]", bg: "bg-blue-50 border-blue-200" },
+            { label: "Inventario", desc: "Stock de prendas", icon: "inventory_2", pagina: "productos" as const, color: "text-emerald-800", bg: "bg-emerald-50 border-emerald-200" },
           ].map((acc) => (
             <button
               key={acc.label}
               onClick={() => navegarA(acc.pagina)}
-              className={`bg-white rounded-3xl p-4 flex flex-col items-center gap-2 shadow-sm border ${acc.bg} hover:shadow-md active:scale-95 transition-all`}
+              className={`bg-white rounded-2xl sm:rounded-3xl p-3 sm:p-4 flex flex-row sm:flex-col items-center justify-start sm:justify-center gap-3 sm:gap-2 shadow-sm border ${acc.bg} hover:shadow-md active:scale-98 transition-all text-left sm:text-center`}
             >
-              <div className="w-12 h-12 rounded-2xl flex items-center justify-center bg-slate-50 border border-slate-200 shadow-inner">
-                <span className={`material-icons ${acc.color}`} style={{ fontSize: "28px" }}>{acc.icon}</span>
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl flex items-center justify-center bg-slate-50 border border-slate-200 shadow-inner shrink-0">
+                <span className={`material-icons ${acc.color}`} style={{ fontSize: "24px" }}>{acc.icon}</span>
               </div>
-              <span className="text-xs font-bold text-slate-800 leading-tight text-center">{acc.label}</span>
+              <div className="flex flex-col">
+                <span className="text-xs sm:text-sm font-bold text-slate-900 leading-tight">{acc.label}</span>
+                <span className="text-[11px] text-slate-500 font-medium mt-0.5">{acc.desc}</span>
+              </div>
             </button>
           ))}
         </div>
 
-        {/* Últimos pedidos — con cambio de estado directo desde el dashboard */}
+        {/* Últimos pedidos — Card View en Móvil (<640px) y Tabla en Tablet/Desktop (>=640px) */}
         <div className="bg-white rounded-3xl shadow-sm overflow-hidden border border-slate-200">
-          <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100 bg-slate-50/50">
+          <div className="flex items-center justify-between px-4 sm:px-5 py-3.5 sm:py-4 border-b border-slate-100 bg-slate-50/50">
             <div className="flex items-center gap-2">
-              <h2 className="font-bold text-base text-slate-900">Últimos Pedidos</h2>
+              <h2 className="font-bold text-sm sm:text-base text-slate-900">Últimos Pedidos</h2>
               <InfoTooltip texto="Pedidos más recientes, ordenados por fecha de creación. Toca el icono de editar para cambiar el estado sin salir del dashboard." />
             </div>
             <button onClick={() => navegarA("pedidos")} className="text-xs text-[#E63946] font-bold hover:underline flex items-center gap-1 bg-red-50 px-2.5 py-1 rounded-xl border border-red-100">
               Ver todos <span className="material-icons" style={{ fontSize: "16px" }}>chevron_right</span>
             </button>
           </div>
-          <div className="overflow-x-auto">
+
+          {/* VISTA MÓVIL: Tarjetas legibles en pantallas estrechas (<640px) */}
+          <div className="block sm:hidden divide-y divide-slate-100">
+            {ultimosPedidos.map((pedido) => (
+              <div key={pedido.id} className="p-3.5 space-y-2.5">
+                <div className="flex items-start justify-between gap-2">
+                  <div>
+                    <div className="flex items-center gap-1.5 mb-1">
+                      <span className="font-mono text-xs font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded border border-slate-200">{pedido.numero}</span>
+                      <span className="text-xs text-slate-500 font-normal">{pedido.fecha}</span>
+                    </div>
+                    <div className="text-sm font-bold text-slate-900">{pedido.cliente.nombre}</div>
+                  </div>
+                  <div className="text-right">
+                    <MontoPrivado valor={pedido.total} privacidad={privacidad} className="text-sm font-bold font-mono text-slate-900" />
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between gap-2 pt-1">
+                  <div className="flex-1">
+                    {editandoId === pedido.id ? (
+                      <select
+                        value={pedido.estado}
+                        onChange={(e) => handleCambioEstado(pedido.id, e.target.value as EstadoPedido)}
+                        onBlur={() => setEditandoId(null)}
+                        autoFocus
+                        className="text-xs font-semibold border-2 border-[#E63946] rounded-xl px-2 py-1.5 focus:outline-none bg-white shadow-md w-full"
+                      >
+                        {(["Recibido", "Preparación", "Camino", "Entregado", "Cancelado"] as EstadoPedido[]).map((e) => (
+                          <option key={e}>{e}</option>
+                        ))}
+                      </select>
+                    ) : (
+                      <Badge estado={pedido.estado as EstadoPedido} enRiesgo={estaEnRiesgo(pedido)} />
+                    )}
+                  </div>
+                  <button
+                    onClick={() => setEditandoId(editandoId === pedido.id ? null : pedido.id)}
+                    className="p-2 rounded-xl bg-slate-100 hover:bg-[#0F223D] hover:text-white text-slate-700 transition-colors border border-slate-200 shrink-0 flex items-center gap-1 text-xs font-semibold"
+                    aria-label="Cambiar estado"
+                    title="Cambiar estado del pedido"
+                  >
+                    <span className="material-icons" style={{ fontSize: "16px" }}>edit</span>
+                    <span>Estado</span>
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* VISTA TABLET/DESKTOP: Tabla completa (>=640px) */}
+          <div className="hidden sm:block overflow-x-auto">
             <table className="w-full">
               <thead>
                 <tr className="bg-slate-100 text-slate-700">
@@ -427,7 +481,7 @@ export default function Dashboard() {
                   <tr key={pedido.id} className={`transition-colors hover:bg-blue-50/40 ${i < ultimosPedidos.length - 1 ? "border-b border-slate-100" : ""}`}>
                     <td className="px-4 py-3.5 font-mono text-xs font-semibold text-slate-700">{pedido.numero}</td>
                     <td className="px-4 py-3.5">
-                      <div className="text-sm font-semibold text-slate-900 max-w-[140px] truncate">{pedido.cliente.nombre}</div>
+                      <div className="text-sm font-semibold text-slate-900 max-w-[180px] truncate">{pedido.cliente.nombre}</div>
                       <div className="text-xs font-normal text-slate-500 mt-0.5">{pedido.fecha}</div>
                     </td>
                     <td className="px-4 py-3.5 text-right">
@@ -469,14 +523,14 @@ export default function Dashboard() {
 
       </div>
 
-      {/* Floating Action Button */}
+      {/* Floating Action Button (Comfortable placement with high contrast ring) */}
       <button
         onClick={() => navegarA("nuevo-pedido")}
-        className="fixed bottom-20 right-4 bg-[#E63946] hover:bg-[#C62828] active:scale-95 text-white w-16 h-16 rounded-full shadow-2xl shadow-red-500/50 flex items-center justify-center transition-all z-30 ring-4 ring-white"
+        className="fixed bottom-20 right-4 sm:bottom-8 sm:right-8 bg-[#E63946] hover:bg-[#C62828] active:scale-95 text-white w-14 h-14 sm:w-16 sm:h-16 rounded-full shadow-2xl shadow-red-500/50 flex items-center justify-center transition-all z-30 ring-4 ring-white"
         aria-label="Nuevo pedido"
         title="Crear un nuevo pedido"
       >
-        <span className="material-icons text-3xl font-bold">add</span>
+        <span className="material-icons text-2xl sm:text-3xl font-bold">add</span>
       </button>
     </div>
   );
