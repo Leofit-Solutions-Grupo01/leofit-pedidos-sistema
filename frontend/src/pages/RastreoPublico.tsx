@@ -69,7 +69,7 @@ export default function RastreoPublico() {
           </p>
 
           {/* Formulario de Búsqueda */}
-          <form onSubmit={handleBuscar} className="mt-5 flex gap-2 max-w-md mx-auto">
+          <form onSubmit={handleBuscar} className="mt-5 flex flex-col sm:flex-row gap-2.5 max-w-md mx-auto">
             <input
               type="text"
               value={codigoBusqueda}
@@ -79,7 +79,7 @@ export default function RastreoPublico() {
             />
             <button
               type="submit"
-              className="px-6 py-3.5 bg-[#E63946] hover:bg-[#C62828] active:scale-95 text-white font-bold rounded-2xl transition-all flex items-center gap-1.5 shadow-md shadow-red-500/30"
+              className="px-6 py-3.5 bg-[#E63946] hover:bg-[#C62828] active:scale-95 text-white font-bold rounded-2xl transition-all flex items-center justify-center gap-1.5 shadow-md shadow-red-500/30 shrink-0"
             >
               <span className="material-icons" style={{ fontSize: "20px" }}>search</span>
               <span>Rastrear</span>

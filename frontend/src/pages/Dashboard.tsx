@@ -229,26 +229,26 @@ export default function Dashboard() {
               <span className="text-xs font-bold text-white tracking-wide">EN VIVO</span>
             </div>
           </div>
-          <div className="flex items-end justify-between relative pt-2">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 relative pt-2">
             <div>
-              <p className="text-slate-300 text-sm font-medium mb-1">Ingresos totales cobrados</p>
+              <p className="text-slate-300 text-xs sm:text-sm font-medium mb-1">Ingresos totales cobrados</p>
               <MontoPrivado
                 valor={ingresosTotal}
                 privacidad={privacidad}
-                className={`${modoAccesible ? "text-4xl" : "text-3xl"} font-extrabold font-display text-white leading-none block`}
+                className={`${modoAccesible ? "text-3xl sm:text-4xl" : "text-2xl sm:text-3xl"} font-extrabold font-display text-white leading-none block`}
               />
               <p className="text-slate-300 text-xs font-normal mt-2">
                 {pedidos.filter((p) => p.estado === "Entregado").length} pedidos entregados · {pedidos.filter((p) => p.estado === "Cancelado").length} cancelados
               </p>
             </div>
-            <div className="text-right">
-              <p className="text-slate-300 text-sm font-medium mb-1">Hoy</p>
+            <div className="sm:text-right border-t sm:border-t-0 border-white/10 pt-3 sm:pt-0">
+              <p className="text-slate-300 text-xs sm:text-sm font-medium mb-1">Hoy</p>
               <MontoPrivado
                 valor={ingresosHoy}
                 privacidad={privacidad}
-                className={`${modoAccesible ? "text-3xl" : "text-2xl"} font-extrabold font-display block ${ingresosHoy > 0 ? "text-emerald-400" : "text-slate-400"}`}
+                className={`${modoAccesible ? "text-2xl sm:text-3xl" : "text-xl sm:text-2xl"} font-extrabold font-display block ${ingresosHoy > 0 ? "text-emerald-400" : "text-slate-400"}`}
               />
-              <p className="text-slate-300 text-xs font-normal mt-2">
+              <p className="text-slate-300 text-xs font-normal mt-1 sm:mt-2">
                 {pedidosHoy.length} pedido{pedidosHoy.length !== 1 ? "s" : ""}
               </p>
             </div>
