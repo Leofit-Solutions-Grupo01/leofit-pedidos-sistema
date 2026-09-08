@@ -90,44 +90,23 @@ export default function Navbar() {
             })}
           </nav>
 
-          {/* 3. SECCIÓN DERECHA: Controles de Preferencias y Usuario */}
+          {/* 3. SECCIÓN DERECHA: Controles de Accesibilidad y Usuario */}
           <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
             
-            {/* Grupo de Herramientas Rápidas */}
-            <div className="flex items-center bg-slate-800/70 p-0.5 sm:p-1 rounded-xl sm:rounded-2xl border border-slate-700/60 gap-0.5 sm:gap-1">
-              
-              {/* Botón Accesibilidad: Tamaño y Contraste */}
-              <button
-                onClick={toggleAccesible}
-                className={`p-1.5 sm:px-2.5 sm:py-1.5 rounded-lg sm:rounded-xl text-xs font-bold flex items-center gap-1 transition-all ${
-                  modoAccesible
-                    ? "bg-[#F59E0B] text-slate-950 shadow-md ring-1 ring-amber-300"
-                    : "text-slate-300 hover:text-white hover:bg-white/10"
-                }`}
-                aria-label={modoAccesible ? "Desactivar modo vista grande" : "Activar modo vista grande"}
-                title={modoAccesible ? "Modo Vista Grande Activado" : "Activar modo letra grande"}
-              >
-                <span className="material-icons" style={{ fontSize: "16px" }}>format_size</span>
-                <span className="hidden sm:inline">{modoAccesible ? "A++" : "A+"}</span>
-              </button>
-
-              {/* Botón Modo Privacidad Montos */}
-              <button
-                onClick={togglePrivacidad}
-                className={`p-1.5 sm:px-2.5 sm:py-1.5 rounded-lg sm:rounded-xl text-xs font-bold flex items-center gap-1 transition-all ${
-                  privacidad
-                    ? "bg-[#E63946] text-white shadow-md"
-                    : "text-slate-300 hover:text-white hover:bg-white/10"
-                }`}
-                aria-label={privacidad ? "Mostrar cifras en Soles" : "Ocultar cifras en Soles (Modo Privacidad)"}
-                title={privacidad ? "Montos ocultos (Privado)" : "Ocultar montos de ventas"}
-              >
-                <span className="material-icons" style={{ fontSize: "16px" }}>
-                  {privacidad ? "visibility_off" : "visibility"}
-                </span>
-                <span className="hidden lg:inline">{privacidad ? "Oculto" : "Visible"}</span>
-              </button>
-            </div>
+            {/* Botón Accesibilidad: Tamaño y Contraste */}
+            <button
+              onClick={toggleAccesible}
+              className={`px-2.5 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1 transition-all border ${
+                modoAccesible
+                  ? "bg-[#F59E0B] text-slate-950 border-amber-300 shadow-md ring-1 ring-amber-300"
+                  : "bg-slate-800/70 border-slate-700/60 text-slate-300 hover:text-white hover:bg-slate-700/80"
+              }`}
+              aria-label={modoAccesible ? "Desactivar modo vista grande" : "Activar modo vista grande"}
+              title={modoAccesible ? "Modo Vista Grande Activado" : "Activar modo letra grande"}
+            >
+              <span className="material-icons" style={{ fontSize: "16px" }}>format_size</span>
+              <span>{modoAccesible ? "A++ Grande" : "A+ Vista"}</span>
+            </button>
 
             {/* Cápsula de Usuario / Menú Perfil */}
             <div className="relative" ref={menuRef}>
@@ -163,19 +142,6 @@ export default function Navbar() {
                   >
                     <span className="material-icons text-amber-400" style={{ fontSize: "16px" }}>format_size</span>
                     <span>{modoAccesible ? "Reducir tamaño fuente" : "Aumentar tamaño fuente"}</span>
-                  </button>
-
-                  <button
-                    onClick={() => {
-                      setMenuUsuarioAbierto(false);
-                      togglePrivacidad();
-                    }}
-                    className="w-full flex items-center gap-2 px-3 py-2 text-xs font-medium text-slate-300 hover:text-white hover:bg-white/10 rounded-xl transition-colors text-left"
-                  >
-                    <span className="material-icons text-blue-400" style={{ fontSize: "16px" }}>
-                      {privacidad ? "visibility" : "visibility_off"}
-                    </span>
-                    <span>{privacidad ? "Mostrar montos" : "Ocultar montos"}</span>
                   </button>
 
                   <div className="my-1 border-t border-slate-700/60" />

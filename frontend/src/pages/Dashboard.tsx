@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { useApp } from "../context/AppContext";
 import Badge from "../components/common/Badge";
-import MontoPrivado from "../components/common/MontoPrivado";
 import { EstadoPedido, Pedido, estaEnRiesgo, calcularIngresos } from "../data/mockData";
 
 // Hook: anima el número desde 0 hasta el valor objetivo
@@ -121,10 +120,12 @@ function topProductos(pedidos: Pedido[]) {
 }
 
 export default function Dashboard() {
-  const { pedidos, productos, navegarA, navegarAConFiltro, actualizarEstadoPedido, privacidad, modoAccesible } = useApp();
+  const { pedidos, productos, navegarA, navegarAConFiltro, actualizarEstadoPedido, modoAccesible } = useApp();
   const isOnline = useOnlineStatus();
   const [editandoId, setEditandoId] = useState<string | null>(null);
   const [ahora, setAhora] = useState(new Date());
+  const [ocultarTotal, setOcultarTotal] = useState(false);
+  const [ocultarHoy, setOcultarHoy] = useState(false);
 
   // Reloj en vivo
   useEffect(() => {
@@ -231,23 +232,57 @@ export default function Dashboard() {
           </div>
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 relative pt-1 sm:pt-2">
             <div>
-              <p className="text-slate-300 text-xs sm:text-sm font-medium mb-1">Ingresos totales cobrados</p>
-              <MontoPrivado
-                valor={ingresosTotal}
-                privacidad={privacidad}
-                className={`${modoAccesible ? "text-3xl sm:text-4xl" : "text-2xl sm:text-3xl"} font-extrabold font-display text-white leading-none block`}
-              />
+              <div className="flex items-center gap-1.5 mb-1">
+                <p className="text-slate-300 text-xs sm:text-sm font-medium">Ingresos totales cobrados</p>
+                <button
+                  type="button"
+                  onClick={() => setOcultarTotal((v) => !v)}
+                  className="text-slate-400 hover:text-white p-0.5 rounded-md hover:bg-white/10 transition-colors flex items-center"
+                  title={ocultarTotal ? "Mostrar ingresos totales" : "Ocultar ingresos totales"}
+                  aria-label={ocultarTotal ? "Mostrar ingresos totales" : "Ocultar ingresos totales"}
+                >
+                  <span className="material-icons" style={{ fontSize: "16px" }}>
+                    {ocultarTotal ? "visibility_off" : "visibility"}
+                  </span>
+                </button>
+              </div>
+              {ocultarTotal ? (
+                <span className={`${modoAccesible ? "text-3xl sm:text-4xl" : "text-2xl sm:text-3xl"} font-extrabold font-display text-slate-400 leading-none block tracking-widest`}>
+                  ••••••
+                </span>
+              ) : (
+                <span className={`${modoAccesible ? "text-3xl sm:text-4xl" : "text-2xl sm:text-3xl"} font-extrabold font-display text-white leading-none block`}>
+                  S/{ingresosTotal.toFixed(2)}
+                </span>
+              )}
               <p className="text-slate-300 text-xs font-normal mt-2">
                 {pedidos.filter((p) => p.estado === "Entregado").length} pedidos entregados · {pedidos.filter((p) => p.estado === "Cancelado").length} cancelados
               </p>
             </div>
             <div className="sm:text-right border-t sm:border-t-0 border-white/10 pt-3 sm:pt-0">
-              <p className="text-slate-300 text-xs sm:text-sm font-medium mb-1">Hoy</p>
-              <MontoPrivado
-                valor={ingresosHoy}
-                privacidad={privacidad}
-                className={`${modoAccesible ? "text-2xl sm:text-3xl" : "text-xl sm:text-2xl"} font-extrabold font-display block ${ingresosHoy > 0 ? "text-emerald-400" : "text-slate-400"}`}
-              />
+              <div className="flex items-center sm:justify-end gap-1.5 mb-1">
+                <p className="text-slate-300 text-xs sm:text-sm font-medium">Hoy</p>
+                <button
+                  type="button"
+                  onClick={() => setOcultarHoy((v) => !v)}
+                  className="text-slate-400 hover:text-white p-0.5 rounded-md hover:bg-white/10 transition-colors flex items-center"
+                  title={ocultarHoy ? "Mostrar ingresos de hoy" : "Ocultar ingresos de hoy"}
+                  aria-label={ocultarHoy ? "Mostrar ingresos de hoy" : "Ocultar ingresos de hoy"}
+                >
+                  <span className="material-icons" style={{ fontSize: "16px" }}>
+                    {ocultarHoy ? "visibility_off" : "visibility"}
+                  </span>
+                </button>
+              </div>
+              {ocultarHoy ? (
+                <span className={`${modoAccesible ? "text-2xl sm:text-3xl" : "text-xl sm:text-2xl"} font-extrabold font-display text-slate-400 block tracking-widest`}>
+                  ••••••
+                </span>
+              ) : (
+                <span className={`${modoAccesible ? "text-2xl sm:text-3xl" : "text-xl sm:text-2xl"} font-extrabold font-display block ${ingresosHoy > 0 ? "text-emerald-400" : "text-slate-400"}`}>
+                  S/{ingresosHoy.toFixed(2)}
+                </span>
+              )}
               <p className="text-slate-300 text-xs font-normal mt-1 sm:mt-2">
                 {pedidosHoy.length} pedido{pedidosHoy.length !== 1 ? "s" : ""}
               </p>
@@ -428,7 +463,7 @@ export default function Dashboard() {
                     <div className="text-sm font-bold text-slate-900">{pedido.cliente.nombre}</div>
                   </div>
                   <div className="text-right">
-                    <MontoPrivado valor={pedido.total} privacidad={privacidad} className="text-sm font-bold font-mono text-slate-900" />
+                    <span className="text-sm font-bold font-mono text-slate-900">S/{pedido.total.toFixed(2)}</span>
                   </div>
                 </div>
 
@@ -485,7 +520,7 @@ export default function Dashboard() {
                       <div className="text-xs font-normal text-slate-500 mt-0.5">{pedido.fecha}</div>
                     </td>
                     <td className="px-4 py-3.5 text-right">
-                      <MontoPrivado valor={pedido.total} privacidad={privacidad} className="text-sm font-bold font-mono text-slate-900" />
+                      <span className="text-sm font-bold font-mono text-slate-900">S/{pedido.total.toFixed(2)}</span>
                     </td>
                     <td className="px-4 py-3.5">
                       {editandoId === pedido.id ? (
