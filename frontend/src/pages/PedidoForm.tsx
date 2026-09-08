@@ -335,8 +335,8 @@ export default function PedidoForm() {
           </div>
 
           {items.length > 0 ? (
-            <div className="border-2 border-slate-200 rounded-2xl overflow-hidden shadow-inner">
-              <table className="w-full">
+            <div className="border-2 border-slate-200 rounded-2xl overflow-x-auto shadow-inner">
+              <table className="w-full min-w-[340px]">
                 <thead>
                   <tr className="bg-slate-100 text-slate-700">
                     <th className="px-4 py-3 text-left text-xs font-semibold uppercase">Prenda</th>
@@ -397,7 +397,7 @@ export default function PedidoForm() {
                 </div>
                 <div className="flex items-center justify-between bg-[#0F223D] rounded-2xl px-5 py-4 text-white shadow-md">
                   <span className="text-base font-semibold text-slate-200">Total a cobrar</span>
-                  <span className="text-3xl font-extrabold font-display text-amber-400">S/{total.toFixed(2)}</span>
+                  <span className="text-2xl sm:text-3xl font-extrabold font-display text-amber-400">S/{total.toFixed(2)}</span>
                 </div>
               </div>
             </div>
@@ -428,16 +428,16 @@ export default function PedidoForm() {
         </div>
 
         {/* Actions */}
-        <div className="flex gap-4">
+        <div className="flex flex-col-reverse sm:flex-row gap-3 sm:gap-4">
           <button
             onClick={() => navegarA("dashboard")}
-            className="flex-1 py-4 border-2 border-slate-300 text-slate-700 font-bold text-base rounded-2xl hover:bg-slate-100 transition-colors shadow-sm"
+            className="w-full sm:flex-1 py-3.5 sm:py-4 border-2 border-slate-300 text-slate-700 font-bold text-base rounded-2xl hover:bg-slate-100 transition-colors shadow-sm"
           >
             Cancelar
           </button>
           <button
             onClick={handleGuardar}
-            className="flex-[2] py-4 bg-emerald-700 hover:bg-emerald-800 active:scale-[0.98] text-white font-bold text-base rounded-2xl transition-all flex items-center justify-center gap-2 shadow-xl shadow-emerald-700/30 ring-2 ring-white"
+            className="w-full sm:flex-[2] py-3.5 sm:py-4 bg-emerald-700 hover:bg-emerald-800 active:scale-[0.98] text-white font-bold text-base rounded-2xl transition-all flex items-center justify-center gap-2 shadow-xl shadow-emerald-700/30 ring-2 ring-white"
           >
             <span className="material-icons" style={{ fontSize: "22px" }}>save</span>
             Guardar Pedido
