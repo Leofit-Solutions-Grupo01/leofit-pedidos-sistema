@@ -9,7 +9,8 @@
 import { useState, useMemo, useEffect } from "react";
 import { useApp } from "../context/AppContext";
 import Badge from "../components/common/Badge";
-import { EstadoPedido, estaEnRiesgo } from "../data/mockData";
+import ReciboModal from "../components/common/ReciboModal";
+import { EstadoPedido, estaEnRiesgo, Pedido } from "../data/mockData";
 
 const ESTADOS: (EstadoPedido | "Todos")[] = ["Todos", "Recibido", "Preparación", "Camino", "Entregado", "Cancelado"];
 const POR_PAGINA = 10;
@@ -23,6 +24,7 @@ export default function PedidosLista() {
   const [pagina, setPagina] = useState(1);
   const [editandoId, setEditandoId] = useState<string | null>(null);
   const [expandidoId, setExpandidoId] = useState<string | null>(null);
+  const [pedidoRecibo, setPedidoRecibo] = useState<Pedido | null>(null);
 
   // Aplica el filtro inicial que viene del dashboard
   useEffect(() => {
@@ -307,6 +309,46 @@ export default function PedidosLista() {
                             <p className="text-xs sm:text-sm font-normal text-amber-900 leading-relaxed">{pedido.notas}</p>
                           </div>
                         )}
+                        {/* Botones de Recibo PDF y Rótulo */}
+                        <div className="pt-2 border-t border-slate-200 grid grid-cols-1 sm:grid-cols-2 gap-2">
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setPedidoRecibo(pedido);
+                            }}
+                            className="flex items-center justify-center gap-1.5 bg-slate-900 hover:bg-slate-800 text-white text-xs sm:text-sm font-bold px-3.5 py-2.5 rounded-2xl shadow-sm transition-all"
+                          >
+                            <span className="material-icons" style={{ fontSize: "16px" }}>receipt_long</span>
+                            <span>Ver Recibo / Imprimir PDF</span>
+                          </button>
+
+                          {pedido.tipoEnvio === "Nacional" ? (
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setPedidoRecibo(pedido);
+                              }}
+                              className="flex items-center justify-center gap-1.5 bg-blue-700 hover:bg-blue-800 text-white text-xs sm:text-sm font-bold px-3.5 py-2.5 rounded-2xl shadow-sm transition-all"
+                            >
+                              <span className="material-icons" style={{ fontSize: "16px" }}>local_shipping</span>
+                              <span>Rótulo Encomienda ({pedido.agenciaEncomienda || "Shalom"})</span>
+                            </button>
+                          ) : (
+                            <a
+                              href={`https://wa.me/51${pedido.cliente.telefono.replace(/\D/g, "")}?text=${encodeURIComponent(`Hola ${pedido.cliente.nombre}, te enviamos la confirmación de tu pedido ${pedido.numero} de LeoFit. Puedes rastrearlo aquí: https://leofit.com/rastreo?codigo=${pedido.numero}`)}`}
+                              target="_blank"
+                              rel="noreferrer"
+                              onClick={(e) => e.stopPropagation()}
+                              className="flex items-center justify-center gap-1.5 bg-emerald-700 hover:bg-emerald-800 text-white text-xs sm:text-sm font-bold px-3.5 py-2.5 rounded-2xl shadow-sm transition-all"
+                            >
+                              <span className="material-icons" style={{ fontSize: "16px" }}>chat</span>
+                              <span>Enviar Resumen WhatsApp</span>
+                            </a>
+                          )}
+                        </div>
+
                         {/* Status change */}
                         {pedido.estado !== "Entregado" && pedido.estado !== "Cancelado" && (
                           <div className="pt-2">
@@ -362,6 +404,15 @@ export default function PedidosLista() {
             </button>
           </div>
         )}
+
+        {/* Modal de Recibo / Rótulo de Encomienda */}
+        {pedidoRecibo && (
+          <ReciboModal
+            pedido={pedidoRecibo}
+            onClose={() => setPedidoRecibo(null)}
+          />
+        )}
+
       </div>
     </div>
   );

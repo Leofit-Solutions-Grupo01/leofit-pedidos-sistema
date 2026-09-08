@@ -9,6 +9,7 @@
 import { useState } from "react";
 import { useApp } from "../context/AppContext";
 import Badge from "../components/common/Badge";
+import ReciboModal from "../components/common/ReciboModal";
 import { Pedido, estaEnRiesgo } from "../data/mockData";
 
 const PASOS_ESTADO = [
@@ -25,6 +26,7 @@ export default function RastreoPublico() {
     return pedidos.find((p) => p.numero === "LFT-004") || pedidos[0] || null;
   });
   const [errorBusqueda, setErrorBusqueda] = useState("");
+  const [mostrarRecibo, setMostrarRecibo] = useState(false);
 
   const handleBuscar = (e: React.FormEvent) => {
     e.preventDefault();
@@ -340,22 +342,37 @@ export default function RastreoPublico() {
               </div>
             </div>
 
-            {/* Botón de Ayuda por WhatsApp */}
-            <div className="bg-emerald-50 border border-emerald-200 rounded-3xl p-4 sm:p-5 text-center shadow-sm">
-              <p className="text-xs sm:text-sm font-bold text-emerald-950 mb-1">¿Tienes dudas o necesitas reprogramar la entrega?</p>
-              <p className="text-[11px] sm:text-xs text-emerald-800 font-normal mb-3">Víctor y el equipo de atención están listos para ayudarte.</p>
+            {/* Botones de Acción y Recibo PDF */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+              <button
+                type="button"
+                onClick={() => setMostrarRecibo(true)}
+                className="flex items-center justify-center gap-2 bg-[#0F223D] hover:bg-[#1E293B] text-white font-bold px-4 py-3 rounded-2xl text-xs sm:text-sm shadow-md transition-all active:scale-95"
+              >
+                <span className="material-icons" style={{ fontSize: "18px" }}>receipt_long</span>
+                <span>Descargar / Imprimir Recibo PDF</span>
+              </button>
+
               <a
                 href={`https://wa.me/51987654321?text=${encodeURIComponent(`Hola LeoFit, deseo consultar sobre mi pedido ${pedidoEncontrado.numero}`)}`}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-2 bg-emerald-700 hover:bg-emerald-800 text-white font-bold px-4 sm:px-5 py-2.5 sm:py-3 rounded-2xl text-xs sm:text-sm transition-all shadow-md shadow-emerald-700/20"
+                className="flex items-center justify-center gap-2 bg-emerald-700 hover:bg-emerald-800 text-white font-bold px-4 py-3 rounded-2xl text-xs sm:text-sm transition-all shadow-md shadow-emerald-700/20 active:scale-95"
               >
                 <span className="material-icons" style={{ fontSize: "18px" }}>chat</span>
-                Consultar por WhatsApp
+                <span>Consultar por WhatsApp</span>
               </a>
             </div>
 
           </div>
+        )}
+
+        {/* Modal de Recibo PDF */}
+        {mostrarRecibo && pedidoEncontrado && (
+          <ReciboModal
+            pedido={pedidoEncontrado}
+            onClose={() => setMostrarRecibo(false)}
+          />
         )}
 
       </div>
