@@ -1,3 +1,12 @@
+# -*- coding: utf-8 -*-
+"""
+@file generate_c4_diagram.py
+@description Generador automático del diagrama C4 de Arquitectura de Contenedores en 300 DPI
+@project LeoFit Pedidos Sistema (UTP - Curso Integrador II)
+@author Lady Luz Loayza Rodriguez (@LadyyLuz) <168585420+luzylay@users.noreply.github.com>
+@copyright (c) 2026 Grupo 01 - UTP. All rights reserved.
+"""
+
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 import os

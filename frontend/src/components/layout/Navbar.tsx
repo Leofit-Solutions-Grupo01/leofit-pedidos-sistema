@@ -1,3 +1,11 @@
+/**
+ * @file Navbar.tsx
+ * @description Barra de navegación superior y barra móvil inferior con créditos de desarrollo
+ * @project LeoFit Pedidos Sistema (UTP - Curso Integrador II)
+ * @author Lady Luz Loayza Rodriguez (@LadyyLuz) <168585420+luzylay@users.noreply.github.com>
+ * @copyright (c) 2026 Grupo 01 - UTP. All rights reserved.
+ */
+
 import { useState, useRef, useEffect } from "react";
 import { useApp } from "../../context/AppContext";
 
@@ -117,9 +125,9 @@ export default function Navbar() {
                 aria-label="Menú de usuario"
               >
                 <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-lg sm:rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold text-xs shadow-inner shrink-0">
-                  V
+                  L
                 </div>
-                <span className="text-xs font-semibold text-slate-200 hidden sm:inline">Víctor</span>
+                <span className="text-xs font-semibold text-slate-200 hidden sm:inline">Lady Loayza</span>
                 <span className="material-icons text-slate-400" style={{ fontSize: "15px" }}>
                   {menuUsuarioAbierto ? "expand_less" : "expand_more"}
                 </span>
@@ -127,10 +135,15 @@ export default function Navbar() {
 
               {/* Desplegable de Usuario */}
               {menuUsuarioAbierto && (
-                <div className="absolute right-0 mt-2 w-48 bg-[#0F223D] border border-slate-700 rounded-2xl shadow-2xl p-2 z-50 text-slate-200 animate-in fade-in slide-in-from-top-2">
-                  <div className="px-3 py-2 border-b border-slate-700/60 mb-1">
-                    <p className="text-xs font-semibold text-white">Víctor (Administrador)</p>
-                    <p className="text-[11px] font-normal text-slate-400 truncate">victor@leofit.com</p>
+                <div className="absolute right-0 mt-2 w-56 bg-[#0F223D] border border-slate-700 rounded-2xl shadow-2xl p-2.5 z-50 text-slate-200 animate-in fade-in slide-in-from-top-2">
+                  <div className="px-3 py-2 border-b border-slate-700/60 mb-1 bg-slate-900/50 rounded-xl">
+                    <p className="text-xs font-bold text-white">Lady Luz Loayza Rodriguez</p>
+                    <p className="text-[10px] font-medium text-emerald-400">@LadyyLuz · Scrum Master</p>
+                    <p className="text-[10px] font-normal text-slate-400 truncate">168585420+luzylay@users.noreply.github.com</p>
+                  </div>
+
+                  <div className="px-3 py-1 text-[11px] text-slate-400">
+                    Operador: <strong className="text-slate-200">Víctor Raúl Cárdenas</strong>
                   </div>
 
                   <button
@@ -138,7 +151,7 @@ export default function Navbar() {
                       setMenuUsuarioAbierto(false);
                       toggleAccesible();
                     }}
-                    className="w-full flex items-center gap-2 px-3 py-2 text-xs font-medium text-slate-300 hover:text-white hover:bg-white/10 rounded-xl transition-colors text-left"
+                    className="w-full flex items-center gap-2 px-3 py-2 text-xs font-medium text-slate-300 hover:text-white hover:bg-white/10 rounded-xl transition-colors text-left mt-1"
                   >
                     <span className="material-icons text-amber-400" style={{ fontSize: "16px" }}>format_size</span>
                     <span>{modoAccesible ? "Reducir tamaño fuente" : "Aumentar tamaño fuente"}</span>

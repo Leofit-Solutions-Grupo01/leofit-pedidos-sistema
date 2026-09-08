@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-Generador automático de diagramas de ingeniería en alta resolución (300 DPI)
-para el proyecto LeoFit usando matplotlib:
+@file generate_all_missing_diagrams.py
+@description Generador automático de diagramas de ingeniería en alta resolución (300 DPI) para LeoFit
+@project LeoFit Pedidos Sistema (UTP - Curso Integrador II)
+@author Lady Luz Loayza Rodriguez (@LadyyLuz) <168585420+luzylay@users.noreply.github.com>
+@copyright (c) 2026 Grupo 01 - UTP. All rights reserved.
 1. 06_Lean_Canvas.png
 2. 07_Cronograma_Gantt.png
 3. 08_Tablero_Kanban.png
@@ -346,9 +349,9 @@ def generate_database_erd():
         (4.4, 0.8, 3.5, 3.8, "ORDER_ITEMS", ["PK id : INT", "FK order_id : INT", "FK variant_id : INT", "   quantity : INT", "   unit_price : DECIMAL(10,2)", "   subtotal : DECIMAL(10,2)"]),
         
         (8.3, 5.2, 3.4, 3.0, "USERS", ["PK id : INT", "   name : VARCHAR(100)", "   email : VARCHAR(150) (UK)", "   password_hash : VARCHAR(255)", "   role : ENUM(ADMIN,OPERATOR)"]),
-        (8.3, 0.8, 3.4, 3.8, "ORDERS", ["PK id : INT", "   order_number : VARCHAR(30) (UK)", "FK client_id : INT", "FK user_id : INT", "   status : ENUM(5 ESTADOS)", "   subtotal : DECIMAL(10,2)", "   shipping_cost : DECIMAL(10,2)", "   total_amount : DECIMAL(10,2)"]),
+        (8.3, 0.8, 3.4, 3.8, "ORDERS", ["PK id : INT", "   order_number : VARCHAR(30) (UK)", "FK client_id : INT", "FK user_id : INT", "   status : ENUM(5 ESTADOS)", "   payment_method : ENUM", "   op_number : VARCHAR(50)", "   coupon_code : VARCHAR(30)", "   total_amount : DECIMAL(10,2)"]),
         
-        (12.1, 5.2, 3.4, 3.2, "CLIENTS", ["PK id : INT", "   full_name : VARCHAR(120)", "   phone : VARCHAR(20)", "   address : TEXT", "   district : VARCHAR(80)", "   reference : TEXT"]),
+        (12.1, 5.2, 3.4, 3.2, "CLIENTS", ["PK id : INT", "   dni_ruc : VARCHAR(20)", "   full_name : VARCHAR(120)", "   phone : VARCHAR(20)", "   address : TEXT", "   district : VARCHAR(80)", "   reference : TEXT"]),
         (12.1, 0.8, 3.4, 3.8, "ORDER_STATUS_HISTORY", ["PK id : INT", "FK order_id : INT", "FK user_id : INT", "   previous_status : VARCHAR(30)", "   new_status : VARCHAR(30)", "   changed_at : TIMESTAMP", "   comments : TEXT"])
     ]
     

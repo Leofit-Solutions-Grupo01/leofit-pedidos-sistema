@@ -1,3 +1,11 @@
+/**
+ * @file Dashboard.tsx
+ * @description Tablero de control operativo, métricas de ingresos con privacidad granular y pipeline
+ * @project LeoFit Pedidos Sistema (UTP - Curso Integrador II)
+ * @author Lady Luz Loayza Rodriguez (@LadyyLuz) <168585420+luzylay@users.noreply.github.com>
+ * @copyright (c) 2026 Grupo 01 - UTP. All rights reserved.
+ */
+
 import { useState, useEffect, useCallback } from "react";
 import { useApp } from "../context/AppContext";
 import Badge from "../components/common/Badge";
