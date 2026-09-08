@@ -1,13 +1,14 @@
 import { useState, useRef, useEffect } from "react";
 import { useApp } from "../../context/AppContext";
 
-type NavPagina = "dashboard" | "pedidos" | "nuevo-pedido" | "productos";
+type NavPagina = "dashboard" | "pedidos" | "nuevo-pedido" | "productos" | "rastreo";
 
 const navItems: { label: string; icon: string; pagina: NavPagina; shortcut?: string }[] = [
   { label: "Inicio", icon: "dashboard", pagina: "dashboard" },
   { label: "Pedidos", icon: "receipt_long", pagina: "pedidos" },
   { label: "Nuevo Pedido", icon: "add_circle", pagina: "nuevo-pedido" },
   { label: "Inventario", icon: "inventory_2", pagina: "productos" },
+  { label: "Rastreo", icon: "track_changes", pagina: "rastreo" },
 ];
 
 export default function Navbar() {
