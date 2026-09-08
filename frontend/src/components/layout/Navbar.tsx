@@ -40,7 +40,7 @@ export default function Navbar() {
     <>
       {/* Header Superior Principal */}
       <header className="fixed top-0 left-0 right-0 z-40 bg-[#0F223D]/95 backdrop-blur-md h-16 border-b border-slate-700/60 shadow-xl transition-all">
-        <div className="max-w-6xl mx-auto h-full px-2.5 sm:px-6 flex items-center justify-between gap-1.5 sm:gap-2">
+        <div className="max-w-5xl mx-auto h-full px-3 sm:px-6 flex items-center justify-between gap-2">
           
           {/* 1. SECCIÓN IZQUIERDA: Marca y Contexto */}
           <div
@@ -52,17 +52,17 @@ export default function Navbar() {
             aria-label="Ir al Inicio de LeoFit"
           >
             {/* Isotipo Logo */}
-            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-[#E63946] to-[#C62828] flex items-center justify-center shadow-md shadow-red-500/20 group-hover:scale-105 transition-transform border border-white/20 shrink-0">
-              <span className="font-extrabold font-display text-white text-sm sm:text-lg tracking-wider">LF</span>
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-br from-[#E63946] to-[#C62828] flex items-center justify-center shadow-md shadow-red-500/20 group-hover:scale-105 transition-transform border border-white/20 shrink-0">
+              <span className="font-extrabold font-display text-white text-xs sm:text-sm tracking-wider">LF</span>
             </div>
             
             {/* Logotipo y Subtítulo */}
             <div className="flex flex-col">
               <div className="flex items-baseline leading-none">
-                <span className="font-extrabold font-display text-lg sm:text-2xl text-[#E63946] tracking-tight">LEO</span>
-                <span className="font-extrabold font-display text-lg sm:text-2xl text-white tracking-tight">FIT</span>
+                <span className="font-extrabold font-display text-lg sm:text-xl text-[#E63946] tracking-tight">LEO</span>
+                <span className="font-extrabold font-display text-lg sm:text-xl text-white tracking-tight">FIT</span>
               </div>
-              <span className="text-[10px] sm:text-xs font-semibold text-slate-400 tracking-wider uppercase mt-0.5 hidden sm:inline">
+              <span className="text-[10px] font-semibold text-slate-400 tracking-wider uppercase mt-0.5 hidden md:inline">
                 Gestión de Pedidos
               </span>
             </div>
@@ -76,7 +76,7 @@ export default function Navbar() {
                 <button
                   key={item.pagina}
                   onClick={() => navegarA(item.pagina)}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${
+                  className={`flex items-center gap-1.5 px-2.5 lg:px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all ${
                     activo
                       ? "bg-[#E63946] text-white shadow-md shadow-red-500/30"
                       : "text-slate-300 hover:text-white hover:bg-white/10"
@@ -91,7 +91,7 @@ export default function Navbar() {
           </nav>
 
           {/* 3. SECCIÓN DERECHA: Controles de Preferencias y Usuario */}
-          <div className="flex items-center gap-1 sm:gap-2 shrink-0">
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
             
             {/* Grupo de Herramientas Rápidas */}
             <div className="flex items-center bg-slate-800/70 p-0.5 sm:p-1 rounded-xl sm:rounded-2xl border border-slate-700/60 gap-0.5 sm:gap-1">
@@ -108,7 +108,7 @@ export default function Navbar() {
                 title={modoAccesible ? "Modo Vista Grande Activado" : "Activar modo letra grande"}
               >
                 <span className="material-icons" style={{ fontSize: "16px" }}>format_size</span>
-                <span className="hidden sm:inline">{modoAccesible ? "A++ Grande" : "A+ Vista"}</span>
+                <span className="hidden sm:inline">{modoAccesible ? "A++" : "A+"}</span>
               </button>
 
               {/* Botón Modo Privacidad Montos */}
