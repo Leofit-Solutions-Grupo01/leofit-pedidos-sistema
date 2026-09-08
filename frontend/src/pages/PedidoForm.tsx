@@ -12,7 +12,7 @@ interface ItemTemp {
 }
 
 export default function PedidoForm() {
-  const { productos, pedidos, agregarPedido, navegarA } = useApp();
+  const { productos, pedidos, agregarPedido, navegarA, modoAccesible } = useApp();
   const [nombre, setNombre] = useState("");
   const [telefono, setTelefono] = useState("");
   const [direccion, setDireccion] = useState("");
