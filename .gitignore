@@ -142,3 +142,8 @@ desktop.ini
 *.njsproj
 *.sln
 *.sw?
+
+# Temporary test PDF outputs in frontend
+frontend/*.pdf
+frontend/temp/
+frontend/test-results/

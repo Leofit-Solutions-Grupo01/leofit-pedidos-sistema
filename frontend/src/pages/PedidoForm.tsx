@@ -93,12 +93,17 @@ export default function PedidoForm() {
     setCantidad(1);
   };
 
-  const eliminarItem = (prodId: string) => {
+  const quitarItem = (prodId: string) => {
     setItems(items.filter((i) => i.productoId !== prodId));
   };
+  const eliminarItem = quitarItem;
 
-  const aplicarCupon = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleTipoEnvioChange = (nuevoTipo: TipoEnvio) => {
+    setTipoEnvio(nuevoTipo);
+    setCostoDelivery(nuevoTipo === "Nacional" ? 15 : 8);
+  };
+
+  const handleAplicarCupon = () => {
     setMensajeCupon(null);
     const code = codigoCuponInput.trim().toUpperCase();
     if (!code) {
@@ -115,11 +120,17 @@ export default function PedidoForm() {
     }
   };
 
-  const quitarCupon = () => {
+  const aplicarCupon = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    handleAplicarCupon();
+  };
+
+  const handleRemoverCupon = () => {
     setCuponAplicado(null);
     setCodigoCuponInput("");
     setMensajeCupon(null);
   };
+  const quitarCupon = handleRemoverCupon;
 
   const handleGuardar = () => {
     const errList: string[] = [];
@@ -366,7 +377,7 @@ export default function PedidoForm() {
                   type="text"
                   value={nombre}
                   onChange={(e) => setNombre(e.target.value)}
-                  placeholder="ej. Lady Luz Loayza Rodriguez"
+                  placeholder="ej. Juan Carlos Pérez Rojas"
                   className="w-full px-3.5 sm:px-4 py-2.5 sm:py-3 bg-slate-50 border-2 border-slate-200 rounded-2xl text-sm sm:text-base font-medium text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#0F223D] focus:bg-white transition-all shadow-inner"
                 />
               </div>
@@ -379,7 +390,7 @@ export default function PedidoForm() {
                   maxLength={11}
                   value={dniRuc}
                   onChange={(e) => setDniRuc(e.target.value.replace(/\D/g, ""))}
-                  placeholder="ej. 72217190"
+                  placeholder="ej. 72458910"
                   className="w-full px-3.5 sm:px-4 py-2.5 sm:py-3 bg-slate-50 border-2 border-slate-200 rounded-2xl text-sm sm:text-base font-mono font-medium text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#0F223D] focus:bg-white transition-all shadow-inner"
                 />
               </div>
@@ -397,7 +408,7 @@ export default function PedidoForm() {
                     maxLength={9}
                     value={telefono}
                     onChange={(e) => setTelefono(e.target.value.replace(/\D/g, ""))}
-                    placeholder="960188015"
+                    placeholder="987654321"
                     className="w-full pl-12 pr-4 py-2.5 sm:py-3 bg-slate-50 border-2 border-slate-200 rounded-2xl text-sm sm:text-base font-medium text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#0F223D] focus:bg-white transition-all shadow-inner"
                   />
                 </div>
@@ -410,7 +421,7 @@ export default function PedidoForm() {
                   type="text"
                   value={distrito}
                   onChange={(e) => setDistrito(e.target.value)}
-                  placeholder="ej. Carabayllo, Miraflores, Trujillo"
+                  placeholder="ej. Miraflores, San Borja, Trujillo"
                   className="w-full px-3.5 sm:px-4 py-2.5 sm:py-3 bg-slate-50 border-2 border-slate-200 rounded-2xl text-sm sm:text-base font-medium text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#0F223D] focus:bg-white transition-all shadow-inner"
                 />
               </div>
@@ -424,7 +435,7 @@ export default function PedidoForm() {
                 type="text"
                 value={direccion}
                 onChange={(e) => setDireccion(e.target.value)}
-                placeholder={tipoEnvio === "Nacional" ? "ej. Agencia Shalom - Av. España 1020, Trujillo" : "ej. Jr. Vargas Machuca #332, El Progreso"}
+                placeholder={tipoEnvio === "Nacional" ? "ej. Agencia Shalom - Av. España 1020, Trujillo" : "ej. Av. Las Flores 456, Dpto 301"}
                 className="w-full px-3.5 sm:px-4 py-2.5 sm:py-3 bg-slate-50 border-2 border-slate-200 rounded-2xl text-sm sm:text-base font-medium text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#0F223D] focus:bg-white transition-all shadow-inner"
               />
             </div>
@@ -437,7 +448,7 @@ export default function PedidoForm() {
                 type="text"
                 value={referencia}
                 onChange={(e) => setReferencia(e.target.value)}
-                placeholder="ej. A espaldas de MiBanco, al costado del Hotel Cars, casa portón verde"
+                placeholder="ej. Frente al parque principal, casa de dos pisos con rejas negras"
                 className="w-full px-3.5 sm:px-4 py-2.5 sm:py-3 bg-slate-50 border-2 border-slate-200 rounded-2xl text-sm sm:text-base font-medium text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#0F223D] focus:bg-white transition-all shadow-inner"
               />
             </div>
