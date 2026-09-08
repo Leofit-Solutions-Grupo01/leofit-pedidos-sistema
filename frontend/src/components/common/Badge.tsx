@@ -17,16 +17,16 @@ export default function Badge({ estado, enRiesgo = false }: BadgeProps) {
   const cfg = configs[estado] || configs.Recibido;
   return (
     <span className="inline-flex items-center gap-1.5 flex-wrap">
-      <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-black border ${cfg.bg} ${cfg.text} ${cfg.border} shadow-sm`}>
-        <span className="material-icons" style={{ fontSize: "14px" }}>{cfg.icon}</span>
+      <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold tracking-wide border ${cfg.bg} ${cfg.text} ${cfg.border} shadow-sm`}>
+        <span className="material-icons" style={{ fontSize: "15px" }}>{cfg.icon}</span>
         {cfg.label}
       </span>
       {enRiesgo && (
         <span
-          className="inline-flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-black bg-red-600 text-white border border-red-700 shadow-sm animate-pulse"
+          className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold tracking-wide bg-red-600 text-white border border-red-700 shadow-sm animate-pulse"
           title="Este pedido lleva más de 24 horas sin actualizarse"
         >
-          <span className="material-icons" style={{ fontSize: "14px" }}>warning</span>
+          <span className="material-icons" style={{ fontSize: "15px" }}>warning</span>
           En Riesgo
         </span>
       )}
