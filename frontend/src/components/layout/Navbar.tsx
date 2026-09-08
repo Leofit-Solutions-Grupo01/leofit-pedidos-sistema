@@ -16,14 +16,14 @@ export default function Navbar() {
     <>
       <header className="fixed top-0 left-0 right-0 z-40 bg-[#0F223D] h-16 flex items-center px-4 shadow-lg border-b border-white/10">
         <div className="flex items-baseline cursor-pointer" onClick={() => navegarA("dashboard")}>
-          <span className="font-black text-2xl text-[#E63946] tracking-tight leading-none">LEO</span>
-          <span className="font-black text-2xl text-white tracking-tight leading-none">FIT</span>
+          <span className="font-extrabold font-display text-2xl text-[#E63946] tracking-tight leading-none">LEO</span>
+          <span className="font-extrabold font-display text-2xl text-white tracking-tight leading-none">FIT</span>
         </div>
         <div className="ml-auto flex items-center gap-2">
           {/* Botón de Accesibilidad: Letra Grande / Alto Contraste */}
           <button
             onClick={toggleAccesible}
-            className={`px-2.5 py-1.5 rounded-xl text-xs font-black flex items-center gap-1.5 transition-all shadow-sm ${
+            className={`px-2.5 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all shadow-sm ${
               modoAccesible
                 ? "bg-[#F59E0B] text-slate-950 ring-2 ring-white"
                 : "bg-white/15 text-white hover:bg-white/25"
@@ -37,7 +37,7 @@ export default function Navbar() {
 
           <div className="flex items-center gap-1.5 bg-white/10 px-2.5 py-1.5 rounded-xl">
             <span className="material-icons text-white/80" style={{ fontSize: "18px" }}>account_circle</span>
-            <span className="text-sm font-bold text-white hidden sm:inline">Víctor</span>
+            <span className="text-sm font-semibold text-white hidden sm:inline">Víctor</span>
           </div>
 
           <button
@@ -86,7 +86,7 @@ export default function Navbar() {
               >
                 {item.icon}
               </span>
-              <span className={`text-xs font-black tracking-wide ${activo ? "text-[#E63946]" : "text-slate-200"}`}>
+              <span className={`text-xs font-bold tracking-wide ${activo ? "text-[#E63946]" : "text-slate-200"}`}>
                 {item.label}
               </span>
             </button>

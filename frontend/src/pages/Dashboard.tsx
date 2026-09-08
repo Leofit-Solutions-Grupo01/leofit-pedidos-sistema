@@ -45,15 +45,15 @@ function InfoTooltip({ texto }: { texto: string }) {
         onMouseEnter={() => setVisible(true)}
         onMouseLeave={() => setVisible(false)}
         onTouchStart={() => setVisible(v => !v)}
-        className="ml-1 text-gray-300 hover:text-gray-400 transition-colors"
+        className="ml-1 text-slate-400 hover:text-slate-600 transition-colors"
         aria-label="Más información"
       >
-        <span className="material-icons" style={{ fontSize: "14px" }}>info_outline</span>
+        <span className="material-icons" style={{ fontSize: "15px" }}>info_outline</span>
       </button>
       {visible && (
-        <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-52 bg-[#1D3557] text-white text-[11px] font-medium rounded-xl px-3 py-2 shadow-xl z-50 leading-relaxed pointer-events-none">
+        <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-56 bg-[#0F223D] text-white text-xs font-normal rounded-xl px-3 py-2 shadow-xl z-50 leading-relaxed pointer-events-none border border-slate-700">
           {texto}
-          <span className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-[#1D3557]" />
+          <span className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-[#0F223D]" />
         </span>
       )}
     </span>
@@ -91,16 +91,16 @@ function KpiCard({ label, icon, valor, color, bg, border, tooltip, onClick, aler
       role="button"
       tabIndex={0}
       onKeyDown={(e) => e.key === "Enter" && onClick()}
-      className={`bg-white rounded-2xl p-3 border ${border} shadow-sm text-center w-full transition-all hover:shadow-md active:scale-95 cursor-pointer ${alerta ? "ring-2 ring-[#E63946]/40" : ""}`}
+      className={`bg-white rounded-2xl p-3.5 border ${border} shadow-sm text-center w-full transition-all hover:shadow-md active:scale-95 cursor-pointer ${alerta ? "ring-2 ring-[#E63946]/40" : ""}`}
     >
-      <div className={`inline-flex items-center justify-center w-8 h-8 rounded-xl ${bg} mb-2`}>
-        <span className={`material-icons ${color} ${alerta ? "animate-pulse" : ""}`} style={{ fontSize: "16px" }}>{icon}</span>
+      <div className={`inline-flex items-center justify-center w-9 h-9 rounded-xl ${bg} mb-2`}>
+        <span className={`material-icons ${color} ${alerta ? "animate-pulse" : ""}`} style={{ fontSize: "18px" }}>{icon}</span>
       </div>
-      <div className={`text-2xl font-black ${valor === 0 ? "text-gray-300" : color} leading-none`}>
+      <div className={`text-2xl font-bold font-display ${valor === 0 ? "text-slate-300" : color} leading-none`}>
         {valor === 0 ? "—" : formatMiles(animado)}
       </div>
-      <div className="flex items-center justify-center mt-1">
-        <span className="text-[10px] font-semibold text-gray-400 leading-tight">{label}</span>
+      <div className="flex items-center justify-center mt-1.5">
+        <span className="text-xs font-semibold text-slate-700 leading-tight">{label}</span>
         <InfoTooltip texto={tooltip} />
       </div>
     </div>
@@ -126,7 +126,7 @@ export default function Dashboard() {
   const [editandoId, setEditandoId] = useState<string | null>(null);
   const [ahora, setAhora] = useState(new Date());
 
-  // Reloj en vivo — demuestra que los datos se actualizan sin recargar la página
+  // Reloj en vivo
   useEffect(() => {
     const t = setInterval(() => setAhora(new Date()), 60_000);
     return () => clearInterval(t);
@@ -139,7 +139,6 @@ export default function Dashboard() {
   const ingresosHoy = pedidosHoy.filter((p) => p.estado === "Entregado").reduce((a, p) => a + p.total, 0);
   const ingresosTotal = calcularIngresos(pedidos);
   const productosStockBajo = productos.filter((p) => p.stock <= 5);
-  const top3 = topProductos(pedidos);
   const ultimosPedidos = [...pedidos].slice(0, 5);
 
   const estadosPipeline: { estado: EstadoPedido; label: string; bg: string; color: string }[] = [
@@ -158,7 +157,7 @@ export default function Dashboard() {
       bg: "bg-blue-100",
       border: "border-blue-300",
       filtro: "Todos" as const,
-      tooltip: "Pedidos CREADOS hoy (no entregados). Se reinicia a medianoche. Incluye WhatsApp, llamadas y sistema.",
+      tooltip: "Pedidos CREADOS hoy. Incluye WhatsApp, llamadas y sistema.",
     },
     {
       label: "Pendientes",
@@ -169,7 +168,7 @@ export default function Dashboard() {
       border: pedidosEnRiesgo.length > 0 ? "border-red-400" : "border-amber-300",
       filtro: "Recibido" as EstadoPedido,
       alerta: pedidosEnRiesgo.length > 0,
-      tooltip: "Pedidos en estado Recibido o Preparación. Los que llevan más de 24h se marcan como 'En Riesgo'. Solo Víctor decide cuándo avanzarlos.",
+      tooltip: "Pedidos en estado Recibido o Preparación.",
     },
     {
       label: "En Camino",
@@ -179,7 +178,7 @@ export default function Dashboard() {
       bg: "bg-blue-100",
       border: "border-blue-400",
       filtro: "Camino" as EstadoPedido,
-      tooltip: "Pedidos ya enviados con el delivery. Actualmente el estado se actualiza manualmente. El delivery confirma por WhatsApp.",
+      tooltip: "Pedidos ya enviados con el delivery.",
     },
     {
       label: "Entregados",
@@ -189,7 +188,7 @@ export default function Dashboard() {
       bg: "bg-emerald-100",
       border: "border-emerald-400",
       filtro: "Entregado" as EstadoPedido,
-      tooltip: "Víctor confirma la entrega al recibir notificación del delivery. Si hay reclamo, el pedido puede marcarse como Cancelado.",
+      tooltip: "Pedidos entregados confirmados.",
     },
   ];
 
@@ -207,8 +206,8 @@ export default function Dashboard() {
           <div className="bg-amber-100 border-2 border-amber-400 rounded-2xl px-4 py-3 flex items-center gap-3">
             <span className="material-icons text-amber-800" style={{ fontSize: "24px" }}>wifi_off</span>
             <div>
-              <p className="text-base font-black text-amber-950">Sin conexión a internet</p>
-              <p className="text-sm text-amber-900 font-semibold">Mostrando datos guardados en caché. Los cambios se sincronizarán al reconectarse.</p>
+              <p className="text-base font-bold text-amber-950">Sin conexión a internet</p>
+              <p className="text-sm text-amber-900 font-medium">Mostrando datos guardados en caché. Los cambios se sincronizarán al reconectarse.</p>
             </div>
           </div>
         )}
@@ -217,8 +216,8 @@ export default function Dashboard() {
         <div className="bg-[#0F223D] rounded-3xl p-6 text-white overflow-hidden relative shadow-xl border border-slate-700">
           <div className="flex items-start justify-between mb-4">
             <div>
-              <p className="text-amber-400 text-sm font-black uppercase tracking-wider">{saludo()}, Víctor</p>
-              <p className="text-slate-200 text-sm font-bold mt-1">
+              <p className="text-amber-400 text-xs font-bold uppercase tracking-wider">{saludo()}, Víctor</p>
+              <p className="text-slate-200 text-sm font-medium mt-1">
                 {ahora.toLocaleDateString("es-PE", { weekday: "long", day: "numeric", month: "long" })}
                 {" · "}
                 {ahora.toLocaleTimeString("es-PE", { hour: "2-digit", minute: "2-digit" })}
@@ -227,29 +226,29 @@ export default function Dashboard() {
             {/* indicador "en vivo" */}
             <div className="flex items-center gap-2 bg-white/20 rounded-full px-3 py-1.5 border border-white/30">
               <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
-              <span className="text-xs font-black text-white">EN VIVO</span>
+              <span className="text-xs font-bold text-white tracking-wide">EN VIVO</span>
             </div>
           </div>
           <div className="flex items-end justify-between relative pt-2">
             <div>
-              <p className="text-slate-300 text-sm font-bold mb-1">Ingresos totales cobrados</p>
+              <p className="text-slate-300 text-sm font-medium mb-1">Ingresos totales cobrados</p>
               <MontoPrivado
                 valor={ingresosTotal}
                 privacidad={privacidad}
-                className={`${modoAccesible ? "text-4xl" : "text-3xl"} font-black text-white leading-none block`}
+                className={`${modoAccesible ? "text-4xl" : "text-3xl"} font-extrabold font-display text-white leading-none block`}
               />
-              <p className="text-slate-300 text-xs font-bold mt-2">
+              <p className="text-slate-300 text-xs font-normal mt-2">
                 {pedidos.filter((p) => p.estado === "Entregado").length} pedidos entregados · {pedidos.filter((p) => p.estado === "Cancelado").length} cancelados
               </p>
             </div>
             <div className="text-right">
-              <p className="text-slate-300 text-sm font-bold mb-1">Hoy</p>
+              <p className="text-slate-300 text-sm font-medium mb-1">Hoy</p>
               <MontoPrivado
                 valor={ingresosHoy}
                 privacidad={privacidad}
-                className={`${modoAccesible ? "text-3xl" : "text-2xl"} font-black block ${ingresosHoy > 0 ? "text-emerald-400" : "text-slate-400"}`}
+                className={`${modoAccesible ? "text-3xl" : "text-2xl"} font-extrabold font-display block ${ingresosHoy > 0 ? "text-emerald-400" : "text-slate-400"}`}
               />
-              <p className="text-slate-300 text-xs font-bold mt-2">
+              <p className="text-slate-300 text-xs font-normal mt-2">
                 {pedidosHoy.length} pedido{pedidosHoy.length !== 1 ? "s" : ""}
               </p>
             </div>
@@ -282,14 +281,14 @@ export default function Dashboard() {
                 <span className="material-icons text-white" style={{ fontSize: "22px" }}>warning</span>
               </div>
               <div>
-                <p className="text-base font-black text-red-950">
+                <p className="text-base font-bold text-red-950">
                   {pedidosEnRiesgo.length} pedido{pedidosEnRiesgo.length !== 1 ? "s" : ""} En Riesgo
                 </p>
-                <p className="text-xs text-red-800 font-bold">Llevan más de 24 h sin actualizarse</p>
+                <p className="text-xs text-red-800 font-medium">Llevan más de 24 h sin actualizarse</p>
               </div>
               <button
                 onClick={() => navegarAConFiltro("pedidos", "Recibido")}
-                className="ml-auto text-sm text-red-800 font-black hover:underline flex items-center gap-1 shrink-0 bg-red-100 px-3 py-1.5 rounded-xl border border-red-200"
+                className="ml-auto text-xs text-red-800 font-bold hover:underline flex items-center gap-1 shrink-0 bg-red-100 px-3 py-1.5 rounded-xl border border-red-200"
               >
                 Ver todos
                 <span className="material-icons" style={{ fontSize: "16px" }}>chevron_right</span>
@@ -302,12 +301,12 @@ export default function Dashboard() {
                   <div key={p.id} className="bg-white rounded-2xl px-4 py-3 flex items-center gap-3 border border-red-100 shadow-sm">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
-                        <span className="text-sm font-mono font-black text-slate-700">{p.numero}</span>
-                        <span className="text-base font-black text-slate-950 truncate">{p.cliente.nombre}</span>
+                        <span className="text-xs font-mono font-bold text-slate-700">{p.numero}</span>
+                        <span className="text-sm font-semibold text-slate-900 truncate">{p.cliente.nombre}</span>
                       </div>
-                      {p.notas && <p className="text-xs text-slate-600 font-semibold truncate mt-0.5">{p.notas}</p>}
+                      {p.notas && <p className="text-xs text-slate-600 font-normal truncate mt-0.5">{p.notas}</p>}
                     </div>
-                    <span className="text-xs font-black text-red-800 bg-red-100 border border-red-200 rounded-full px-2.5 py-1 whitespace-nowrap shrink-0">
+                    <span className="text-xs font-bold text-red-800 bg-red-100 border border-red-200 rounded-full px-2.5 py-1 whitespace-nowrap shrink-0">
                       {diasAtraso}d atraso
                     </span>
                     <a
@@ -336,10 +335,10 @@ export default function Dashboard() {
               <span className="material-icons text-white" style={{ fontSize: "22px" }}>inventory</span>
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-base font-black text-amber-950">
+              <p className="text-base font-bold text-amber-950">
                 {productosStockBajo.length} producto{productosStockBajo.length !== 1 ? "s" : ""} con stock bajo
               </p>
-              <p className="text-xs text-amber-900 font-bold truncate">
+              <p className="text-xs text-amber-900 font-medium truncate">
                 {productosStockBajo.map((p) => `${p.nombre} (${p.stock} uds)`).join(", ")}
               </p>
             </div>
@@ -350,7 +349,7 @@ export default function Dashboard() {
         {/* Pipeline de estados */}
         <div className="bg-white rounded-3xl p-5 shadow-sm border border-slate-200">
           <div className="flex items-center gap-2 mb-3">
-            <h2 className="text-base font-black text-slate-900">Pipeline de pedidos activos</h2>
+            <h2 className="text-base font-bold text-slate-900">Pipeline de pedidos activos</h2>
             <InfoTooltip texto="Distribución de todos los pedidos activos por estado. Los cancelados no se contabilizan." />
           </div>
           <div className="flex gap-1 h-3 rounded-full overflow-hidden mb-4 bg-slate-100 border border-slate-200">
@@ -372,9 +371,9 @@ export default function Dashboard() {
                   className="flex items-center gap-2.5 p-2 rounded-xl hover:bg-slate-100 transition-colors text-left border border-transparent hover:border-slate-200"
                 >
                   <div className={`w-3.5 h-3.5 rounded-full ${bg} shrink-0 border border-slate-300`} />
-                  <span className="text-xs font-bold text-slate-700 flex-1">{label}</span>
-                  <span className="text-sm font-black" style={{ color }}>{cant}</span>
-                  <span className="text-xs text-slate-500 font-bold w-9 text-right">({pct}%)</span>
+                  <span className="text-xs font-semibold text-slate-700 flex-1">{label}</span>
+                  <span className="text-sm font-bold font-mono" style={{ color }}>{cant}</span>
+                  <span className="text-xs text-slate-500 font-medium w-9 text-right">({pct}%)</span>
                 </button>
               );
             })}
@@ -396,7 +395,7 @@ export default function Dashboard() {
               <div className="w-12 h-12 rounded-2xl flex items-center justify-center bg-slate-50 border border-slate-200 shadow-inner">
                 <span className={`material-icons ${acc.color}`} style={{ fontSize: "28px" }}>{acc.icon}</span>
               </div>
-              <span className="text-xs font-black text-slate-800 leading-tight text-center">{acc.label}</span>
+              <span className="text-xs font-bold text-slate-800 leading-tight text-center">{acc.label}</span>
             </button>
           ))}
         </div>
@@ -405,10 +404,10 @@ export default function Dashboard() {
         <div className="bg-white rounded-3xl shadow-sm overflow-hidden border border-slate-200">
           <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100 bg-slate-50/50">
             <div className="flex items-center gap-2">
-              <h2 className="font-black text-base text-slate-900">Últimos Pedidos</h2>
+              <h2 className="font-bold text-base text-slate-900">Últimos Pedidos</h2>
               <InfoTooltip texto="Pedidos más recientes, ordenados por fecha de creación. Toca el icono de editar para cambiar el estado sin salir del dashboard." />
             </div>
-            <button onClick={() => navegarA("pedidos")} className="text-xs text-[#E63946] font-black hover:underline flex items-center gap-1 bg-red-50 px-2.5 py-1 rounded-xl border border-red-100">
+            <button onClick={() => navegarA("pedidos")} className="text-xs text-[#E63946] font-bold hover:underline flex items-center gap-1 bg-red-50 px-2.5 py-1 rounded-xl border border-red-100">
               Ver todos <span className="material-icons" style={{ fontSize: "16px" }}>chevron_right</span>
             </button>
           </div>
@@ -416,23 +415,23 @@ export default function Dashboard() {
             <table className="w-full">
               <thead>
                 <tr className="bg-slate-100 text-slate-700">
-                  <th className="px-4 py-3 text-left text-xs font-black uppercase tracking-wider">N°</th>
-                  <th className="px-4 py-3 text-left text-xs font-black uppercase tracking-wider">Cliente</th>
-                  <th className="px-4 py-3 text-right text-xs font-black uppercase tracking-wider">Total</th>
-                  <th className="px-4 py-3 text-left text-xs font-black uppercase tracking-wider">Estado</th>
-                  <th className="px-4 py-3 text-center text-xs font-black uppercase tracking-wider">Acción</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider">N°</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider">Cliente</th>
+                  <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider">Total</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider">Estado</th>
+                  <th className="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider">Acción</th>
                 </tr>
               </thead>
               <tbody>
                 {ultimosPedidos.map((pedido, i) => (
                   <tr key={pedido.id} className={`transition-colors hover:bg-blue-50/40 ${i < ultimosPedidos.length - 1 ? "border-b border-slate-100" : ""}`}>
-                    <td className="px-4 py-3.5 font-mono text-xs font-black text-slate-700">{pedido.numero}</td>
+                    <td className="px-4 py-3.5 font-mono text-xs font-semibold text-slate-700">{pedido.numero}</td>
                     <td className="px-4 py-3.5">
-                      <div className="text-sm font-black text-slate-950 max-w-[140px] truncate">{pedido.cliente.nombre}</div>
-                      <div className="text-xs font-bold text-slate-500 mt-0.5">{pedido.fecha}</div>
+                      <div className="text-sm font-semibold text-slate-900 max-w-[140px] truncate">{pedido.cliente.nombre}</div>
+                      <div className="text-xs font-normal text-slate-500 mt-0.5">{pedido.fecha}</div>
                     </td>
                     <td className="px-4 py-3.5 text-right">
-                      <MontoPrivado valor={pedido.total} privacidad={privacidad} className="text-sm font-black text-slate-900" />
+                      <MontoPrivado valor={pedido.total} privacidad={privacidad} className="text-sm font-bold font-mono text-slate-900" />
                     </td>
                     <td className="px-4 py-3.5">
                       {editandoId === pedido.id ? (
@@ -441,7 +440,7 @@ export default function Dashboard() {
                           onChange={(e) => handleCambioEstado(pedido.id, e.target.value as EstadoPedido)}
                           onBlur={() => setEditandoId(null)}
                           autoFocus
-                          className="text-xs font-black border-2 border-[#E63946] rounded-xl px-2 py-1.5 focus:outline-none bg-white shadow-md"
+                          className="text-xs font-semibold border-2 border-[#E63946] rounded-xl px-2 py-1.5 focus:outline-none bg-white shadow-md"
                         >
                           {(["Recibido", "Preparación", "Camino", "Entregado", "Cancelado"] as EstadoPedido[]).map((e) => (
                             <option key={e}>{e}</option>
