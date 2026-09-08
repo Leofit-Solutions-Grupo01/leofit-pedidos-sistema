@@ -64,6 +64,7 @@ El sistema opera de forma autónoma e independiente, interactuando con clientes 
 | **RF-015** | Identificación DNI/RUC y Referencias | Cliente / Admin | El sistema debe capturar el DNI o RUC del cliente, exigiéndolo obligatoriamente para envíos nacionales por encomienda, además del distrito y referencia física. | Alta | Validación de formato numérico de documento (8 o 11 dígitos) y bloqueo de despacho interprovincial si no se provee. | Pedidos | Implementado |
 | **RF-016** | Métodos de Pago y Cupones Promocionales | Cliente / Admin | El sistema debe soportar registro de medios de pago locales (Yape, Plin, BCP, BBVA, Contra Entrega, Tarjeta), captura de N° de Operación y aplicación de cupones de descuento. | Alta | Validación de cupones en tiempo real (`LEOFIT10`, `PROMOVERANO`, `ENVIOGRATIS`) con recálculo dinámico de la liquidación. | Facturación | Implementado |
 | **RF-017** | Urgencia de Inventario y Garantías | Cliente / Admin | El sistema debe desplegar insignias de stock crítico ($\le 5$ unidades) en prendas seleccionadas e incluir la cláusula de garantía de satisfacción y cambio de talla. | Media | Alerta visual en el selector de prendas y presentación de la tarjeta de Garantía Oficial LeoFit en orden y rastreo. | Catálogo / UX | Implementado |
+| **RF-018** | Emisión de Recibos PDF y Rótulos | Cliente / Admin | El sistema debe generar recibos digitales oficiales en PDF y rótulos de despacho adhesivos para agencias de encomienda (Shalom / Olva), con opción de impresión y envío directo por WhatsApp. | Alta | Modal interactivo con selector de vista (Recibo vs Rótulo), estilos de impresión `@media print` y enlace WhatsApp con deep-link. | Comprobantes | Implementado |
 
 ---
 
@@ -90,9 +91,9 @@ El sistema opera de forma autónoma e independiente, interactuando con clientes 
 |:---|:---:|:---:|:---|
 | **RF-001, RF-002, RF-017** | HU-001 (Filtrado de Catálogo e Inventario) | EP-01 | `src/pages/Dashboard.tsx` |
 | **RF-003, RF-004** | HU-002 (Carrito de Compras Reactivo) | EP-02 | `src/context/AppContext.tsx` |
-| **RF-005, RF-006, RF-011, RF-013, RF-015, RF-016** | HU-003 (Registro, DNI, Pago y Despacho de Pedidos) | EP-02 | `src/pages/PedidoForm.tsx` |
-| **RF-007, RF-008, RF-013, RF-015, RF-016** | HU-004 (Control de Estados, Pagos y Encomiendas) | EP-03 | `src/pages/PedidosLista.tsx` |
+| **RF-005, RF-006, RF-011, RF-013, RF-015, RF-016, RF-018** | HU-003 (Registro, DNI, Pago, Recibo y Despacho) | EP-02 | `src/pages/PedidoForm.tsx` |
+| **RF-007, RF-008, RF-013, RF-015, RF-016, RF-018** | HU-004 (Control de Estados, Pagos, Recibos y Rótulos) | EP-03 | `src/pages/PedidosLista.tsx` |
 | **RF-009, RF-017** | HU-006 (Gestión de Inventario y Stock Crítico) | EP-01 | `src/pages/ProductosGestion.tsx` |
 | **RF-010** | HU-005 (Métricas de Dashboard con Privacidad) | EP-04 | `src/pages/Dashboard.tsx` |
 | **RF-012** | HU-007 (Seguridad y Acceso Administrativo) | EP-03 | `src/pages/Login.tsx` |
-| **RF-014, RF-015, RF-017** | HU-008 (Portal de Rastreo en Vivo con DNI y Garantías) | EP-05 | `src/pages/RastreoPublico.tsx` |
+| **RF-014, RF-015, RF-017, RF-018** | HU-008 (Portal de Rastreo con Recibos y Garantías) | EP-05 | `src/pages/RastreoPublico.tsx` |

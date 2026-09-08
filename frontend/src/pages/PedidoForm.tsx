@@ -8,6 +8,7 @@
 
 import { useState } from "react";
 import { useApp } from "../context/AppContext";
+import ReciboModal from "../components/common/ReciboModal";
 import { Pedido, TipoEnvio, AgenciaEncomienda, MetodoPago, CUPONES_VALIDOS } from "../data/mockData";
 
 const CANALES = ["WhatsApp", "Llamada", "Sistema"] as const;
@@ -53,80 +54,79 @@ export default function PedidoForm() {
   const [productoSeleccionado, setProductoSeleccionado] = useState(productos[0]?.id || "");
   const [cantidad, setCantidad] = useState(1);
   const [items, setItems] = useState<ItemTemp[]>([]);
-  const [guardado, setGuardado] = useState(false);
+  const [pedidoCreado, setPedidoCreado] = useState<Pedido | null>(null);
+  const [mostrarRecibo, setMostrarRecibo] = useState(false);
   const [errores, setErrores] = useState<string[]>([]);
 
   const fechaHoy = new Date().toLocaleDateString("es-PE", { day: "2-digit", month: "2-digit", year: "numeric" });
 
-  const subtotal = items.reduce((acc, item) => acc + item.cantidad * item.precio, 0);
-  const descuentoTotal = (cuponAplicado ? cuponAplicado.descuento : 0) + descuentoManual;
-  const total = Math.max(0, subtotal + costoDelivery - descuentoTotal);
-
-  const handleTipoEnvioChange = (nuevoTipo: TipoEnvio) => {
-    setTipoEnvio(nuevoTipo);
-    if (nuevoTipo === "Nacional" && costoDelivery === 8) {
-      setCostoDelivery(15); // Tarifa base interprovincial sugerida
-    } else if (nuevoTipo === "Local" && costoDelivery === 15) {
-      setCostoDelivery(8); // Tarifa Lima local
-    }
+  const siguienteNumero = () => {
+    const maxNum = pedidos.reduce((max, p) => {
+      const n = parseInt(p.numero.replace("LFT-", ""));
+      return isNaN(n) ? max : Math.max(max, n);
+    }, 0);
+    return `LFT-${String(maxNum + 1).padStart(3, "0")}`;
   };
 
-  const handleAplicarCupon = () => {
-    const cod = codigoCuponInput.trim().toUpperCase();
-    if (!cod) {
+  const subtotal = items.reduce((acc, i) => acc + i.precio * i.cantidad, 0);
+  const descuentoCuponMonto = cuponAplicado ? cuponAplicado.descuento : 0;
+  const descuentoTotal = descuentoCuponMonto + descuentoManual;
+  const total = Math.max(0, subtotal + costoDelivery - descuentoTotal);
+
+  const agregarItem = () => {
+    const prod = productos.find((p) => p.id === productoSeleccionado);
+    if (!prod) return;
+    const existente = items.find((i) => i.productoId === prod.id);
+    const cantExistente = existente ? existente.cantidad : 0;
+    const cantNueva = cantExistente + cantidad;
+
+    if (cantNueva > prod.stock) {
+      alert(`Stock insuficiente. Solo quedan ${prod.stock} unidades de "${prod.nombre}".`);
+      return;
+    }
+
+    if (existente) {
+      setItems(items.map((i) => (i.productoId === prod.id ? { ...i, cantidad: cantNueva } : i)));
+    } else {
+      setItems([...items, { productoId: prod.id, nombre: `${prod.nombre} (${prod.talla})`, cantidad, precio: prod.precio }]);
+    }
+    setCantidad(1);
+  };
+
+  const eliminarItem = (prodId: string) => {
+    setItems(items.filter((i) => i.productoId !== prodId));
+  };
+
+  const aplicarCupon = (e: React.FormEvent) => {
+    e.preventDefault();
+    setMensajeCupon(null);
+    const code = codigoCuponInput.trim().toUpperCase();
+    if (!code) {
       setMensajeCupon({ texto: "Ingresa un código de cupón.", tipo: "error" });
       return;
     }
-    const encontrado = CUPONES_VALIDOS.find((c) => c.codigo === cod);
+
+    const encontrado = CUPONES_VALIDOS.find((c) => c.codigo === code);
     if (encontrado) {
-      if (encontrado.minimoCompra && subtotal < encontrado.minimoCompra) {
-        setMensajeCupon({
-          texto: `El cupón ${cod} requiere una compra mínima de S/ ${encontrado.minimoCompra.toFixed(2)}.`,
-          tipo: "error",
-        });
-        return;
-      }
       setCuponAplicado(encontrado);
-      setMensajeCupon({ texto: `¡Cupón ${cod} aplicado con éxito! (-S/ ${encontrado.descuento.toFixed(2)})`, tipo: "exito" });
+      setMensajeCupon({ texto: `¡Cupón ${encontrado.codigo} aplicado! (-S/ ${encontrado.descuento.toFixed(2)})`, tipo: "exito" });
     } else {
-      setMensajeCupon({ texto: `El cupón "${cod}" no es válido o ha expirado.`, tipo: "error" });
+      setMensajeCupon({ texto: `El código "${codigoCuponInput}" no es válido. Prueba: LEOFIT10`, tipo: "error" });
     }
   };
 
-  const handleRemoverCupon = () => {
+  const quitarCupon = () => {
     setCuponAplicado(null);
     setCodigoCuponInput("");
     setMensajeCupon(null);
   };
 
-  // Genera número de pedido en formato LFT-NNN
-  const siguienteNumero = () => {
-    const maximo = pedidos
-      .map((p) => parseInt(p.numero.replace("LFT-", ""), 10))
-      .filter((n) => !isNaN(n))
-      .reduce((a, b) => Math.max(a, b), 0);
-    return `LFT-${String(maximo + 1).padStart(3, "0")}`;
-  };
-
-  const agregarItem = () => {
-    const producto = productos.find((p) => p.id === productoSeleccionado);
-    if (!producto) return;
-    setItems((prev) => {
-      const existente = prev.find((i) => i.productoId === producto.id);
-      if (existente) return prev.map((i) => (i.productoId === producto.id ? { ...i, cantidad: i.cantidad + cantidad } : i));
-      return [...prev, { productoId: producto.id, nombre: producto.nombre, cantidad, precio: producto.precio }];
-    });
-    setCantidad(1);
-  };
-
-  const quitarItem = (productoId: string) => setItems((prev) => prev.filter((i) => i.productoId !== productoId));
-
   const handleGuardar = () => {
     const errList: string[] = [];
-    if (!nombre.trim()) errList.push("El nombre del cliente es obligatorio.");
-    if (!telefono.trim()) errList.push("El teléfono es obligatorio.");
+    if (!nombre.trim()) errList.push("El nombre completo del cliente es obligatorio.");
+    if (!telefono.trim()) errList.push("El teléfono de contacto es obligatorio.");
     if (tipoEnvio === "Nacional" && !dniRuc.trim()) {
-      errList.push("El DNI o RUC es obligatorio para el recojo en agencias de encomienda (Shalom / Olva).");
+      errList.push("El DNI o RUC es obligatorio para envíos nacionales por encomienda (Exigencia legal de Shalom / Olva).");
     }
     if (!direccion.trim()) errList.push("La dirección de entrega o agencia es obligatoria.");
     if (tipoEnvio === "Nacional" && !ciudadDestino.trim()) errList.push("Indica la ciudad/departamento de destino para el envío nacional.");
@@ -167,20 +167,59 @@ export default function PedidoForm() {
     };
 
     agregarPedido(nuevoPedido);
-    setGuardado(true);
-    setTimeout(() => navegarA("pedidos"), 1600);
+    setPedidoCreado(nuevoPedido);
   };
 
-  if (guardado) {
+  if (pedidoCreado) {
     return (
-      <div className="pt-14 pb-24 min-h-screen bg-[#F1FAEE] flex items-center justify-center">
-        <div className="text-center px-6">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-[#27AE60]/10 rounded-full mb-5 animate-bounce">
-            <span className="material-icons text-[#27AE60]" style={{ fontSize: "44px" }}>check_circle</span>
+      <div className="pt-20 pb-32 min-h-screen bg-[#F1FAEE] flex items-center justify-center p-4">
+        <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full text-center shadow-xl border border-slate-200 animate-in zoom-in-95">
+          <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-emerald-100 rounded-3xl mb-4 text-emerald-600 shadow-inner">
+            <span className="material-icons" style={{ fontSize: "40px" }}>check_circle</span>
           </div>
-          <h2 className="text-xl sm:text-2xl font-bold text-[#1D3557] mb-1">Pedido registrado con éxito</h2>
-          <p className="text-sm text-slate-500 font-medium">Actualizando inventario y redirigiendo al historial...</p>
+
+          <span className="text-xs font-mono font-bold bg-[#0F223D] text-white px-3 py-1 rounded-xl inline-block mb-2">
+            {pedidoCreado.numero}
+          </span>
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-1">¡Pedido Registrado con Éxito!</h2>
+          <p className="text-xs sm:text-sm text-slate-600 font-medium mb-6">
+            El pedido de <strong>{pedidoCreado.cliente.nombre}</strong> por <strong>S/{pedidoCreado.total.toFixed(2)}</strong> ha sido registrado en el sistema.
+          </p>
+
+          <div className="space-y-2.5">
+            <button
+              onClick={() => setMostrarRecibo(true)}
+              className="w-full py-3.5 bg-[#0F223D] hover:bg-[#1E293B] text-white font-bold text-sm sm:text-base rounded-2xl shadow-lg transition-all flex items-center justify-center gap-2 active:scale-95"
+            >
+              <span className="material-icons" style={{ fontSize: "20px" }}>receipt_long</span>
+              <span>Ver y Descargar Recibo PDF / Rótulo</span>
+            </button>
+
+            <a
+              href={`https://wa.me/51${pedidoCreado.cliente.telefono.replace(/\D/g, "")}?text=${encodeURIComponent(`Hola ${pedidoCreado.cliente.nombre}, confirmamos tu pedido ${pedidoCreado.numero} en LeoFit por S/${pedidoCreado.total.toFixed(2)}. Puedes ver el detalle y rastrear tu envío aquí: https://leofit.com/rastreo?codigo=${pedidoCreado.numero}`)}`}
+              target="_blank"
+              rel="noreferrer"
+              className="w-full py-3.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-sm sm:text-base rounded-2xl shadow-md transition-all flex items-center justify-center gap-2 active:scale-95"
+            >
+              <span className="material-icons" style={{ fontSize: "20px" }}>chat</span>
+              <span>Enviar Confirmación por WhatsApp</span>
+            </a>
+
+            <button
+              onClick={() => navegarA("pedidos")}
+              className="w-full py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm rounded-2xl transition-colors mt-2"
+            >
+              Ir al Historial de Pedidos
+            </button>
+          </div>
         </div>
+
+        {mostrarRecibo && (
+          <ReciboModal
+            pedido={pedidoCreado}
+            onClose={() => setMostrarRecibo(false)}
+          />
+        )}
       </div>
     );
   }
