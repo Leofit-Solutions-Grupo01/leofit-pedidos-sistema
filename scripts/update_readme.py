@@ -8,16 +8,16 @@ with open(readme_path, 'r', encoding='utf-8') as f:
 
 apf1_section = """---
 
-## 📌 Avance de Proyecto Final 1 (APF1) - Rúbrica y Entregables Oficiales
+## Avance de Proyecto Final 1 (APF1) - Rubrica y Entregables Oficiales
 
-El proyecto cumple con la totalidad de los **6 criterios de evaluación** y los **17 artefactos obligatorios** establecidos en la rúbrica oficial **APF1_INDICACIONES Y RÚBRICA_S12F**:
+El proyecto cumple con la totalidad de los **6 criterios de evaluacion** y los **17 artefactos obligatorios** establecidos en la rubrica oficial **APF1_INDICACIONES Y RUBRICA_S12F**:
 
-### 📄 Documento Consolidado de Entrega APF1 (Estructura Oficial Anexo 1)
-* 📘 **Versión Microsoft Word (.docx):** [`docs/INFORME_FINAL_APF1_LEOFIT.docx`](docs/INFORME_FINAL_APF1_LEOFIT.docx)
-* 📕 **Versión PDF Oficial (.pdf):** [`docs/INFORME_FINAL_APF1_LEOFIT.pdf`](docs/INFORME_FINAL_APF1_LEOFIT.pdf)
-* 📄 **Versión Markdown (.md):** [`docs/INFORME_FINAL_APF1_LEOFIT.md`](docs/INFORME_FINAL_APF1_LEOFIT.md)
+### Documento Consolidado de Entrega APF1 (Estructura Oficial Anexo 1)
+* **Version Microsoft Word (.docx):** [`docs/INFORME_FINAL_APF1_LEOFIT.docx`](docs/INFORME_FINAL_APF1_LEOFIT.docx)
+* **Version PDF Oficial (.pdf):** [`docs/INFORME_FINAL_APF1_LEOFIT.pdf`](docs/INFORME_FINAL_APF1_LEOFIT.pdf)
+* **Version Markdown (.md):** [`docs/INFORME_FINAL_APF1_LEOFIT.md`](docs/INFORME_FINAL_APF1_LEOFIT.md)
 
-### 📊 Matriz de Cumplimiento de Criterios y Artefactos de la Rúbrica (20 / 20)
+### Matriz de Cumplimiento de Criterios y Artefactos de la Rubrica (20 / 20)
 
 | Criterio Evaluado | Puntaje | Artefactos Desarrollados y Ubicación |
 |:---|:---:|:---|

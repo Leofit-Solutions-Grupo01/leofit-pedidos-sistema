@@ -483,7 +483,7 @@ export default function PedidoForm() {
             >
               {productos.map((p) => (
                 <option key={p.id} value={p.id}>
-                  {p.nombre} — S/{p.precio.toFixed(2)} {p.stock <= 5 ? `(⚠️ ¡CASI AGOTADO! Solo quedan ${p.stock} uds)` : `(Stock: ${p.stock})`}
+                  {p.nombre} — S/{p.precio.toFixed(2)} {p.stock <= 5 ? `([ULTIMAS UNIDADES] Solo quedan ${p.stock} uds)` : `(Stock: ${p.stock})`}
                 </option>
               ))}
             </select>

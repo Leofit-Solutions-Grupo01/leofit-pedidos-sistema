@@ -328,15 +328,24 @@ export default function RastreoPublico() {
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs text-blue-900">
                 <div className="bg-white/70 p-2.5 rounded-xl border border-blue-200/60">
-                  <strong className="block text-slate-900 font-bold mb-0.5">📦 Entrega Segura</strong>
+                  <strong className="flex items-center gap-1 text-slate-900 font-bold mb-0.5">
+                    <span className="material-icons text-blue-700" style={{ fontSize: "15px" }}>inventory_2</span>
+                    Entrega Segura
+                  </strong>
                   Empaque sellado e inspección de costura antes del despacho.
                 </div>
                 <div className="bg-white/70 p-2.5 rounded-xl border border-blue-200/60">
-                  <strong className="block text-slate-900 font-bold mb-0.5">🔄 Cambio de Talla</strong>
+                  <strong className="flex items-center gap-1 text-slate-900 font-bold mb-0.5">
+                    <span className="material-icons text-blue-700" style={{ fontSize: "15px" }}>sync</span>
+                    Cambio de Talla
+                  </strong>
                   Cambio inmediato si la talla no te queda perfecta.
                 </div>
                 <div className="bg-white/70 p-2.5 rounded-xl border border-blue-200/60">
-                  <strong className="block text-slate-900 font-bold mb-0.5">⚡ Soporte Directo</strong>
+                  <strong className="flex items-center gap-1 text-slate-900 font-bold mb-0.5">
+                    <span className="material-icons text-blue-700" style={{ fontSize: "15px" }}>support_agent</span>
+                    Soporte Directo
+                  </strong>
                   Atención directa por WhatsApp con el equipo fundador.
                 </div>
               </div>
