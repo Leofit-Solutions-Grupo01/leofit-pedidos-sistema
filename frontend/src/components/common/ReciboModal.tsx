@@ -25,13 +25,13 @@ export default function ReciboModal({ pedido, onClose }: ReciboModalProps) {
 
   const whatsappText = encodeURIComponent(
     `*COMPROBANTE DE PEDIDO LEOFIT - ${pedido.numero}*\n` +
-    `👤 *Cliente:* ${pedido.cliente.nombre}\n` +
-    `🆔 *DNI/RUC:* ${pedido.cliente.dniRuc || "No registrado"}\n` +
-    `📍 *Destino:* ${pedido.tipoEnvio === "Nacional" ? `${pedido.agenciaEncomienda} (${pedido.ciudadDestino})` : "Lima Metropolitana"}\n` +
-    `💳 *Pago:* ${pedido.metodoPago || "Efectivo"} ${pedido.numeroOperacion ? `(OP: ${pedido.numeroOperacion})` : ""}\n` +
-    `💰 *Total:* S/${pedido.total.toFixed(2)}\n\n` +
-    `📦 *Rastrea tu pedido en vivo aquí:* https://leofit.com/rastreo?codigo=${pedido.numero}\n` +
-    `_¡Gracias por entrenar con la indumentaria oficial LeoFit!_`
+    `*Cliente:* ${pedido.cliente.nombre}\n` +
+    `*DNI/RUC:* ${pedido.cliente.dniRuc || "No registrado"}\n` +
+    `*Destino:* ${pedido.tipoEnvio === "Nacional" ? `${pedido.agenciaEncomienda} (${pedido.ciudadDestino})` : "Lima Metropolitana"}\n` +
+    `*Pago:* ${pedido.metodoPago || "Efectivo"} ${pedido.numeroOperacion ? `(OP: ${pedido.numeroOperacion})` : ""}\n` +
+    `*Total:* S/${pedido.total.toFixed(2)}\n\n` +
+    `*Rastrea tu pedido en vivo aquí:* https://leofit.com/rastreo?codigo=${pedido.numero}\n` +
+    `_Gracias por confiar en LeoFit Indumentaria._`
   );
 
   return (
@@ -301,8 +301,9 @@ export default function ReciboModal({ pedido, onClose }: ReciboModalProps) {
               )}
 
               {/* Advertencia de Cuidado Textil */}
-              <div className="text-center text-[10px] font-bold text-slate-500 uppercase tracking-wider">
-                ⚠️ CONTENIDO: INDUMENTARIA DEPORTIVA · MANIPULAR CON CUIDADO
+              <div className="flex items-center justify-center gap-1 text-[10px] font-bold text-slate-600 uppercase tracking-wider">
+                <span className="material-icons text-amber-600" style={{ fontSize: "14px" }}>warning</span>
+                <span>CONTENIDO: INDUMENTARIA DEPORTIVA · MANIPULAR CON CUIDADO</span>
               </div>
             </div>
           </div>
