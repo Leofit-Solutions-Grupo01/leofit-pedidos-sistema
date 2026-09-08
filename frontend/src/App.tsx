@@ -1,3 +1,11 @@
+/**
+ * @file App.tsx
+ * @description Punto de entrada principal y enrutamiento SPA para el sistema LeoFit
+ * @project LeoFit Pedidos Sistema (UTP - Curso Integrador II)
+ * @author Lady Luz Loayza Rodriguez (@LadyyLuz) <168585420+luzylay@users.noreply.github.com>
+ * @copyright (c) 2026 Grupo 01 - UTP. All rights reserved.
+ */
+
 import { AppProvider, useApp } from "./context/AppContext";
 import Navbar from "./components/layout/Navbar";
 import Login from "./pages/Login";

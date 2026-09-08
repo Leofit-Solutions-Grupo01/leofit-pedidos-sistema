@@ -43,7 +43,7 @@ El sistema opera de forma autónoma e independiente, interactuando con clientes 
 
 ---
 
-## 3. MATRIZ DE REQUISITOS FUNCIONALES (RF-001 A RF-014)
+## 3. MATRIZ DE REQUISITOS FUNCIONALES (RF-001 A RF-017)
 
 | ID | Nombre del Requisito | Actor Principal | Descripción Funcional | Prioridad | Criterios de Aceptación | Módulo | Estado |
 |:---|:---|:---|:---|:---:|:---|:---|:---:|
@@ -56,11 +56,14 @@ El sistema opera de forma autónoma e independiente, interactuando con clientes 
 | **RF-007** | Trazabilidad y Control de Estados | Administrador | El sistema debe permitir la actualización de estados de la orden (`Recibido`, `Preparación`, `Camino`, `Entregado`, `Cancelado`). | Alta | Cambio de estado con un solo clic en la interfaz y registro de la marca de tiempo correspondiente. | Gestión | Implementado |
 | **RF-008** | Bandeja de Gestión de Pedidos | Administrador | El sistema debe presentar la lista consolidada de pedidos con filtros por estado, cliente, fecha y canal de venta. | Alta | Visualización en tarjetas interactivas y tabla responsiva con badges de colores normalizados. | Gestión | Implementado |
 | **RF-009** | Gestión de Existencias y Catálogo | Administrador | El sistema debe permitir la creación, modificación de precios, edición de tallas y ajuste de stock de productos. | Alta | Modal interactivo para actualización inmediata de existencias en el catálogo. | Inventario | Implementado |
-| **RF-010** | Dashboard de Control Operativo | Administrador | El sistema debe mostrar tarjetas métricas con ingresos totales, pedidos en riesgo ($>24\text{ h}$), pedidos del día y pipeline. | Media | Cálculo reactivo de totales de la jornada y modo privacidad de cifras en Soles. | Dashboard | Implementado |
+| **RF-010** | Dashboard de Control Operativo | Administrador | El sistema debe mostrar tarjetas métricas con ingresos totales, pedidos en riesgo ($>24\text{ h}$), pedidos del día y pipeline. | Media | Cálculo reactivo de totales de la jornada y conmutador granular de privacidad de cifras en Soles. | Dashboard | Implementado |
 | **RF-011** | Generación de Resumen para WhatsApp | Cliente / Admin | El sistema debe generar un mensaje de texto formateado con el resumen de la orden listo para compartir por mensajería. | Media | Formato limpio con ID de pedido, detalle de prendas, flete, total y datos de contacto. | Pedidos | Implementado |
 | **RF-012** | Control de Acceso Administrativo | Administrador | El sistema debe proteger las rutas de gestión de inventario y configuración mediante credenciales de autenticación. | Alta | Validación segura de credenciales de administrador (`victor@leofit.com`) y auto-logout. | Seguridad | Implementado |
 | **RF-013** | Gestión de Despacho Dual y Encomiendas | Administrador | El sistema debe discriminar entre entrega local en Lima y envío nacional por agencias de encomienda (Shalom, Olva, Marvisur). | Alta | Registro de ciudad de destino, agencia de encomienda y N° de Guía de Remisión/Clave. | Logística | Implementado |
-| **RF-014** | Portal de Rastreo de Envíos en Vivo | Cliente / Admin | El sistema debe ofrecer un portal de autoservicio donde el cliente consulta el timeline en vivo de su paquete con su código `LFT-XXX`. | Alta | Búsqueda reactiva, timeline de 4 hitos, datos de agencia/guía y enlace directo a soporte WhatsApp. | Tracking | Implementado |
+| **RF-014** | Portal de Rastreo de Envíos en Vivo | Cliente / Admin | El sistema debe ofrecer un portal de autoservicio donde el cliente consulta el timeline en vivo de su paquete con su código `LFT-XXX`, DNI o teléfono. | Alta | Búsqueda reactiva, timeline de 4 hitos, datos de agencia/guía, desglose de flete y garantías. | Tracking | Implementado |
+| **RF-015** | Identificación DNI/RUC y Referencias | Cliente / Admin | El sistema debe capturar el DNI o RUC del cliente, exigiéndolo obligatoriamente para envíos nacionales por encomienda, además del distrito y referencia física. | Alta | Validación de formato numérico de documento (8 o 11 dígitos) y bloqueo de despacho interprovincial si no se provee. | Pedidos | Implementado |
+| **RF-016** | Métodos de Pago y Cupones Promocionales | Cliente / Admin | El sistema debe soportar registro de medios de pago locales (Yape, Plin, BCP, BBVA, Contra Entrega, Tarjeta), captura de N° de Operación y aplicación de cupones de descuento. | Alta | Validación de cupones en tiempo real (`LEOFIT10`, `PROMOVERANO`, `ENVIOGRATIS`) con recálculo dinámico de la liquidación. | Facturación | Implementado |
+| **RF-017** | Urgencia de Inventario y Garantías | Cliente / Admin | El sistema debe desplegar insignias de stock crítico ($\le 5$ unidades) en prendas seleccionadas e incluir la cláusula de garantía de satisfacción y cambio de talla. | Media | Alerta visual en el selector de prendas y presentación de la tarjeta de Garantía Oficial LeoFit en orden y rastreo. | Catálogo / UX | Implementado |
 
 ---
 
@@ -75,7 +78,7 @@ El sistema opera de forma autónoma e independiente, interactuando con clientes 
 | **RNF-005** | Compatibilidad | Multi-Plataforma | El sistema debe operar con total fidelidad visual en todos los navegadores modernos. | 100% funcional en Google Chrome, Microsoft Edge, Firefox y Safari. | Media | Pruebas de compatibilidad cruzada en navegadores. | Validado |
 | **RNF-006** | Mantenibilidad | Arquitectura Modular | El código fuente debe estar estructurado en capas desacopladas con tipado estricto. | 100% código TypeScript sin errores de compilación (`tsc --noEmit`). | Alta | Análisis estático de código y suite de linters. | Validado |
 | **RNF-007** | Trazabilidad | Integridad de Transacciones | Toda orden debe conservar su historial y correlativo único `LFT-XXX`. | Cada orden almacena identificador correlativo, fecha, flete, guía y estado actual. | Alta | Verificación de esquemas de datos y persistencia. | Validado |
-| **RNF-008** | Seguridad | Rutas Protegidas y Privacidad | Las opciones de edición y cifras monetarias pueden ocultarse con un clic. | Denegación inmediata de acceso sin sesión y modo privacidad activable. | Alta | Pruebas de navegación a rutas administrativas sin sesión. | Validado |
+| **RNF-008** | Seguridad | Rutas Protegidas y Privacidad | Las opciones de edición y cifras monetarias pueden ocultarse de forma granular. | Denegación inmediata de acceso sin sesión y toggles de privacidad por métrica. | Alta | Pruebas de navegación a rutas administrativas sin sesión. | Validado |
 | **RNF-009** | Confiabilidad | Suite de Pruebas Unitarias | La lógica de cálculo y consistencia de datos debe estar respaldada por pruebas automatizadas. | Cobertura de pruebas unitarias $\ge 80\%$ con 100% de tests aprobados. | Alta | Ejecución automatizada de `vitest run` en CI/CD. | Validado |
 | **RNF-010** | Accesibilidad | Contraste y Tipografía | Textos, botones y componentes interactivos deben cumplir con estándares de legibilidad. | Cumplimiento estricto de directrices WCAG 2.1 nivel AAA/AA (contraste $\ge 7:1$). | Alta | Auditoría con tipografía Plus Jakarta Sans y Axe DevTools. | Validado |
 
@@ -85,11 +88,11 @@ El sistema opera de forma autónoma e independiente, interactuando con clientes 
 
 | Requisito Funcional | Historia de Usuario Vinculada | Épica Asociada | Módulo de Software |
 |:---|:---:|:---:|:---|
-| **RF-001, RF-002** | HU-001 (Filtrado de Catálogo) | EP-01 | `src/pages/Dashboard.tsx` |
-| **RF-003, RF-004** | HU-002 (Carrito de Compras) | EP-02 | `src/context/AppContext.tsx` |
-| **RF-005, RF-006, RF-011, RF-013** | HU-003 (Registro y Despacho de Pedidos) | EP-02 | `src/pages/PedidoForm.tsx` |
-| **RF-007, RF-008, RF-013** | HU-004 (Control de Estados y Encomiendas) | EP-03 | `src/pages/PedidosLista.tsx` |
-| **RF-009** | HU-006 (Gestión de Inventario) | EP-01 | `src/pages/ProductosGestion.tsx` |
-| **RF-010** | HU-005 (Métricas de Dashboard) | EP-04 | `src/pages/Dashboard.tsx` |
-| **RF-012** | HU-007 (Seguridad y Acceso) | EP-03 | `src/pages/Login.tsx` |
-| **RF-014** | HU-008 (Portal de Rastreo en Vivo) | EP-05 | `src/pages/RastreoPublico.tsx` |
+| **RF-001, RF-002, RF-017** | HU-001 (Filtrado de Catálogo e Inventario) | EP-01 | `src/pages/Dashboard.tsx` |
+| **RF-003, RF-004** | HU-002 (Carrito de Compras Reactivo) | EP-02 | `src/context/AppContext.tsx` |
+| **RF-005, RF-006, RF-011, RF-013, RF-015, RF-016** | HU-003 (Registro, DNI, Pago y Despacho de Pedidos) | EP-02 | `src/pages/PedidoForm.tsx` |
+| **RF-007, RF-008, RF-013, RF-015, RF-016** | HU-004 (Control de Estados, Pagos y Encomiendas) | EP-03 | `src/pages/PedidosLista.tsx` |
+| **RF-009, RF-017** | HU-006 (Gestión de Inventario y Stock Crítico) | EP-01 | `src/pages/ProductosGestion.tsx` |
+| **RF-010** | HU-005 (Métricas de Dashboard con Privacidad) | EP-04 | `src/pages/Dashboard.tsx` |
+| **RF-012** | HU-007 (Seguridad y Acceso Administrativo) | EP-03 | `src/pages/Login.tsx` |
+| **RF-014, RF-015, RF-017** | HU-008 (Portal de Rastreo en Vivo con DNI y Garantías) | EP-05 | `src/pages/RastreoPublico.tsx` |

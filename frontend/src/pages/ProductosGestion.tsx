@@ -1,3 +1,11 @@
+/**
+ * @file ProductosGestion.tsx
+ * @description Módulo de administración y control de inventario de prendas y accesorios LeoFit
+ * @project LeoFit Pedidos Sistema (UTP - Curso Integrador II)
+ * @author Lady Luz Loayza Rodriguez (@LadyyLuz) <168585420+luzylay@users.noreply.github.com>
+ * @copyright (c) 2026 Grupo 01 - UTP. All rights reserved.
+ */
+
 import { useState } from "react";
 import { useApp } from "../context/AppContext";
 import { Producto } from "../data/mockData";

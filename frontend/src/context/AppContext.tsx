@@ -1,3 +1,11 @@
+/**
+ * @file AppContext.tsx
+ * @description Proveedor de estado global reactivo (pedidos, productos, autenticación, accesibilidad)
+ * @project LeoFit Pedidos Sistema (UTP - Curso Integrador II)
+ * @author Lady Luz Loayza Rodriguez (@LadyyLuz) <168585420+luzylay@users.noreply.github.com>
+ * @copyright (c) 2026 Grupo 01 - UTP. All rights reserved.
+ */
+
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { Pedido, Producto, EstadoPedido, pedidosIniciales, productosIniciales } from "../data/mockData";
 

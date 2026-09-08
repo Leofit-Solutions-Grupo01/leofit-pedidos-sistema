@@ -1,3 +1,11 @@
+/**
+ * @file RastreoPublico.tsx
+ * @description Portal público de autoservicio para rastreo de pedidos por DNI, N° Pedido o Teléfono con Garantía LeoFit
+ * @project LeoFit Pedidos Sistema (UTP - Curso Integrador II)
+ * @author Lady Luz Loayza Rodriguez (@LadyyLuz) <168585420+luzylay@users.noreply.github.com>
+ * @copyright (c) 2026 Grupo 01 - UTP. All rights reserved.
+ */
+
 import { useState } from "react";
 import { useApp } from "../context/AppContext";
 import Badge from "../components/common/Badge";
@@ -23,7 +31,7 @@ export default function RastreoPublico() {
     setErrorBusqueda("");
     const query = codigoBusqueda.trim().toUpperCase();
     if (!query) {
-      setErrorBusqueda("Ingresa un número de pedido o teléfono.");
+      setErrorBusqueda("Ingresa un número de pedido, DNI/RUC o teléfono.");
       return;
     }
 
@@ -31,13 +39,15 @@ export default function RastreoPublico() {
       (p) =>
         p.numero.toUpperCase() === query ||
         p.cliente.telefono === query ||
+        (p.cliente.dniRuc && p.cliente.dniRuc.toUpperCase() === query) ||
+        (p.numeroGuia && p.numeroGuia.toUpperCase() === query) ||
         p.numero.replace("-", "").toUpperCase() === query.replace("-", "")
     );
 
     if (encontrado) {
       setPedidoEncontrado(encontrado);
     } else {
-      setErrorBusqueda(`No se encontró ningún pedido con el código o teléfono "${codigoBusqueda}".`);
+      setErrorBusqueda(`No se encontró ningún pedido con el código, DNI o teléfono "${codigoBusqueda}".`);
     }
   };
 
@@ -54,6 +64,13 @@ export default function RastreoPublico() {
   const indiceActual = pedidoEncontrado ? calcularIndicePaso(pedidoEncontrado.estado) : 0;
   const esCancelado = pedidoEncontrado?.estado === "Cancelado";
 
+  // Enmascarar DNI para privacidad pública
+  const enmascararDni = (dni?: string) => {
+    if (!dni) return "No registrado";
+    if (dni.length <= 4) return dni;
+    return `***${dni.slice(-4)}`;
+  };
+
   return (
     <div className={`pt-16 pb-32 sm:pb-28 min-h-screen ${modoAccesible ? "bg-[#E2E8F0]" : "bg-[#F1FAEE]"}`}>
       <div className="max-w-5xl mx-auto px-3 sm:px-6 py-4 sm:py-5 space-y-4 sm:space-y-5">
@@ -65,7 +82,7 @@ export default function RastreoPublico() {
           </div>
           <h1 className="text-2xl sm:text-3xl font-bold text-white mb-1">Rastreo de Envíos en Vivo</h1>
           <p className="text-slate-300 text-xs sm:text-sm font-normal max-w-md mx-auto leading-relaxed">
-            Ingresa tu código <strong className="text-amber-400 font-mono">LFT-XXX</strong> o tu número de teléfono para conocer el estado de tu entrega.
+            Ingresa tu código <strong className="text-amber-400 font-mono">LFT-XXX</strong>, DNI/RUC o teléfono para conocer el estado de tu entrega.
           </p>
 
           {/* Formulario de Búsqueda */}
@@ -74,7 +91,7 @@ export default function RastreoPublico() {
               type="text"
               value={codigoBusqueda}
               onChange={(e) => setCodigoBusqueda(e.target.value)}
-              placeholder="ej. LFT-004 o 934567890"
+              placeholder="ej. LFT-004, 72345678 o 934567890"
               className="flex-1 px-4 py-3 bg-white text-slate-900 placeholder-slate-400 rounded-2xl text-sm sm:text-base font-semibold focus:outline-none focus:ring-4 focus:ring-red-500/40 shadow-inner"
             />
             <button
@@ -133,9 +150,16 @@ export default function RastreoPublico() {
                     <span className="text-[11px] sm:text-xs font-semibold px-2 sm:px-2.5 py-0.5 rounded-lg bg-blue-100 text-blue-900 border border-blue-200">
                       {pedidoEncontrado.tipoEnvio === "Nacional" ? "Envío Nacional (Provincia)" : "Envío Local (Lima Capital)"}
                     </span>
+                    {pedidoEncontrado.metodoPago && (
+                      <span className="text-[11px] sm:text-xs font-bold px-2 sm:px-2.5 py-0.5 rounded-lg bg-purple-100 text-purple-900 border border-purple-200">
+                        {pedidoEncontrado.metodoPago}
+                      </span>
+                    )}
                   </div>
                   <h2 className="text-lg sm:text-xl font-bold text-slate-900">{pedidoEncontrado.cliente.nombre}</h2>
-                  <p className="text-xs text-slate-500 font-normal mt-0.5">Fecha de Compra: {pedidoEncontrado.fecha}</p>
+                  <p className="text-xs text-slate-500 font-normal mt-0.5">
+                    Fecha de Compra: {pedidoEncontrado.fecha} · DNI: <strong className="font-mono">{enmascararDni(pedidoEncontrado.cliente.dniRuc)}</strong>
+                  </p>
                 </div>
                 <div>
                   <Badge estado={pedidoEncontrado.estado} enRiesgo={estaEnRiesgo(pedidoEncontrado)} />
@@ -233,7 +257,7 @@ export default function RastreoPublico() {
               )}
             </div>
 
-            {/* Dirección de Entrega y Contacto */}
+            {/* Dirección de Entrega y Referencia */}
             <div className="bg-white rounded-3xl p-4 sm:p-5 shadow-sm border border-slate-200">
               <h3 className="text-xs sm:text-sm font-bold text-slate-900 uppercase tracking-wider mb-2.5 flex items-center gap-2">
                 <span className="material-icons text-slate-600" style={{ fontSize: "18px" }}>place</span>
@@ -244,6 +268,16 @@ export default function RastreoPublico() {
                   <span className="text-[11px] sm:text-xs font-semibold text-slate-500 uppercase tracking-wider block">Dirección / Agencia:</span>
                   <p className="font-medium text-slate-800">{pedidoEncontrado.cliente.direccion}</p>
                 </div>
+                {(pedidoEncontrado.cliente.distrito || pedidoEncontrado.cliente.referencia) && (
+                  <div className="bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs text-slate-700 flex flex-wrap gap-3">
+                    {pedidoEncontrado.cliente.distrito && (
+                      <span><strong>Distrito:</strong> {pedidoEncontrado.cliente.distrito}</span>
+                    )}
+                    {pedidoEncontrado.cliente.referencia && (
+                      <span><strong>Referencia:</strong> {pedidoEncontrado.cliente.referencia}</span>
+                    )}
+                  </div>
+                )}
                 {pedidoEncontrado.notas && (
                   <div className="bg-amber-50 border border-amber-200 rounded-xl p-2.5 sm:p-3 text-xs text-amber-900 font-medium mt-2">
                     <strong>Nota de Entrega:</strong> {pedidoEncontrado.notas}
@@ -252,7 +286,7 @@ export default function RastreoPublico() {
               </div>
             </div>
 
-            {/* Desglose de Prendas */}
+            {/* Desglose de Prendas y Pago */}
             <div className="bg-white rounded-3xl p-4 sm:p-5 shadow-sm border border-slate-200">
               <h3 className="text-xs sm:text-sm font-bold text-slate-900 uppercase tracking-wider mb-2.5 flex items-center gap-2">
                 <span className="material-icons text-slate-600" style={{ fontSize: "18px" }}>checkroom</span>
@@ -265,9 +299,43 @@ export default function RastreoPublico() {
                     <span className="font-mono font-bold text-slate-900">S/{(item.cantidad * item.precio).toFixed(2)}</span>
                   </div>
                 ))}
-                <div className="pt-2 flex items-center justify-between font-bold text-sm sm:text-base text-slate-950">
-                  <span>Total Pagado / a Cobrar</span>
+                {pedidoEncontrado.costoDelivery > 0 && (
+                  <div className="flex items-center justify-between text-xs text-slate-600 pt-1">
+                    <span>Costo de Envío / Delivery:</span>
+                    <span className="font-mono">S/{pedidoEncontrado.costoDelivery.toFixed(2)}</span>
+                  </div>
+                )}
+                {pedidoEncontrado.descuento > 0 && (
+                  <div className="flex items-center justify-between text-xs text-emerald-700 font-semibold">
+                    <span>Descuento Promocional {pedidoEncontrado.cuponAplicado ? `(${pedidoEncontrado.cuponAplicado})` : ""}:</span>
+                    <span className="font-mono">-S/{pedidoEncontrado.descuento.toFixed(2)}</span>
+                  </div>
+                )}
+                <div className="pt-2 flex items-center justify-between font-bold text-sm sm:text-base text-slate-950 border-t border-slate-200">
+                  <span>Total Pedido:</span>
                   <span className="font-mono text-lg sm:text-xl text-[#E63946]">S/{pedidoEncontrado.total.toFixed(2)}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Compromiso de Garantía LeoFit */}
+            <div className="bg-blue-50 border border-blue-200 rounded-3xl p-4 sm:p-5 shadow-sm">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="material-icons text-blue-700 text-xl">verified</span>
+                <h4 className="text-xs sm:text-sm font-bold text-blue-950 uppercase tracking-wider">Garantía y Confianza LeoFit</h4>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs text-blue-900">
+                <div className="bg-white/70 p-2.5 rounded-xl border border-blue-200/60">
+                  <strong className="block text-slate-900 font-bold mb-0.5">📦 Entrega Segura</strong>
+                  Empaque sellado e inspección de costura antes del despacho.
+                </div>
+                <div className="bg-white/70 p-2.5 rounded-xl border border-blue-200/60">
+                  <strong className="block text-slate-900 font-bold mb-0.5">🔄 Cambio de Talla</strong>
+                  Cambio inmediato si la talla no te queda perfecta.
+                </div>
+                <div className="bg-white/70 p-2.5 rounded-xl border border-blue-200/60">
+                  <strong className="block text-slate-900 font-bold mb-0.5">⚡ Soporte Directo</strong>
+                  Atención directa por WhatsApp con el equipo fundador.
                 </div>
               </div>
             </div>

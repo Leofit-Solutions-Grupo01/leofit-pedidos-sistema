@@ -1,3 +1,11 @@
+/**
+ * @file PedidosLista.tsx
+ * @description Historial interactivo de pedidos con filtros por DNI, estado, flete y métodos de pago
+ * @project LeoFit Pedidos Sistema (UTP - Curso Integrador II)
+ * @author Lady Luz Loayza Rodriguez (@LadyyLuz) <168585420+luzylay@users.noreply.github.com>
+ * @copyright (c) 2026 Grupo 01 - UTP. All rights reserved.
+ */
+
 import { useState, useMemo, useEffect } from "react";
 import { useApp } from "../context/AppContext";
 import Badge from "../components/common/Badge";
@@ -25,10 +33,16 @@ export default function PedidosLista() {
 
   const filtrados = useMemo(() => {
     return pedidos.filter((p) => {
+      const q = busqueda.toLowerCase().trim();
       const matchBusqueda =
-        p.cliente.nombre.toLowerCase().includes(busqueda.toLowerCase()) ||
-        p.numero.toLowerCase().includes(busqueda.toLowerCase()) ||
-        p.cliente.telefono.includes(busqueda);
+        !q ||
+        p.cliente.nombre.toLowerCase().includes(q) ||
+        p.numero.toLowerCase().includes(q) ||
+        p.cliente.telefono.includes(q) ||
+        (p.cliente.dniRuc && p.cliente.dniRuc.toLowerCase().includes(q)) ||
+        (p.numeroOperacion && p.numeroOperacion.toLowerCase().includes(q)) ||
+        (p.numeroGuia && p.numeroGuia.toLowerCase().includes(q)) ||
+        (p.ciudadDestino && p.ciudadDestino.toLowerCase().includes(q));
       const matchEstado = filtroEstado === "Todos" || p.estado === filtroEstado;
       const matchDesde = !desde || p.fecha >= desde;
       const matchHasta = !hasta || p.fecha <= hasta;
@@ -63,7 +77,7 @@ export default function PedidosLista() {
           <span className="material-icons absolute left-3.5 sm:left-4 top-1/2 -translate-y-1/2 text-slate-400" style={{ fontSize: "20px" }}>search</span>
           <input
             type="text"
-            placeholder="Buscar por cliente, teléfono o N° pedido..."
+            placeholder="Buscar por cliente, DNI/RUC, teléfono, N° pedido u operación..."
             value={busqueda}
             onChange={(e) => cambiar(setBusqueda, e.target.value)}
             className="w-full pl-11 sm:pl-12 pr-4 py-3 sm:py-3.5 bg-white border-2 border-slate-300 rounded-2xl text-sm sm:text-base font-medium text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#0F223D] shadow-sm"
@@ -146,9 +160,19 @@ export default function PedidosLista() {
                               <span>Lima</span>
                             </span>
                           )}
+                          {pedido.metodoPago && (
+                            <span className="text-[10px] font-bold bg-purple-100 text-purple-900 border border-purple-200 px-1.5 py-0.5 rounded-md">
+                              {pedido.metodoPago}
+                            </span>
+                          )}
                         </div>
                         <div className="flex items-center gap-2">
                           <Badge estado={pedido.estado} enRiesgo={enRiesgo} />
+                          {pedido.cuponAplicado && (
+                            <span className="text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300 px-1.5 py-0.5 rounded-md">
+                              Cupón: {pedido.cuponAplicado}
+                            </span>
+                          )}
                         </div>
                       </div>
                       {/* Right: total + expand */}
@@ -182,32 +206,71 @@ export default function PedidosLista() {
                           </div>
                         )}
 
-                        {/* Contact */}
-                        <div className="flex items-center justify-between bg-white p-3 sm:p-3.5 rounded-2xl border border-slate-200 shadow-sm gap-2">
-                          <div>
-                            <p className="text-[11px] sm:text-xs font-semibold text-slate-500 uppercase tracking-wider mb-0.5">Teléfono Cliente</p>
-                            <p className="text-sm sm:text-base font-bold font-mono text-slate-900">{pedido.cliente.telefono}</p>
+                        {/* Customer Info & Document */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
+                          <div className="bg-white p-3 sm:p-3.5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+                            <div>
+                              <p className="text-[11px] sm:text-xs font-semibold text-slate-500 uppercase tracking-wider mb-0.5">Teléfono</p>
+                              <p className="text-sm font-bold font-mono text-slate-900">{pedido.cliente.telefono}</p>
+                            </div>
+                            <a
+                              href={`tel:${pedido.cliente.telefono}`}
+                              className="flex items-center gap-1 bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow-md"
+                              aria-label="Llamar al cliente"
+                            >
+                              <span className="material-icons" style={{ fontSize: "15px" }}>call</span>
+                              Llamar
+                            </a>
                           </div>
-                          <a
-                            href={`tel:${pedido.cliente.telefono}`}
-                            className="flex items-center gap-1.5 bg-emerald-700 hover:bg-emerald-800 text-white text-xs sm:text-sm font-bold px-3.5 py-2 rounded-xl shadow-md shrink-0"
-                            aria-label="Llamar al cliente"
-                          >
-                            <span className="material-icons" style={{ fontSize: "16px" }}>call</span>
-                            Llamar
-                          </a>
+
+                          <div className="bg-white p-3 sm:p-3.5 rounded-2xl border border-slate-200 shadow-sm">
+                            <p className="text-[11px] sm:text-xs font-semibold text-slate-500 uppercase tracking-wider mb-0.5">DNI / RUC Cliente</p>
+                            <p className="text-sm font-bold font-mono text-slate-900">
+                              {pedido.cliente.dniRuc ? pedido.cliente.dniRuc : <span className="text-slate-400 font-normal italic">No registrado</span>}
+                            </p>
+                          </div>
                         </div>
+
+                        {/* Address & Reference */}
                         <div className="bg-white p-3 sm:p-3.5 rounded-2xl border border-slate-200 shadow-sm">
                           <p className="text-[11px] sm:text-xs font-semibold text-slate-500 uppercase tracking-wider mb-0.5">
-                            {pedido.tipoEnvio === "Nacional" ? "Agencia de Entrega / Destino" : "Dirección de Entrega"}
+                            {pedido.tipoEnvio === "Nacional" ? "Agencia de Destino / Recojo" : "Dirección de Entrega"}
                           </p>
-                          <p className="text-xs sm:text-sm font-normal text-slate-800 leading-relaxed">{pedido.cliente.direccion}</p>
+                          <p className="text-xs sm:text-sm font-semibold text-slate-800 leading-relaxed">{pedido.cliente.direccion}</p>
+                          {(pedido.cliente.distrito || pedido.cliente.referencia) && (
+                            <div className="mt-1.5 pt-1.5 border-t border-slate-100 flex flex-wrap gap-2 text-xs text-slate-600">
+                              {pedido.cliente.distrito && (
+                                <span><strong>Distrito:</strong> {pedido.cliente.distrito}</span>
+                              )}
+                              {pedido.cliente.referencia && (
+                                <span><strong>Ref:</strong> {pedido.cliente.referencia}</span>
+                              )}
+                            </div>
+                          )}
                         </div>
-                        {/* Canal */}
-                        <div className="bg-white p-3 sm:p-3.5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
-                          <span className="text-[11px] sm:text-xs font-semibold text-slate-500 uppercase tracking-wider">Canal de Pedido</span>
-                          <span className="text-xs font-bold bg-[#0F223D] text-white px-2.5 py-1 rounded-xl">{pedido.canal}</span>
+
+                        {/* Payment & Channel */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
+                          <div className="bg-white p-3 sm:p-3.5 rounded-2xl border border-slate-200 shadow-sm">
+                            <span className="text-[11px] sm:text-xs font-semibold text-slate-500 uppercase tracking-wider block mb-1">Método de Pago</span>
+                            <div className="flex items-center gap-2">
+                              <span className="text-xs font-bold bg-purple-100 text-purple-900 border border-purple-200 px-2.5 py-1 rounded-xl">
+                                {pedido.metodoPago || "No especificado"}
+                              </span>
+                              {pedido.numeroOperacion && (
+                                <span className="text-xs font-mono font-semibold text-slate-600">
+                                  OP: {pedido.numeroOperacion}
+                                </span>
+                              )}
+                            </div>
+                          </div>
+
+                          <div className="bg-white p-3 sm:p-3.5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+                            <span className="text-[11px] sm:text-xs font-semibold text-slate-500 uppercase tracking-wider">Canal de Pedido</span>
+                            <span className="text-xs font-bold bg-[#0F223D] text-white px-2.5 py-1 rounded-xl">{pedido.canal}</span>
+                          </div>
                         </div>
+
                         {/* Items */}
                         <div className="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200 shadow-sm">
                           <p className="text-[11px] sm:text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Desglose de Prendas</p>
@@ -227,7 +290,7 @@ export default function PedidosLista() {
                           )}
                           {pedido.descuento > 0 && (
                             <div className="flex items-center justify-between text-xs sm:text-sm mt-1 text-emerald-700 font-medium">
-                              <span>Descuento</span>
+                              <span>Descuento {pedido.cuponAplicado ? `(${pedido.cuponAplicado})` : ""}</span>
                               <span className="font-mono font-semibold">-S/{pedido.descuento.toFixed(2)}</span>
                             </div>
                           )}
@@ -236,6 +299,7 @@ export default function PedidosLista() {
                             <span className="text-lg sm:text-xl font-bold font-mono text-[#E63946]">S/{pedido.total.toFixed(2)}</span>
                           </div>
                         </div>
+
                         {/* Notas */}
                         {pedido.notas && (
                           <div className="bg-amber-50 border border-amber-300 rounded-2xl p-3 sm:p-3.5">

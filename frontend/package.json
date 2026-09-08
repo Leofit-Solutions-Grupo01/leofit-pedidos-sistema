@@ -2,6 +2,18 @@
   "name": "leofit-pedidos-frontend",
   "private": true,
   "version": "1.0.0",
+  "author": "Lady Luz Loayza Rodriguez (@LadyyLuz) <168585420+luzylay@users.noreply.github.com>",
+  "contributors": [
+    "Lady Luz Loayza Rodriguez (@LadyyLuz) [Scrum Master / Lead Dev]",
+    "Víctor Leandro Cárdenas Fernández [Product Owner]",
+    "Harley Anthony Roman Delgado [Front-End Lead]",
+    "Jim Alessandro Dávila Morales [QA / DevOps]",
+    "Daniel Enrique Rojas Sanchez [Analista de Negocio]"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Leofit-Solutions-Grupo01/leofit-pedidos-sistema"
+  },
   "type": "module",
   "scripts": {
     "dev": "vite",

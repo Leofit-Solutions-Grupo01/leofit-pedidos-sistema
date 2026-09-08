@@ -1,3 +1,11 @@
+/**
+ * @file Login.tsx
+ * @description Pantalla de autenticación y control de acceso para el operador administrativo
+ * @project LeoFit Pedidos Sistema (UTP - Curso Integrador II)
+ * @author Lady Luz Loayza Rodriguez (@LadyyLuz) <168585420+luzylay@users.noreply.github.com>
+ * @copyright (c) 2026 Grupo 01 - UTP. All rights reserved.
+ */
+
 import { useState } from "react";
 import { useApp } from "../context/AppContext";
 
