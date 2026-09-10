@@ -19,89 +19,89 @@ Este directorio contiene el diseño del modelo de datos, diccionario de tablas, 
 
 ```mermaid
 erDiagram
-    USERS ||--o{ ORDERS : "registra / audita"
-    CLIENTS ||--o{ ORDERS : "realiza"
-    CATEGORIES ||--|{ PRODUCTS : "clasifica"
-    PRODUCTS ||--|{ PRODUCT_VARIANTS : "posee"
-    PRODUCT_VARIANTS ||--o{ ORDER_ITEMS : "incluido_en"
-    ORDERS ||--|{ ORDER_ITEMS : "contiene"
-    ORDERS ||--|{ ORDER_STATUS_HISTORY : "registra_historial"
+  USERS ||--o{ ORDERS: "registra / audita"
+  CLIENTS ||--o{ ORDERS: "realiza"
+  CATEGORIES ||--|{ PRODUCTS: "clasifica"
+  PRODUCTS ||--|{ PRODUCT_VARIANTS: "posee"
+  PRODUCT_VARIANTS ||--o{ ORDER_ITEMS: "incluido_en"
+  ORDERS ||--|{ ORDER_ITEMS: "contiene"
+  ORDERS ||--|{ ORDER_STATUS_HISTORY: "registra_historial"
 
-    USERS {
-        int id PK
-        string name
-        string email UK
-        string password_hash
-        enum role "ADMIN, OPERATOR"
-        datetime created_at
-    }
+  USERS {
+    int id PK
+    string name
+    string email UK
+    string password_hash
+    enum role "ADMIN, OPERATOR"
+    datetime created_at
+  }
 
-    CATEGORIES {
-        int id PK
-        string name
-        text description
-    }
+  CATEGORIES {
+    int id PK
+    string name
+    text description
+  }
 
-    PRODUCTS {
-        int id PK
-        int category_id FK
-        string name
-        text description
-        decimal base_price
-        string image_url
-        boolean is_active
-    }
+  PRODUCTS {
+    int id PK
+    int category_id FK
+    string name
+    text description
+    decimal base_price
+    string image_url
+    boolean is_active
+  }
 
-    PRODUCT_VARIANTS {
-        int id PK
-        int product_id FK
-        string size "S, M, L, XL"
-        string color
-        string sku UK
-        int stock
-        int alert_threshold
-    }
+  PRODUCT_VARIANTS {
+    int id PK
+    int product_id FK
+    string size "S, M, L, XL"
+    string color
+    string sku UK
+    int stock
+    int alert_threshold
+  }
 
-    CLIENTS {
-        int id PK
-        string full_name
-        string phone
-        text address
-        string district
-        text reference
-    }
+  CLIENTS {
+    int id PK
+    string full_name
+    string phone
+    text address
+    string district
+    text reference
+  }
 
-    ORDERS {
-        int id PK
-        string order_number UK
-        int client_id FK
-        enum status "RECIBIDO, PREPARACION, EN_CAMINO, ENTREGADO, CANCELADO"
-        decimal subtotal
-        decimal shipping_cost
-        decimal total_amount
-        enum payment_method "YAPE, PLIN, TRANSFERENCIA, CONTRAENTREGA"
-        text notes
-        datetime created_at
-        datetime updated_at
-    }
+  ORDERS {
+    int id PK
+    string order_number UK
+    int client_id FK
+    enum status "RECIBIDO, PREPARACION, EN_CAMINO, ENTREGADO, CANCELADO"
+    decimal subtotal
+    decimal shipping_cost
+    decimal total_amount
+    enum payment_method "YAPE, PLIN, TRANSFERENCIA, CONTRAENTREGA"
+    text notes
+    datetime created_at
+    datetime updated_at
+  }
 
-    ORDER_ITEMS {
-        int id PK
-        int order_id FK
-        int variant_id FK
-        int quantity
-        decimal unit_price
-        decimal subtotal
-    }
+  ORDER_ITEMS {
+    int id PK
+    int order_id FK
+    int variant_id FK
+    int quantity
+    decimal unit_price
+    decimal subtotal
+  }
 
-    ORDER_STATUS_HISTORY {
-        int id PK
-        int order_id FK
-        string previous_status
-        string new_status
-        datetime changed_at
-        text comments
-    }
+  ORDER_STATUS_HISTORY {
+    int id PK
+    int order_id FK
+    string previous_status
+    string new_status
+    datetime changed_at
+    text comments
+  }
 ```
 
 ---

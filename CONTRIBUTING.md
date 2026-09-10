@@ -34,16 +34,16 @@ El desarrollo se organiza bajo el modelo de ramas por funcionalidad (*Feature Br
 
 1. Realizar una bifurcación (*Fork*) o clonar el repositorio principal si se cuenta con permisos de colaborador.
 2. Crear una rama descriptiva a partir de `main`:
-   ```bash
-   git checkout -b feature/nombre-de-la-funcionalidad
-   # o para correcciones de errores:
-   git checkout -b fix/descripcion-del-bug
-   ```
+  ```bash
+  git checkout -b feature/nombre-de-la-funcionalidad
+  # o para correcciones de errores:
+  git checkout -b fix/descripcion-del-bug
+  ```
 3. Realizar los cambios manteniendo confirmaciones atómicas, coherentes y ordenadas.
 4. Publicar la rama en el repositorio remoto:
-   ```bash
-   git push origin feature/nombre-de-la-funcionalidad
-   ```
+  ```bash
+  git push origin feature/nombre-de-la-funcionalidad
+  ```
 5. Abrir una Solicitud de Extracción (*Pull Request*) dirigida a la rama `main`.
 
 ---
