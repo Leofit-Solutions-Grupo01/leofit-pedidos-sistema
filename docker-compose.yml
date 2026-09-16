@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  # 1. Base de Datos Relacional PostgreSQL (Producción / Local)
+  postgres:
+    image: postgres:16-alpine
+    container_name: leofit_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgrespassword2026!
+      POSTGRES_DB: leofit_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/01_schema.sql
+      - ./database/seeds.sql:/docker-entrypoint-initdb.d/02_seeds.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d leofit_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # 2. Servidor Backend API REST (Node.js / Express / TypeScript)
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: leofit_backend
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      PORT: 4000
+      DATABASE_URL: postgresql://postgres:postgrespassword2026!@postgres:5432/leofit_db
+      JWT_SECRET: leofit_super_secret_jwt_key_academic_2026_production_ready
+      CORS_ORIGIN: "*"
+    ports:
+      - "4000:4000"
+
+  # 3. Interfaz Web de Administración de Base de Datos (Adminer)
+  adminer:
+    image: adminer:latest
+    container_name: leofit_adminer
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+
+volumes:
+  postgres_data:

@@ -1,0 +1,208 @@
+Para la Primera PC1 tuvimos
+S12F-APF1-2026A
+
+Puntaje máximo: 20 pts
+
+evaluation-img
+Nota
+
+18/20
+Análisis Empresarial y Planificación del Proyecto
+4 pts
+ESTÁNDAR ESPERADO
+
+4 pts
+
+Analiza el entorno empresarial para realizar una propuesta de valor y planifique el desarrollo de una solución tecnológica pertinente del proyecto considerando la elaboración de los siguientes artefactos: 1) Documento de Análisis de Negocio (Lean Canvas); 2) Mapa de Procesos (AS-IS) + Identificación de oportunidades de mejora (TO-BE); 3) Product Backlog + Historias de Usuario; 4) Acta de Constitución del Proyecto (Project Charter) versión ágil; 5) Cronograma del Proyecto (Gantt + Sprint Planning); 6) Definición de Roles y Artefactos Scrum + Tablero Kanban/Scrum
+Ver menos
+
+EN PROCESO 2
+
+3 pts
+
+Analiza el entorno empresarial para realizar una propuesta de valor y planifique el desarrollo de una solución tecnológica pertinente del proyecto considerando 5 de 6 de los siguientes artefactos: 1) Documento de Análisis de Negocio (Lean Canvas); 2) Mapa de Procesos (AS-IS) + Identificación de oportunidades de mejora (TO-BE); 3) Product Backlog + Historias de Usuario; 4) Acta de Constitución del Proyecto (Project Charter) versión ágil; 5) Cronograma del Proyecto (Gantt + Sprint Planning); 6) Definición de Roles y Artefactos Scrum + Tablero Kanban/Scrum.
+Ver más
+
+EN PROCESO 1
+
+2 pts
+
+Analiza el entorno empresarial para realizar una propuesta de valor y planifique el desarrollo de una solución tecnológica pertinente del proyecto considerando 3 o 4 de 6 de los siguientes artefactos: 1) Documento de Análisis de Negocio (Lean Canvas); 2) Mapa de Procesos (AS-IS) + Identificación de oportunidades de mejora (TO-BE); 3) Product Backlog + Historias de Usuario; 4) Acta de Constitución del Proyecto (Project Charter) versión ágil; 5) Cronograma del Proyecto (Gantt + Sprint Planning); 6) Definición de Roles y Artefactos Scrum + Tablero Kanban/Scrum.
+Ver más
+
+INICIAL
+
+1 pts
+
+Analiza el entorno empresarial para realizar una propuesta de valor y planifique el desarrollo de una solución tecnológica pertinente del proyecto considerando 1 o 2 de 6 de los siguientes artefactos: 1) Documento de Análisis de Negocio (Lean Canvas); 2) Mapa de Procesos (AS-IS) + Identificación de oportunidades de mejora (TO-BE); 3) Product Backlog + Historias de Usuario; 4) Acta de Constitución del Proyecto (Project Charter) versión ágil; 5) Cronograma del Proyecto (Gantt + Sprint Planning); 6) Definición de Roles y Artefactos Scrum + Tablero Kanban/Scrum.
+Ver más
+
+NO CUMPLE
+
+0 pts
+
+Gestión del Proyecto
+4 pts
+ESTÁNDAR ESPERADO
+
+4 pts
+
+Identifica actividades a realizar para el desarrollo del proyecto considerando un análisis de riesgo y un plan de medición y monitoreo teniendo en cuenta los siguientes artefactos: 1) Mapa de riesgos (Matriz de Probabilidad–Impacto + Heatmap); 2) Plan de gestión de riesgos; 3) KPIs y métricas del sistema; 4) SLA/SLO documentado; 5) Plan de Medición y Monitoreo
+Ver menos
+
+EN PROCESO 2
+
+3 pts
+
+Identifica actividades a realizar para el desarrollo del proyecto considerando un análisis de riesgo y un plan de medición y monitoreo elaborando 4 de los 5 artefactos: 1) Mapa de riesgos (Matriz de Probabilidad–Impacto + Heatmap); 2) Plan de gestión de riesgos; 3) KPIs y métricas del sistema; 4) SLA/SLO documentado; 5) Plan de Medición y Monitoreo
+Ver más
+
+EN PROCESO 1
+
+2 pts
+
+Identifica actividades a realizar para el desarrollo del proyecto considerando un análisis de riesgo y un plan de medición y monitoreo elaborando 3 de los 5 artefactos: 1) Mapa de riesgos (Matriz de Probabilidad–Impacto + Heatmap); 2) Plan de gestión de riesgos; 3) KPIs y métricas del sistema; 4) SLA/SLO documentado; 5) Plan de Medición y Monitoreo
+Ver más
+
+INICIAL
+
+1 pts
+
+Identifica actividades a realizar para el desarrollo del proyecto considerando un análisis de riesgo y un plan de medición y monitoreo elaborando 1 o 2 de los 5 artefactos: 1) Mapa de riesgos (Matriz de Probabilidad–Impacto + Heatmap); 2) Plan de gestión de riesgos; 3) KPIs y métricas del sistema; 4) SLA/SLO documentado; 5) Plan de Medición y Monitoreo
+Ver más
+
+NO CUMPLE
+
+0 pts
+
+Configuración del entorno y diseño inicial para el desarrollo del proyecto
+4 pts
+ESTÁNDAR ESPERADO
+
+4 pts
+
+Configura las herramientas a utilizar las herramientas del proyecto y aborde el diseño inicial de la solución del proyecto elaborando los siguientes artefactos: 1) Wireframes de baja fidelidad; 2) Mockups de Alta Fidelidad (Prototipo interactivo); 3) Documento de selección de herramientas (a criterio del docente); 4) Evidencia de configuración de las herramientas; 5)Repositorio GitHub + README.
+Ver menos
+
+EN PROCESO 2
+
+3 pts
+
+Configura las herramientas a utilizar las herramientas del proyecto y aborde el diseño inicial de la solución del proyecto elaborando 4 de 5 de los siguientes artefactos: 1) Wireframes de baja fidelidad; 2) Mockups de Alta Fidelidad (Prototipo interactivo); 3) Documento de selección de herramientas (a criterio del docente); 4) Evidencia de configuración de las herramientas; 5) Repositorio GitHub + README.
+Ver más
+
+EN PROCESO 1
+
+2 pts
+
+Configura las herramientas a utilizar las herramientas del proyecto y aborde el diseño inicial de la solución del proyecto elaborando 3 de 5 de los siguientes artefactos: 1) Wireframes de baja fidelidad; 2) Mockups de Alta Fidelidad (Prototipo interactivo); 3) Documento de selección de herramientas (a criterio del docente); 4) Evidencia de configuración de las herramientas; 5) Repositorio GitHub + README.
+Ver más
+
+INICIAL
+
+1 pts
+
+Configura las herramientas a utilizar las herramientas del proyecto y aborde el diseño inicial de la solución del proyecto elaborando 1 o 2 de 5 de los siguientes artefactos: 1) Wireframes de baja fidelidad; 2) Mockups de Alta Fidelidad (Prototipo interactivo); 3) Documento de selección de herramientas (a criterio del docente); 4) Evidencia de configuración de las herramientas; 5) Repositorio GitHub + README.
+Ver más
+
+NO CUMPLE
+
+0 pts
+
+Desarrollo Front-End
+4 pts
+ESTÁNDAR ESPERADO
+
+4 pts
+
+Implementa el Front-End aplicando patrones UI profesionales y documentando las buenas prácticas WPO que consideran los siguientes elementos: 1) Estrategias WPO aplicadas; 2) Justificación; 3) Efecto esperado sobre las métricas; 4) Herramientas o librerías usadas; 5) Impacto conseguido.
+Ver más
+
+EN PROCESO 2
+
+3 pts
+
+Implementa el Front-End aplicando patrones UI profesionales y documentando las buenas prácticas WPO que consideran 4 de 5 de los siguientes elementos: 1) Estrategias WPO aplicadas; 2) Justificación; 3) Efecto esperado sobre las métricas; 4)Herramientas o librerías usadas; 5) Impacto conseguido.
+Ver más
+
+EN PROCESO 1
+
+2 pts
+
+Implementa el Front-End aplicando patrones UI profesionales y documentando las buenas prácticas WPO que consideran 3 de 5 de los siguientes elementos: 1) Estrategias WPO aplicadas; 2) Justificación; 3) Efecto esperado sobre las métricas; 4)Herramientas o librerías usadas; 5) Impacto conseguido.
+Ver menos
+
+INICIAL
+
+1 pts
+
+Implementa el Front-End aplicando patrones UI profesionales y documentando las buenas prácticas WPO que consideran 1 o 2 de 5 de los siguientes elementos: 1) Estrategias WPO aplicadas; 2) Justificación; 3) Efecto esperado sobre las métricas; 4)Herramientas o librerías usadas; 5) Impacto conseguido.
+Ver más
+
+NO CUMPLE
+
+0 pts
+
+Innovación del Front End
+2 pts
+ESTÁNDAR ESPERADO
+
+2 pts
+
+Elabora un diseño Front End que evidencia un nivel destacado de innovación en la combinación de componentes y patrones UI evidenciando fluidez, consistencia y facilidad de uso, aplicando ideas de manera creativa y original para lograr un diseño único.
+Ver menos
+
+EN PROCESO 2
+
+1.5 pts
+
+Elabora un diseño Front End que presenta un enfoque innovador en la combinación de componentes y patrones UI evidenciando fluidez y facilidad de uso, aplicando ideas de manera creativa y original.
+Ver más
+
+EN PROCESO 1
+
+1 pts
+
+Elabora un diseño Front End demostrando una exploración general de conceptos innovadores en la combinación de componentes y patrones UI evidenciando facilidad de uso.
+INICIAL
+
+0.5 pts
+
+Elabora un diseño Front End demostrando una exploración general de conceptos innovadores en la combinación de componentes utilizados en su diseño.
+NO CUMPLE
+
+0 pts
+
+Sustentación
+2 pts
+ESTÁNDAR ESPERADO
+
+2 pts
+
+Argumenta el proyecto con claridad, coherencia técnica y dominio conceptual, explicando las decisiones tomadas en cada fase del desarrollo cumpliendo los siguientes puntos: 1)Se expone los principales aportes al proyecto; 2) Se sigue un orden lógico, coherente y con capacidad de síntesis; 3) Se demuestra dominio del tema, argumentando y sustentando los artefactos elaborados; 4) Se muestra el funcionamiento del Front-End.
+Ver menos
+
+EN PROCESO 2
+
+1.5 pts
+
+Argumenta el proyecto con claridad, coherencia técnica y dominio conceptual, explicando las decisiones tomadas en cada fase del desarrollo cumpliendo 3 de los siguientes puntos: 1) Se expone los principales aportes al proyecto; 2) Se sigue un orden lógico, coherente y con capacidad de síntesis; 3) Se demuestra dominio del tema, argumentando y sustentando los artefactos elaborados; 4) Se muestra el funcionamiento del Front-End.
+Ver más
+
+EN PROCESO 1
+
+1 pts
+
+Argumenta el proyecto con claridad, coherencia técnica y dominio conceptual, explicando las decisiones tomadas en cada fase del desarrollo cumpliendo 2 de los siguientes puntos: 1) Se expone los principales aportes al proyecto; 2) Se sigue un orden lógico, coherente y con capacidad de síntesis; 3) Se demuestra dominio del tema, argumentando y sustentando los artefactos elaborados; 4) Se muestra el funcionamiento del Front-End.
+Ver más
+
+INICIAL
+
+0.5 pts
+
+Argumenta el proyecto con claridad, coherencia técnica y dominio conceptual, explicando las decisiones tomadas en cada fase del desarrollo cumpliendo 1 de los siguientes puntos: 1) Se expone los principales aportes al proyecto; 2) Se sigue un orden lógico, coherente y con capacidad de síntesis; 3) Se demuestra dominio del tema, argumentando y sustentando los artefactos elaborados; 4) Se muestra el funcionamiento del Front-End.
+Ver más
+
+NO CUMPLE
+
+0 pts
