@@ -1,7 +1,15 @@
+/**
+ * @file AppContext.tsx
+ * @description Proveedor de estado global reactivo (pedidos, productos, autenticación, accesibilidad)
+ * @project LeoFit Pedidos Sistema (UTP - Curso Integrador II)
+ * @author Lady Luz Loayza Rodriguez (@LadyyLuz) <168585420+luzylay@users.noreply.github.com>
+ * @copyright (c) 2026 Grupo 01 - UTP. All rights reserved.
+ */
+
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { Pedido, Producto, EstadoPedido, pedidosIniciales, productosIniciales } from "../data/mockData";
 
-type Pagina = "login" | "dashboard" | "pedidos" | "nuevo-pedido" | "productos";
+type Pagina = "login" | "dashboard" | "pedidos" | "nuevo-pedido" | "productos" | "rastreo";
 
 interface AppContextType {
   autenticado: boolean;
@@ -10,7 +18,9 @@ interface AppContextType {
   productos: Producto[];
   filtroInicial: EstadoPedido | "Todos";
   privacidad: boolean;
+  modoAccesible: boolean;
   togglePrivacidad: () => void;
+  toggleAccesible: () => void;
   iniciarSesion: (email: string, password: string) => boolean;
   cerrarSesion: () => void;
   navegarA: (pagina: Pagina) => void;
@@ -25,6 +35,7 @@ interface AppContextType {
 const AppContext = createContext<AppContextType | null>(null);
 
 const SESSION_KEY = "leofit_session";
+const ACCESIBLE_KEY = "leofit_modo_accesible";
 const INACTIVIDAD_MS = 30 * 60 * 1000; // 30 minutos
 
 export function AppProvider({ children }: { children: ReactNode }) {
@@ -34,8 +45,18 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [productos, setProductos] = useState<Producto[]>(productosIniciales);
   const [filtroInicial, setFiltroInicial] = useState<EstadoPedido | "Todos">("Todos");
   const [privacidad, setPrivacidad] = useState(false);
+  const [modoAccesible, setModoAccesible] = useState<boolean>(() => {
+    return localStorage.getItem(ACCESIBLE_KEY) === "true";
+  });
 
   const togglePrivacidad = () => setPrivacidad((v) => !v);
+  const toggleAccesible = () => {
+    setModoAccesible((prev) => {
+      const nuevo = !prev;
+      localStorage.setItem(ACCESIBLE_KEY, String(nuevo));
+      return nuevo;
+    });
+  };
 
   // Restaurar sesión al montar (sessionStorage: persiste durante la sesión del navegador,
   // se borra al cerrar la pestaña — equilibrio entre conveniencia y seguridad)
@@ -90,7 +111,19 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setPaginaActual(pagina);
   };
 
-  const agregarPedido = (pedido: Pedido) => setPedidos((prev) => [pedido, ...prev]);
+  const agregarPedido = (pedido: Pedido) => {
+    setPedidos((prev) => [pedido, ...prev]);
+    // Descontar inventario automáticamente
+    setProductos((prev) =>
+      prev.map((prod) => {
+        const itemComprado = pedido.items.find((it) => it.productoId === prod.id);
+        if (itemComprado) {
+          return { ...prod, stock: Math.max(0, prod.stock - itemComprado.cantidad) };
+        }
+        return prod;
+      })
+    );
+  };
 
   const actualizarEstadoPedido = (id: string, estado: EstadoPedido) => {
     setPedidos((prev) =>
@@ -114,7 +147,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
   return (
     <AppContext.Provider
       value={{
-        autenticado, paginaActual, pedidos, productos, filtroInicial, privacidad, togglePrivacidad,
+        autenticado, paginaActual, pedidos, productos, filtroInicial, privacidad, modoAccesible,
+        togglePrivacidad, toggleAccesible,
         iniciarSesion, cerrarSesion, navegarA, navegarAConFiltro,
         agregarPedido, actualizarEstadoPedido,
         agregarProducto, editarProducto, eliminarProducto,

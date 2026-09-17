@@ -1,132 +1,155 @@
-# Leofit Solutions - Sistema de Gestión de Pedidos & Inventario
-
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](file:///c:/Users/Loayza/Downloads/leofit-pedidos-sistema/LICENSE)
-[![Deploy to GitHub Pages](https://github.com/Leofit-Solutions-Grupo01/leofit-pedidos-sistema/actions/workflows/deploy.yml/badge.svg)](file:///c:/Users/Loayza/Downloads/leofit-pedidos-sistema/.github/workflows/deploy.yml)
-[![Curso](https://img.shields.io/badge/Curso-Integrador%20II%3A%20Software-orange.svg)](file:///c:/Users/Loayza/Downloads/leofit-pedidos-sistema/docs/01_Ficha_Identificacion.md)
-[![Demo Live](https://img.shields.io/badge/Demo-GitHub%20Pages%20Live-brightgreen.svg)](https://leofit-solutions-grupo01.github.io/leofit-pedidos-sistema/)
+# Leofit Solutions — Sistema de Gestión de Pedidos & Control de Inventario Multicanal
+## Universidad Tecnológica del Perú (UTP) — Curso Integrador II: Software (`100000S12F`)
+**Docente:** Ing. Enrique Lee Huamani Uriarte | **Sección:** 35374 | **Grupo:** 01  
+**Organización GitHub:** [`Leofit-Solutions-Grupo01`](https://github.com/Leofit-Solutions-Grupo01) | **Repositorio:** [`leofit-pedidos-sistema`](https://github.com/Leofit-Solutions-Grupo01/leofit-pedidos-sistema)
 
 ---
 
-## 📌 1. Descripción del Proyecto
-
-**Leofit** es una PYME familiar peruana dedicada a la confección y venta de ropa deportiva de alto rendimiento (camisetas oversized, shorts de compresión, joggers, bividis y accesorios). 
-
-Este repositorio contiene:
-1. **Documentación Formal:** Fichas de identificación, requerimientos RF/RNF, actas de reunión y glosario en formatos **Markdown (.md)**, **Word (.docx)** y **PDF (.pdf)**.
-2. **Diagramas Técnicos:** Diagramas BPMN AS-IS, flujo de proceso TO-BE, arquitectura en capas, matriz de riesgos y matriz de requerimientos.
-3. **Aplicación Web PWA:** Código fuente en React 19 + TypeScript + TailwindCSS v4 listo para operar y desplegado en GitHub Pages.
+[![Estado APF1](https://img.shields.io/badge/APF1%20(Semana%2005)-18%2F20%20Aprobado-brightgreen.svg)](docs/INFORME_FINAL_APF1_LEOFIT.pdf)
+[![Estado APF2](https://img.shields.io/badge/APF2%20(Semana%2009)-100%25%20Completado-blue.svg)](docs/INFORME_FINAL_APF2_LEOFIT.pdf)
+[![Pruebas Jest](https://img.shields.io/badge/Backend%20Tests-18%20Passing-brightgreen.svg)](backend/README.md)
+[![Arquitectura](https://img.shields.io/badge/Architecture-Clean%20Architecture%20%2B%20BCNF-purple.svg)](docs/07_Arquitectura_Sistema.md)
+[![Seguridad](https://img.shields.io/badge/Security-OWASP%20Top%2010%20%7C%20JWT%20%7C%20bcrypt-red.svg)](docs/10_Catalogo_Controles_Seguridad_OWASP.md)
+[![Demo PWA](https://img.shields.io/badge/Demo%20Live-PWA%20Online-orange.svg)](https://leofit-solutions-grupo01.github.io/leofit-pedidos-sistema/)
 
 ---
 
-## 👥 2. Integrantes del Equipo (Grupo 01 - UTP)
+## 1. Descripción del Proyecto
 
-| N° | Integrante | Rol Principal |
-|:---|:---|:---|
-| 1 | **Cárdenas Fernández Víctor Leandro** | Back-End / Base de Datos |
-| 2 | **Dávila Morales Jim Alessandro** | Calidad / DevOps / Despliegue |
-| 3 | **Roman Delgado Harley Anthony** | UX / Front-End |
-| 4 | **Loayza Rodriguez Lady Luz** | UX / Front-End / Coordinación |
-| 5 | **Rojas Sanchez Daniel Enrique** | Gestión / Análisis Funcional |
+**LeoFit Solutions** es una plataforma web progresiva (PWA) de alto rendimiento conectada a un backend de Arquitectura Limpia con persistencia en PostgreSQL 16. La solución digitaliza el flujo integral de ventas, toma de pedidos y control de existencias en tiempo real para la empresa textil deportiva **LeoFit** (Gamarra, La Victoria, Lima).
+
+### Problemática Resuelta:
+- **Sobreventa y descontrol de stock:** Desincronización entre canales físicos y virtuales (WhatsApp / Instagram).
+- **Registro manual en papel:** Retrasos de hasta 48 horas en la preparación de paquetes y pérdida de comprobantes.
+- **Falta de métricas:** Ausencia de indicadores en tiempo real de facturación, prendas más vendidas y alertas de stock bajo.
 
 ---
 
-## 📁 3. Estructura del Repositorio y Documentación
+## 2. Integrantes del Equipo y Asignación de Roles
 
+| Integrante | Código UTP | Usuario GitHub | Rol Primario Scrum | Rol Técnico Especializado |
+| :--- | :--- | :--- | :--- | :--- |
+| **Lady Luz Loayza Rodriguez** | `U22221489` | `@LadyyLuz` / `luzylay` | **Scrum Master** | DevSecOps, Coordinadora de Seguridad JWT & Gobernanza |
+| **Víctor Leandro Cárdenas F.** | `U19217414` | `@VictorCardenazFernandez` | **Product Owner** | Arquitecto de Base de Datos (DBA), BCNF & Replicación WAL |
+| **Harley Anthony Roman D.** | `U21313032` | `@hroman2004` | **Frontend Lead** | Especialista PWA, Diseñador UI/UX & Optimización WPO |
+| **Jim Alessandro Dávila M.** | `U18206081` | `@Jim4279` | **QA Engineer Lead** | Desarrollador Backend Node.js/TS & Pruebas Automatizadas |
+| **Daniel Enrique Rojas S.** | `U21214627` | `@Daniel102608` | **Business Analyst** | Cloud DevOps, SLA/SLO, Render/Vercel & Supabase |
+
+---
+
+## 3. Entregables Oficiales e Informes Académicos UTP
+
+| Hito | Calificación / Estado | Entregable Oficial en Word (.docx) | Entregable Oficial en PDF (.pdf) |
+| :--- | :---: | :---: | :---: |
+| **APF1 (Avance 1 - Sem. 05)** | **18 / 20 (Aprobado)** | [`INFORME_FINAL_APF1_LEOFIT.docx`](docs/INFORME_FINAL_APF1_LEOFIT.docx) | [`INFORME_FINAL_APF1_LEOFIT.pdf`](docs/INFORME_FINAL_APF1_LEOFIT.pdf) |
+| **APF2 (Avance 2 - Sem. 09)** | **100% Completado** | [`INFORME_FINAL_APF2_LEOFIT.docx`](docs/INFORME_FINAL_APF2_LEOFIT.docx) | [`INFORME_FINAL_APF2_LEOFIT.pdf`](docs/INFORME_FINAL_APF2_LEOFIT.pdf) |
+| **APF3 (Avance 3 - Sem. 13)** | *Planificado (Sprint 4)* | *En desarrollo según cronograma* | *En desarrollo según cronograma* |
+| **PROY (Proyecto Final - Sem. 18)** | *Planificado (Sprint 5)* | *En desarrollo según cronograma* | *En desarrollo según cronograma* |
+
+> Para consultar la colección completa de los 12 módulos de especificación técnica y material de clase, revise el [`Directorio Maestro de Documentación (docs/README.md)`](docs/README.md).
+
+---
+
+## 4. Arquitectura de Software y Persistencia de Datos
+
+### Diagrama de Contenedores C4 (Nivel 2)
 ```text
-Leofit-Solutions-Grupo01/
-├── .github/
-│   └── workflows/
-│       ├── deploy.yml                 # Despliegue automático a GitHub Pages
-│       └── security-scan.yml          # Auditoría de dependencias y escaneo de secretos
-├── .env.example                       # Plantilla de variables de entorno
-├── .gitignore                         # Exclusiones de Git
-├── LICENSE                            # Licencia MIT
-├── README.md                          # Documentación principal
-├── SECURITY.md                        # Directrices y políticas de seguridad
-│
-├── 📁 docs/                           # Documentación en MD, Word (.docx) y PDF (.pdf)
-│   ├── 01_Ficha_Identificacion (.md | .docx | .pdf)   # Ficha de mapeo oficial UTP
-│   ├── 02_Requerimientos (.md | .docx | .pdf)         # Requerimientos RF y RNF
-│   ├── 03_Acta_Reunion_1 (.md | .docx | .pdf)         # Minuta de primera reunión con Víctor
-│   ├── 04_Glosario (.md | .docx | .pdf)               # Glosario técnico y del negocio
-│   ├── 05_Preguntas_Criticas_Panel (.md | .docx | .pdf) # Análisis de KPIs operativos
-│   └── 06_Especificacion_PWA_Prompt (.md | .docx | .pdf)# Especificación técnica PWA
-│
-├── 📁 diagrams/                       # Diagramas de procesos y arquitectura (PNG Alta Res)
-│   ├── 01_BPMN_AS-IS.png              # Diagrama BPMN del flujo manual actual
-│   ├── 02_Mapa_Riesgos.png            # Matriz de evaluación de riesgos y mitigación
-│   ├── 03_Arquitectura_Inicial.png    # Arquitectura del sistema web multicapa
-│   ├── 04_Flujo_Proceso_Pedidos.png   # Flujo digital del proceso de pedidos (TO-BE)
-│   └── 05_Matriz_RF_RNF.png           # Matriz visual de requerimientos RF y RNF
-│
-├── 📁 frontend/                       # Aplicación Web React 19 + TypeScript + TailwindCSS
-│   ├── public/
-│   │   ├── 404.html                   # Manejador SPA para GitHub Pages
-│   │   └── manifest.json              # Configuración PWA (instalable en móvil)
-│   ├── src/
-│   │   ├── components/                # Componentes (Navbar, Modal, Badge, MontoPrivado)
-│   │   ├── context/                   # AppContext (sesión, estado de pedidos e inventario)
-│   │   ├── data/                      # mockData inicial de pedidos y productos
-│   │   ├── pages/                     # Login, Dashboard, PedidosLista, PedidoForm, ProductosGestion
-│   │   ├── App.tsx                    # Enrutador principal de vistas
-│   │   └── main.tsx                   # Punto de entrada de React
-│   ├── 📁 mockups/                    # Diseños UI de referencia
-│   │   ├── 01_Login.png
-│   │   ├── 02_Dashboard.png
-│   │   ├── 03_Listado_Pedidos.png
-│   │   ├── 04_Formulario_Pedido.png
-│   │   └── 05_Gestion_Productos.png
-│   ├── index.html                     # HTML principal con Google Fonts y Material Icons
-│   └── vite.config.ts                 # Configuración Vite adaptada a GitHub Pages
-│
-├── 📁 backend/                        # Arquitectura y servicios de API REST
-│   └── README.md
-│
-├── 📁 evidence/                       # Evidencias de la empresa y entrevistas
-│   ├── 📁 semana_1/
-│   │   ├── Evidencia_Contacto.png     # Captura de WhatsApp con el dueño
-│   │   └── Ficha_Mapeo_Original.pdf   # PDF oficial completado Semana 1
-│   └── 📁 semana_2/
-│       └── .gitkeep
-│
-└── 📁 database/                       # Persistencia relacional
-    └── README.md                      # Modelo Entidad-Relación y diccionario SQL
++-------------------------------------------------------------------------+
+|                         USUARIO / OPERADOR LEOFIT                       |
+|               (Dispositivo Móvil / Laptop / Navegador Web)             |
++-------------------------------------------------------------------------+
+                                    |
+                            [HTTPS / TLS 1.3]
+                                    v
++-------------------------------------------------------------------------+
+|                    FRONTEND PWA (Vercel Edge Network)                   |
+|           React 19 + TypeScript + Vite + TailwindCSS + Offline SW        |
++-------------------------------------------------------------------------+
+                                    |
+                    [REST API / JSON / Bearer JWT / CORS]
+                                    v
++-------------------------------------------------------------------------+
+|                  BACKEND API REST (Render.com / Docker)                 |
+|         Node.js 20 + TypeScript + Express + Zod + Helmet + RateLimit    |
+|      - Capa Dominio: Entidades & Interfaces de Repositorio             |
+|      - Capa Infraestructura: PgOrderRepository (Consultas $1, ACID)     |
+|      - Capa Fallback: MemoryOrderRepository (In-Memory Fallback)        |
++-------------------------------------------------------------------------+
+                                    |
+                    [TCP/IP / Port 5432 / SSL Encrypted]
+                                    v
++-------------------------------------------------------------------------+
+|             BASE DE DATOS RELACIONAL (Supabase / PostgreSQL 16)         |
+|      - Normalización BCNF (8 tablas con integridad referencial)         |
+|      - Physical Streaming Replication (Primary -> Standby WAL slot)     |
+|      - Backups Diarios PITR con verificación de hash SHA-256            |
++-------------------------------------------------------------------------+
 ```
 
 ---
 
-## 📊 4. Diagramas del Proyecto
+## 5. Pruebas Automatizadas y Cobertura de Calidad
 
-* **BPMN Proceso Actual (AS-IS):** [`diagrams/01_BPMN_AS-IS.png`](file:///c:/Users/Loayza/Downloads/leofit-pedidos-sistema/diagrams/01_BPMN_AS-IS.png)
-* **Mapa de Riesgos:** [`diagrams/02_Mapa_Riesgos.png`](file:///c:/Users/Loayza/Downloads/leofit-pedidos-sistema/diagrams/02_Mapa_Riesgos.png)
-* **Arquitectura del Sistema:** [`diagrams/03_Arquitectura_Inicial.png`](file:///c:/Users/Loayza/Downloads/leofit-pedidos-sistema/diagrams/03_Arquitectura_Inicial.png)
-* **Flujo del Proceso Digital (TO-BE):** [`diagrams/04_Flujo_Proceso_Pedidos.png`](file:///c:/Users/Loayza/Downloads/leofit-pedidos-sistema/diagrams/04_Flujo_Proceso_Pedidos.png)
-* **Matriz de Requerimientos (RF y RNF):** [`diagrams/05_Matriz_RF_RNF.png`](file:///c:/Users/Loayza/Downloads/leofit-pedidos-sistema/diagrams/05_Matriz_RF_RNF.png)
-
----
-
-## 🚀 5. Ejecución Local del Frontend
+El backend cuenta con **5 suites de pruebas automatizadas y 18 casos de prueba** ejecutados con **Jest y Supertest**:
 
 ```bash
-# 1. Entrar a la carpeta frontend
-cd frontend
-
-# 2. Instalar dependencias
-npm install
-
-# 3. Iniciar servidor de desarrollo
-npm run dev
-
-# 4. Compilar para producción
-npm run build
+cd backend
+npm test
 ```
 
-* **Credenciales Demo:**
-  * **Usuario:** `victor@leofit.com`
-  * **Contraseña:** `leofit2026`
+```text
+PASS tests/auth.test.ts
+PASS tests/security.test.ts
+PASS tests/products.test.ts
+PASS tests/orders.test.ts
+PASS tests/clients_dashboard.test.ts
+
+Test Suites: 5 passed, 5 total
+Tests:       18 passed, 18 total
+Snapshots:   0 total
+Time:        3.42 s
+Ran all test suites.
+```
 
 ---
 
-## 🌐 6. Despliegue en GitHub Pages
-La aplicación web se encuentra desplegada y disponible en:
-👉 **[https://leofit-solutions-grupo01.github.io/leofit-pedidos-sistema/](https://leofit-solutions-grupo01.github.io/leofit-pedidos-sistema/)**
+## 6. Guía de Ejecución Local y Despliegue con Docker
+
+### Opción A: Despliegue Rápido con Docker Compose (Recomendado)
+```bash
+# Inicia PostgreSQL 16, Backend API y Adminer con un solo comando
+docker-compose up -d
+
+# Acceso al Backend API: http://localhost:4000/api/health
+# Acceso a Adminer (Gestor BD): http://localhost:8080
+```
+
+### Opción B: Ejecución Manual en Entorno de Desarrollo
+```bash
+# 1. Iniciar el Backend API
+cd backend
+npm install
+npm run dev
+
+# 2. Iniciar el Frontend PWA (en otra terminal)
+cd frontend
+npm install
+npm run dev
+```
+
+---
+
+## 7. Seguridad de la Información y Manejo de Secretos
+
+- **Sin credenciales expuestas:** Todos los parámetros confidenciales se configuran mediante variables de entorno en el servidor (`process.env.DATABASE_URL`, `process.env.JWT_SECRET`).
+- **Plantilla de referencia:** Ver [`backend/.env.example`](backend/.env.example) para configurar un entorno local seguro.
+- **Protección de contraseñas:** Cifrado con algoritmo **bcrypt** (10 rondas de salt).
+- **Protección perimetral:** Cabeceras HTTP seguras configuradas con **Helmet**, mitigación de ataques DoS con **Rate-Limiting** y sanitización de consultas preparadas `$1` contra inyecciones SQL.
+
+---
+
+## 8. Licencia y Gobernanza
+
+- **Licencia:** MIT License. Ver archivo [`LICENSE`](LICENSE).
+- **Gobernanza de Código:** Ver [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md) y [`CONTRIBUTING.md`](CONTRIBUTING.md).
+- **Políticas de Seguridad:** Ver [`SECURITY.md`](SECURITY.md).
