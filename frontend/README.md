@@ -10,7 +10,7 @@ La interfaz de usuario ha sido concebida específicamente para satisfacer las ne
 
 ### Principios de Diseño:
 * **Enfoque Mobile-First & PWA:** Totalmente optimizado para pantallas táctiles de smartphones (botones de fácil pulsación con área mínima de 44x44px, formularios ágiles) sin perder ergonomía en pantallas de escritorio.
-* **Cero Fricción en Registro:** Crear un pedido requiere menos de 3 pasos: ingresar cliente ➔ seleccionar prendas con tallas ➔ confirmar con un clic.
+* **Cero Fricción en Registro:** Crear un pedido requiere menos de 3 pasos: ingresar cliente seleccionar prendas con tallas confirmar con un clic.
 * **Trazabilidad Visual por Código de Color:** Los estados de los pedidos están codificados con colores universales para identificar prioridades al instante.
 * **Heurísticas de Usabilidad:** Visibilidad del estado del sistema en todo momento, consistencia en formularios y prevención de errores mediante validaciones inline.
 
@@ -23,11 +23,11 @@ La interfaz de usuario ha sido concebida específicamente para satisfacer las ne
 * **Color Primario de Marca:** `#0284C7` (Sky Blue) - Confianza, dinamismo deportivo y claridad.
 * **Superficies y Tarjetas:** `#FFFFFF` y `#F8FAFC` (Slate 50) con bordes suaves `#E2E8F0`.
 * **Estados de Pedido:**
-  * `Recibido`: Azul `#3B82F6` (Pendiente de atención).
-  * `En Preparación`: Ámbar `#F59E0B` (En empaque en almacén).
-  * `En Camino`: Púrpura `#8B5CF6` (Con el delivery motorizado).
-  * `Entregado`: Verde Esmeralda `#10B981` (Venta completada).
-  * `Cancelado / Sin Stock`: Rojo `#EF4444` (Alerta crítica).
+ * `Recibido`: Azul `#3B82F6` (Pendiente de atención).
+ * `En Preparación`: Ámbar `#F59E0B` (En empaque en almacén).
+ * `En Camino`: Púrpura `#8B5CF6` (Con el delivery motorizado).
+ * `Entregado`: Verde Esmeralda `#10B981` (Venta completada).
+ * `Cancelado / Sin Stock`: Rojo `#EF4444` (Alerta crítica).
 
 ### Tipografía:
 * Familia tipográfica: `Inter`, `Roboto`, `sans-serif`.
@@ -49,10 +49,40 @@ En la carpeta [`mockups/`](file:///c:/Users/Loayza/Downloads/leofit-pedidos-sist
 
 ---
 
-## 4. Stack Tecnológico Sugerido para Frontend
+## 4. Stack Tecnológico Implementado en Frontend
 
-* **Framework:** React 18+ con Vite (compilación ultrarrápida y estándar de la industria).
-* **Enrutamiento:** React Router DOM v6+.
-* **Gestión de Estado:** Zustand o Context API para el estado global del carrito de pedidos y sesión.
-* **Peticiones HTTP:** Axios con interceptores para inyección automática del token JWT.
-* **Componentes / Estilos:** Vanilla CSS / CSS Modules o Tailwind CSS para máxima velocidad de desarrollo y diseño responsive.
+* **Framework & Bundler:** React 19 + TypeScript + Vite 6 (compilación ultrarrápida en menos de 1 segundo).
+* **Diseño y Estilos:** TailwindCSS v4 con sistema de tokens y componentes responsivos.
+* **Iconografía y Tipografía:** Google Material Symbols + Inter Font.
+* **Gestión de Estado:** React Context API (`AppContext`) con persistencia local para pedidos, inventario, métricas y autenticación.
+* **PWA (Progressive Web App):** `manifest.json` y soporte offline para instalación directa en Android e iOS.
+* **Pruebas Automatizadas:** Vitest para validación unitaria de modelos de datos y lógica de cálculo.
+
+---
+
+## 5. Arquitectura de Componentes y Flujo de Datos
+
+```mermaid
+flowchart TD
+  App["App.tsx (Enrutador Principal)"] --> Provider["AppContext.Provider (Sesión, Pedidos, Stock)"]
+  
+  subgraph Layout ["Estructura y Componentes Base"]
+    Provider --> Navbar["Navbar (Navegación, Rol & Perfil)"]
+    Provider --> Views["Vistas Activas"]
+  end
+  
+  subgraph Modulos ["Módulos de la Aplicación"]
+    Views --> Login["Login.tsx"]
+    Views --> Dashboard["Dashboard.tsx (StatCards, Pedidos en Riesgo)"]
+    Views --> PedidosLista["PedidosLista.tsx (Filtros, Buscador, Acciones)"]
+    Views --> PedidoForm["PedidoForm.tsx (Selector Prendas, Autocalculado)"]
+    Views --> ProductosGestion["ProductosGestion.tsx (CRUD, Alerta Stock)"]
+  end
+
+  subgraph UIComponents ["Componentes Reutilizables"]
+    Dashboard --> MontoPrivado["MontoPrivado.tsx"]
+    PedidosLista --> Badge["Badge.tsx (Estados de Pedido)"]
+    PedidosLista --> Modal["Modal.tsx (Detalle de Pedido / Ticket)"]
+    ProductosGestion --> ModalStock["Modal.tsx (Edición de Stock)"]
+  end
+```
