@@ -207,63 +207,53 @@ def generate_wireframes_overview():
         "4. Wireframe: Dashboard y Gestion de Pedidos"
     ]
     
-    for ax, t in zip(axes.flatten(), titles):
+    for idx, (ax, t) in enumerate(zip(axes.flatten(), titles)):
         ax.set_facecolor('#1E293B')
         ax.set_xlim(0, 10)
         ax.set_ylim(0, 8)
         ax.axis('off')
         
-        # Frame
-        frame = FancyBboxPatch((0.2, 0.2), 9.6, 7.6, boxstyle="round,pad=0.06,rounding_size=0.1",
-                               facecolor='#1E293B', edgecolor='#475569', linewidth=1.5)
-        ax.add_patch(frame)
+        box = FancyBboxPatch((0.2, 0.2), 9.6, 7.6, boxstyle="round,pad=0.05,rounding_size=0.1",
+                             facecolor='#1E293B', edgecolor='#38BDF8', linewidth=1.2)
+        ax.add_patch(box)
         
-        # Header bar
-        header = Rectangle((0.2, 7.0), 9.6, 0.8, facecolor='#0F172A', edgecolor='#334155')
-        ax.add_patch(header)
-        ax.text(5, 7.4, t, ha='center', va='center', color='#F97316', fontsize=11, fontweight='bold')
+        h_box = FancyBboxPatch((0.2, 7.1), 9.6, 0.7, boxstyle="round,pad=0.02,rounding_size=0.05",
+                               facecolor='#0F172A', edgecolor='#38BDF8', linewidth=1.0)
+        ax.add_patch(h_box)
+        ax.text(5, 7.45, t, ha='center', va='center', color='#38BDF8', fontsize=10, fontweight='bold')
         
-        # Wireframe elements
-        if "Login" in t:
-            card = Rectangle((3, 2), 4, 4, facecolor='#334155', edgecolor='#94A3B8', linestyle='--')
-            ax.add_patch(card)
-            ax.text(5, 5.2, "[ LOGO LEOFIT ]", ha='center', color='#94A3B8', fontsize=10)
-            ax.add_patch(Rectangle((3.5, 4.0), 3, 0.5, facecolor='#1E293B', edgecolor='#64748B'))
-            ax.text(3.7, 4.25, "Usuario / Email", color='#64748B', fontsize=8)
-            ax.add_patch(Rectangle((3.5, 3.2), 3, 0.5, facecolor='#1E293B', edgecolor='#64748B'))
-            ax.text(3.7, 3.45, "Contraseña", color='#64748B', fontsize=8)
-            ax.add_patch(Rectangle((3.5, 2.3), 3, 0.5, facecolor='#F97316', edgecolor='#EA580C'))
-            ax.text(5, 2.55, "INGRESAR AL SISTEMA", ha='center', color='#FFFFFF', fontsize=8.5, fontweight='bold')
-        elif "Catalogo" in t or "Catálogo" in t:
-            ax.add_patch(Rectangle((0.6, 6.2), 8.8, 0.5, facecolor='#334155', edgecolor='#64748B'))
-            ax.text(0.8, 6.45, "Buscar prenda por nombre o categoria...", color='#94A3B8', fontsize=8)
-            for gx in [0.6, 3.6, 6.6]:
-                for gy in [3.3, 0.5]:
-                    ax.add_patch(Rectangle((gx, gy), 2.6, 2.5, facecolor='#334155', edgecolor='#64748B', linestyle='--'))
-                    ax.add_patch(Rectangle((gx+0.2, gy+0.8), 2.2, 1.5, facecolor='#1E293B'))
-                    ax.text(gx+1.3, gy+1.55, "[ FOTO HD ]", ha='center', color='#64748B', fontsize=8)
-                    ax.text(gx+0.3, gy+0.5, "Prenda Dry-Fit\nS/ 45.00", color='#F8FAFC', fontsize=7.5)
-        elif "Carrito" in t:
-            ax.add_patch(Rectangle((0.6, 0.5), 4.5, 6.2, facecolor='#334155', edgecolor='#64748B', linestyle='--'))
-            ax.text(0.8, 6.3, "ITEMS EN CARRITO (2)", color='#38BDF8', fontsize=9, fontweight='bold')
-            ax.text(0.8, 5.5, "* Camiseta Oversize (M) x 1 -> S/ 65.00\n* Short 2-en-1 (L) x 1 -> S/ 55.00", color='#E2E8F0', fontsize=8, linespacing=1.4)
-            ax.text(0.8, 4.4, "------------------------------------", color='#64748B', fontsize=8)
-            ax.text(0.8, 3.8, "Subtotal: S/ 120.00\nDelivery: S/ 10.00\nTOTAL: S/ 130.00", color='#38BDF8', fontsize=8.5, fontweight='bold', linespacing=1.3)
-            
-            ax.add_patch(Rectangle((5.3, 0.5), 4.1, 6.2, facecolor='#334155', edgecolor='#64748B'))
-            ax.text(5.5, 6.3, "DATOS DE ENTREGA", color='#F97316', fontsize=9, fontweight='bold')
-            ax.add_patch(Rectangle((5.5, 5.3), 3.7, 0.45, facecolor='#1E293B'))
-            ax.text(5.7, 5.5, "Nombre: Juan Perez", color='#94A3B8', fontsize=8)
-            ax.add_patch(Rectangle((5.5, 4.6), 3.7, 0.45, facecolor='#1E293B'))
-            ax.text(5.7, 4.8, "Telefono: 987654321", color='#94A3B8', fontsize=8)
-            ax.add_patch(Rectangle((5.5, 3.9), 3.7, 0.45, facecolor='#1E293B'))
-            ax.text(5.7, 4.1, "Direccion: Av. Lima 123", color='#94A3B8', fontsize=8)
-            ax.add_patch(Rectangle((5.5, 1.0), 3.7, 0.6, facecolor='#10B981'))
-            ax.text(7.35, 1.3, "CONFIRMAR PEDIDO", ha='center', color='#FFFFFF', fontsize=9, fontweight='bold')
-        elif "Dashboard" in t:
-            for kx, kt, kv in [(0.6, "PEDIDOS HOY", "12"), (2.9, "VENTAS (S/)", "1,450.00"), (5.2, "STOCK BAJO", "3"), (7.5, "ENTREGADOS", "9")]:
-                ax.add_patch(Rectangle((kx, 5.0), 2.1, 1.6, facecolor='#334155', edgecolor='#38BDF8'))
-                ax.text(kx+1.05, 6.2, kt, ha='center', color='#94A3B8', fontsize=7.5, fontweight='bold')
+        if idx == 0:
+            ax.add_patch(Rectangle((2.5, 4.5), 5, 1.0, facecolor='#334155', edgecolor='#64748B'))
+            ax.text(2.7, 5.0, "Usuario / Email: admin@leofit.pe", color='#94A3B8', fontsize=8.5)
+            ax.add_patch(Rectangle((2.5, 3.0), 5, 1.0, facecolor='#334155', edgecolor='#64748B'))
+            ax.text(2.7, 3.5, "Contrasena: **********", color='#94A3B8', fontsize=8.5)
+            ax.add_patch(Rectangle((3.5, 1.4), 3, 0.9, facecolor='#F97316', edgecolor='#EA580C'))
+            ax.text(5, 1.85, "INGRESAR AL SISTEMA", ha='center', va='center', color='#FFFFFF', fontsize=9, fontweight='bold')
+        elif idx == 1:
+            ax.add_patch(Rectangle((0.6, 5.8), 8.8, 0.9, facecolor='#334155', edgecolor='#64748B'))
+            ax.text(0.8, 6.25, "[Buscar polo, short, licra...] | [Filtro Categoria]", color='#94A3B8', fontsize=8)
+            for c_i in range(3):
+                cx = 0.6 + c_i * 3.0
+                ax.add_patch(Rectangle((cx, 1.2), 2.8, 4.2, facecolor='#334155', edgecolor='#475569'))
+                ax.text(cx + 1.4, 4.2, "[Foto HD]", ha='center', color='#38BDF8', fontsize=8)
+                ax.text(cx + 1.4, 3.2, f"Polo Dry-Fit 0{c_i+1}", ha='center', color='#FFFFFF', fontsize=8, fontweight='bold')
+                ax.text(cx + 1.4, 2.5, "S/ 45.00 | Tallas: S,M,L", ha='center', color='#F59E0B', fontsize=7.5)
+                ax.text(cx + 1.4, 1.7, "[+ Agregar al Carrito]", ha='center', color='#10B981', fontsize=7.5, fontweight='bold')
+        elif idx == 2:
+            ax.add_patch(Rectangle((0.6, 4.0), 8.8, 2.7, facecolor='#334155', edgecolor='#64748B'))
+            ax.text(0.8, 6.2, "RESUMEN DE COMPRA (2 items) | Subtotal: S/ 90.00", color='#F8FAFC', fontsize=8.5, fontweight='bold')
+            ax.text(0.8, 5.2, "- 1x Polo Oversize Black (Talla M) - S/ 45.00\n- 1x Short Deportivo Pro (Talla L) - S/ 45.00", color='#CBD5E1', fontsize=8)
+            ax.add_patch(Rectangle((0.6, 0.8), 8.8, 2.8, facecolor='#334155', edgecolor='#64748B'))
+            ax.text(0.8, 3.0, "DATOS DE ENVIO Y PAGO:", color='#F97316', fontsize=8.5, fontweight='bold')
+            ax.text(0.8, 1.8, "Nombre: Juan Perez | Cel: 987654321\nDireccion: Av. Arequipa 1234, Lince | Pago: Yape", color='#E2E8F0', fontsize=8)
+            ax.add_patch(Rectangle((6.2, 1.1), 3.0, 0.7, facecolor='#10B981', edgecolor='#059669'))
+            ax.text(7.7, 1.45, "ENVIAR POR WHATSAPP", ha='center', color='#FFFFFF', fontsize=7.5, fontweight='bold')
+        elif idx == 3:
+            ax.add_patch(Rectangle((0.6, 5.0), 8.8, 1.7, facecolor='#334155', edgecolor='#64748B'))
+            kpis = [("Total Pedidos", "24"), ("Pendientes", "5"), ("Ingresos Hoy", "S/ 1,450")]
+            for ki, (kt, kv) in enumerate(kpis):
+                kx = 0.8 + ki * 2.9
+                ax.text(kx+1.05, 6.1, kt, ha='center', color='#38BDF8', fontsize=8)
                 ax.text(kx+1.05, 5.5, kv, ha='center', color='#F8FAFC', fontsize=12, fontweight='bold')
             ax.add_patch(Rectangle((0.6, 0.5), 8.8, 4.1, facecolor='#334155', edgecolor='#64748B'))
             ax.text(0.8, 4.2, "BANDEJA DE PEDIDOS EN TIEMPO REAL", color='#F97316', fontsize=8.5, fontweight='bold')
@@ -321,99 +311,11 @@ def generate_user_flow():
     plt.close()
     print("Guardado: diagrams/10_User_Flow_Navegacion.png")
 
-def generate_database_erd():
-    print("Generando diagrams/12_Modelo_Entidad_Relacion.png...")
-    fig, ax = plt.subplots(figsize=(16, 9.5), dpi=300)
-    fig.patch.set_facecolor('#0F172A')
-    ax.set_facecolor('#0F172A')
-    ax.set_xlim(0, 16)
-    ax.set_ylim(0, 9.5)
-    ax.axis('off')
-    
-    ax.text(8, 9.1, "MODELO ENTIDAD-RELACIÓN (DER) RELACIONAL - LEOFIT (3FN / BCNF)", 
-            ha='center', va='center', color='#F8FAFC', fontsize=16, fontweight='bold')
-    ax.text(8, 8.7, "Esquema de 8 Tablas Relacionales Conforme a database/schema.sql y Standard Codd", 
-            ha='center', va='center', color='#F97316', fontsize=10.5)
-            
-    # Structured 4-column layout:
-    # Col 1: CATEGORIES (top), PRODUCTS (bottom)
-    # Col 2: PRODUCT_VARIANTS (top), ORDER_ITEMS (bottom)
-    # Col 3: USERS (top), ORDERS (bottom)
-    # Col 4: CLIENTS (top), ORDER_STATUS_HISTORY (bottom)
-    tables = [
-        # (x, y, w, h, table_name, [attributes])
-        (0.5, 5.2, 3.4, 3.0, "CATEGORIES", ["PK id : INT", "   name : VARCHAR(60) (UK)", "   description : TEXT"]),
-        (0.5, 0.8, 3.4, 3.8, "PRODUCTS", ["PK id : INT", "FK category_id : INT", "   name : VARCHAR(120)", "   description : TEXT", "   base_price : DECIMAL(10,2)", "   image_url : VARCHAR(255)", "   is_active : BOOLEAN"]),
-        
-        (4.4, 5.2, 3.5, 3.2, "PRODUCT_VARIANTS", ["PK id : INT", "FK product_id : INT", "   size : ENUM(S,M,L,XL)", "   color : VARCHAR(50)", "   sku : VARCHAR(50) (UK)", "   stock : INT", "   alert_threshold : INT"]),
-        (4.4, 0.8, 3.5, 3.8, "ORDER_ITEMS", ["PK id : INT", "FK order_id : INT", "FK variant_id : INT", "   quantity : INT", "   unit_price : DECIMAL(10,2)", "   subtotal : DECIMAL(10,2)"]),
-        
-        (8.3, 5.2, 3.4, 3.0, "USERS", ["PK id : INT", "   name : VARCHAR(100)", "   email : VARCHAR(150) (UK)", "   password_hash : VARCHAR(255)", "   role : ENUM(ADMIN,OPERATOR)"]),
-        (8.3, 0.8, 3.4, 3.8, "ORDERS", ["PK id : INT", "   order_number : VARCHAR(30) (UK)", "FK client_id : INT", "FK user_id : INT", "   status : ENUM(5 ESTADOS)", "   payment_method : ENUM", "   op_number : VARCHAR(50)", "   coupon_code : VARCHAR(30)", "   total_amount : DECIMAL(10,2)"]),
-        
-        (12.1, 5.2, 3.4, 3.2, "CLIENTS", ["PK id : INT", "   dni_ruc : VARCHAR(20)", "   full_name : VARCHAR(120)", "   phone : VARCHAR(20)", "   address : TEXT", "   district : VARCHAR(80)", "   reference : TEXT"]),
-        (12.1, 0.8, 3.4, 3.8, "ORDER_STATUS_HISTORY", ["PK id : INT", "FK order_id : INT", "FK user_id : INT", "   previous_status : VARCHAR(30)", "   new_status : VARCHAR(30)", "   changed_at : TIMESTAMP", "   comments : TEXT"])
-    ]
-    
-    for x, y, w, h, t_name, attrs in tables:
-        box = FancyBboxPatch((x, y), w, h, boxstyle="round,pad=0.04,rounding_size=0.08",
-                             facecolor='#1E293B', edgecolor='#38BDF8', linewidth=1.3)
-        ax.add_patch(box)
-        
-        # Table Header
-        h_box = FancyBboxPatch((x, y + h - 0.45), w, 0.45, boxstyle="round,pad=0.02,rounding_size=0.06",
-                               facecolor='#0F172A', edgecolor='#F97316', linewidth=1.0)
-        ax.add_patch(h_box)
-        ax.text(x + w/2, y + h - 0.22, t_name, ha='center', va='center', color='#F97316', fontsize=9.5, fontweight='bold')
-        
-        # Attributes
-        attr_y = y + h - 0.72
-        for a in attrs:
-            color = '#38BDF8' if 'PK' in a else ('#F59E0B' if 'FK' in a else '#E2E8F0')
-            ax.text(x + 0.12, attr_y, a, ha='left', va='center', color=color, fontsize=7.5, fontfamily='monospace')
-            attr_y -= 0.40
-            
-    # Connector Lines with Stepped/Orthogonal paths & labels
-    def draw_orthogonal_rel(points, label="1:N", label_pos=None):
-        xs = [p[0] for p in points]
-        ys = [p[1] for p in points]
-        ax.plot(xs, ys, color='#94A3B8', linestyle='-', linewidth=1.5)
-        if label_pos:
-            lx, ly = label_pos
-        else:
-            mid_idx = len(points) // 2
-            lx, ly = (points[mid_idx-1][0] + points[mid_idx][0]) / 2, (points[mid_idx-1][1] + points[mid_idx][1]) / 2 + 0.15
-        ax.text(lx, ly, label, color='#38BDF8', fontsize=8, ha='center', va='center', fontweight='bold',
-                bbox=dict(boxstyle='round,pad=0.15', facecolor='#0F172A', edgecolor='#38BDF8', linewidth=0.8))
-
-    # 1. Categories (Col 1 Top) -> Products (Col 1 Bottom)
-    draw_orthogonal_rel([(2.2, 5.2), (2.2, 4.6)], "1:N", (2.2, 4.9))
-    
-    # 2. Products (Col 1 Bottom) -> Product Variants (Col 2 Top)
-    draw_orthogonal_rel([(3.9, 3.5), (4.15, 3.5), (4.15, 6.8), (4.4, 6.8)], "1:N", (4.15, 5.1))
-    
-    # 3. Product Variants (Col 2 Top) -> Order Items (Col 2 Bottom)
-    draw_orthogonal_rel([(6.1, 5.2), (6.1, 4.6)], "1:N", (6.1, 4.9))
-    
-    # 4. Orders (Col 3 Bottom) -> Order Items (Col 2 Bottom)
-    draw_orthogonal_rel([(8.3, 2.7), (7.9, 2.7)], "1:N", (8.1, 2.9))
-    
-    # 5. Users (Col 3 Top) -> Orders (Col 3 Bottom)
-    draw_orthogonal_rel([(10.0, 5.2), (10.0, 4.6)], "1:N", (10.0, 4.9))
-    
-    # 6. Clients (Col 4 Top) -> Orders (Col 3 Bottom)
-    draw_orthogonal_rel([(12.1, 6.8), (11.85, 6.8), (11.85, 4.2), (11.7, 4.2)], "1:N", (11.85, 5.5))
-    
-    # 7. Orders (Col 3 Bottom) -> Order Status History (Col 4 Bottom)
-    draw_orthogonal_rel([(11.7, 2.7), (12.1, 2.7)], "1:N", (11.9, 2.9))
-    
-    # 8. Users (Col 3 Top) -> Order Status History (Col 4 Bottom)
-    draw_orthogonal_rel([(11.7, 5.5), (11.9, 5.5), (11.9, 1.5), (12.1, 1.5)], "1:N", (11.9, 3.5))
-
-    plt.tight_layout()
-    plt.savefig('diagrams/12_Modelo_Entidad_Relacion.png', dpi=300, facecolor='#0F172A')
-    plt.close()
-    print("Guardado: diagrams/12_Modelo_Entidad_Relacion.png")
+def generate_database_models():
+    print("Delegando generación de Modelos Lógico y Físico CAD B&W...")
+    import generate_leofit_db_models_bw
+    generate_leofit_db_models_bw.generate_logical_model()
+    generate_leofit_db_models_bw.generate_physical_model()
 
 if __name__ == '__main__':
     generate_lean_canvas()
@@ -421,4 +323,5 @@ if __name__ == '__main__':
     generate_tablero_kanban()
     generate_wireframes_overview()
     generate_user_flow()
-    generate_database_erd()
+    generate_database_models()
+

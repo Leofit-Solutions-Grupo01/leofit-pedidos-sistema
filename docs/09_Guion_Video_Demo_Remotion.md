@@ -29,7 +29,7 @@ Este documento establece el guion técnico, estructura de escenas (storyboard), 
 
 ### Escena 2: Arquitectura del Sistema, C4 Model y Normalización de BD
 * **Tiempo:** `00:35 - 01:15` (40 seg)
-* **Visual / Animación:** Zoom dinámico en **C4 Model Nivel 2** ([`11_Arquitectura_C4_Model.png`](../diagrams/11_Arquitectura_C4_Model.png)) y Diagrama Entidad-Relación ([`12_Modelo_Entidad_Relacion.png`](../diagrams/12_Modelo_Entidad_Relacion.png)). Resaltado de transacciones ACID y relaciones 3FN/BCNF.
+* **Visual / Animación:** Zoom dinámico en **C4 Model Nivel 2** ([`11_Arquitectura_C4_Model.png`](../diagrams/11_Arquitectura_C4_Model.png)) y Modelos de BD ([`12_Modelo_Logico_BD.png`](../diagrams/12_Modelo_Logico_BD.png) / [`13_Modelo_Fisico_BD.png`](../diagrams/13_Modelo_Fisico_BD.png)). Resaltado de transacciones ACID y relaciones 3FN/BCNF.
 * **Voz en Off (Víctor Cárdenas):**
   > "El núcleo de la solución se basa en una arquitectura desacoplada y robusta. En el frontend contamos con una Single Page Application en React 19 y Vite con capacidades PWA y soporte offline. En la capa de datos, implementamos un modelo relacional normalizado en Tercera Forma Normal y BCNF con 8 tablas vinculadas por llaves foráneas estrictas, garantizando atomicidad transaccional al momento de descontar inventario y persistir el historial de cambios de estado."
 

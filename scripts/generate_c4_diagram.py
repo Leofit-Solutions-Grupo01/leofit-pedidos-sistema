@@ -138,11 +138,10 @@ def create_c4_diagram():
             ha='center', va='center', fontsize=9, style='italic', color='#64748B')
 
     os.makedirs('diagrams', exist_ok=True)
-    out_path = 'diagrams/11_Arquitectura_C4_Model.png'
     plt.tight_layout()
-    plt.savefig(out_path, dpi=300, bbox_inches='tight')
+    plt.savefig('diagrams/11_Arquitectura_C4_Model.png', dpi=300, bbox_inches='tight')
     plt.close()
-    print(f'[OK] Diagrama C4 actualizado exitosamente en: {out_path}')
+    print('[OK] Diagrama C4 actualizado exitosamente en diagrams/11_Arquitectura_C4_Model.png')
 
 if __name__ == '__main__':
     create_c4_diagram()

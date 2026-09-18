@@ -15,7 +15,13 @@ Este directorio contiene el diseño del modelo de datos, diccionario de tablas, 
 
 ---
 
-## 2. Diagrama Entidad-Relación Lógico (ERD)
+## 2. Diagramas del Modelo de Datos (Alta Resolución 300 DPI)
+
+* 📐 **Modelo Lógico de Dominio (DER):** [`diagrams/12_Modelo_Logico_BD.png`](../diagrams/12_Modelo_Logico_BD.png)
+* 🗄️ **Modelo Físico Implementado (Esquema DDL Relacional):** [`diagrams/13_Modelo_Fisico_BD.png`](../diagrams/13_Modelo_Fisico_BD.png)
+* 📊 **Diagrama de Entidades Complementario:** [`diagrams/14_Diagrama_DB.png`](../diagrams/14_Diagrama_DB.png)
+
+### 2.1. Diagrama Entidad-Relación Lógico (ERD Mermaid)
 
 ```mermaid
 erDiagram
