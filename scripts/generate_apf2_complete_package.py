@@ -421,9 +421,13 @@ def build_apf2_master():
 
     # ==================== 8. BASE DE DATOS (APF2) ====================
     add_h1("8. IMPLEMENTACIÓN Y ADMINISTRACIÓN DE BASE DE DATOS")
-    add_h2("a. Diseño Físico de Base de Datos")
-    add_p("El esquema relacional fue normalizado rigurosamente hasta la **Forma Normal de Boyce-Codd (BCNF)**, eliminando redundancias de datos y asegurando la integridad referencial con llaves foráneas y restricciones `CHECK`.")
-    insert_figure(doc, "diagrams/12_Modelo_Entidad_Relacion.png", "Figura 10: Diagrama Entidad-Relación Físico Normalizado de LeoFit Solutions.")
+    add_h2("a. Modelo Lógico de Base de Datos")
+    add_p("El modelo lógico de datos define las entidades del negocio, sus atributos semánticos y las relaciones relacionales de cardinalidad (notación pata de gallo / Crow's Foot), normalizado bajo estándar 3FN:")
+    insert_figure(doc, "diagrams/12_Modelo_Logico_BD.png", "Figura 10: Diagrama de Modelo Lógico Relacional (3FN) de LeoFit Solutions.")
+
+    add_h2("b. Modelo Físico DDL de Base de Datos")
+    add_p("El diseño físico implementa los tipos de datos exactos de PostgreSQL 16, restricciones de integridad referencial, índices y llaves primarias/foráneas normalizadas hasta la **Forma Normal de Boyce-Codd (BCNF)**:")
+    insert_figure(doc, "diagrams/13_Modelo_Fisico_BD.png", "Figura 11: Diagrama de Modelo Físico DDL (PostgreSQL) Normalizado BCNF.")
 
     t_db = doc.add_table(rows=9, cols=4)
     format_table(t_db, ["Tabla", "Descripción", "Llave Primaria", "Llaves Foráneas / Restricciones"], [
@@ -533,6 +537,9 @@ def build_apf2_master():
     # Guardar documento
     output_docx_integrator = "Integrator/informe/DOCUMENTACION.docx"
     output_docx_docs = "docs/INFORME_FINAL_APF2_LEOFIT.docx"
+
+    os.makedirs(os.path.dirname(output_docx_integrator), exist_ok=True)
+    os.makedirs(os.path.dirname(output_docx_docs), exist_ok=True)
 
     doc.save(output_docx_integrator)
     doc.save(output_docx_docs)
