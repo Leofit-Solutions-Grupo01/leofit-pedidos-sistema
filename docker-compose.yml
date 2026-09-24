@@ -1,11 +1,20 @@
 version: '3.8'
 
 services:
-  # 1. Base de Datos Relacional PostgreSQL (Producción / Local)
+
+  # ── 1. PostgreSQL 16 — Nodo PRIMARY ────────────────────────────────────────
   postgres:
     image: postgres:16-alpine
     container_name: leofit_postgres
     restart: unless-stopped
+    command: >
+      postgres
+      -c wal_level=replica
+      -c max_wal_senders=5
+      -c max_replication_slots=5
+      -c wal_keep_size=512MB
+      -c hot_standby=on
+      -c archive_mode=off
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgrespassword2026!
@@ -16,13 +25,48 @@ services:
       - postgres_data:/var/lib/postgresql/data
       - ./database/schema.sql:/docker-entrypoint-initdb.d/01_schema.sql
       - ./database/seeds.sql:/docker-entrypoint-initdb.d/02_seeds.sql
+      - ./database/replication_setup.sql:/docker-entrypoint-initdb.d/03_replication.sql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -d leofit_db"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 30s
+    networks:
+      - leofit_net
 
-  # 2. Servidor Backend API REST (Node.js / Express / TypeScript)
+  # ── 2. PgBouncer — Connection Pooling Transaccional ────────────────────────
+  pgbouncer:
+    image: edoburu/pgbouncer:latest
+    container_name: leofit_pgbouncer
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DB_USER: postgres
+      DB_PASSWORD: postgrespassword2026!
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: leofit_db
+      POOL_MODE: transaction
+      MAX_CLIENT_CONN: 200
+      DEFAULT_POOL_SIZE: 25
+      MIN_POOL_SIZE: 5
+      RESERVE_POOL_SIZE: 5
+      RESERVE_POOL_TIMEOUT: 3
+      SERVER_IDLE_TIMEOUT: 600
+      SERVER_RESET_QUERY: "DISCARD ALL"
+      IGNORE_STARTUP_PARAMETERS: "extra_float_digits,options,application_name"
+      AUTH_TYPE: scram-sha-256
+      LISTEN_PORT: 6432
+      LISTEN_ADDR: "*"
+    ports:
+      - "6432:6432"
+    networks:
+      - leofit_net
+
+  # ── 3. Backend API REST ─────────────────────────────────────────────────────
   backend:
     build:
       context: ./backend
@@ -35,13 +79,15 @@ services:
     environment:
       NODE_ENV: production
       PORT: 4000
-      DATABASE_URL: postgresql://postgres:postgrespassword2026!@postgres:5432/leofit_db
+      DATABASE_URL: postgresql://postgres:postgrespassword2026!@pgbouncer:6432/leofit_db
       JWT_SECRET: leofit_super_secret_jwt_key_academic_2026_production_ready
       CORS_ORIGIN: "*"
     ports:
       - "4000:4000"
+    networks:
+      - leofit_net
 
-  # 3. Interfaz Web de Administración de Base de Datos (Adminer)
+  # ── 4. Adminer — Interfaz Web ───────────────────────────────────────────────
   adminer:
     image: adminer:latest
     container_name: leofit_adminer
@@ -50,6 +96,12 @@ services:
       - "8080:8080"
     depends_on:
       - postgres
+    networks:
+      - leofit_net
 
 volumes:
   postgres_data:
+
+networks:
+  leofit_net:
+    driver: bridge
