@@ -1,0 +1,31 @@
+# =============================================================================
+# PGBOUNCER — USERLIST.TXT
+# Lista de usuarios y hashes para autenticación de PgBouncer.
+# =============================================================================
+# FORMATO: "usuario" "hash_scram_sha256_o_md5"
+#
+# Generar hashes SCRAM-SHA-256 desde psql (PostgreSQL 16):
+#   SELECT usename, passwd FROM pg_shadow WHERE usename = 'leofit_app';
+#
+# O con herramienta pg_scram_sha256:
+#   python3 -c "import hashlib, base64, os, hmac; ..."
+#
+# ⚠️  Este archivo debe tener permisos 600:
+#   chmod 600 /etc/pgbouncer/userlist.txt
+#   chown pgbouncer:pgbouncer /etc/pgbouncer/userlist.txt
+# =============================================================================
+
+# Usuario de la aplicación backend (Node.js / Express)
+"leofit_app" "SCRAM-SHA-256$4096:REPLACE_WITH_REAL_HASH_FROM_PG_SHADOW"
+
+# Usuario de solo lectura para reportes / dashboard (apunta al Standby)
+"leofit_readonly" "SCRAM-SHA-256$4096:REPLACE_WITH_REAL_HASH_FROM_PG_SHADOW"
+
+# Usuario de autenticación interna de PgBouncer (auth_query)
+"pgbouncer_auth" "SCRAM-SHA-256$4096:REPLACE_WITH_REAL_HASH_FROM_PG_SHADOW"
+
+# Usuario de administración de la consola PgBouncer
+"pgbouncer" "SCRAM-SHA-256$4096:REPLACE_WITH_REAL_HASH_FROM_PG_SHADOW"
+
+# Usuario de monitoreo (Prometheus, Grafana, etc.)
+"monitoring_user" "SCRAM-SHA-256$4096:REPLACE_WITH_REAL_HASH_FROM_PG_SHADOW"
