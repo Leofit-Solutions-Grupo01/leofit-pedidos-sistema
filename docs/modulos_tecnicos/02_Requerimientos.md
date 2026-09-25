@@ -82,6 +82,11 @@ El sistema opera de forma autónoma e independiente, interactuando con clientes 
 | **RNF-008** | Seguridad | Rutas Protegidas y Privacidad | Las opciones de edición y cifras monetarias pueden ocultarse de forma granular. | Denegación inmediata de acceso sin sesión y toggles de privacidad por métrica. | Alta | Pruebas de navegación a rutas administrativas sin sesión. | Validado |
 | **RNF-009** | Confiabilidad | Suite de Pruebas Unitarias | La lógica de cálculo y consistencia de datos debe estar respaldada por pruebas automatizadas. | Cobertura de pruebas unitarias $\ge 80\%$ con 100% de tests aprobados. | Alta | Ejecución automatizada de `vitest run` en CI/CD. | Validado |
 | **RNF-010** | Accesibilidad | Contraste y Tipografía | Textos, botones y componentes interactivos deben cumplir con estándares de legibilidad. | Cumplimiento estricto de directrices WCAG 2.1 nivel AAA/AA (contraste $\ge 7:1$). | Alta | Auditoría con tipografía Plus Jakarta Sans y Axe DevTools. | Validado |
+| **RNF-011** | Continuidad | Recuperabilidad (RTO y RPO) | El sistema debe restaurar su operatividad y minimizar la pérdida de datos ante desastres o caídas cloud. | RTO $\le 15$ minutos y RPO $\le 5$ minutos respaldado por logs WAL y backups diarios. | Alta | Simulacro de recuperación y restauración desde dump SQL. | Validado |
+| **RNF-012** | Concurrencia | Aislamiento Transaccional ACID | El motor de base de datos debe prevenir condiciones de carrera y sobreventa en inventario concurrente. | Soporte de transacciones serializables o `SELECT FOR UPDATE` con 0 inconsistencias de stock. | Alta | Prueba de estrés concurrente simulando 2 pedidos simultáneos del último stock. | Validado |
+| **RNF-013** | Trazabilidad | Auditoría Forense y Ley 29733 | Registro inmutable de eventos sensibles (logins, cambios de estado, anulaciones y transacciones). | 100% de operaciones sensibles registradas con IP, User-Agent, ID y Timestamp UTC. | Alta | Inspección de tabla `audit_logs` e integridad de bitácoras. | Validado |
+| **RNF-014** | Eficiencia | Cuota de Almacenamiento PWA | La caché de la PWA no debe sobrecargar la memoria de terminales móviles de entrada/gama media. | Almacenamiento total de CacheStorage e IndexedDB $\le 50$ MB por cliente. | Media | Inspección de Storage en Chrome DevTools / StorageManager API. | Validado |
+
 
 ---
 

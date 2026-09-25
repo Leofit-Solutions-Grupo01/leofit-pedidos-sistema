@@ -489,6 +489,11 @@ El equipo gestiona el flujo de trabajo a través de un tablero GitHub Projects c
 | **RNF-008** | **Mantenibilidad** | Código fuente modular estructurado bajo Clean Architecture, documentado en español e inglés, con cobertura de pruebas unitarias $\ge 80\%$. | Cobertura Jest/Pytest y análisis estático en SonarCloud. |
 | **RNF-009** | **Integridad de Datos** | La base de datos relacional debe aplicar el principio ACID mediante PostgreSQL, con claves foráneas, restricciones de chequeo y respaldos automáticos diarios. | Verificación de scripts DDL y pruebas de rollback en transacciones. |
 | **RNF-010** | **Capacidad Offline** | La aplicación debe instalarse en la pantalla de inicio del smartphone como PWA nativa, funcionando de manera autónoma sin conexión a red mediante Service Worker. | Pruebas de desconexión en Chrome DevTools (Network: Offline). |
+| **RNF-011** | **Continuidad y DRP** | Recuperabilidad ante desastres con RTO $\le 15$ minutos y RPO $\le 5$ minutos mediante replicación WAL continua y volcados diarios en PostgreSQL. | Simulacro de recuperación y restauración desde dump SQL. |
+| **RNF-012** | **Concurrencia ACID** | Aislamiento transaccional estricto con bloqueo a nivel de fila (`SELECT FOR UPDATE` / Serializable) impidiendo sobreventas del último stock ante pedidos simultáneos. | Pruebas de carga concurrente simulando doble compra simultánea. |
+| **RNF-013** | **Auditoría Forense** | Registro inmutable de eventos sensibles (logins, modificaciones de pedido, anulaciones) conforme a la Ley N° 29733 de Protección de Datos Personales de Perú. | Auditoría de bitácora en tabla `audit_logs` con IP, user-agent y timestamp UTC. |
+| **RNF-014** | **Cuota Almacenamiento** | La persistencia local en caché de la PWA no debe superar una cuota de 50 MB en el dispositivo móvil del operador para no degradar memoria RAM/flash. | Inspección de cuota con StorageManager API y Chrome DevTools. |
+
 
 ---
 
