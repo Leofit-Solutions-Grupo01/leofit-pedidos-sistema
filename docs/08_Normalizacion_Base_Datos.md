@@ -128,7 +128,15 @@ CREATE TABLE detalle_pedidos (
 
 ---
 
-## 3. CONCLUSIÓN TÉCNICA
+## 3. DIAGRAMAS ARQUITECTURALES DE BASE DE DATOS
+
+* 📐 **Diagrama de Modelo Lógico (DER Conceptual):** [`diagrams/12_Modelo_Logico_BD.png`](../diagrams/12_Modelo_Logico_BD.png)
+* 🗄️ **Diagrama de Modelo Físico (DDL Relacional 3FN/BCNF):** [`diagrams/13_Modelo_Fisico_BD.png`](../diagrams/13_Modelo_Fisico_BD.png)
+* 📊 **Diagrama de Entidades Complementario:** [`diagrams/14_Diagrama_DB.png`](../diagrams/14_Diagrama_DB.png)
+
+---
+
+## 4. CONCLUSIÓN TÉCNICA
 El esquema normalizado en **BCNF** garantiza:
 1. **Cero redundancia de datos** en catálogo, pedidos y clientes.
 2. **Integridad referencial total** mediante claves primarias y foráneas con restricciones `CHECK`.

@@ -38,7 +38,13 @@ database/
 
 ---
 
-## 3. Diagrama Entidad-Relación (ERD) — Esquema BCNF
+## 3. Diagramas del Modelo de Datos (Alta Resolución 300 DPI)
+
+* 📐 **Modelo Lógico de Dominio (DER):** [`diagrams/12_Modelo_Logico_BD.png`](../diagrams/12_Modelo_Logico_BD.png)
+* 🗄️ **Modelo Físico Implementado (Esquema DDL Relacional):** [`diagrams/13_Modelo_Fisico_BD.png`](../diagrams/13_Modelo_Fisico_BD.png)
+* 📊 **Diagrama de Entidades Complementario:** [`diagrams/14_Diagrama_DB.png`](../diagrams/14_Diagrama_DB.png)
+
+### 3.1. Diagrama Entidad-Relación (ERD) — Esquema BCNF
 
 ```mermaid
 erDiagram
