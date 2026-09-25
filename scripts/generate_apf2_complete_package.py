@@ -535,15 +535,9 @@ def build_apf2_master():
     add_p("[4] ISO/IEC, 'Systems and software Quality Requirements and Evaluation (SQuaRE)', ISO/IEC 25010:2023, 2023.")
 
     # Guardar documento
-    output_docx_integrator = "Integrator/informe/DOCUMENTACION.docx"
     output_docx_docs = "docs/INFORME_FINAL_APF2_LEOFIT.docx"
-
-    os.makedirs(os.path.dirname(output_docx_integrator), exist_ok=True)
     os.makedirs(os.path.dirname(output_docx_docs), exist_ok=True)
-
-    doc.save(output_docx_integrator)
     doc.save(output_docx_docs)
-    print(f"✅ Documento Word generado exitosamente en: {output_docx_integrator}")
     print(f"✅ Documento Word generado exitosamente en: {output_docx_docs}")
 
 if __name__ == '__main__':

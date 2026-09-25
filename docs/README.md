@@ -16,7 +16,7 @@ docs/
 │   ├── DOCUMENTO_MAESTRO_INTEGRAL_LEOFIT.docx  # Documento Maestro Editable en Microsoft Word
 │   └── DOCUMENTO_MAESTRO_INTEGRAL_LEOFIT.md    # Versión Markdown completa y trazable
 │
-├── Entregables Oficiales por Hito de Evaluación:
+├── entregas_academicas/                # Entregables Oficiales y Gobernanza:
 │   ├── INFORME_FINAL_APF2_LEOFIT.pdf       # Entregable Oficial Maestro APF2 (PDF)
 │   ├── INFORME_FINAL_APF2_LEOFIT.docx      # Entregable Oficial Maestro APF2 (Word)
 │   ├── INFORME_FINAL_APF1_LEOFIT.pdf       # Entregable Oficial Maestro APF1 (PDF - Calificación: 18/20)
@@ -39,7 +39,7 @@ docs/
 │       ├── UTP_Semana_2_ASIS_TOBE_Plantilla.pptx                 # Plantilla de diagramas AS-IS / TO-BE
 │       └── UTP_Semana_2_Requerimientos_Plantilla.xlsx            # Matriz de requerimientos
 │
-└── Anexos Especializados de Ingeniería (Formatos MD / DOCX / PDF):
+└── modulos_tecnicos/                  # Anexos Especializados de Ingeniería (01 al 13):
     ├── 01_Ficha_Identificacion         # Ficha institucional de identificación del proyecto
     ├── 02_Requerimientos               # Especificación de Requerimientos de Software (ERS/IEEE 830)
     ├── 03_Acta_Reunion_1               # Acta y minuta de reunión con la empresa LeoFit
@@ -62,8 +62,8 @@ docs/
 | Documento / Hito | Semana | Estado | Formato Word | Formato PDF | Formato MD |
 | :--- | :---: | :---: | :---: | :---: | :---: |
 | **DOCUMENTO MAESTRO INTEGRAL (SSOT)** | **Consolidado** | **Aprobado (Definitivo)** | [Descargar .docx](./DOCUMENTO_MAESTRO_INTEGRAL_LEOFIT.docx) | [Descargar .pdf](./DOCUMENTO_MAESTRO_INTEGRAL_LEOFIT.pdf) | [Ver .md](./DOCUMENTO_MAESTRO_INTEGRAL_LEOFIT.md) |
-| **Avance de Proyecto Final 2 (APF2)** | S12 | Entregado / Calificado | [Descargar .docx](./INFORME_FINAL_APF2_LEOFIT.docx) | [Descargar .pdf](./INFORME_FINAL_APF2_LEOFIT.pdf) | — |
-| **Avance de Proyecto Final 1 (APF1)** | S07 | Aprobado (**18/20**) | [Descargar .docx](./INFORME_FINAL_APF1_LEOFIT.docx) | [Descargar .pdf](./INFORME_FINAL_APF1_LEOFIT.pdf) | [Ver .md](./INFORME_FINAL_APF1_LEOFIT.md) |
+| **Avance de Proyecto Final 2 (APF2)** | S12 | Entregado / Calificado | [Descargar .docx](./entregas_academicas/INFORME_FINAL_APF2_LEOFIT.docx) | [Descargar .pdf](./entregas_academicas/INFORME_FINAL_APF2_LEOFIT.pdf) | — |
+| **Avance de Proyecto Final 1 (APF1)** | S07 | Aprobado (**18/20**) | [Descargar .docx](./entregas_academicas/INFORME_FINAL_APF1_LEOFIT.docx) | [Descargar .pdf](./entregas_academicas/INFORME_FINAL_APF1_LEOFIT.pdf) | [Ver .md](./entregas_academicas/INFORME_FINAL_APF1_LEOFIT.md) |
 | **Avance de Proyecto Final 3 (APF3)** | S14 | Planificado (Sprint 4) | *En desarrollo para Semana 14* | *En desarrollo para Semana 14* | — |
 | **Evaluación Final (PROY)** | S18 | Planificado (Sprint 5) | *En desarrollo para Semana 18* | *En desarrollo para Semana 18* | — |
 
