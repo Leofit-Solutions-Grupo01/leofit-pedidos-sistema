@@ -95,7 +95,7 @@ A continuación se presenta el análisis pormenorizado de cada interfaz del sist
 * **Historia de Usuario:** HU-007 (Seguridad y Acceso al Sistema)
 * **Actor Principal:** Operador Administrativo (Víctor Cárdenas / Lady Loayza)
 
-![Figura 01: Pantalla de Autenticación de Operador Administrativo](assets/evidencias/01_Login_Autenticacion.png)
+> **[Visualización de Evidencia Gráfica]** — *Figura 01: Pantalla de Autenticación de Operador Administrativo (Incrustada en alta resolución en el PDF y Word adjuntos).*
 
 *Figura 01: Pantalla principal de autenticación con control de acceso institucional.*
 
@@ -118,7 +118,7 @@ Es la compuerta de seguridad perimetral de LeoFit. Impide que clientes externos 
 * **Requerimiento Funcional Principal:** **RF-012** (Autenticación y Sesión Segura)
 * **Historia de Usuario:** HU-007 (Verificación de Operador)
 
-![Figura 02: Carga y Verificación de Credenciales de Demostración](assets/evidencias/02_Login_Credenciales_Llenas.png)
+> **[Visualización de Evidencia Gráfica]** — *Figura 02: Carga y Verificación de Credenciales de Demostración (Incrustada en alta resolución en el PDF y Word adjuntos).*
 
 *Figura 02: Inyección y validación reactiva de credenciales de operador (`victor@leofit.com`).*
 
@@ -139,7 +139,7 @@ Demuestra el comportamiento reactivo del formulario al recepcionar credenciales 
 * **Requisito No Funcional Vinculado:** **RNF-008** (Protección de Información Sensible)
 * **Historia de Usuario:** HU-005 (Métricas de Dashboard con Privacidad Granular)
 
-![Figura 03: Dashboard de Mando con Tarjetas Métricas y Pipeline Operativo](assets/evidencias/03_Dashboard_Control_Operativo.png)
+> **[Visualización de Evidencia Gráfica]** — *Figura 03: Dashboard de Mando con Tarjetas Métricas y Pipeline Operativo (Incrustada en alta resolución en el PDF y Word adjuntos).*
 
 *Figura 03: Panel principal de analítica de negocio con métricas de ventas y embudo de estados.*
 
@@ -162,7 +162,7 @@ Es la cabina de mando del negocio. Proporciona al administrador una panorámica 
 * **Requisito No Funcional Principal:** **RNF-008** (Seguridad y Privacidad Granular)
 * **Historia de Usuario:** HU-005 (Protección de Cifras Monetarias)
 
-![Figura 04: Activación de Máscara de Confidencialidad en Cifras de Ventas](assets/evidencias/04_Dashboard_Privacidad_Oculta.png)
+> **[Visualización de Evidencia Gráfica]** — *Figura 04: Activación de Máscara de Confidencialidad en Cifras de Ventas (Incrustada en alta resolución en el PDF y Word adjuntos).*
 
 *Figura 04: Modo de privacidad activado, enmascarando los importes monetarios con asteriscos.*
 
@@ -182,7 +182,7 @@ Permite al operador alternar la visualización de los importes económicos en So
 * **Requerimientos Funcionales:** **RF-001** (Catálogo), **RF-002** (Búsqueda Reactiva), **RF-017** (Stock Crítico)
 * **Historia de Usuario:** HU-001 (Filtrado de Catálogo e Inventario)
 
-![Figura 05: Catálogo Interactivo con Búsqueda Predictiva de Prendas](assets/evidencias/05_Catalogo_Busqueda_Camisetas.png)
+> **[Visualización de Evidencia Gráfica]** — *Figura 05: Catálogo Interactivo con Búsqueda Predictiva de Prendas (Incrustada en alta resolución en el PDF y Word adjuntos).*
 
 *Figura 05: Filtrado predictivo en tiempo real al ingresar el término 'Camiseta'.*
 
@@ -203,7 +203,7 @@ Permite al vendedor o cliente explorar las prendas deportivas de LeoFit (Camiset
 * **Requerimientos Funcionales:** **RF-003** (Carrito Reactivo), **RF-004** (Control de Stock), **RF-005** (Formulario)
 * **Historia de Usuario:** HU-002 y HU-003 (Toma de Pedido y Control de Inventario)
 
-![Figura 06: Formulario de Nuevo Pedido con Selección de Prendas](assets/evidencias/06_Nuevo_Pedido_Formulario.png)
+> **[Visualización de Evidencia Gráfica]** — *Figura 06: Formulario de Nuevo Pedido con Selección de Prendas (Incrustada en alta resolución en el PDF y Word adjuntos).*
 
 *Figura 06: Pantalla de captura de pedido con selector interactivo de prendas y tallas.*
 
@@ -223,7 +223,7 @@ Es la herramienta medular para la digitalización de ventas de LeoFit. Sustituye
 * **Requerimientos Funcionales:** **RF-005**, **RF-006** (Flete), **RF-013** (Encomienda), **RF-015** (DNI), **RF-016** (Cupones)
 * **Historia de Usuario:** HU-003 (Liquidación de Pedidos, Encomiendas y Cupones)
 
-![Figura 07: Liquidación con Encomienda Shalom, Validación de DNI y Cupón](assets/evidencias/07_Nuevo_Pedido_Liquidacion_Cupon_Encomienda.png)
+> **[Visualización de Evidencia Gráfica]** — *Figura 07: Liquidación con Encomienda Shalom, Validación de DNI y Cupón (Incrustada en alta resolución en el PDF y Word adjuntos).*
 
 *Figura 07: Formulario con cliente, teléfono, DNI, dirección, agencia Shalom y cupón LEOFIT10 aplicado.*
 
@@ -245,7 +245,7 @@ Resuelve la complejidad logística dual del negocio textil peruano: distingue en
 * **Requerimientos Funcionales:** **RF-007** (Control de Estados), **RF-008** (Bandeja de Pedidos)
 * **Historia de Usuario:** HU-004 (Bandeja Operativa de Pedidos)
 
-![Figura 08: Bandeja Centralizada de Pedidos con Filtros por Estado](assets/evidencias/08_Bandeja_Gestion_Pedidos.png)
+> **[Visualización de Evidencia Gráfica]** — *Figura 08: Bandeja Centralizada de Pedidos con Filtros por Estado (Incrustada en alta resolución en el PDF y Word adjuntos).*
 
 *Figura 08: Lista unificada de órdenes con códigos LFT-XXX, badges de estado y chips de filtrado.*
 
@@ -267,7 +267,7 @@ Es el registro central de órdenes de LeoFit. Permite al personal de despacho y 
 * **Requerimientos Funcionales:** **RF-007** (Trazabilidad), **RF-011** (Notificación WhatsApp), **RNF-007** (Historial)
 * **Historia de Usuario:** HU-004 (Detalle de Pedido y Trazabilidad)
 
-![Figura 09: Fila de Pedido Expandida con Desglose Financiero y Acciones](assets/evidencias/09_Detalle_Pedido_Acordeon.png)
+> **[Visualización de Evidencia Gráfica]** — *Figura 09: Fila de Pedido Expandida con Desglose Financiero y Acciones (Incrustada en alta resolución en el PDF y Word adjuntos).*
 
 *Figura 09: Acordeón interactivo con desglose de ítems, flete, descuento aplicado y botones de recibo y WhatsApp.*
 
@@ -290,7 +290,7 @@ Al hacer clic sobre cualquier pedido de la bandeja, se despliega una ficha técn
 * **Requerimientos Funcionales:** **RF-011** (Comprobante), **RF-018** (Recibos PDF)
 * **Historia de Usuario:** HU-003 y HU-008 (Comprobantes Digitales Oficiales)
 
-![Figura 10: Modal de Recibo Digital Oficial de LeoFit con Descarga PDF](assets/evidencias/10_Comprobante_Digital_Recibo.png)
+> **[Visualización de Evidencia Gráfica]** — *Figura 10: Modal de Recibo Digital Oficial de LeoFit con Descarga PDF (Incrustada en alta resolución en el PDF y Word adjuntos).*
 
 *Figura 10: Comprobante digital en formato A5 con membrete formal, desglose de prendas y código QR de rastreo.*
 
@@ -313,7 +313,7 @@ Es el documento mercantil oficial que se entrega al cliente tras la compra. Se g
 * **Requerimientos Funcionales:** **RF-013** (Logística Nacional), **RF-018** (Rótulos Térmicos)
 * **Historia de Usuario:** HU-004 (Rótulos de Paquetería Interprovincial)
 
-![Figura 11: Rótulo de Despacho Térmico para Encomiendas Nacionales](assets/evidencias/11_Comprobante_Rotulo_Encomienda.png)
+> **[Visualización de Evidencia Gráfica]** — *Figura 11: Rótulo de Despacho Térmico para Encomiendas Nacionales (Incrustada en alta resolución en el PDF y Word adjuntos).*
 
 *Figura 11: Etiqueta adhesiva estandarizada para paquetería de agencia Shalom / Olva Courier.*
 
@@ -334,7 +334,7 @@ Genera la etiqueta adhesiva estandarizada que se pega en la caja o bolsa de segu
 * **Requerimientos Funcionales:** **RF-009** (Gestión de Inventario), **RF-017** (Stock Crítico)
 * **Historia de Usuario:** HU-006 (Gestión de Inventario y Alertas)
 
-![Figura 12: Panel de Gestión de Inventario Físico de Prendas](assets/evidencias/12_Gestion_Inventario_Stock.png)
+> **[Visualización de Evidencia Gráfica]** — *Figura 12: Panel de Gestión de Inventario Físico de Prendas (Incrustada en alta resolución en el PDF y Word adjuntos).*
 
 *Figura 12: Control de existencias por variantes de talla y color con alertas de reposición.*
 
@@ -358,7 +358,7 @@ Permite al administrador de LeoFit auditar el stock físico de prendas en tiempo
 * **Requerimientos Funcionales:** **RF-014** (Portal Rastreo), **RF-015** (Consulta DNI), **RF-017** (Garantías)
 * **Historia de Usuario:** HU-008 (Portal de Rastreo y Garantías LeoFit)
 
-![Figura 13: Portal Público de Rastreo en Vivo con Timeline y Datos de Despacho](assets/evidencias/13_Portal_Rastreo_Timeline.png)
+> **[Visualización de Evidencia Gráfica]** — *Figura 13: Portal Público de Rastreo en Vivo con Timeline y Datos de Despacho (Incrustada en alta resolución en el PDF y Word adjuntos).*
 
 *Figura 13: Seguimiento público del pedido en 4 hitos logísticos con datos de agencia transportista.*
 
@@ -383,7 +383,7 @@ Es el portal de autoservicio para el comprador. Permite al cliente rastrear la u
 * **Requisitos No Funcionales:** **RNF-001** (Diseño A11y), **RNF-010** (WCAG 2.1 AAA)
 * **Historia de Usuario:** Transversal de Accesibilidad Institucional
 
-![Figura 14: Modo Accesible de Alto Contraste y Tipografía Agrandada](assets/evidencias/14_Modo_Accesible_Alto_Contraste.png)
+> **[Visualización de Evidencia Gráfica]** — *Figura 14: Modo Accesible de Alto Contraste y Tipografía Agrandada (Incrustada en alta resolución en el PDF y Word adjuntos).*
 
 *Figura 14: Interfaz con contraste reforzado y escalado tipográfico adaptada para baja visión.*
 
