@@ -11,20 +11,27 @@ Toda la documentación técnica y académica del proyecto se encuentra organizad
 
 ```text
 docs/
-├── INFORME_FINAL_APF2_LEOFIT.pdf       # Entregable Oficial Maestro APF2 (PDF)
-├── INFORME_FINAL_APF2_LEOFIT.docx      # Entregable Oficial Maestro APF2 (Word)
-├── INFORME_FINAL_APF1_LEOFIT.pdf       # Entregable Oficial Maestro APF1 (PDF - Calificación: 18/20)
-├── INFORME_FINAL_APF1_LEOFIT.docx      # Entregable Oficial Maestro APF1 (Word)
+├── Entregables Oficiales Consolidados:
+│   ├── INFORME_FINAL_APF2_LEOFIT.pdf       # Entregable Oficial Maestro APF2 (PDF)
+│   ├── INFORME_FINAL_APF2_LEOFIT.docx      # Entregable Oficial Maestro APF2 (Word)
+│   ├── INFORME_FINAL_APF1_LEOFIT.pdf       # Entregable Oficial Maestro APF1 (PDF - Calificación: 18/20)
+│   └── INFORME_FINAL_APF1_LEOFIT.docx      # Entregable Oficial Maestro APF1 (Word)
 │
-├── GUIA_CARGA_ISSUES_GITHUB.md         # Guía Maestra del Tablero GitHub Projects (Sprints 1 al 5)
-├── PLAN_ACADEMICO_GITHUB_PROJECTS.md   # Plan de Evaluaciones, RACI y Fórmulas UTP
+├── Instrumentos de Evaluación y Gobernanza:
+│   ├── Checklist_Integral_Evaluacion_Software.md / .docx / .pdf  # Checklist Integral UTP (Funcionalidad, UX, Rendimiento, Seguridad)
+│   ├── GUIA_CARGA_ISSUES_GITHUB.md / .docx / .pdf               # Guía Maestra del Tablero GitHub Projects (Sprints 1 al 5)
+│   └── PLAN_ACADEMICO_GITHUB_PROJECTS_LEOFIT.md / .docx / .pdf   # Plan de Evaluaciones, RACI y Fórmulas UTP
 │
 ├── academic/                           # Material Académico, Rúbricas y Diapositivas UTP
 │   ├── Silabo_Curso_Integrador_II.pdf  # Sílabo oficial del curso
 │   ├── rubricas/                       # Rúbricas oficiales de evaluación (APF1, APF2, APF3)
 │   ├── diapositivas/                   # Diapositivas de clase (Semanas 01 a 18)
 │   ├── evaluaciones/                   # Retroalimentación oficial de notas UTP
-│   └── recursos/                       # Plantillas institucionales y ficha de mapeo
+│   └── recursos/                       # Plantillas institucionales y recursos UTP:
+│       ├── Checklist_Integral_Evaluacion_Software_Plantilla.docx # Plantilla base de evaluación de software
+│       ├── Ficha_Mapeo_Empresa_Semana_1.pdf                      # Ficha de mapeo empresarial
+│       ├── UTP_Semana_2_ASIS_TOBE_Plantilla.pptx                 # Plantilla de diagramas AS-IS / TO-BE
+│       └── UTP_Semana_2_Requerimientos_Plantilla.xlsx            # Matriz de requerimientos
 │
 └── Módulos Temáticos de Ingeniería (Formatos MD / DOCX / PDF):
     ├── 01_Ficha_Identificacion         # Ficha institucional de identificación del proyecto
@@ -36,10 +43,13 @@ docs/
     ├── 07_Arquitectura_Sistema         # Documento de Arquitectura de Software (SAD - Modelo 4+1)
     ├── 08_Normalizacion_Base_Datos     # Normalización Relacional (1FN, 2FN, 3FN y BCNF)
     ├── 09_Guion_Video_Demo_Remotion    # Guion técnico y código de video demo
-    ├── 10_Catalogo_Controles_Seguridad_OWASP.md # Matriz de mitigación OWASP Top 10
-    ├── 11_Informe_Seguridad_Cifrado_Pruebas_Web.md # Reporte técnico SAST/DAST y Cifrado
-    └── 12_Manual_Despliegue_Cloud_Produccion.md    # Manual de Despliegue en Cloud v1
+    ├── 10_Catalogo_Controles_Seguridad_OWASP # Matriz de mitigación OWASP Top 10
+    ├── 11_Informe_Seguridad_Cifrado_Pruebas_Web # Reporte técnico SAST/DAST y Cifrado
+    └── 12_Manual_Despliegue_Cloud_Produccion    # Manual de Despliegue en Cloud v1
 ```
+
+> [!NOTE]
+> Para la entrega institucional en la plataforma académica, el archivo maestro consolidado de APF2 también se replica en [`Integrator/informe/DOCUMENTACION.docx`](../Integrator/informe/DOCUMENTACION.docx) conforme a la estructura requerida por el estándar de entrega de Curso Integrador II.
 
 ---
 
@@ -54,7 +64,17 @@ docs/
 
 ---
 
-## 2. Módulos Temáticos de Ingeniería y Arquitectura
+## 2. Instrumentos de Evaluación y Gobernanza Transversal
+
+| Documento | Formato MD | Formato DOCX | Formato PDF | Descripción |
+| :--- | :---: | :---: | :---: | :--- |
+| **Checklist Integral de Evaluación** | [`MD`](Checklist_Integral_Evaluacion_Software.md) | [`DOCX`](Checklist_Integral_Evaluacion_Software.docx) | [`PDF`](Checklist_Integral_Evaluacion_Software.pdf) | Evaluación técnica exhaustiva (Funcionalidad, Usabilidad UX, Rendimiento y Seguridad/Costos). |
+| **Guía de Carga de Issues GitHub** | [`MD`](GUIA_CARGA_ISSUES_GITHUB.md) | [`DOCX`](GUIA_CARGA_ISSUES_GITHUB.docx) | [`PDF`](GUIA_CARGA_ISSUES_GITHUB.pdf) | Guía de gestión ágil de sprints, backlog, tareas y trazabilidad de requerimientos. |
+| **Plan Académico GitHub Projects** | [`MD`](PLAN_ACADEMICO_GITHUB_PROJECTS_LEOFIT.md) | [`DOCX`](PLAN_ACADEMICO_GITHUB_PROJECTS_LEOFIT.docx) | [`PDF`](PLAN_ACADEMICO_GITHUB_PROJECTS_LEOFIT.pdf) | Plan de hitos académicos, matriz de responsabilidades RACI y ponderaciones UTP. |
+
+---
+
+## 3. Módulos Temáticos de Ingeniería y Arquitectura
 
 | N° | Documento | Formato MD | Formato DOCX | Formato PDF | Descripción |
 | :---: | :--- | :---: | :---: | :---: | :--- |
@@ -67,9 +87,9 @@ docs/
 | **07** | **Arquitectura de Software (SAD)** | [`MD`](07_Arquitectura_Sistema.md) | [`DOCX`](07_Arquitectura_Sistema.docx) | [`PDF`](07_Arquitectura_Sistema.pdf) | Vistas del modelo 4+1, diagrama C4 de contenedores, patrones arquitectónicos y Clean Architecture. |
 | **08** | **Normalización de Base de Datos** | [`MD`](08_Normalizacion_Base_Datos.md) | [`DOCX`](08_Normalizacion_Base_Datos.docx) | [`PDF`](08_Normalizacion_Base_Datos.pdf) | Proceso de normalización formal desde 1FN, 2FN, 3FN hasta BCNF y DDL en PostgreSQL. |
 | **09** | **Guion de Video Demo** | [`MD`](09_Guion_Video_Demo_Remotion.md) | [`DOCX`](09_Guion_Video_Demo_Remotion.docx) | [`PDF`](09_Guion_Video_Demo_Remotion.pdf) | Estructura del pitch audiovisual y código de animación en Remotion. |
-| **10** | **Controles de Seguridad OWASP** | [`MD`](10_Catalogo_Controles_Seguridad_OWASP.md) | — | — | Catálogo de mitigación técnica para el OWASP Top 10 (SQLi, XSS, RBAC, Rate-Limit). |
-| **11** | **Informe de Seguridad y SAST/DAST** | [`MD`](11_Informe_Seguridad_Cifrado_Pruebas_Web.md) | — | — | Informe de auditoría estática (`npm audit`), pruebas dinámicas y cifrado en tránsito/reposo. |
-| **12** | **Manual de Despliegue en Cloud** | [`MD`](12_Manual_Despliegue_Cloud_Produccion.md) | — | — | Guía de aprovisionamiento en Render (Backend), Vercel (Frontend) y Supabase (DB). |
+| **10** | **Controles de Seguridad OWASP** | [`MD`](10_Catalogo_Controles_Seguridad_OWASP.md) | [`DOCX`](10_Catalogo_Controles_Seguridad_OWASP.docx) | [`PDF`](10_Catalogo_Controles_Seguridad_OWASP.pdf) | Catálogo de mitigación técnica para el OWASP Top 10 (SQLi, XSS, RBAC, Rate-Limit). |
+| **11** | **Informe de Seguridad y SAST/DAST** | [`MD`](11_Informe_Seguridad_Cifrado_Pruebas_Web.md) | [`DOCX`](11_Informe_Seguridad_Cifrado_Pruebas_Web.docx) | [`PDF`](11_Informe_Seguridad_Cifrado_Pruebas_Web.pdf) | Informe de auditoría estática (`npm audit`), pruebas dinámicas y cifrado en tránsito/reposo. |
+| **12** | **Manual de Despliegue en Cloud** | [`MD`](12_Manual_Despliegue_Cloud_Produccion.md) | [`DOCX`](12_Manual_Despliegue_Cloud_Produccion.docx) | [`PDF`](12_Manual_Despliegue_Cloud_Produccion.pdf) | Guía de aprovisionamiento en Render (Backend), Vercel (Frontend) y Supabase (DB). |
 
 ---
 
