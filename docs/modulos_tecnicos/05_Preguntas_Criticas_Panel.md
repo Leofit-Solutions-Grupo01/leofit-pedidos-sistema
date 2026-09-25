@@ -47,7 +47,10 @@ Para que una tarea se considere concluida (`Done`), debe cumplir cuatro criterio
 
 ### Pregunta 4.1: ¿Qué estrategia de pruebas se implementó para garantizar la fiabilidad del sistema?
 **Fundamentación Técnica y de Negocio:**
-Se implementó una suite de pruebas unitarias automatizadas con **Vitest** en la capa de datos y lógica de negocio (`frontend/src/__tests__/mockData.test.ts`). Las pruebas validan la integridad de precios, existencias no negativas, pertenencia de categorías y normalización de estados de los pedidos. La suite se ejecuta de forma automática en el pipeline de Integración Continua (`.github/workflows/security-scan.yml`) ante cada `push` y `pull request` a la rama `main`.
+Se implementó una estrategia piramidal con **35 pruebas automatizadas** que cubren de extremo a extremo la lógica del software:
+1. **Frontend (17 tests con Vitest):** Distribuidos en `mockData.test.ts`, `allTabsFunctional.test.ts` y `pdfGenerator.test.ts`, verificando la reactividad del estado, consistencia de inventario en memoria, validación de formularios, generación de recibos PDF vectoriales y navegación de pestañas.
+2. **Backend (18 tests con Jest & Supertest):** Distribuidos en 5 suites (`orders.test.ts`, `auth.test.ts`, `clients_dashboard.test.ts`, `security.test.ts` y `products.test.ts`), evaluando transaccionalidad ACID con bloqueos `FOR UPDATE`, autenticación JWT, autorización RBAC por roles, mitigación OWASP (SQLi, XSS, rate-limiting) y endpoints de analítica.
+Toda la batería se ejecuta automáticamente en el pipeline de Integración Continua (`.github/workflows/ci-cd.yml`) ante cada `push` y `pull request` hacia `main`.
 
 ---
 

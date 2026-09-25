@@ -17,7 +17,7 @@
 | **Institución Académica** | Universidad Tecnológica del Perú (UTP) |
 | **Facultad** | Facultad de Ingeniería de Sistemas e Informática |
 | **Curso Académico** | Curso Integrador II: Software (100000S12F) |
-| **Ciclo Académico** | 2026 - Ciclo 1 Marzo |
+| **Ciclo Académico** | 2026-II (Agosto – Diciembre 2026) |
 | **Proyecto de Software** | Sistema Web PWA de Gestión y Toma de Pedidos Multicanal |
 | **Organización Beneficiaria** | LeoFit Solutions E.I.R.L. (R.U.C. 20600000000) |
 | **Representante del Negocio** | Víctor Raúl Cárdenas Fernández (Gerente de Operaciones) |

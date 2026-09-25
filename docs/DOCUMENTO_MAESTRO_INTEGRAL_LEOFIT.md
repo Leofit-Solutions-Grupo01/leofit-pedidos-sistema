@@ -6,7 +6,7 @@
 
 # SISTEMA DE GESTIÓN DE PEDIDOS Y CONTROL DE INVENTARIO MULTICANAL PARA LA EMPRESA LEOFIT
 ## LIBRO DE INGENIERÍA Y DOCUMENTO MAESTRO INTEGRAL DEL PROYECTO
-### FUENTE ÚNICA DE VERDAD (SINGLE SOURCE OF TRUTH) — CICLO 2026-I
+### FUENTE ÚNICA DE VERDAD (SINGLE SOURCE OF TRUTH) — CICLO 2026-II
 
 ---
 
@@ -17,7 +17,7 @@
 | **Nombre del Proyecto** | Sistema Web Progresivo (PWA) de Gestión de Pedidos y Control de Inventario Multicanal |
 | **Empresa Beneficiaria** | LeoFit (RUC: 20608912345) — Emporio Comercial de Gamarra, La Victoria, Lima |
 | **Asignatura** | Curso Integrador II: Software (Código: `100000S12F`) |
-| **Docente Asignado** | Mg. Ing. Docente Asignado UTP |
+| **Docente Asignado** | Ing. Enrique Lee Huamani Uriarte |
 | **Equipo de Desarrollo (Grupo 01)** | • Loayza Rodriguez, Lady Luz — Código: `U22221489` (Scrum Master / DevSecOps)<br>• Cárdenas Fernández, Víctor Leandro — Código: `U19217414` (Product Owner / Data Architect)<br>• Roman Delgado, Harley Anthony — Código: `U21313032` (Frontend Lead / PWA Specialist)<br>• Dávila Morales, Jim Alessandro — Código: `U18206081` (QA Engineer Lead / Backend)<br>• Rojas Sanchez, Daniel Enrique — Código: `U21214627` (Business Analyst / Cloud DevOps) |
 | **Versión del Documento** | 3.0.0 (Unificación Maestra Total) |
 | **Fecha de Publicación** | Septiembre de 2026 |
@@ -823,130 +823,171 @@ El modelo resultante comprende 8 entidades interconectadas con integridad refere
 
 ![Figura 8.2: Modelo Físico Relacional DDL de Base de Datos](../diagrams/13_Modelo_Fisico_BD.png)
 
-## 8.3. Esquema DDL en PostgreSQL con Triggers, Constraints e Índices B-Tree/GIN
+## 8.3. Esquema DDL en PostgreSQL 16 con Triggers, Constraints e Índices B-Tree (BCNF)
 
-A continuación se presenta el script DDL representativo con restricciones de integridad, triggers de recálculo de montos y control de inventario:
+A continuación se presenta el script DDL oficial de producción (`database/schema.sql`) normalizado en Forma Normal de Boyce-Codd (BCNF), con restricciones de integridad referencial, enums de dominio, triggers automáticos de stock y vistas optimizadas:
 
 ```sql
--- Habilitar extensión criptográfica
-CREATE EXTENSION IF NOT EXISTS "pgcrypto";
+-- Tipos ENUM para dominios cerrados
+CREATE TYPE user_role_enum    AS ENUM ('ADMIN', 'OPERATOR');
+CREATE TYPE order_status_enum AS ENUM ('RECIBIDO', 'PREPARACION', 'EN_CAMINO', 'ENTREGADO', 'CANCELADO');
 
--- 1. Tabla de Roles del Sistema
-CREATE TABLE roles (
-    id SERIAL PRIMARY KEY,
-    nombre VARCHAR(50) UNIQUE NOT NULL,
-    descripcion TEXT,
-    creado_en TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+-- 1. Catálogo de Tallas (dominio atómico BCNF)
+CREATE TABLE sizes (
+    id    SMALLSERIAL PRIMARY KEY,
+    code  VARCHAR(10) NOT NULL UNIQUE,
+    label VARCHAR(30) NOT NULL
 );
 
--- 2. Tabla de Usuarios y Operadores
-CREATE TABLE usuarios (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    rol_id INT NOT NULL REFERENCES roles(id) ON DELETE RESTRICT,
-    nombre_completo VARCHAR(120) NOT NULL,
-    correo VARCHAR(100) UNIQUE NOT NULL,
-    password_hash VARCHAR(255) NOT NULL,
-    activo BOOLEAN DEFAULT TRUE,
-    creado_en TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+-- 2. Catálogo de Colores (dominio atómico BCNF)
+CREATE TABLE colors (
+    id   SMALLSERIAL PRIMARY KEY,
+    name VARCHAR(60) NOT NULL UNIQUE,
+    hex  CHAR(7)
 );
 
--- 3. Tabla de Clientes (Mayoristas y Minoristas)
-CREATE TABLE clientes (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    tipo_documento VARCHAR(10) DEFAULT 'DNI' CHECK (tipo_documento IN ('DNI', 'RUC', 'CE')),
-    numero_documento VARCHAR(20) UNIQUE NOT NULL,
-    nombres VARCHAR(120) NOT NULL,
-    telefono VARCHAR(15) NOT NULL,
-    direccion_envio TEXT,
-    ciudad VARCHAR(60) DEFAULT 'Lima',
-    creado_en TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+-- 3. Catálogo de Distritos de Reparto Geográfico (districts)
+CREATE TABLE districts (
+    id   SMALLSERIAL PRIMARY KEY,
+    name VARCHAR(80) NOT NULL UNIQUE
 );
 
--- 4. Tabla de Categorías de Ropa Deportiva
-CREATE TABLE categorias (
-    id SERIAL PRIMARY KEY,
-    nombre VARCHAR(60) UNIQUE NOT NULL,
-    slug VARCHAR(60) UNIQUE NOT NULL,
-    activo BOOLEAN DEFAULT TRUE
+-- 4. Métodos de Pago Disponibles (payment_methods)
+CREATE TABLE payment_methods (
+    id   SMALLSERIAL PRIMARY KEY,
+    code VARCHAR(30) NOT NULL UNIQUE,
+    name VARCHAR(60) NOT NULL
 );
 
--- 5. Tabla Maestra de Productos e Inventario
-CREATE TABLE productos (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    categoria_id INT NOT NULL REFERENCES categorias(id) ON DELETE RESTRICT,
-    codigo_sku VARCHAR(30) UNIQUE NOT NULL,
-    nombre VARCHAR(120) NOT NULL,
-    descripcion TEXT,
-    talla VARCHAR(10) NOT NULL CHECK (talla IN ('S', 'M', 'L', 'XL', 'Standard')),
-    color VARCHAR(30) NOT NULL,
-    precio_minorista NUMERIC(10, 2) NOT NULL CHECK (precio_minorista > 0),
-    precio_mayorista NUMERIC(10, 2) NOT NULL CHECK (precio_mayorista > 0),
-    stock_actual INT NOT NULL DEFAULT 0 CHECK (stock_actual >= 0),
-    stock_minimo INT NOT NULL DEFAULT 5 CHECK (stock_minimo >= 0),
-    imagen_url TEXT,
-    activo BOOLEAN DEFAULT TRUE,
-    actualizado_en TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+-- 5. Usuarios Administrativos del Sistema (users)
+CREATE TABLE users (
+    id            SERIAL         PRIMARY KEY,
+    name          VARCHAR(100)   NOT NULL,
+    email         VARCHAR(150)   NOT NULL UNIQUE,
+    password_hash VARCHAR(255)   NOT NULL,
+    role          user_role_enum NOT NULL DEFAULT 'OPERATOR',
+    is_active     BOOLEAN        NOT NULL DEFAULT TRUE,
+    created_at    TIMESTAMPTZ    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at    TIMESTAMPTZ    NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- 6. Tabla Cabecera de Pedidos
-CREATE TABLE pedidos (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    codigo_orden VARCHAR(20) UNIQUE NOT NULL,
-    cliente_id UUID NOT NULL REFERENCES clientes(id) ON DELETE RESTRICT,
-    usuario_registro_id UUID REFERENCES usuarios(id) ON DELETE SET NULL,
-    estado VARCHAR(30) NOT NULL DEFAULT 'Pendiente' 
-        CHECK (estado IN ('Pendiente', 'Confirmado', 'En Preparación', 'Despachado', 'Entregado', 'Cancelado')),
-    canal_venta VARCHAR(20) DEFAULT 'PWA_Web' CHECK (canal_venta IN ('PWA_Web', 'WhatsApp', 'Presencial')),
-    subtotal NUMERIC(10, 2) NOT NULL DEFAULT 0.00,
-    costo_envio NUMERIC(10, 2) NOT NULL DEFAULT 0.00,
-    total NUMERIC(10, 2) NOT NULL DEFAULT 0.00,
-    metodo_pago VARCHAR(30) DEFAULT 'Yape' CHECK (metodo_pago IN ('Yape', 'Plin', 'Transferencia_BCP', 'Efectivo')),
-    comprobante_url TEXT,
-    notas_despacho TEXT,
-    creado_en TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    actualizado_en TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+-- 6. Categorías de Indumentaria (categories)
+CREATE TABLE categories (
+    id          SERIAL      PRIMARY KEY,
+    name        VARCHAR(60) NOT NULL UNIQUE,
+    description TEXT,
+    created_at  TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- 7. Tabla Detalle de Líneas de Pedido
-CREATE TABLE detalle_pedidos (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    pedido_id UUID NOT NULL REFERENCES pedidos(id) ON DELETE CASCADE,
-    producto_id UUID NOT NULL REFERENCES productos(id) ON DELETE RESTRICT,
-    cantidad INT NOT NULL CHECK (cantidad > 0),
-    precio_unitario NUMERIC(10, 2) NOT NULL CHECK (precio_unitario > 0),
-    importe_subtotal NUMERIC(10, 2) GENERATED ALWAYS AS (cantidad * precio_unitario) STORED,
-    CONSTRAINT uq_pedido_producto UNIQUE (pedido_id, producto_id)
+-- 7. Catálogo Base de Prendas (products)
+CREATE TABLE products (
+    id          SERIAL        PRIMARY KEY,
+    category_id INT           NOT NULL REFERENCES categories(id) ON DELETE RESTRICT,
+    name        VARCHAR(120)  NOT NULL,
+    description TEXT,
+    base_price  NUMERIC(10,2) NOT NULL CHECK (base_price >= 0),
+    image_url   VARCHAR(512),
+    is_active   BOOLEAN       NOT NULL DEFAULT TRUE,
+    created_at  TIMESTAMPTZ   NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at  TIMESTAMPTZ   NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT uq_product_name_category UNIQUE (category_id, name)
 );
 
--- Índices B-Tree y GIN para Alto Rendimiento
-CREATE INDEX idx_productos_busqueda ON productos (nombre, codigo_sku);
-CREATE INDEX idx_pedidos_estado ON pedidos (estado, creado_en DESC);
-CREATE INDEX idx_clientes_doc ON clientes (numero_documento);
+-- 8. Variantes e Inventario por Talla y Color (product_variants - BCNF)
+CREATE TABLE product_variants (
+    id              SERIAL      PRIMARY KEY,
+    product_id      INT         NOT NULL REFERENCES products(id) ON DELETE CASCADE,
+    size_id         SMALLINT    NOT NULL REFERENCES sizes(id)    ON DELETE RESTRICT,
+    color_id        SMALLINT    NOT NULL REFERENCES colors(id)   ON DELETE RESTRICT,
+    sku             VARCHAR(60) NOT NULL UNIQUE,
+    stock           INT         NOT NULL DEFAULT 0 CHECK (stock >= 0),
+    alert_threshold INT         NOT NULL DEFAULT 3 CHECK (alert_threshold >= 0),
+    created_at      TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at      TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT uq_variant UNIQUE (product_id, size_id, color_id)
+);
 
--- Trigger Automático para Descuento Atómico de Stock tras Confirmación de Pedido
-CREATE OR REPLACE FUNCTION fn_descontar_stock_pedido()
-RETURNS TRIGGER AS $$
+-- 9. Clientes Registrados (clients)
+CREATE TABLE clients (
+    id          SERIAL       PRIMARY KEY,
+    full_name   VARCHAR(120) NOT NULL,
+    phone       VARCHAR(20)  NOT NULL UNIQUE,
+    address     TEXT         NOT NULL,
+    district_id SMALLINT     NOT NULL REFERENCES districts(id) ON DELETE RESTRICT,
+    reference   TEXT,
+    created_at  TIMESTAMPTZ  NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at  TIMESTAMPTZ  NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 10. Cabecera de Pedidos (orders)
+CREATE TABLE orders (
+    id                SERIAL            PRIMARY KEY,
+    order_number      VARCHAR(30)       NOT NULL UNIQUE,
+    client_id         INT               NOT NULL REFERENCES clients(id)         ON DELETE RESTRICT,
+    user_id           INT                        REFERENCES users(id)           ON DELETE SET NULL,
+    payment_method_id SMALLINT          NOT NULL REFERENCES payment_methods(id) ON DELETE RESTRICT,
+    status            order_status_enum NOT NULL DEFAULT 'RECIBIDO',
+    subtotal          NUMERIC(10,2)     NOT NULL DEFAULT 0.00 CHECK (subtotal      >= 0),
+    shipping_cost     NUMERIC(10,2)     NOT NULL DEFAULT 0.00 CHECK (shipping_cost >= 0),
+    total_amount      NUMERIC(10,2)     NOT NULL DEFAULT 0.00 CHECK (total_amount  >= 0),
+    notes             TEXT,
+    created_at        TIMESTAMPTZ       NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at        TIMESTAMPTZ       NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT chk_total CHECK (total_amount = subtotal + shipping_cost)
+);
+
+-- 11. Detalle de Ítems del Pedido (order_items)
+CREATE TABLE order_items (
+    id         SERIAL        PRIMARY KEY,
+    order_id   INT           NOT NULL REFERENCES orders(id)           ON DELETE CASCADE,
+    variant_id INT           NOT NULL REFERENCES product_variants(id) ON DELETE RESTRICT,
+    quantity   INT           NOT NULL CHECK (quantity > 0),
+    unit_price NUMERIC(10,2) NOT NULL CHECK (unit_price >= 0),
+    subtotal   NUMERIC(10,2) NOT NULL CHECK (subtotal   >= 0),
+    CONSTRAINT chk_item_subtotal CHECK (subtotal = quantity * unit_price),
+    CONSTRAINT uq_order_variant UNIQUE (order_id, variant_id)
+);
+
+-- 12. Historial de Auditoría de Estados (order_status_history)
+CREATE TABLE order_status_history (
+    id              SERIAL            PRIMARY KEY,
+    order_id        INT               NOT NULL REFERENCES orders(id) ON DELETE CASCADE,
+    user_id         INT                        REFERENCES users(id)  ON DELETE SET NULL,
+    previous_status order_status_enum,
+    new_status      order_status_enum NOT NULL,
+    changed_at      TIMESTAMPTZ       NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    comments        TEXT
+);
+
+-- Triggers: Descuento automático y actualización de timestamps
+CREATE OR REPLACE FUNCTION fn_decrement_stock()
+RETURNS TRIGGER LANGUAGE plpgsql AS $$
 BEGIN
-    IF (NEW.estado = 'Confirmado' AND OLD.estado = 'Pendiente') THEN
-        UPDATE productos p
-        SET stock_actual = p.stock_actual - dp.cantidad
-        FROM detalle_pedidos dp
-        WHERE dp.pedido_id = NEW.id AND dp.producto_id = p.id;
-    ELSIF (NEW.estado = 'Cancelado' AND OLD.estado IN ('Confirmado', 'En Preparación')) THEN
-        -- Reversión de stock
-        UPDATE productos p
-        SET stock_actual = p.stock_actual + dp.cantidad
-        FROM detalle_pedidos dp
-        WHERE dp.pedido_id = NEW.id AND dp.producto_id = p.id;
+    UPDATE product_variants
+       SET stock = stock - NEW.quantity
+     WHERE id = NEW.variant_id;
+
+    IF (SELECT stock FROM product_variants WHERE id = NEW.variant_id) < 0 THEN
+        RAISE EXCEPTION 'Stock insuficiente para la variante %', NEW.variant_id;
     END IF;
+
     RETURN NEW;
 END;
-$$ LANGUAGE plpgsql;
+$$;
 
-CREATE TRIGGER trg_actualizar_stock
-AFTER UPDATE OF estado ON pedidos
-FOR EACH ROW
-EXECUTE FUNCTION fn_descontar_stock_pedido();
+CREATE TRIGGER trg_decrement_stock_on_order
+    AFTER INSERT ON order_items
+    FOR EACH ROW EXECUTE FUNCTION fn_decrement_stock();
+
+-- Índices de Optimización Transaccional
+CREATE INDEX idx_orders_status        ON orders(status);
+CREATE INDEX idx_orders_created_at    ON orders(created_at DESC);
+CREATE INDEX idx_orders_client        ON orders(client_id);
+CREATE INDEX idx_variants_sku         ON product_variants(sku);
+CREATE INDEX idx_variants_stock       ON product_variants(stock) WHERE stock <= alert_threshold;
+CREATE INDEX idx_clients_phone        ON clients(phone);
+CREATE INDEX idx_order_items_order    ON order_items(order_id);
+CREATE INDEX idx_status_history_order ON order_status_history(order_id);
 ```
 
 ## 8.4. Estrategia de Respaldo Automatizado, Replicación WAL y Recuperación (DRP)
@@ -1048,7 +1089,7 @@ Para cumplir a cabalidad con la exigencia académica del docente y evidenciar la
 
 ### Pantalla 01:
 
-![Figura 10.1: Pantalla 01 del Sistema LeoFit](../scripts/extracted_evidence_imgs/evidence_screen_01.png) Catálogo General de Productos y Filtros de Búsqueda
+> **[Evidencia Gráfica Documentada]** — *Figura 10.1: Catálogo General de Productos y Filtros de Búsqueda (Incrustada en alta resolución en los entregables PDF y Word oficiales adjuntos).*
 - **Requerimientos Asociados**: `RF-001`, `RF-002`, `RNF-001`, `RNF-006`.
 - **Propósito Funcional**: Presentar de manera atractiva y ágil la totalidad de prendas deportivas confeccionadas por LeoFit, permitiendo a clientes y vendedores filtrar instantáneamente por categorías (Polos, Shorts, Buzos, Casacas) y buscar por texto libre.
 - **Anatomía Visual y Componentes**:
@@ -1064,7 +1105,7 @@ Para cumplir a cabalidad con la exigencia académica del docente y evidenciar la
 
 ### Pantalla 02:
 
-![Figura 10.2: Pantalla 02 del Sistema LeoFit](../scripts/extracted_evidence_imgs/evidence_screen_02.png) Detalle de Producto y Selección de Tallas y Colores
+> **[Evidencia Gráfica Documentada]** — *Figura 10.2: Detalle de Producto y Selección de Tallas y Colores (Incrustada en alta resolución en los entregables PDF y Word oficiales adjuntos).*
 - **Requerimientos Asociados**: `RF-001`, `RF-003`, `RNF-004`.
 - **Propósito Funcional**: Proporcionar la ficha técnica completa de una prenda seleccionada, permitiendo al comprador seleccionar su talla (S, M, L, XL), apreciar las opciones de color textil y consultar la composición del tejido (suplex, algodón reactivo).
 - **Anatomía Visual y Componentes**:
@@ -1081,7 +1122,7 @@ Para cumplir a cabalidad con la exigencia académica del docente y evidenciar la
 
 ### Pantalla 03:
 
-![Figura 10.3: Pantalla 03 del Sistema LeoFit](../scripts/extracted_evidence_imgs/evidence_screen_03.png) Carrito de Compras Interactivo y Resumen de Totales
+> **[Evidencia Gráfica Documentada]** — *Figura 10.3: Carrito de Compras Interactivo y Resumen de Totales (Incrustada en alta resolución en los entregables PDF y Word oficiales adjuntos).*
 - **Requerimientos Asociados**: `RF-003`, `RF-004`, `RNF-001`.
 - **Propósito Funcional**: Centralizar los productos preseleccionados por el usuario, permitiendo revisar detalles, modificar cantidades en caliente, remover ítems y visualizar el desglose exacto de la compra (subtotal, descuento mayorista y costo de envío).
 - **Anatomía Visual y Componentes**:
@@ -1098,7 +1139,7 @@ Para cumplir a cabalidad con la exigencia académica del docente y evidenciar la
 
 ### Pantalla 04:
 
-![Figura 10.4: Pantalla 04 del Sistema LeoFit](../scripts/extracted_evidence_imgs/evidence_screen_04.png) Formulario de Registro de Pedido y Datos del Cliente
+> **[Evidencia Gráfica Documentada]** — *Figura 10.4: Formulario de Registro de Pedido y Datos del Cliente (Incrustada en alta resolución en los entregables PDF y Word oficiales adjuntos).*
 - **Requerimientos Asociados**: `RF-004`, `RF-005`, `RNF-003`, `RNF-004`.
 - **Propósito Funcional**: Capturar de manera estructurada y validada la información del comprador final o comerciante mayorista para fines de emisión de la orden y entrega logística.
 - **Anatomía Visual y Componentes**:
@@ -1115,7 +1156,7 @@ Para cumplir a cabalidad con la exigencia académica del docente y evidenciar la
 
 ### Pantalla 05:
 
-![Figura 10.5: Pantalla 05 del Sistema LeoFit](../scripts/extracted_evidence_imgs/evidence_screen_05.png) Confirmación de Pedido y Emisión de Código de Orden
+> **[Evidencia Gráfica Documentada]** — *Figura 10.5: Confirmación de Pedido y Emisión de Código de Orden (Incrustada en alta resolución en los entregables PDF y Word oficiales adjuntos).*
 - **Requerimientos Asociados**: `RF-006`, `RF-017`, `RNF-001`.
 - **Propósito Funcional**: Proporcionar al usuario la constancia formal de que su orden ha sido registrada exitosamente en el sistema de LeoFit, informando su número correlativo oficial y los pasos subsiguientes del despacho.
 - **Anatomía Visual y Componentes**:
@@ -1133,7 +1174,7 @@ Para cumplir a cabalidad con la exigencia académica del docente y evidenciar la
 
 ### Pantalla 06:
 
-![Figura 10.6: Pantalla 06 del Sistema LeoFit](../scripts/extracted_evidence_imgs/evidence_screen_06.png) Módulo de Autenticación de Usuarios (Login Seguro)
+> **[Evidencia Gráfica Documentada]** — *Figura 10.6: Módulo de Autenticación de Usuarios / Login Seguro (Incrustada en alta resolución en los entregables PDF y Word oficiales adjuntos).*
 - **Requerimientos Asociados**: `RF-011`, `RNF-003`.
 - **Propósito Funcional**: Controlar y restringir el acceso a las funciones operativas, administrativas y de almacén de LeoFit, garantizando que solo el personal autorizado pueda gestionar pedidos y visualizar métricas de negocio.
 - **Anatomía Visual y Componentes**:
@@ -1150,7 +1191,7 @@ Para cumplir a cabalidad con la exigencia académica del docente y evidenciar la
 
 ### Pantalla 07:
 
-![Figura 10.7: Pantalla 07 del Sistema LeoFit](../scripts/extracted_evidence_imgs/evidence_screen_07.png) Panel Administrativo de Control y Listado de Pedidos
+> **[Evidencia Gráfica Documentada]** — *Figura 10.7: Panel Administrativo de Control y Listado de Pedidos (Incrustada en alta resolución en los entregables PDF y Word oficiales adjuntos).*
 - **Requerimientos Asociados**: `RF-007`, `RF-008`, `RNF-001`, `RNF-006`.
 - **Propósito Funcional**: Ofrecer una vista panorámica centralizada de todas las órdenes emitidas en LeoFit, permitiendo a los operadores buscar pedidos, filtrar por estado logístico y ordenar por fecha de emisión.
 - **Anatomía Visual y Componentes**:
@@ -1167,7 +1208,7 @@ Para cumplir a cabalidad con la exigencia académica del docente y evidenciar la
 
 ### Pantalla 08:
 
-![Figura 10.8: Pantalla 08 del Sistema LeoFit](../scripts/extracted_evidence_imgs/evidence_screen_08.png) Modal de Detalle de Pedido y Transición de Estados
+> **[Evidencia Gráfica Documentada]** — *Figura 10.8: Modal de Detalle de Pedido y Transición de Estados (Incrustada en alta resolución en los entregables PDF y Word oficiales adjuntos).*
 - **Requerimientos Asociados**: `RF-007`, `RF-008`, `RF-018`.
 - **Propósito Funcional**: Examinar a profundidad una orden específica, verificar el comprobante de pago bancario adjunto y modificar el estado del pedido a medida que avanza por la cadena logística.
 - **Anatomía Visual y Componentes**:
@@ -1184,7 +1225,7 @@ Para cumplir a cabalidad con la exigencia académica del docente y evidenciar la
 
 ### Pantalla 09:
 
-![Figura 10.9: Pantalla 09 del Sistema LeoFit](../scripts/extracted_evidence_imgs/evidence_screen_09.png) Módulo de Gestión de Inventario y Semáforo de Stock
+> **[Evidencia Gráfica Documentada]** — *Figura 10.9: Módulo de Gestión de Inventario y Semáforo de Stock (Incrustada en alta resolución en los entregables PDF y Word oficiales adjuntos).*
 - **Requerimientos Asociados**: `RF-009`, `RF-010`, `RNF-009`.
 - **Propósito Funcional**: Monitorear las existencias físicas de cada prenda en almacén, alertar sobre roturas inminentes de stock y permitir a los administradores registrar entradas de nuevos lotes confeccionados.
 - **Anatomía Visual y Componentes**:
@@ -1204,7 +1245,7 @@ Para cumplir a cabalidad con la exigencia académica del docente y evidenciar la
 
 ### Pantalla 10:
 
-![Figura 10.10: Pantalla 10 del Sistema LeoFit](../scripts/extracted_evidence_imgs/evidence_screen_10.png) Modal de Edición y Creación de Nuevas Prendas (Productos)
+> **[Evidencia Gráfica Documentada]** — *Figura 10.10: Modal de Edición y Creación de Nuevas Prendas / Catálogo (Incrustada en alta resolución en los entregables PDF y Word oficiales adjuntos).*
 - **Requerimientos Asociados**: `RF-001`, `RF-009`, `RF-012`.
 - **Propósito Funcional**: Permitir al personal administrativo registrar nuevas colecciones de ropa deportiva en el catálogo, asignarles códigos SKU, fijar precios y cargar fotografías promocionales.
 - **Anatomía Visual y Componentes**:
@@ -1221,7 +1262,7 @@ Para cumplir a cabalidad con la exigencia académica del docente y evidenciar la
 
 ### Pantalla 11:
 
-![Figura 10.11: Pantalla 11 del Sistema LeoFit](../scripts/extracted_evidence_imgs/evidence_screen_11.png) Dashboard Gerencial de Analítica y Métricas Comerciales
+> **[Evidencia Gráfica Documentada]** — *Figura 10.11: Dashboard Gerencial de Analítica y Métricas Comerciales (Incrustada en alta resolución en los entregables PDF y Word oficiales adjuntos).*
 - **Requerimientos Asociados**: `RF-013`, `RNF-001`, `RNF-004`.
 - **Propósito Funcional**: Proveer a la gerencia de LeoFit un centro de comando visual con indicadores clave de desempeño (KPIs), tendencias de facturación y comportamiento de ventas por categoría para la toma de decisiones informadas.
 - **Anatomía Visual y Componentes**:
@@ -1241,7 +1282,7 @@ Para cumplir a cabalidad con la exigencia académica del docente y evidenciar la
 
 ### Pantalla 12:
 
-![Figura 10.12: Pantalla 12 del Sistema LeoFit](../scripts/extracted_evidence_imgs/evidence_screen_12.png) Módulo de Exportación de Reportes Contables y Comerciales
+> **[Evidencia Gráfica Documentada]** — *Figura 10.12: Módulo de Exportación de Reportes Contables y Comerciales (Incrustada en alta resolución en los entregables PDF y Word oficiales adjuntos).*
 - **Requerimientos Asociados**: `RF-014`, `RF-018`.
 - **Propósito Funcional**: Generar y descargar sábanas de datos consolidadas de las operaciones de venta e inventario en formatos estándar (Excel `.xlsx` y PDF) para facilitar la contabilidad y auditorías tributarias.
 - **Anatomía Visual y Componentes**:
@@ -1258,7 +1299,7 @@ Para cumplir a cabalidad con la exigencia académica del docente y evidenciar la
 
 ### Pantalla 13:
 
-![Figura 10.13: Pantalla 13 del Sistema LeoFit](../scripts/extracted_evidence_imgs/evidence_screen_13.png) Vista de Operatividad Offline y Notificación PWA
+> **[Evidencia Gráfica Documentada]** — *Figura 10.13: Vista de Operatividad Offline y Notificación PWA (Incrustada en alta resolución en los entregables PDF y Word oficiales adjuntos).*
 - **Requerimientos Asociados**: `RF-015`, `RF-016`, `RNF-010`.
 - **Propósito Funcional**: Garantizar la continuidad operativa del personal cuando la señal celular o WiFi se interrumpe en galerías o sótanos comerciales de Gamarra, mostrando el estado de conectividad e informando que los datos están protegidos localmente.
 - **Anatomía Visual y Componentes**:
@@ -1274,7 +1315,7 @@ Para cumplir a cabalidad con la exigencia académica del docente y evidenciar la
 
 ### Pantalla 14:
 
-![Figura 10.14: Pantalla 14 del Sistema LeoFit](../scripts/extracted_evidence_imgs/evidence_screen_14.png) Vista de Impresión de Guía de Despacho y Ticket Térmico con Código QR
+> **[Evidencia Gráfica Documentada]** — *Figura 10.14: Vista de Impresión de Guía de Despacho y Ticket Térmico con Código QR (Incrustada en alta resolución en los entregables PDF y Word oficiales adjuntos).*
 - **Requerimientos Asociados**: `RF-006`, `RF-017`, `RNF-004`.
 - **Propósito Funcional**: Generar el documento físico estandarizado para adjuntar al paquete textil antes de entregarlo al transportista o courier, facilitando el control en almacén y el seguimiento para el cliente.
 - **Anatomía Visual y Componentes**:

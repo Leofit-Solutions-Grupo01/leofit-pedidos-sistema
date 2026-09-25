@@ -51,78 +51,146 @@ $$\text{REGISTRO\_PEDIDO}(\underline{\text{ID\_Pedido}}, \text{Fecha}, \text{Cli
 
 ---
 
-### 2.4. Tercera Forma Normal (3FN) - Eliminación de Dependencias Transitivas
-* **Regla Aplicada:** Ningún atributo no clave debe depender transitivamente de la clave primaria a través de otro atributo no clave. Se independizan las entidades `CLIENTES`, `CATEGORIAS` y `ESTADOS_PEDIDO`.
-* **Esquema Relacional Final en 3FN / BCNF:**
+### 2.4. Tercera Forma Normal (3FN) y Forma Normal de Boyce-Codd (BCNF)
+* **Condición 3FN:** Estar en 2FN y eliminar dependencias transitivas donde atributos no clave determinen a otros atributos no clave.
+* **Condición BCNF (Boyce-Codd Normal Form):** Una relación está en BCNF si y solo si para toda Dependencia Funcional no trivial $X \to Y$, el determinante $X$ es una **superclave** (clave primaria o clave candidata).
+* **Descomposición BCNF Aplicada a LeoFit:**
+  1. **Aislamiento de Dominios Cerrados:** `talla`, `color`, `distrito` y `metodo_pago` se extrajeron a tablas maestras (`sizes`, `colors`, `districts`, `payment_methods`), evitando redundancia semántica y anomalías de modificación.
+  2. **Descomposición del Inventario Multivariante:** La tupla `{producto, talla, color}` determina unívocamente el `sku` y el `stock`. Ambas determinantes ($\{ \text{product\_id}, \text{size\_id}, \text{color\_id} \}$ y $\text{sku}$) son superclaves, cumpliendo estrictamente BCNF en `product_variants`.
+  3. **Trazabilidad Inmutable:** Se independiza `order_status_history` para auditoría temporal sin violar la unicidad de `orders`.
+
+* **Esquema Relacional DDL Oficial en PostgreSQL 16 (BCNF):**
 
 ```sql
--- 1. Tabla de Roles de Usuario
-CREATE TABLE roles (
-    id_rol INT PRIMARY KEY AUTO_INCREMENT,
-    nombre_rol VARCHAR(50) NOT NULL UNIQUE
+-- Tipos ENUM para dominios cerrados
+CREATE TYPE user_role_enum    AS ENUM ('ADMIN', 'OPERATOR');
+CREATE TYPE order_status_enum AS ENUM ('RECIBIDO', 'PREPARACION', 'EN_CAMINO', 'ENTREGADO', 'CANCELADO');
+
+-- 1. Catálogo Maestro de Tallas (sizes)
+CREATE TABLE sizes (
+    id    SMALLSERIAL PRIMARY KEY,
+    code  VARCHAR(10) NOT NULL UNIQUE,
+    label VARCHAR(30) NOT NULL
 );
 
--- 2. Tabla de Usuarios del Sistema
-CREATE TABLE usuarios (
-    id_usuario INT PRIMARY KEY AUTO_INCREMENT,
-    nombre VARCHAR(100) NOT NULL,
-    email VARCHAR(100) NOT NULL UNIQUE,
-    password_hash VARCHAR(255) NOT NULL,
-    id_rol INT NOT NULL,
-    FOREIGN KEY (id_rol) REFERENCES roles(id_rol)
+-- 2. Catálogo de Colores (colors)
+CREATE TABLE colors (
+    id   SMALLSERIAL PRIMARY KEY,
+    name VARCHAR(60) NOT NULL UNIQUE,
+    hex  CHAR(7)
 );
 
--- 3. Tabla de Categorías de Indumentaria
-CREATE TABLE categorias (
-    id_categoria INT PRIMARY KEY AUTO_INCREMENT,
-    nombre_categoria VARCHAR(100) NOT NULL UNIQUE,
-    descripcion TEXT
+-- 3. Distritos de Reparto Geográfico (districts)
+CREATE TABLE districts (
+    id   SMALLSERIAL PRIMARY KEY,
+    name VARCHAR(80) NOT NULL UNIQUE
 );
 
--- 4. Tabla de Productos e Inventario
-CREATE TABLE productos (
-    id_producto VARCHAR(50) PRIMARY KEY,
-    nombre VARCHAR(150) NOT NULL,
-    id_categoria INT NOT NULL,
-    precio DECIMAL(10, 2) NOT NULL CHECK (precio > 0),
-    stock INT NOT NULL CHECK (stock >= 0),
-    talla VARCHAR(20) NOT NULL,
-    color VARCHAR(50) NOT NULL,
-    imagen_url VARCHAR(255),
-    FOREIGN KEY (id_categoria) REFERENCES categorias(id_categoria)
+-- 4. Métodos de Pago Disponibles (payment_methods)
+CREATE TABLE payment_methods (
+    id   SMALLSERIAL PRIMARY KEY,
+    code VARCHAR(30) NOT NULL UNIQUE,
+    name VARCHAR(60) NOT NULL
 );
 
--- 5. Tabla de Estados de Pedido
-CREATE TABLE estados_pedido (
-    id_estado INT PRIMARY KEY AUTO_INCREMENT,
-    nombre_estado VARCHAR(50) NOT NULL UNIQUE
+-- 5. Usuarios Administrativos y Operadores (users)
+CREATE TABLE users (
+    id            SERIAL         PRIMARY KEY,
+    name          VARCHAR(100)   NOT NULL,
+    email         VARCHAR(150)   NOT NULL UNIQUE,
+    password_hash VARCHAR(255)   NOT NULL,
+    role          user_role_enum NOT NULL DEFAULT 'OPERATOR',
+    is_active     BOOLEAN        NOT NULL DEFAULT TRUE,
+    created_at    TIMESTAMPTZ    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at    TIMESTAMPTZ    NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- 6. Tabla de Cabecera de Pedidos
-CREATE TABLE pedidos (
-    id_pedido VARCHAR(50) PRIMARY KEY,
-    cliente_nombre VARCHAR(150) NOT NULL,
-    cliente_telefono VARCHAR(20) NOT NULL,
-    cliente_direccion TEXT NOT NULL,
-    subtotal DECIMAL(10, 2) NOT NULL,
-    costo_envio DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
-    total DECIMAL(10, 2) NOT NULL,
-    metodo_pago VARCHAR(50) NOT NULL,
-    id_estado INT NOT NULL,
-    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    fecha_actualizacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_estado) REFERENCES estados_pedido(id_estado)
+-- 6. Categorías de Indumentaria (categories)
+CREATE TABLE categories (
+    id          SERIAL      PRIMARY KEY,
+    name        VARCHAR(60) NOT NULL UNIQUE,
+    description TEXT,
+    created_at  TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- 7. Tabla de Detalle de Pedidos
-CREATE TABLE detalle_pedidos (
-    id_pedido VARCHAR(50) NOT NULL,
-    id_producto VARCHAR(50) NOT NULL,
-    cantidad INT NOT NULL CHECK (cantidad > 0),
-    precio_unitario DECIMAL(10, 2) NOT NULL,
-    PRIMARY KEY (id_pedido, id_producto),
-    FOREIGN KEY (id_pedido) REFERENCES pedidos(id_pedido) ON DELETE CASCADE,
-    FOREIGN KEY (id_producto) REFERENCES productos(id_producto)
+-- 7. Catálogo Base de Prendas (products)
+CREATE TABLE products (
+    id          SERIAL        PRIMARY KEY,
+    category_id INT           NOT NULL REFERENCES categories(id) ON DELETE RESTRICT,
+    name        VARCHAR(120)  NOT NULL,
+    description TEXT,
+    base_price  NUMERIC(10,2) NOT NULL CHECK (base_price >= 0),
+    image_url   VARCHAR(512),
+    is_active   BOOLEAN       NOT NULL DEFAULT TRUE,
+    created_at  TIMESTAMPTZ   NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at  TIMESTAMPTZ   NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT uq_product_name_category UNIQUE (category_id, name)
+);
+
+-- 8. Variantes e Inventario por Talla y Color (product_variants - BCNF)
+CREATE TABLE product_variants (
+    id              SERIAL      PRIMARY KEY,
+    product_id      INT         NOT NULL REFERENCES products(id) ON DELETE CASCADE,
+    size_id         SMALLINT    NOT NULL REFERENCES sizes(id)    ON DELETE RESTRICT,
+    color_id        SMALLINT    NOT NULL REFERENCES colors(id)   ON DELETE RESTRICT,
+    sku             VARCHAR(60) NOT NULL UNIQUE,
+    stock           INT         NOT NULL DEFAULT 0 CHECK (stock >= 0),
+    alert_threshold INT         NOT NULL DEFAULT 3 CHECK (alert_threshold >= 0),
+    created_at      TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at      TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT uq_variant UNIQUE (product_id, size_id, color_id)
+);
+
+-- 9. Clientes Registrados (clients)
+CREATE TABLE clients (
+    id          SERIAL       PRIMARY KEY,
+    full_name   VARCHAR(120) NOT NULL,
+    phone       VARCHAR(20)  NOT NULL UNIQUE,
+    address     TEXT         NOT NULL,
+    district_id SMALLINT     NOT NULL REFERENCES districts(id) ON DELETE RESTRICT,
+    reference   TEXT,
+    created_at  TIMESTAMPTZ  NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at  TIMESTAMPTZ  NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 10. Cabecera de Pedidos (orders)
+CREATE TABLE orders (
+    id                SERIAL            PRIMARY KEY,
+    order_number      VARCHAR(30)       NOT NULL UNIQUE,
+    client_id         INT               NOT NULL REFERENCES clients(id)         ON DELETE RESTRICT,
+    user_id           INT                        REFERENCES users(id)           ON DELETE SET NULL,
+    payment_method_id SMALLINT          NOT NULL REFERENCES payment_methods(id) ON DELETE RESTRICT,
+    status            order_status_enum NOT NULL DEFAULT 'RECIBIDO',
+    subtotal          NUMERIC(10,2)     NOT NULL DEFAULT 0.00 CHECK (subtotal      >= 0),
+    shipping_cost     NUMERIC(10,2)     NOT NULL DEFAULT 0.00 CHECK (shipping_cost >= 0),
+    total_amount      NUMERIC(10,2)     NOT NULL DEFAULT 0.00 CHECK (total_amount  >= 0),
+    notes             TEXT,
+    created_at        TIMESTAMPTZ       NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at        TIMESTAMPTZ       NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT chk_total CHECK (total_amount = subtotal + shipping_cost)
+);
+
+-- 11. Detalle de Ítems del Pedido (order_items)
+CREATE TABLE order_items (
+    id         SERIAL        PRIMARY KEY,
+    order_id   INT           NOT NULL REFERENCES orders(id)           ON DELETE CASCADE,
+    variant_id INT           NOT NULL REFERENCES product_variants(id) ON DELETE RESTRICT,
+    quantity   INT           NOT NULL CHECK (quantity > 0),
+    unit_price NUMERIC(10,2) NOT NULL CHECK (unit_price >= 0),
+    subtotal   NUMERIC(10,2) NOT NULL CHECK (subtotal   >= 0),
+    CONSTRAINT chk_item_subtotal CHECK (subtotal = quantity * unit_price),
+    CONSTRAINT uq_order_variant UNIQUE (order_id, variant_id)
+);
+
+-- 12. Historial de Auditoría de Estados (order_status_history)
+CREATE TABLE order_status_history (
+    id              SERIAL            PRIMARY KEY,
+    order_id        INT               NOT NULL REFERENCES orders(id) ON DELETE CASCADE,
+    user_id         INT                        REFERENCES users(id)  ON DELETE SET NULL,
+    previous_status order_status_enum,
+    new_status      order_status_enum NOT NULL,
+    changed_at      TIMESTAMPTZ       NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    comments        TEXT
 );
 ```
 

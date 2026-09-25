@@ -43,7 +43,7 @@ El sistema opera de forma autónoma e independiente, interactuando con clientes 
 
 ---
 
-## 3. MATRIZ DE REQUISITOS FUNCIONALES (RF-001 A RF-017)
+## 3. MATRIZ DE REQUISITOS FUNCIONALES (RF-001 A RF-018)
 
 | ID | Nombre del Requisito | Actor Principal | Descripción Funcional | Prioridad | Criterios de Aceptación | Módulo | Estado |
 |:---|:---|:---|:---|:---:|:---|:---|:---:|

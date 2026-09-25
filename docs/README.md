@@ -73,9 +73,9 @@ docs/
 
 | Documento | Formato MD | Formato DOCX | Formato PDF | Descripción |
 | :--- | :---: | :---: | :---: | :--- |
-| **Checklist Integral de Evaluación** | [`MD`](Checklist_Integral_Evaluacion_Software.md) | [`DOCX`](Checklist_Integral_Evaluacion_Software.docx) | [`PDF`](Checklist_Integral_Evaluacion_Software.pdf) | Evaluación técnica exhaustiva (Funcionalidad, Usabilidad UX, Rendimiento y Seguridad/Costos). |
-| **Guía de Carga de Issues GitHub** | [`MD`](GUIA_CARGA_ISSUES_GITHUB.md) | [`DOCX`](GUIA_CARGA_ISSUES_GITHUB.docx) | [`PDF`](GUIA_CARGA_ISSUES_GITHUB.pdf) | Guía de gestión ágil de sprints, backlog, tareas y trazabilidad de requerimientos. |
-| **Plan Académico GitHub Projects** | [`MD`](PLAN_ACADEMICO_GITHUB_PROJECTS_LEOFIT.md) | [`DOCX`](PLAN_ACADEMICO_GITHUB_PROJECTS_LEOFIT.docx) | [`PDF`](PLAN_ACADEMICO_GITHUB_PROJECTS_LEOFIT.pdf) | Plan de hitos académicos, matriz de responsabilidades RACI y ponderaciones UTP. |
+| **Checklist Integral de Evaluación** | [`MD`](./entregas_academicas/Checklist_Integral_Evaluacion_Software.md) | [`DOCX`](./entregas_academicas/Checklist_Integral_Evaluacion_Software.docx) | [`PDF`](./entregas_academicas/Checklist_Integral_Evaluacion_Software.pdf) | Evaluación técnica exhaustiva (Funcionalidad, Usabilidad UX, Rendimiento y Seguridad/Costos). |
+| **Guía de Carga de Issues GitHub** | [`MD`](./entregas_academicas/GUIA_CARGA_ISSUES_GITHUB.md) | [`DOCX`](./entregas_academicas/GUIA_CARGA_ISSUES_GITHUB.docx) | [`PDF`](./entregas_academicas/GUIA_CARGA_ISSUES_GITHUB.pdf) | Guía de gestión ágil de sprints, backlog, tareas y trazabilidad de requerimientos. |
+| **Plan Académico GitHub Projects** | [`MD`](./entregas_academicas/PLAN_ACADEMICO_GITHUB_PROJECTS_LEOFIT.md) | [`DOCX`](./entregas_academicas/PLAN_ACADEMICO_GITHUB_PROJECTS_LEOFIT.docx) | [`PDF`](./entregas_academicas/PLAN_ACADEMICO_GITHUB_PROJECTS_LEOFIT.pdf) | Plan de hitos académicos, matriz de responsabilidades RACI y ponderaciones UTP. |
 
 ---
 
@@ -83,23 +83,23 @@ docs/
 
 | N° | Documento | Formato MD | Formato DOCX | Formato PDF | Descripción |
 | :---: | :--- | :---: | :---: | :---: | :--- |
-| **01** | **Ficha de Identificación** | [`MD`](01_Ficha_Identificacion.md) | [`DOCX`](01_Ficha_Identificacion.docx) | [`PDF`](01_Ficha_Identificacion.pdf) | Datos de la MYPE LeoFit, integrantes, roles y resumen del proyecto. |
-| **02** | **Especificación de Requerimientos** | [`MD`](02_Requerimientos.md) | [`DOCX`](02_Requerimientos.docx) | [`PDF`](02_Requerimientos.pdf) | Requerimientos Funcionales (RF), No Funcionales (RNF) e Historias de Usuario con formato Gherkin. |
-| **03** | **Acta de Reunión N° 1** | [`MD`](03_Acta_Reunion_1.md) | [`DOCX`](03_Acta_Reunion_1.docx) | [`PDF`](03_Acta_Reunion_1.pdf) | Entrevista con el dueño de la empresa textil, levantamiento de procesos y acuerdos. |
-| **04** | **Glosario de Términos** | [`MD`](04_Glosario.md) | [`DOCX`](04_Glosario.docx) | [`PDF`](04_Glosario.pdf) | Terminología técnica (PWA, BCNF, JWT, ACID, WAL) y textil (Oversize, Dry-Fit, SKU). |
-| **05** | **Preguntas Críticas de Panel** | [`MD`](05_Preguntas_Criticas_Panel.md) | [`DOCX`](05_Preguntas_Criticas_Panel.docx) | [`PDF`](05_Preguntas_Criticas_Panel.pdf) | Balotario de 20 preguntas y respuestas técnicas preparadas para la sustentación. |
-| **06** | **Especificación PWA & UI/UX** | [`MD`](06_Especificacion_PWA_Prompt.md) | [`DOCX`](06_Especificacion_PWA_Prompt.docx) | [`PDF`](06_Especificacion_PWA_Prompt.pdf) | Diseño de interfaz, modo oscuro, 10 heurísticas de Nielsen y Service Workers. |
-| **07** | **Arquitectura de Software (SAD)** | [`MD`](07_Arquitectura_Sistema.md) | [`DOCX`](07_Arquitectura_Sistema.docx) | [`PDF`](07_Arquitectura_Sistema.pdf) | Vistas del modelo 4+1, diagrama C4 de contenedores, patrones arquitectónicos y Clean Architecture. |
-| **08** | **Normalización de Base de Datos** | [`MD`](08_Normalizacion_Base_Datos.md) | [`DOCX`](08_Normalizacion_Base_Datos.docx) | [`PDF`](08_Normalizacion_Base_Datos.pdf) | Proceso de normalización formal desde 1FN, 2FN, 3FN hasta BCNF y DDL en PostgreSQL. |
-| **09** | **Guion de Video Demo** | [`MD`](09_Guion_Video_Demo_Remotion.md) | [`DOCX`](09_Guion_Video_Demo_Remotion.docx) | [`PDF`](09_Guion_Video_Demo_Remotion.pdf) | Estructura del pitch audiovisual y código de animación en Remotion. |
-| **10** | **Controles de Seguridad OWASP** | [`MD`](10_Catalogo_Controles_Seguridad_OWASP.md) | [`DOCX`](10_Catalogo_Controles_Seguridad_OWASP.docx) | [`PDF`](10_Catalogo_Controles_Seguridad_OWASP.pdf) | Catálogo de mitigación técnica para el OWASP Top 10 (SQLi, XSS, RBAC, Rate-Limit). |
-| **11** | **Informe de Seguridad y SAST/DAST** | [`MD`](11_Informe_Seguridad_Cifrado_Pruebas_Web.md) | [`DOCX`](11_Informe_Seguridad_Cifrado_Pruebas_Web.docx) | [`PDF`](11_Informe_Seguridad_Cifrado_Pruebas_Web.pdf) | Informe de auditoría estática (`npm audit`), pruebas dinámicas y cifrado en tránsito/reposo. |
-| **12** | **Manual de Despliegue en Cloud** | [`MD`](12_Manual_Despliegue_Cloud_Produccion.md) | [`DOCX`](12_Manual_Despliegue_Cloud_Produccion.docx) | [`PDF`](12_Manual_Despliegue_Cloud_Produccion.pdf) | Guía de aprovisionamiento en Render (Backend), Vercel (Frontend) y Supabase (DB). |
-| **13** | **Evidencia de Requerimientos de Software** | [`MD`](13_Evidencia_Cumplimiento_Requerimientos_Software.md) | [`DOCX`](13_Evidencia_Cumplimiento_Requerimientos_Software.docx) | [`PDF`](13_Evidencia_Cumplimiento_Requerimientos_Software.pdf) | Informe formal de validación con 15 capturas de pantalla de alta fidelidad de todos los RF-001/018 y RNF-001/010. |
+| **01** | **Ficha de Identificación** | [`MD`](./modulos_tecnicos/01_Ficha_Identificacion.md) | [`DOCX`](./modulos_tecnicos/01_Ficha_Identificacion.docx) | [`PDF`](./modulos_tecnicos/01_Ficha_Identificacion.pdf) | Datos de la MYPE LeoFit, integrantes, roles y resumen del proyecto. |
+| **02** | **Especificación de Requerimientos** | [`MD`](./modulos_tecnicos/02_Requerimientos.md) | [`DOCX`](./modulos_tecnicos/02_Requerimientos.docx) | [`PDF`](./modulos_tecnicos/02_Requerimientos.pdf) | Requerimientos Funcionales (RF), No Funcionales (RNF) e Historias de Usuario con formato Gherkin. |
+| **03** | **Acta de Reunión N° 1** | [`MD`](./modulos_tecnicos/03_Acta_Reunion_1.md) | [`DOCX`](./modulos_tecnicos/03_Acta_Reunion_1.docx) | [`PDF`](./modulos_tecnicos/03_Acta_Reunion_1.pdf) | Entrevista con el dueño de la empresa textil, levantamiento de procesos y acuerdos. |
+| **04** | **Glosario de Términos** | [`MD`](./modulos_tecnicos/04_Glosario.md) | [`DOCX`](./modulos_tecnicos/04_Glosario.docx) | [`PDF`](./modulos_tecnicos/04_Glosario.pdf) | Terminología técnica (PWA, BCNF, JWT, ACID, WAL) y textil (Oversize, Dry-Fit, SKU). |
+| **05** | **Preguntas Críticas de Panel** | [`MD`](./modulos_tecnicos/05_Preguntas_Criticas_Panel.md) | [`DOCX`](./modulos_tecnicos/05_Preguntas_Criticas_Panel.docx) | [`PDF`](./modulos_tecnicos/05_Preguntas_Criticas_Panel.pdf) | Balotario de 20 preguntas y respuestas técnicas preparadas para la sustentación. |
+| **06** | **Especificación PWA & UI/UX** | [`MD`](./modulos_tecnicos/06_Especificacion_PWA_Prompt.md) | [`DOCX`](./modulos_tecnicos/06_Especificacion_PWA_Prompt.docx) | [`PDF`](./modulos_tecnicos/06_Especificacion_PWA_Prompt.pdf) | Diseño de interfaz, modo oscuro, 10 heurísticas de Nielsen y Service Workers. |
+| **07** | **Arquitectura de Software (SAD)** | [`MD`](./modulos_tecnicos/07_Arquitectura_Sistema.md) | [`DOCX`](./modulos_tecnicos/07_Arquitectura_Sistema.docx) | [`PDF`](./modulos_tecnicos/07_Arquitectura_Sistema.pdf) | Vistas del modelo 4+1, diagrama C4 de contenedores, patrones arquitectónicos y Clean Architecture. |
+| **08** | **Normalización de Base de Datos** | [`MD`](./modulos_tecnicos/08_Normalizacion_Base_Datos.md) | [`DOCX`](./modulos_tecnicos/08_Normalizacion_Base_Datos.docx) | [`PDF`](./modulos_tecnicos/08_Normalizacion_Base_Datos.pdf) | Proceso de normalización formal desde 1FN, 2FN, 3FN hasta BCNF y DDL en PostgreSQL. |
+| **09** | **Guion de Video Demo** | [`MD`](./modulos_tecnicos/09_Guion_Video_Demo_Remotion.md) | [`DOCX`](./modulos_tecnicos/09_Guion_Video_Demo_Remotion.docx) | [`PDF`](./modulos_tecnicos/09_Guion_Video_Demo_Remotion.pdf) | Estructura del pitch audiovisual y código de animación en Remotion. |
+| **10** | **Controles de Seguridad OWASP** | [`MD`](./modulos_tecnicos/10_Catalogo_Controles_Seguridad_OWASP.md) | [`DOCX`](./modulos_tecnicos/10_Catalogo_Controles_Seguridad_OWASP.docx) | [`PDF`](./modulos_tecnicos/10_Catalogo_Controles_Seguridad_OWASP.pdf) | Catálogo de mitigación técnica para el OWASP Top 10 (SQLi, XSS, RBAC, Rate-Limit). |
+| **11** | **Informe de Seguridad y SAST/DAST** | [`MD`](./modulos_tecnicos/11_Informe_Seguridad_Cifrado_Pruebas_Web.md) | [`DOCX`](./modulos_tecnicos/11_Informe_Seguridad_Cifrado_Pruebas_Web.docx) | [`PDF`](./modulos_tecnicos/11_Informe_Seguridad_Cifrado_Pruebas_Web.pdf) | Informe de auditoría estática (`npm audit`), pruebas dinámicas y cifrado en tránsito/reposo. |
+| **12** | **Manual de Despliegue en Cloud** | [`MD`](./modulos_tecnicos/12_Manual_Despliegue_Cloud_Produccion.md) | [`DOCX`](./modulos_tecnicos/12_Manual_Despliegue_Cloud_Produccion.docx) | [`PDF`](./modulos_tecnicos/12_Manual_Despliegue_Cloud_Produccion.pdf) | Guía de aprovisionamiento en Render (Backend), Vercel (Frontend) y Supabase (DB). |
+| **13** | **Evidencia de Requerimientos de Software** | [`MD`](./modulos_tecnicos/13_Evidencia_Cumplimiento_Requerimientos_Software.md) | [`DOCX`](./modulos_tecnicos/13_Evidencia_Cumplimiento_Requerimientos_Software.docx) | [`PDF`](./modulos_tecnicos/13_Evidencia_Cumplimiento_Requerimientos_Software.pdf) | Informe formal de validación con 15 capturas de pantalla de alta fidelidad de todos los RF-001/018 y RNF-001/010. |
 
 ---
 
-## 3. Políticas de Seguridad y Manejo de Información Sensible
+## 4. Políticas de Seguridad y Manejo de Información Sensible
 
 > [!NOTE]
 > Toda la documentación, scripts y ejemplos de configuración cumplen estrictamente con las siguientes directivas de privacidad y seguridad:
