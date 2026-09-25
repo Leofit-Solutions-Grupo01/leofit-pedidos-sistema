@@ -1,36 +1,31 @@
 # EVIDENCIAS DE EVALUACIÓN — SEMANA 02
-## LEVANTAMIENTO, VALIDACIÓN Y ESPECIFICACIÓN DE REQUERIMIENTOS
+## LEVANTAMIENTO, MODELADO Y VALIDACIÓN DE REQUERIMIENTOS DE SOFTWARE
 ### CURSO INTEGRADOR II: SOFTWARE (100000S12F) — LEOFIT SOLUTIONS
 
-En este directorio se compilan las **evidencias oficiales de la Semana 02**, correspondientes a la especificación, modelado y validación de los **Requerimientos Funcionales (RF-001 a RF-018)** y **Requisitos No Funcionales (RNF-001 a RNF-010)** bajo el estándar **IEEE Std 830-1998**.
+En este directorio se compila el **Expediente Formal de Evidencias de la Semana 02**, correspondiente a la especificación, validación y verificación visual y funcional de los **18 Requerimientos Funcionales (RF-001 a RF-018)** y **10 Requisitos No Funcionales (RNF-001 a RNF-010)** bajo el estándar **IEEE Std 830-1998**.
 
 ---
 
-### 1. Documentación Oficial Vinculada
-* **Informe Completo de Evidencias (PDF):** [`docs/13_Evidencia_Cumplimiento_Requerimientos_Software.pdf`](../../docs/13_Evidencia_Cumplimiento_Requerimientos_Software.pdf)
-* **Especificación ERS IEEE 830 (PDF):** [`docs/02_Requerimientos.pdf`](../../docs/02_Requerimientos.pdf)
-* **Acta de Reunión N° 1 con la Empresa (PDF):** [`docs/03_Acta_Reunion_1.pdf`](../../docs/03_Acta_Reunion_1.pdf)
+### 1. Documentos Formales Oficiales de la Semana 02
+
+Todas las evidencias gráficas, flujos operativos, explicaciones anatómicas de interfaz y veredictos de prueba se encuentran **consolidadas dentro de los siguientes documentos formales integrados**:
+
+| Entregable Oficial | Formato | Descripción |
+| :--- | :---: | :--- |
+| **Informe Maestro de Evidencias (PDF)** | [`PDF`](INFORME_EVIDENCIAS_REQUERIMIENTOS_SEMANA_2.pdf) | Expediente técnico completo con las 14 pantallas explicadas al detalle, criterios UAT y firmas. |
+| **Informe Maestro de Evidencias (Word)** | [`DOCX`](INFORME_EVIDENCIAS_REQUERIMIENTOS_SEMANA_2.docx) | Documento editable en formato institucional UTP con maquetación formal y tablas. |
+| **Especificación de Requerimientos ERS (PDF)** | [`PDF`](../../docs/02_Requerimientos.pdf) | Pliego contractual formal bajo norma IEEE Std 830-1998 con Historias de Usuario Gherkin. |
+| **Acta de Entrevista Inicial con la Empresa** | [`PDF`](../../docs/03_Acta_Reunion_1.pdf) | Acta de levantamiento de procesos y acuerdos con el Gerente de Operaciones de LeoFit. |
 
 ---
 
-### 2. Catálogo de Capturas de Pantalla de Validación
+### 2. Contenido Documentado en el Expediente
 
-| N° | Archivo | Requerimientos | Módulo Validado |
-|:---:|:---|:---:|:---|
-| 01 | `01_Login_Autenticacion.png` | RF-012, RNF-008 | Inicio de sesión y seguridad de rutas |
-| 02 | `02_Login_Credenciales_Llenas.png` | RF-012 | Carga y verificación de credenciales |
-| 03 | `03_Dashboard_Control_Operativo.png` | RF-010 | Panel de métricas e ingresos en Soles |
-| 04 | `04_Dashboard_Privacidad_Oculta.png` | RNF-008 | Ocultamiento de cifras financieras (ojo) |
-| 05 | `05_Catalogo_Busqueda_Camisetas.png` | RF-001, RF-002 | Filtrado predictivo en $<80$ ms |
-| 06 | `06_Nuevo_Pedido_Formulario.png` | RF-003, RF-004 | Selección de prendas y validación de stock |
-| 07 | `07_Nuevo_Pedido_Liquidacion_Cupon_Encomienda.png` | RF-005, RF-006, RF-013, RF-015, RF-016 | Despacho dual, DNI obligatorio y cupón |
-| 08 | `08_Bandeja_Gestion_Pedidos.png` | RF-007, RF-008 | Bandeja central con chips de estado |
-| 09 | `09_Detalle_Pedido_Acordeon.png` | RF-007, RF-011, RNF-007 | Desglose pormenorizado y WhatsApp |
-| 10 | `10_Comprobante_Digital_Recibo.png` | RF-011, RF-018 | Recibo fiscal oficial en PDF A5 |
-| 11 | `11_Comprobante_Rotulo_Encomienda.png` | RF-013, RF-018 | Rótulo térmico de caja (Shalom / Olva) |
-| 12 | `12_Gestion_Inventario_Stock.png` | RF-009, RF-017 | Control de existencias y stock crítico |
-| 13 | `13_Portal_Rastreo_Timeline.png` | RF-014, RF-015, RF-017 | Portal de rastreo público con garantía |
-| 14 | `14_Modo_Accesible_Alto_Contraste.png` | RNF-001, RNF-010 | Accesibilidad WCAG 2.1 AAA (A+ Vista) |
+Cada pantalla del sistema se encuentra documentada dentro del informe formal con:
+* **Propósito y contexto operativo:** De qué va la pantalla y qué problema del negocio resuelve.
+* **Desglose anatómico de componentes:** Descripción de cada campo, botón, selector, tarjeta de métrica o modal.
+* **Lógica de negocio y validaciones:** Reglas de validación antirrebase de stock, liquidación dual de flete (Lima vs Encomienda Shalom/Olva), obligatoriedad tributaria de DNI/RUC y motor de cupones.
+* **Criterios de Aceptación UAT:** Evaluación formal de conformidad técnica.
 
 ---
-*Grupo 01 - Universidad Tecnológica del Perú (2026).*
+*Grupo 01 — Universidad Tecnológica del Perú (2026).*
