@@ -129,7 +129,7 @@ function topProductos(pedidos: Pedido[]) {
 }
 
 export default function Dashboard() {
-  const { pedidos, productos, navegarA, navegarAConFiltro, actualizarEstadoPedido, modoAccesible } = useApp();
+  const { pedidos, productos, navegarA, navegarAConFiltro, actualizarEstadoPedido, modoAccesible, privacidad } = useApp();
   const isOnline = useOnlineStatus();
   const [editandoId, setEditandoId] = useState<string | null>(null);
   const [ahora, setAhora] = useState(new Date());

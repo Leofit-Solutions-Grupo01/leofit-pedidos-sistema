@@ -23,7 +23,9 @@ export function errorHandler(err: any, req: Request, res: Response, next: NextFu
 
   const statusCode = err.statusCode || 500;
   const errorCode = err.code || 'INTERNAL_SERVER_ERROR';
-  const errorMessage = err.message || 'Ha ocurrido un error inesperado en el servidor.';
+  const errorMessage = process.env.NODE_ENV === 'production' && statusCode === 500
+    ? 'Ha ocurrido un error interno en el servidor.'
+    : (err.message || 'Ha ocurrido un error inesperado en el servidor.');
 
   res.status(statusCode).json({
     success: false,

@@ -148,7 +148,9 @@ export class OrderController {
       const { status, comments } = req.body;
       const orderRepo = RepositoryFactory.getOrderRepository();
 
-      const updated = await orderRepo.updateStatus(id, status, req.user?.userId, comments);
+      const updated = status === 'CANCELADO'
+        ? await orderRepo.cancelOrder(id, req.user?.userId, comments)
+        : await orderRepo.updateStatus(id, status, req.user?.userId, comments);
       if (!updated) {
         res.status(404).json({
           success: false,

@@ -46,14 +46,22 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [filtroInicial, setFiltroInicial] = useState<EstadoPedido | "Todos">("Todos");
   const [privacidad, setPrivacidad] = useState(false);
   const [modoAccesible, setModoAccesible] = useState<boolean>(() => {
-    return localStorage.getItem(ACCESIBLE_KEY) === "true";
+    try {
+      return localStorage.getItem(ACCESIBLE_KEY) === "true";
+    } catch {
+      return false;
+    }
   });
 
   const togglePrivacidad = () => setPrivacidad((v) => !v);
   const toggleAccesible = () => {
     setModoAccesible((prev) => {
       const nuevo = !prev;
-      localStorage.setItem(ACCESIBLE_KEY, String(nuevo));
+      try {
+        localStorage.setItem(ACCESIBLE_KEY, String(nuevo));
+      } catch {
+        // Ignora excepciones de quota o navegación privada
+      }
       return nuevo;
     });
   };
@@ -61,10 +69,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
   // Restaurar sesión al montar (sessionStorage: persiste durante la sesión del navegador,
   // se borra al cerrar la pestaña — equilibrio entre conveniencia y seguridad)
   useEffect(() => {
-    const guardado = sessionStorage.getItem(SESSION_KEY);
-    if (guardado === "victor") {
-      setAutenticado(true);
-      setPaginaActual("dashboard");
+    try {
+      const guardado = sessionStorage.getItem(SESSION_KEY);
+      if (guardado === "victor") {
+        setAutenticado(true);
+        setPaginaActual("dashboard");
+      }
+    } catch {
+      // Ignora restricciones de iframe/sandbox
     }
   }, []);
 
@@ -126,6 +138,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
   };
 
   const actualizarEstadoPedido = (id: string, estado: EstadoPedido) => {
+    const pedidoActual = pedidos.find((p) => p.id === id);
+    if (!pedidoActual) return;
+    const estadoPrevio = pedidoActual.estado;
+
     setPedidos((prev) =>
       prev.map((p) => {
         if (p.id !== id) return p;
@@ -138,6 +154,31 @@ export function AppProvider({ children }: { children: ReactNode }) {
         };
       })
     );
+
+    // Restitución automática de stock si se cancela un pedido activo
+    if (estado === "Cancelado" && estadoPrevio !== "Cancelado") {
+      setProductos((prev) =>
+        prev.map((prod) => {
+          const item = pedidoActual.items.find((it) => it.productoId === prod.id);
+          if (item) {
+            return { ...prod, stock: prod.stock + item.cantidad };
+          }
+          return prod;
+        })
+      );
+    }
+    // Descuento automático si se reactiva un pedido previamente cancelado
+    else if (estadoPrevio === "Cancelado" && estado !== "Cancelado") {
+      setProductos((prev) =>
+        prev.map((prod) => {
+          const item = pedidoActual.items.find((it) => it.productoId === prod.id);
+          if (item) {
+            return { ...prod, stock: Math.max(0, prod.stock - item.cantidad) };
+          }
+          return prod;
+        })
+      );
+    }
   };
 
   const agregarProducto = (producto: Producto) => setProductos((prev) => [...prev, producto]);
