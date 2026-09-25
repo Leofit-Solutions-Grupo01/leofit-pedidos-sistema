@@ -1,0 +1,32 @@
+services:
+  # ── 1. LeoFit Backend API REST Service ──────────────────────────────────────
+  - type: web
+    name: leofit-backend-api
+    env: node
+    plan: free
+    region: oregon
+    rootDir: backend
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 4000
+      - key: DATABASE_URL
+        fromDatabase:
+          name: leofit-postgres
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: CORS_ORIGIN
+        value: "*"
+
+databases:
+  # ── 2. PostgreSQL 16 Managed Database ──────────────────────────────────────
+  - name: leofit-postgres
+    plan: free
+    region: oregon
+    databaseName: leofit_db
+    user: leofit_user
