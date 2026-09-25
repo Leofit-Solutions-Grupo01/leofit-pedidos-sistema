@@ -32,12 +32,8 @@ docs/
 │   ├── rubricas/                       # Rúbricas oficiales de evaluación (APF1, APF2, APF3)
 │   ├── diapositivas/                   # Diapositivas de clase (Semanas 01 a 18)
 │   ├── evaluaciones/                   # Retroalimentación oficial de notas UTP
-│   └── recursos/                       # Plantillas institucionales y recursos UTP:
-│       ├── Checklist_Integral_Evaluacion_Software_Plantilla.docx # Plantilla base de evaluación de software
-│       ├── Ficha_Mapeo_Empresa_Semana_1.pdf                      # Ficha de mapeo empresarial
-│       ├── Ficha_Mapeo_Original.pdf                              # Ficha original de contacto y levantamiento
-│       ├── UTP_Semana_2_ASIS_TOBE_Plantilla.pptx                 # Plantilla de diagramas AS-IS / TO-BE
-│       └── UTP_Semana_2_Requerimientos_Plantilla.xlsx            # Matriz de requerimientos
+│   └── recursos/                       # Documentación institucional y recursos UTP:
+│       └── Ficha_Mapeo_Empresa_Semana_1.pdf # Ficha oficial de mapeo empresarial suscrita
 │
 └── modulos_tecnicos/                  # Anexos Especializados de Ingeniería (01 al 13):
     ├── 01_Ficha_Identificacion         # Ficha institucional de identificación del proyecto

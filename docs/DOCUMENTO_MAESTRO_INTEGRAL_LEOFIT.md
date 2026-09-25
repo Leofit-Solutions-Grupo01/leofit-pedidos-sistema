@@ -1435,12 +1435,43 @@ curl -I https://leofit.com/
 
 # CAPÍTULO 12: GOBERNANZA ACADÉMICA, GLOSARIO Y DEFENSA ANTE EL PANEL
 
-## 12.1. Resumen de Acuerdos de Gobernanza de Equipo y Actas de Reunión
+## 12.1. Gobernanza Ágil de Equipo y Acta Formal de Reunión N° 01
 
+### A. Políticas de Gobernanza y Ritmo de Desarrollo Ágil
 A lo largo del ciclo académico, el equipo sostuvo reuniones periódicas de alineamiento:
 - **Daily Standups (15 minutos)**: Reuniones virtuales diarias de lunes a viernes a las 20:00 horas para responder las tres preguntas clásicas de Scrum: ¿Qué se logró ayer? ¿Qué se hará hoy? ¿Existen bloqueos técnicos?
 - **Sprint Planning y Sprint Reviews**: Sesiones bisemanales con presencia del Product Owner y revisión de entregables frente a las rúbricas académicas de la UTP.
 - **Políticas de Calidad y Revisión de Código**: Obligatoriedad de aprobación de al menos 1 desarrollador antes de fusionar cualquier Pull Request hacia la rama `dev` o `main`.
+- **Criterios de Terminado (Definition of Done - DoD)**: Para considerar concluida cualquier tarea o historia de usuario se exige:
+  1. Código tipado estricto en TypeScript sin advertencias ni errores en `tsc --noEmit`.
+  2. Cobertura de pruebas unitarias y de integración con Vitest o Jest $\ge 80\%$.
+  3. Revisión y aprobación formal mediante Pull Request por al menos un desarrollador par.
+  4. Despliegue automatizado y validado en el entorno de staging/producción mediante GitHub Actions.
+
+### B. Acta Formal de Reunión N° 01 con el Stakeholder (LeoFit)
+* **Proyecto:** Sistema Web PWA de Gestión y Toma de Pedidos Multicanal para LeoFit.
+* **Fecha y Horario:** 15 de Agosto de 2026 | 10:00 AM – 11:30 AM.
+* **Lugar / Modalidad:** Presencial (Taller y Almacén de LeoFit, Lima) con soporte virtual.
+* **Participantes y Control de Asistencia:**
+  - **Víctor Raúl Cárdenas Ramírez** (Gerente General / Dueño del Negocio, LeoFit Indumentaria Deportiva) — Presente.
+  - **Lady Luz Loayza Rodriguez** (Scrum Master / Líder de Proyecto, Grupo 01 - UTP) — Presente.
+  - **Víctor Leandro Cárdenas Fernández** (Product Owner / Arquitecto Back-End, Grupo 01 - UTP) — Presente.
+  - **Harley Anthony Roman Delgado** (Front-End Lead / Diseñador UI, Grupo 01 - UTP) — Presente.
+  - **Jim Alessandro Dávila Morales** (Especialista QA / Testing, Grupo 01 - UTP) — Presente.
+  - **Daniel Enrique Rojas Sanchez** (Analista de Negocio / Procesos, Grupo 01 - UTP) — Presente.
+* **Agenda Formal Tratada:**
+  1. Presentación formal del equipo de desarrollo de la UTP y objetivos estratégicos del proyecto.
+  2. Descripción del modelo comercial actual y canales de atención (WhatsApp, Instagram y presencial).
+  3. Diagnóstico de cuellos de botella: demoras de hasta 45 minutos por pedido, quiebres de inventario por ventas cruzadas y pérdida de notas manuales.
+  4. Definición de la solución tecnológica: Progressive Web App (PWA) con catálogo en tiempo real y reserva de stock inmediata.
+  5. Acuerdos de colaboración, cronograma de reuniones de Sprint y entrega de insumos fotográficos.
+* **Acuerdos y Compromisos Formalizados:**
+| N° | Descripción del Acuerdo / Entregable | Responsable Asignado | Fecha Límite |
+| :---: | :--- | :--- | :---: |
+| **1** | Redacción formal de la Ficha de Mapeo de Empresa y Problema | Grupo 01 (Daniel Rojas / Lady Loayza) | 20/08/2026 |
+| **2** | Entrega de catálogo fotográfico de prendas y datos anonimizados de pedidos | Víctor Raúl Cárdenas (LeoFit) | 22/08/2026 |
+| **3** | Elaboración de wireframes y primeros prototipos interactivos en Figma | Harley Roman / Lady Loayza | 25/08/2026 |
+| **4** | Diseño del modelo relacional normalizado y especificación ERS IEEE 830 | Víctor Cárdenas / Jim Dávila | 28/08/2026 |
 
 ## 12.2. Glosario Unificado de Términos Técnicos y de Dominio Textil/Comercial
 
@@ -1464,6 +1495,22 @@ A lo largo del ciclo académico, el equipo sostuvo reuniones periódicas de alin
 | **Suplex** | Tejido elástico y transpirable de alta tecnología utilizado en la confección de ropa deportiva de compresión y licras en Gamarra. |
 | **Thumb Zone** | Zona de la pantalla de un smartphone que puede ser alcanzada cómodamente por el dedo pulgar del usuario cuando sujeta el dispositivo con una sola mano. |
 | **WPO** | Web Performance Optimization. Conjunto de técnicas de ingeniería web orientadas a acelerar la velocidad de carga y renderizado de una página en navegadores. |
+| **Vitest** | Marco de pruebas unitarias de última generación optimizado para entornos Vite, de alta velocidad y soporte nativo para TypeScript. |
+| **TypeScript** | Superconjunto tipado estático de JavaScript desarrollado por Microsoft que añade verificación formal de tipos en tiempo de compilación. |
+| **Tree-Shaking** | Proceso de optimización ejecutado por empaquetadores (Rollup) que analiza el árbol de dependencias y elimina código muerto o no utilizado. |
+| **TO-BE (Estado Propuesto)** | Representación del flujo de procesos rediseñado y optimizado mediante la integración de software para eliminar ineficiencias del AS-IS. |
+| **SLI** | Service Level Indicator. Medición cuantitativa directa del nivel de servicio brindado en tiempo real (ej. tasa de peticiones HTTP exitosas). |
+| **Quiebre de Stock** | Situación operativa en la que la demanda de una prenda no puede ser atendida por agotamiento imprevisto de existencias en almacén. |
+| **MVP** | Producto Mínimo Viable. Versión funcional inicial del software que satisface las necesidades centrales de los usuarios para validar hipótesis con clientes reales. |
+| **Inventario Crítico** | Nivel de existencias de una prenda que se encuentra por debajo del umbral de seguridad (< 5 unidades), requiriendo alerta de reposición. |
+| **HMR** | Hot Module Replacement. Característica de Vite que actualiza módulos en el navegador en tiempo real sin recargar la página completa ni perder estado. |
+| **Core Web Vitals** | Conjunto de métricas estandarizadas por Google para evaluar la experiencia de usuario: FCP, LCP, CLS e INP. |
+| **Code-Splitting** | Técnica de optimización que fragmenta el paquete de código fuente en chunks independientes que se descargan bajo demanda al navegar a cada ruta. |
+| **Clean Architecture** | Patrón arquitectónico propuesto por Robert C. Martin que promueve la separación concéntrica de capas desacopladas, haciendo la lógica independiente de frameworks. |
+| **Ciclo de Pedido** | Intervalo de tiempo total transcurrido desde que el cliente inicia la interacción de compra hasta que la orden es entregada en su domicilio. |
+| **Bundle** | Conjunto empaquetado y minificado de activos JavaScript, CSS y recursos estáticos listos para su distribución y ejecución en el navegador. |
+| **BPMN 2.0** | Business Process Model and Notation. Estándar internacional gráfico para el modelado formal de flujos de trabajo mediante carriles y eventos. |
+| **AS-IS (Estado Actual)** | Metodología de modelado que describe el flujo operativo tradicional tal como se ejecuta en el presente, visibilizando cuellos de botella y pérdidas. |
 
 ## 12.3. Banco de 15 Preguntas Críticas y Respuestas Sólidas para la Sustentación ante el Jurado Calificador
 
@@ -1513,6 +1560,15 @@ A continuación se detallan las 15 preguntas de mayor complejidad técnica y met
 
 ### 15. ¿Cuáles son los próximos pasos o trabajos futuros para la evolución del sistema tras la finalización del curso integrador?
 - **Respuesta**: Tras el cierre del Curso Integrador II, la hoja de ruta evolutiva (Roadmap v4.0) contempla: 1) Integración directa con pasarelas de pago automatizadas mediante webhooks (MercadoPago / Culqi) para conciliación bancaria instantánea; 2) Integración mediante API con los servicios de SUNAT para la emisión automática de boletas y facturas electrónicas válidas tributariamente; y 3) Un módulo de predicción de demanda textil mediante modelos ligeros de Machine Learning para proyectar el consumo de rollos de tela según la estacionalidad climática en el país.
+
+---
+
+
+### 16. ¿Qué estrategia y batería de pruebas automatizadas se implementó para garantizar la fiabilidad del software?
+- **Respuesta**: Se implementó una estrategia piramidal con **35 pruebas automatizadas continuas** que cubren de extremo a extremo la lógica del sistema:
+  1. **Frontend (17 pruebas unitarias y de integración con Vitest)**: Ubicadas en `frontend/src/__tests__/`, validando reactividad del estado del carrito, consistencia de inventario en memoria, validación de formularios de checkout, generación vectorial de recibos PDF y navegación fluida entre pestañas.
+  2. **Backend (18 pruebas de integración con Jest & Supertest)**: Ubicadas en `backend/src/__tests__/`, evaluando la transaccionalidad ACID con bloqueos pesimistas `SELECT ... FOR UPDATE`, autenticación JWT, autorización RBAC por roles, sanitización contra inyección SQL y XSS, y endpoints de analítica de pedidos.
+  Toda la batería se ejecuta automáticamente en el pipeline de Integración Continua (`.github/workflows/ci-cd.yml`) ante cada `push` y `pull request` hacia `main`, impidiendo regresiones en el entorno productivo.
 
 ---
 

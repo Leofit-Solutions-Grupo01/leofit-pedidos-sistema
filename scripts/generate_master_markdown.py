@@ -28,7 +28,7 @@ def build_master_markdown():
 | **Nombre del Proyecto** | Sistema Web Progresivo (PWA) de Gestión de Pedidos y Control de Inventario Multicanal |
 | **Empresa Beneficiaria** | LeoFit (RUC: 20608912345) — Emporio Comercial de Gamarra, La Victoria, Lima |
 | **Asignatura** | Curso Integrador II: Software (Código: `100000S12F`) |
-| **Docente Asignado** | Mg. Ing. Docente Asignado UTP |
+| **Docente Asignado** | Ing. Enrique Lee Huamani Uriarte |
 | **Equipo de Desarrollo (Grupo 01)** | • Loayza Rodriguez, Lady Luz — Código: `U22221489` (Scrum Master / DevSecOps)<br>• Cárdenas Fernández, Víctor Leandro — Código: `U19217414` (Product Owner / Data Architect)<br>• Roman Delgado, Harley Anthony — Código: `U21313032` (Frontend Lead / PWA Specialist)<br>• Dávila Morales, Jim Alessandro — Código: `U18206081` (QA Engineer Lead / Backend)<br>• Rojas Sanchez, Daniel Enrique — Código: `U21214627` (Business Analyst / Cloud DevOps) |
 | **Versión del Documento** | 3.0.0 (Unificación Maestra Total) |
 | **Fecha de Publicación** | Septiembre de 2026 |
