@@ -10,6 +10,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useApp } from "../context/AppContext";
 import Badge from "../components/common/Badge";
 import { EstadoPedido, Pedido, estaEnRiesgo, calcularIngresos } from "../data/mockData";
+import MontoPrivado from "../components/common/MontoPrivado";
 
 // Hook: anima el número desde 0 hasta el valor objetivo
 function useCountUp(target: number) {
@@ -254,15 +255,11 @@ export default function Dashboard() {
                   </span>
                 </button>
               </div>
-              {ocultarTotal ? (
-                <span className={`${modoAccesible ? "text-3xl sm:text-4xl" : "text-2xl sm:text-3xl"} font-extrabold font-display text-slate-400 leading-none block tracking-widest`}>
-                  ••••••
-                </span>
-              ) : (
-                <span className={`${modoAccesible ? "text-3xl sm:text-4xl" : "text-2xl sm:text-3xl"} font-extrabold font-display text-white leading-none block`}>
-                  S/{ingresosTotal.toFixed(2)}
-                </span>
-              )}
+              <MontoPrivado
+                valor={ingresosTotal}
+                privacidad={ocultarTotal || privacidad}
+                className={`${modoAccesible ? "text-3xl sm:text-4xl" : "text-2xl sm:text-3xl"} font-extrabold font-display text-white leading-none block`}
+              />
               <p className="text-slate-300 text-xs font-normal mt-2">
                 {pedidos.filter((p) => p.estado === "Entregado").length} pedidos entregados · {pedidos.filter((p) => p.estado === "Cancelado").length} cancelados
               </p>
@@ -282,15 +279,11 @@ export default function Dashboard() {
                   </span>
                 </button>
               </div>
-              {ocultarHoy ? (
-                <span className={`${modoAccesible ? "text-2xl sm:text-3xl" : "text-xl sm:text-2xl"} font-extrabold font-display text-slate-400 block tracking-widest`}>
-                  ••••••
-                </span>
-              ) : (
-                <span className={`${modoAccesible ? "text-2xl sm:text-3xl" : "text-xl sm:text-2xl"} font-extrabold font-display block ${ingresosHoy > 0 ? "text-emerald-400" : "text-slate-400"}`}>
-                  S/{ingresosHoy.toFixed(2)}
-                </span>
-              )}
+              <MontoPrivado
+                valor={ingresosHoy}
+                privacidad={ocultarHoy || privacidad}
+                className={`${modoAccesible ? "text-2xl sm:text-3xl" : "text-xl sm:text-2xl"} font-extrabold font-display block ${ingresosHoy > 0 ? "text-emerald-400" : "text-slate-400"}`}
+              />
               <p className="text-slate-300 text-xs font-normal mt-1 sm:mt-2">
                 {pedidosHoy.length} pedido{pedidosHoy.length !== 1 ? "s" : ""}
               </p>
