@@ -298,6 +298,35 @@ def convert_md_to_docx(md_filepath, docx_filepath):
         # 6. Separador horizontal
         elif line.strip() == '---':
             pass
+
+        # 6b. Imágenes: ![caption](path)
+        elif line.strip().startswith('![') and '](' in line.strip():
+            img_match = re.match(r'!\[(.*?)\]\((.*?)\)', line.strip())
+            if img_match:
+                caption = img_match.group(1)
+                img_rel_path = img_match.group(2)
+                md_dir = os.path.dirname(os.path.abspath(md_filepath))
+                resolved_img_path = os.path.normpath(os.path.join(md_dir, img_rel_path))
+                if os.path.exists(resolved_img_path):
+                    p_img = doc.add_paragraph()
+                    p_img.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                    p_img.paragraph_format.space_before = Pt(8)
+                    p_img.paragraph_format.space_after = Pt(2)
+                    run_img = p_img.add_run()
+                    run_img.add_picture(resolved_img_path, width=Inches(5.8))
+                    
+                    if caption:
+                        p_cap = doc.add_paragraph()
+                        p_cap.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                        p_cap.paragraph_format.space_before = Pt(1)
+                        p_cap.paragraph_format.space_after = Pt(8)
+                        run_cap = p_cap.add_run(caption)
+                        run_cap.font.name = 'Calibri'
+                        run_cap.font.size = Pt(9.0)
+                        run_cap.font.italic = True
+                        run_cap.font.color.rgb = RGBColor(100, 116, 139)
+                else:
+                    print(f"[WARN] Imagen no encontrada: {resolved_img_path}")
             
         # 7. Párrafos normales
         elif line.strip():

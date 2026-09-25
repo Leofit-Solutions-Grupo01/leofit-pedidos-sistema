@@ -45,7 +45,8 @@ docs/
     ├── 09_Guion_Video_Demo_Remotion    # Guion técnico y código de video demo
     ├── 10_Catalogo_Controles_Seguridad_OWASP # Matriz de mitigación OWASP Top 10
     ├── 11_Informe_Seguridad_Cifrado_Pruebas_Web # Reporte técnico SAST/DAST y Cifrado
-    └── 12_Manual_Despliegue_Cloud_Produccion    # Manual de Despliegue en Cloud v1
+    ├── 12_Manual_Despliegue_Cloud_Produccion    # Manual de Despliegue en Cloud v1
+    └── 13_Evidencia_Cumplimiento_Requerimientos_Software # Informe formal con capturas de pantalla de todos los RF/RNF
 ```
 
 > [!NOTE]
@@ -90,6 +91,7 @@ docs/
 | **10** | **Controles de Seguridad OWASP** | [`MD`](10_Catalogo_Controles_Seguridad_OWASP.md) | [`DOCX`](10_Catalogo_Controles_Seguridad_OWASP.docx) | [`PDF`](10_Catalogo_Controles_Seguridad_OWASP.pdf) | Catálogo de mitigación técnica para el OWASP Top 10 (SQLi, XSS, RBAC, Rate-Limit). |
 | **11** | **Informe de Seguridad y SAST/DAST** | [`MD`](11_Informe_Seguridad_Cifrado_Pruebas_Web.md) | [`DOCX`](11_Informe_Seguridad_Cifrado_Pruebas_Web.docx) | [`PDF`](11_Informe_Seguridad_Cifrado_Pruebas_Web.pdf) | Informe de auditoría estática (`npm audit`), pruebas dinámicas y cifrado en tránsito/reposo. |
 | **12** | **Manual de Despliegue en Cloud** | [`MD`](12_Manual_Despliegue_Cloud_Produccion.md) | [`DOCX`](12_Manual_Despliegue_Cloud_Produccion.docx) | [`PDF`](12_Manual_Despliegue_Cloud_Produccion.pdf) | Guía de aprovisionamiento en Render (Backend), Vercel (Frontend) y Supabase (DB). |
+| **13** | **Evidencia de Requerimientos de Software** | [`MD`](13_Evidencia_Cumplimiento_Requerimientos_Software.md) | [`DOCX`](13_Evidencia_Cumplimiento_Requerimientos_Software.docx) | [`PDF`](13_Evidencia_Cumplimiento_Requerimientos_Software.pdf) | Informe formal de validación con 15 capturas de pantalla de alta fidelidad de todos los RF-001/018 y RNF-001/010. |
 
 ---
 
