@@ -12,7 +12,12 @@ import Badge from "../components/common/Badge";
 import { EstadoPedido, Pedido, estaEnRiesgo, calcularIngresos } from "../data/mockData";
 import MontoPrivado from "../components/common/MontoPrivado";
 
-// Hook: anima el número desde 0 hasta el valor objetivo
+/**
+ * Hook personalizado para animar transiciones numéricas fluidas (Count-Up).
+ * Incrementa gradualmente el valor desde 0 hasta la meta en 24 pasos (500 ms).
+ * @param {number} target Cifra numérica objetivo a renderizar.
+ * @returns {number} Valor actual en cada frame de la animación.
+ */
 function useCountUp(target: number) {
   const [val, setVal] = useState(0);
   useEffect(() => {
@@ -31,7 +36,11 @@ function useCountUp(target: number) {
   return val;
 }
 
-// Hook: detecta si hay conexión a internet
+/**
+ * Hook personalizado que escucha activamente el estado de conectividad de red del navegador.
+ * Sincroniza eventos 'online' y 'offline' para activar capacidades PWA y alertas contextuales.
+ * @returns {boolean} `true` si el dispositivo cuenta con acceso a internet; `false` en caso contrario.
+ */
 function useOnlineStatus() {
   const [online, setOnline] = useState(navigator.onLine);
   useEffect(() => {
@@ -44,7 +53,10 @@ function useOnlineStatus() {
   return online;
 }
 
-// Tooltip simple al hacer hover
+/**
+ * Componente de Tooltip accesible para desplegar descripciones operativas al posar el cursor o tocar.
+ * @param {{ texto: string }} props Texto explicativo a presentar.
+ */
 function InfoTooltip({ texto }: { texto: string }) {
   const [visible, setVisible] = useState(false);
   return (

@@ -5,11 +5,12 @@
 
 ---
 
-[![Estado APF1](https://img.shields.io/badge/APF1%20(Semana%2005)-18%2F20%20Aprobado-brightgreen.svg)](docs/INFORME_FINAL_APF1_LEOFIT.pdf)
-[![Estado APF2](https://img.shields.io/badge/APF2%20(Semana%2009)-100%25%20Completado-blue.svg)](docs/INFORME_FINAL_APF2_LEOFIT.pdf)
-[![Pruebas Jest](https://img.shields.io/badge/Backend%20Tests-18%20Passing-brightgreen.svg)](backend/README.md)
-[![Arquitectura](https://img.shields.io/badge/Architecture-Clean%20Architecture%20%2B%20BCNF-purple.svg)](docs/07_Arquitectura_Sistema.md)
-[![Seguridad](https://img.shields.io/badge/Security-OWASP%20Top%2010%20%7C%20JWT%20%7C%20bcrypt-red.svg)](docs/10_Catalogo_Controles_Seguridad_OWASP.md)
+[![Estado APF1](https://img.shields.io/badge/APF1%20(Semana%2005)-18%2F20%20Aprobado-brightgreen.svg)](docs/entregas_academicas/INFORME_FINAL_APF1_LEOFIT.pdf)
+[![Estado APF2](https://img.shields.io/badge/APF2%20(Semana%2009)-100%25%20Completado-blue.svg)](docs/entregas_academicas/INFORME_FINAL_APF2_LEOFIT.pdf)
+[![Pruebas Backend](https://img.shields.io/badge/Backend%20Tests-18%20Passing-brightgreen.svg)](backend/README.md)
+[![Pruebas Frontend](https://img.shields.io/badge/Frontend%20Tests-17%20Passing-brightgreen.svg)](frontend/README.md)
+[![Arquitectura](https://img.shields.io/badge/Architecture-Clean%20Architecture%20%2B%20BCNF-purple.svg)](docs/modulos_tecnicos/07_Arquitectura_Sistema.md)
+[![Seguridad](https://img.shields.io/badge/Security-OWASP%20Top%2010%20%7C%20JWT%20%7C%20bcrypt-red.svg)](docs/modulos_tecnicos/10_Catalogo_Controles_Seguridad_OWASP.md)
 [![Demo PWA](https://img.shields.io/badge/Demo%20Live-PWA%20Online-orange.svg)](https://leofit-solutions-grupo01.github.io/leofit-pedidos-sistema/)
 
 ---
@@ -41,12 +42,12 @@
 
 | Hito | Calificación / Estado | Entregable Oficial en Word (.docx) | Entregable Oficial en PDF (.pdf) |
 | :--- | :---: | :---: | :---: |
-| **APF1 (Avance 1 - Sem. 05)** | **18 / 20 (Aprobado)** | [`INFORME_FINAL_APF1_LEOFIT.docx`](docs/INFORME_FINAL_APF1_LEOFIT.docx) | [`INFORME_FINAL_APF1_LEOFIT.pdf`](docs/INFORME_FINAL_APF1_LEOFIT.pdf) |
-| **APF2 (Avance 2 - Sem. 09)** | **100% Completado** | [`INFORME_FINAL_APF2_LEOFIT.docx`](docs/INFORME_FINAL_APF2_LEOFIT.docx) | [`INFORME_FINAL_APF2_LEOFIT.pdf`](docs/INFORME_FINAL_APF2_LEOFIT.pdf) |
+| **APF1 (Avance 1 - Sem. 05)** | **18 / 20 (Aprobado)** | [`INFORME_FINAL_APF1_LEOFIT.docx`](docs/entregas_academicas/INFORME_FINAL_APF1_LEOFIT.docx) | [`INFORME_FINAL_APF1_LEOFIT.pdf`](docs/entregas_academicas/INFORME_FINAL_APF1_LEOFIT.pdf) |
+| **APF2 (Avance 2 - Sem. 09)** | **100% Completado** | [`INFORME_FINAL_APF2_LEOFIT.docx`](docs/entregas_academicas/INFORME_FINAL_APF2_LEOFIT.docx) | [`INFORME_FINAL_APF2_LEOFIT.pdf`](docs/entregas_academicas/INFORME_FINAL_APF2_LEOFIT.pdf) |
 | **APF3 (Avance 3 - Sem. 13)** | *Planificado (Sprint 4)* | *En desarrollo según cronograma* | *En desarrollo según cronograma* |
 | **PROY (Proyecto Final - Sem. 18)** | *Planificado (Sprint 5)* | *En desarrollo según cronograma* | *En desarrollo según cronograma* |
 
-> Para consultar la colección completa de los 12 módulos de especificación técnica y material de clase, revise el [`Directorio Maestro de Documentación (docs/README.md)`](docs/README.md).
+> Para consultar la colección completa de los 13 módulos de especificación técnica y material de clase, revise el [`Directorio Maestro de Documentación (docs/README.md)`](docs/README.md).
 
 ---
 
@@ -80,7 +81,7 @@
                                     v
 +-------------------------------------------------------------------------+
 |             BASE DE DATOS RELACIONAL (Supabase / PostgreSQL 16)         |
-|      - Normalización BCNF (8 tablas con integridad referencial)         |
+|      - Normalización BCNF (12 tablas/vistas con integridad referencial) |
 |      - Physical Streaming Replication (Primary -> Standby WAL slot)     |
 |      - Backups Diarios PITR con verificación de hash SHA-256            |
 +-------------------------------------------------------------------------+
@@ -88,28 +89,27 @@
 
 ---
 
-## 5. Pruebas Automatizadas y Cobertura de Calidad
+## 5. Pruebas Automatizadas y Cobertura de Calidad (35 Tests Totales)
 
-El backend cuenta con **5 suites de pruebas automatizadas y 18 casos de prueba** ejecutados con **Jest y Supertest**:
+El proyecto cuenta con **35 pruebas automatizadas (100% aprobadas)** distribuidas en Frontend y Backend:
 
+### A. Backend (18 tests con Jest & Supertest)
 ```bash
-cd backend
-npm test
+cd backend && npm test
 ```
+- `tests/orders.test.ts`: Creación, cálculo atómico y rechazo por ruptura de stock.
+- `tests/auth.test.ts`: Registro, login JWT, protección RBAC y manejo de contraseñas erróneas.
+- `tests/security.test.ts`: Cabeceras Helmet, mitigación de inyección SQL y saneamiento Zod.
+- `tests/products.test.ts`: Catálogo de indumentaria y detalle de variantes.
+- `tests/clients_dashboard.test.ts`: Registro de clientes y cálculo de KPIs.
 
-```text
-PASS tests/auth.test.ts
-PASS tests/security.test.ts
-PASS tests/products.test.ts
-PASS tests/orders.test.ts
-PASS tests/clients_dashboard.test.ts
-
-Test Suites: 5 passed, 5 total
-Tests:       18 passed, 18 total
-Snapshots:   0 total
-Time:        3.42 s
-Ran all test suites.
+### B. Frontend (17 tests con Vitest)
+```bash
+cd frontend && npm test
 ```
+- `src/__tests__/mockData.test.ts`: Integridad de datos y validaciones de inventario.
+- `src/__tests__/allTabsFunctional.test.ts`: Navegación, cambio de estados y renderizado de módulos.
+- `src/__tests__/pdfGenerator.test.ts`: Generación vectorial de comprobantes oficiales y rótulos.
 
 ---
 

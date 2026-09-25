@@ -60,19 +60,31 @@ export default function PedidoForm() {
 
   const fechaHoy = new Date().toLocaleDateString("es-PE", { day: "2-digit", month: "2-digit", year: "numeric" });
 
-  const siguienteNumero = () => {
+  /**
+   * Genera el siguiente número correlativo unívoco de orden (`LFT-XXX`).
+   * Extrae el valor numérico mayor entre las órdenes existentes y lo incrementa en 1,
+   * formateándolo con relleno de ceros a tres dígitos (ej. LFT-001, LFT-015).
+   * @returns {string} Código correlativo formal de la orden.
+   */
+  const siguienteNumero = (): string => {
     const maxNum = pedidos.reduce((max, p) => {
-      const n = parseInt(p.numero.replace("LFT-", ""));
+      const n = parseInt(p.numero.replace("LFT-", ""), 10);
       return isNaN(n) ? max : Math.max(max, n);
     }, 0);
     return `LFT-${String(maxNum + 1).padStart(3, "0")}`;
   };
 
+  // Cálculos aritméticos reactivos de la liquidación de venta
   const subtotal = items.reduce((acc, i) => acc + i.precio * i.cantidad, 0);
   const descuentoCuponMonto = cuponAplicado ? cuponAplicado.descuento : 0;
   const descuentoTotal = descuentoCuponMonto + descuentoManual;
   const total = Math.max(0, subtotal + costoDelivery - descuentoTotal);
 
+  /**
+   * Añade una prenda al carrito temporal validando la disponibilidad de existencias físicas.
+   * Si la prenda ya existía en la canasta, acumula la cantidad verificando que la suma
+   * no sobrepase el stock disponible en almacén para evitar sobreventas.
+   */
   const agregarItem = () => {
     const prod = productos.find((p) => p.id === productoSeleccionado);
     if (!prod) return;
@@ -93,16 +105,30 @@ export default function PedidoForm() {
     setCantidad(1);
   };
 
+  /**
+   * Remueve una línea de prenda del carrito temporal por su identificador único.
+   * @param {string} prodId Identificador del producto a remover.
+   */
   const quitarItem = (prodId: string) => {
     setItems(items.filter((i) => i.productoId !== prodId));
   };
   const eliminarItem = quitarItem;
 
+  /**
+   * Conmuta la modalidad logística del despacho (Motor de Despacho Dual).
+   * - Local (Lima Metropolitana): Flete base de S/ 8.00 (reparto en moto/courier urbano).
+   * - Nacional (Provincias): Flete base de S/ 15.00 (consignación formal en agencia de encomienda).
+   * @param {TipoEnvio} nuevoTipo Modalidad de envío seleccionada ("Local" | "Nacional").
+   */
   const handleTipoEnvioChange = (nuevoTipo: TipoEnvio) => {
     setTipoEnvio(nuevoTipo);
     setCostoDelivery(nuevoTipo === "Nacional" ? 15 : 8);
   };
 
+  /**
+   * Valida y aplica un cupón promocional del catálogo corporativo (ej. LEOFIT10, PROMOVERANO).
+   * Descuenta el monto correspondiente de la liquidación total si el código es válido.
+   */
   const handleAplicarCupon = () => {
     setMensajeCupon(null);
     const code = codigoCuponInput.trim().toUpperCase();
@@ -125,6 +151,9 @@ export default function PedidoForm() {
     handleAplicarCupon();
   };
 
+  /**
+   * Remueve el cupón promocional aplicado y restaura el cálculo estándar de la orden.
+   */
   const handleRemoverCupon = () => {
     setCuponAplicado(null);
     setCodigoCuponInput("");
@@ -132,6 +161,14 @@ export default function PedidoForm() {
   };
   const quitarCupon = handleRemoverCupon;
 
+  /**
+   * Valida integralmente los campos del formulario y formaliza el registro de la orden.
+   * Reglas de validación:
+   * 1. Nombre completo y teléfono de contacto obligatorios.
+   * 2. Si el envío es Nacional (agencias Shalom, Olva, etc.), el DNI o RUC y la ciudad de destino
+   *    son estrictamente obligatorios conforme a las normativas de transporte interprovincial de encomiendas.
+   * 3. Debe existir al menos una prenda en el carrito.
+   */
   const handleGuardar = () => {
     const errList: string[] = [];
     if (!nombre.trim()) errList.push("El nombre completo del cliente es obligatorio.");

@@ -29,6 +29,9 @@ export default function ProductosGestion() {
   const [formError, setFormError] = useState("");
   const [confirmando, setConfirmando] = useState<Producto | null>(null);
 
+  /**
+   * Prepara y abre el modal de registro para dar de alta una nueva prenda en el catálogo.
+   */
   const abrirNuevo = () => {
     setEditando(null);
     setForm(formVacio());
@@ -36,6 +39,10 @@ export default function ProductosGestion() {
     setModalAbierto(true);
   };
 
+  /**
+   * Carga los datos de una prenda existente y abre el modal en modo edición.
+   * @param {Producto} producto Objeto de prenda a modificar.
+   */
   const abrirEditar = (producto: Producto) => {
     setEditando(producto);
     setForm({
@@ -50,6 +57,10 @@ export default function ProductosGestion() {
     setModalAbierto(true);
   };
 
+  /**
+   * Valida y persiste la creación o edición de la prenda en el estado global.
+   * Verifica que el nombre no esté vacío y que el precio de venta sea estrictamente positivo (> 0).
+   */
   const handleGuardar = () => {
     if (!form.nombre.trim()) { setFormError("El nombre del producto es obligatorio."); return; }
     if (form.precio <= 0) { setFormError("El precio debe ser mayor a 0."); return; }

@@ -28,6 +28,12 @@ export default function RastreoPublico() {
   const [errorBusqueda, setErrorBusqueda] = useState("");
   const [mostrarRecibo, setMostrarRecibo] = useState(false);
 
+  /**
+   * Ejecuta la búsqueda reactiva de una orden en autoservicio.
+   * Soporta múltiples criterios: Código correlativo (`LFT-XXX`), teléfono del cliente,
+   * DNI/RUC o N° de Guía física de encomienda (Shalom/Olva).
+   * @param {React.FormEvent} e Evento de formulario submit.
+   */
   const handleBuscar = (e: React.FormEvent) => {
     e.preventDefault();
     setErrorBusqueda("");
@@ -53,7 +59,12 @@ export default function RastreoPublico() {
     }
   };
 
-  const calcularIndicePaso = (estado: string) => {
+  /**
+   * Mapea el estado semántico de la orden a su posición en la línea de tiempo (0 a 3).
+   * @param {string} estado Estado actual del pedido.
+   * @returns {number} Índice numérico del hito activo.
+   */
+  const calcularIndicePaso = (estado: string): number => {
     switch (estado) {
       case "Recibido": return 0;
       case "Preparación": return 1;
@@ -66,8 +77,13 @@ export default function RastreoPublico() {
   const indiceActual = pedidoEncontrado ? calcularIndicePaso(pedidoEncontrado.estado) : 0;
   const esCancelado = pedidoEncontrado?.estado === "Cancelado";
 
-  // Enmascarar DNI para privacidad pública
-  const enmascararDni = (dni?: string) => {
+  /**
+   * Enmascara el número de documento de identidad para proteger la privacidad pública (Ley 29733).
+   * Ejemplo: "72345678" -> "***5678".
+   * @param {string} [dni] DNI o RUC del cliente.
+   * @returns {string} Cadena anonimizada con los últimos 4 dígitos visibles.
+   */
+  const enmascararDni = (dni?: string): string => {
     if (!dni) return "No registrado";
     if (dni.length <= 4) return dni;
     return `***${dni.slice(-4)}`;
