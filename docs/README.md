@@ -11,7 +11,12 @@ Toda la documentación técnica y académica del proyecto se encuentra organizad
 
 ```text
 docs/
-├── Entregables Oficiales Consolidados:
+├── FUENTE ÚNICA DE VERDAD (DOCUMENTO MAESTRO TOTAL):
+│   ├── DOCUMENTO_MAESTRO_INTEGRAL_LEOFIT.pdf   # Libro Maestro Integral (70 págs, 13 Capítulos, Diagramas y 14 Pantallas)
+│   ├── DOCUMENTO_MAESTRO_INTEGRAL_LEOFIT.docx  # Documento Maestro Editable en Microsoft Word
+│   └── DOCUMENTO_MAESTRO_INTEGRAL_LEOFIT.md    # Versión Markdown completa y trazable
+│
+├── Entregables Oficiales por Hito de Evaluación:
 │   ├── INFORME_FINAL_APF2_LEOFIT.pdf       # Entregable Oficial Maestro APF2 (PDF)
 │   ├── INFORME_FINAL_APF2_LEOFIT.docx      # Entregable Oficial Maestro APF2 (Word)
 │   ├── INFORME_FINAL_APF1_LEOFIT.pdf       # Entregable Oficial Maestro APF1 (PDF - Calificación: 18/20)
@@ -34,7 +39,7 @@ docs/
 │       ├── UTP_Semana_2_ASIS_TOBE_Plantilla.pptx                 # Plantilla de diagramas AS-IS / TO-BE
 │       └── UTP_Semana_2_Requerimientos_Plantilla.xlsx            # Matriz de requerimientos
 │
-└── Módulos Temáticos de Ingeniería (Formatos MD / DOCX / PDF):
+└── Anexos Especializados de Ingeniería (Formatos MD / DOCX / PDF):
     ├── 01_Ficha_Identificacion         # Ficha institucional de identificación del proyecto
     ├── 02_Requerimientos               # Especificación de Requerimientos de Software (ERS/IEEE 830)
     ├── 03_Acta_Reunion_1               # Acta y minuta de reunión con la empresa LeoFit
@@ -50,19 +55,17 @@ docs/
     └── 13_Evidencia_Cumplimiento_Requerimientos_Software # Informe formal con capturas de pantalla de todos los RF/RNF
 ```
 
-> [!NOTE]
-> Para la entrega institucional en la plataforma académica, el archivo maestro consolidado de APF2 también se replica en [`Integrator/informe/DOCUMENTACION.docx`](../Integrator/informe/DOCUMENTACION.docx) conforme a la estructura requerida por el estándar de entrega de Curso Integrador II.
-
 ---
 
-## 1. Entregables Oficiales Consolidados por Hito
+## 1. Documento Maestro y Entregables Consolidados
 
-| Hito Académico | Semana | Estado / Calificación | Formato Word | Formato PDF |
-| :--- | :---: | :---: | :---: | :---: |
-| **APF1 (Avance 1)** | Semana 05 | **Aprobado (18/20)** | [`INFORME_FINAL_APF1_LEOFIT.docx`](INFORME_FINAL_APF1_LEOFIT.docx) | [`INFORME_FINAL_APF1_LEOFIT.pdf`](INFORME_FINAL_APF1_LEOFIT.pdf) |
-| **APF2 (Avance 2)** | Semana 09 | **100% Completado** | [`INFORME_FINAL_APF2_LEOFIT.docx`](INFORME_FINAL_APF2_LEOFIT.docx) | [`INFORME_FINAL_APF2_LEOFIT.pdf`](INFORME_FINAL_APF2_LEOFIT.pdf) |
-| **APF3 (Avance 3)** | Semana 13 | Planificado (Sprint 4) | *En desarrollo para Semana 13* | *En desarrollo para Semana 13* |
-| **PROY (Final)** | Semana 18 | Planificado (Sprint 5) | *En desarrollo para Semana 18* | *En desarrollo para Semana 18* |
+| Documento / Hito | Semana | Estado | Formato Word | Formato PDF | Formato MD |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| **DOCUMENTO MAESTRO INTEGRAL (SSOT)** | **Consolidado** | **Aprobado (Definitivo)** | [Descargar .docx](./DOCUMENTO_MAESTRO_INTEGRAL_LEOFIT.docx) | [Descargar .pdf](./DOCUMENTO_MAESTRO_INTEGRAL_LEOFIT.pdf) | [Ver .md](./DOCUMENTO_MAESTRO_INTEGRAL_LEOFIT.md) |
+| **Avance de Proyecto Final 2 (APF2)** | S12 | Entregado / Calificado | [Descargar .docx](./INFORME_FINAL_APF2_LEOFIT.docx) | [Descargar .pdf](./INFORME_FINAL_APF2_LEOFIT.pdf) | — |
+| **Avance de Proyecto Final 1 (APF1)** | S07 | Aprobado (**18/20**) | [Descargar .docx](./INFORME_FINAL_APF1_LEOFIT.docx) | [Descargar .pdf](./INFORME_FINAL_APF1_LEOFIT.pdf) | [Ver .md](./INFORME_FINAL_APF1_LEOFIT.md) |
+| **Avance de Proyecto Final 3 (APF3)** | S14 | Planificado (Sprint 4) | *En desarrollo para Semana 14* | *En desarrollo para Semana 14* | — |
+| **Evaluación Final (PROY)** | S18 | Planificado (Sprint 5) | *En desarrollo para Semana 18* | *En desarrollo para Semana 18* | — |
 
 ---
 
