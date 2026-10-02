@@ -1,6 +1,6 @@
 # Justificaciones de Cierre de Issues (GitHub Projects) - Versión Extendida y APA 7.ª ed.
 
-Para cada cierre en el tablero, utilicen este formato ampliado que refleja el rigor académico y técnico del trabajo en equipo. Recuerden reemplazar los corchetes `[Insertar captura...]` con las imágenes reales de su entorno.
+Para cada cierre en el tablero, utilicen este formato ampliado que refleja el rigor académico y técnico del trabajo en equipo.
 
 ---
 
@@ -10,7 +10,7 @@ Para cada cierre en el tablero, utilicen este formato ampliado que refleja el ri
 **Figura 1**  
 *Implementación del middleware de roles y dependencias de autenticación JWT*  
 
-[Insertar captura de pantalla de `backend/package.json` y el código de `role.middleware.ts` en VS Code]  
+![Implementación Auth](./fig_1_auth.png)
 
 *Nota.* Captura de pantalla de elaboración propia del código fuente del módulo de seguridad del proyecto (2026).
 
@@ -24,7 +24,7 @@ Para cada cierre en el tablero, utilicen este formato ampliado que refleja el ri
 **Figura 2**  
 *Modelo relacional de base de datos en BCNF y esquema de replicación*  
 
-[Insertar captura de pantalla del diagrama E-R o del script `schema.sql` detallando las llaves foráneas]  
+![Diseño Base de Datos](./fig_2_database.png)
 
 *Nota.* Captura de pantalla de elaboración propia a partir del diseño físico de datos del sistema (2026).
 
@@ -38,7 +38,7 @@ Para cada cierre en el tablero, utilicen este formato ampliado que refleja el ri
 **Figura 3**  
 *Manejo de transacciones ACID y bloqueos FOR UPDATE en el repositorio*  
 
-[Insertar captura de pantalla del archivo `pg.repositories.ts` enfocando la lógica transaccional de órdenes]  
+![Bloqueos ACID](./fig_3_acid.png)
 
 *Nota.* Captura de pantalla de elaboración propia del código fuente de persistencia en el backend (2026).
 
@@ -52,7 +52,7 @@ Para cada cierre en el tablero, utilicen este formato ampliado que refleja el ri
 **Figura 4**  
 *Estructura de componentes del Frontend PWA y vista del catálogo interactivo*  
 
-[Insertar captura de pantalla de la interfaz de usuario web corriendo o de la jerarquía de componentes en React]  
+![Frontend PWA](./fig_4_pwa.png)
 
 *Nota.* Captura de pantalla de elaboración propia de la interfaz cliente-servidor (2026).
 
@@ -66,7 +66,7 @@ Para cada cierre en el tablero, utilicen este formato ampliado que refleja el ri
 **Figura 5**  
 *Pipeline de Integración Continua en GitHub Actions y manifiestos de orquestación Cloud*  
 
-[Insertar captura de pantalla de la ejecución exitosa de un Action en GitHub y del archivo `docker-compose.yml`]  
+![Pipeline CI/CD](./fig_5_devops.png)
 
 *Nota.* Captura de pantalla de elaboración propia obtenida de los repositorios y flujos automatizados de GitHub (2026).
 
@@ -80,7 +80,7 @@ Para cada cierre en el tablero, utilicen este formato ampliado que refleja el ri
 **Figura 6**  
 *Auditoría de seguridad estática (SAST) y aplicación de controles defensivos*  
 
-[Insertar captura de pantalla de la salida del comando `npm audit` o del test de seguridad aprobado]  
+![Seguridad y Auditoria](./fig_6_security.png)
 
 *Nota.* Captura de pantalla de elaboración propia a partir de las herramientas de auditoría en consola (2026).
 
@@ -94,7 +94,7 @@ Para cada cierre en el tablero, utilicen este formato ampliado que refleja el ri
 **Figura 7**  
 *Clean Architecture: Inyección de dependencias, Factory Pattern y mecanismo de Fallback*  
 
-[Insertar captura de pantalla del código TypeScript que maneja la inicialización del Factory y la selección de DB]  
+![Mecanismo Fallback](./fig_7_fallback.png)
 
 *Nota.* Captura de pantalla de elaboración propia del código fuente de arquitectura en el servidor (2026).
 
@@ -108,7 +108,7 @@ Para cada cierre en el tablero, utilicen este formato ampliado que refleja el ri
 **Figura 8**  
 *Métricas Core Web Vitals y auditoría de rendimiento en Google Lighthouse*  
 
-[Insertar captura de pantalla del reporte Lighthouse mostrando todos los indicadores en verde]  
+![Métricas Lighthouse](./fig_8_lighthouse.png)
 
 *Nota.* Captura de pantalla obtenida mediante las herramientas para desarrolladores de Google Chrome (2026).
 
@@ -122,7 +122,7 @@ Para cada cierre en el tablero, utilicen este formato ampliado que refleja el ri
 **Figura 9**  
 *Reporte global de ejecución de la suite de pruebas automatizadas en Node.js*  
 
-[Insertar captura de pantalla de la terminal mostrando el reporte completo de Jest con todas las suites en PASS]  
+![Suite de Pruebas Jest](./fig_9_qa.png)
 
 *Nota.* Captura de pantalla de elaboración propia desde el entorno de ejecución de pruebas automatizadas (2026).
 
@@ -136,7 +136,7 @@ Para cada cierre en el tablero, utilicen este formato ampliado que refleja el ri
 **Figura 10**  
 *Lógica del CRM y validación de endpoints del directorio de clientes*  
 
-[Insertar captura de pantalla del archivo de pruebas `clients_dashboard.test.ts` o la interfaz del módulo CRM]  
+![Tests CRM](./fig_10_crm.png)
 
 *Nota.* Captura de pantalla de elaboración propia de la implementación del módulo de gestión de clientes (2026).
 
@@ -150,7 +150,7 @@ Para cada cierre en el tablero, utilicen este formato ampliado que refleja el ri
 **Figura 11**  
 *Estructura del directorio de entregas académicas y trazabilidad documental*  
 
-[Insertar captura de pantalla del explorador de archivos mostrando la colección de informes PDF y Word]  
+![Documentos Académicos](./fig_11_docs.png)
 
 *Nota.* Captura de pantalla de elaboración propia a partir de la organización del repositorio oficial (2026).
 
@@ -164,7 +164,7 @@ Para cada cierre en el tablero, utilicen este formato ampliado que refleja el ri
 **Figura 12**  
 *Resultados de la suite automatizada de métricas de calidad y usabilidad ISO 25010*  
 
-[Insertar captura de pantalla de la consola mostrando las pruebas de Vitest pasando en el archivo `usability_iso25010.test.ts`]  
+![Pruebas ISO](./fig_12_iso.png)
 
 *Nota.* Captura de pantalla de elaboración propia a partir del sistema de testing del frontend (2026).
 
@@ -178,7 +178,7 @@ Para cada cierre en el tablero, utilicen este formato ampliado que refleja el ri
 **Figura 13**  
 *Validación de coexistencia e interoperabilidad con APIs externas y pasarelas*  
 
-[Insertar captura de pantalla del resultado de los tests del archivo `integration_external.test.ts`]  
+![Interoperabilidad Externa](./fig_13_interop.png)
 
 *Nota.* Captura de pantalla de elaboración propia ejecutada sobre el módulo de integración del proyecto (2026).
 
@@ -192,9 +192,9 @@ Para cada cierre en el tablero, utilicen este formato ampliado que refleja el ri
 **Figura 14**  
 *Manifiestos declarativos de orquestación (Infraestructura como Código) para entornos productivos*  
 
-[Insertar captura de pantalla de la sintaxis de los archivos `vercel.json` y `render.yaml`]  
+![Manifiestos Producción](./fig_14_prod.png)
 
-*Nota.* Captura de pantalla de elaboración propia a partir de los scripts de infraestructura del proyecto (2026).
+*Nota.* Captura de pantalla de elaboración propia de los archivos de configuración de infraestructura (2026).
 
 **Sugerencia de mejora continua:** Aunque los contenedores son auto-recuperables, la visibilidad operacional de transacciones complejas sigue siendo opaca. Para escalar, el equipo debe integrar agentes de Monitoreo del Rendimiento de Aplicaciones (APM), como Elastic APM o Sentry, acoplados al servidor Express, facilitando la identificación en tiempo real de consultas SQL lentas o picos inusuales de latencia.
 
@@ -206,7 +206,7 @@ Para cada cierre en el tablero, utilicen este formato ampliado que refleja el ri
 **Figura 15**  
 *Registro histórico y trazabilidad de Pull Requests integrados a la rama de producción*  
 
-[Insertar captura de pantalla de la pestaña de Pull Requests de GitHub mostrando los PRs cerrados/fusionados]  
+![Pull Requests Fusionados](./fig_15_prs.png)
 
 *Nota.* Captura de pantalla obtenida desde la interfaz administrativa del repositorio en GitHub (2026).
 
