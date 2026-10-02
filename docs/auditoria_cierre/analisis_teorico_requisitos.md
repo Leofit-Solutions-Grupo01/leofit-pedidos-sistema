@@ -16,7 +16,7 @@ No se han "inventado" RNF para igualar la cifra de 18; la cantidad de 14 RNF est
 **Figura 1**  
 *Matriz de Requisitos No Funcionales en el Documento Maestro*  
 
-[Insertar captura de pantalla de la sección 2.10 del archivo `DOCUMENTO_MAESTRO_INTEGRAL_LEOFIT.md`]  
+![Matriz RNF](./fig_teorico_1.png)
 
 *Nota.* Captura de pantalla de elaboración propia a partir del Documento Maestro de Especificación del Proyecto (2026).
 
@@ -29,7 +29,7 @@ Por ejemplo, el requerimiento de rendimiento no es ambiguo, sino que establece u
 **Figura 2**  
 *Métricas comprobables del RNF-001 y RNF-002 en el SRS*  
 
-[Insertar captura de pantalla de la tabla de RNF mostrando las columnas de métricas]  
+![Métricas RNF](./fig_teorico_2.png)
 
 *Nota.* Captura de pantalla de elaboración propia del análisis de requisitos no funcionales (2026).
 
