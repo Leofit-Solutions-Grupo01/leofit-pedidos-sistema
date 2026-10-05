@@ -18,8 +18,8 @@ export default function Modal({ titulo, onCerrar, children }: ModalProps) {
       className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/50 backdrop-blur-sm"
       onClick={(e) => { if (e.target === e.currentTarget) onCerrar(); }}
     >
-      <div className="bg-slate-900 rounded-t-3xl sm:rounded-2xl w-full sm:max-w-lg max-h-[92vh] overflow-y-auto shadow-2xl">
-        <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100 sticky top-0 bg-slate-900 rounded-t-3xl sm:rounded-t-2xl">
+      <div className="bg-white rounded-t-3xl sm:rounded-2xl w-full sm:max-w-lg max-h-[92vh] overflow-y-auto shadow-2xl">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100 sticky top-0 bg-white rounded-t-3xl sm:rounded-t-2xl">
           <h2 className="text-base font-bold text-[#1D3557]">{titulo}</h2>
           <button
             onClick={onCerrar}

@@ -65,13 +65,13 @@ function InfoTooltip({ texto }: { texto: string }) {
         onMouseEnter={() => setVisible(true)}
         onMouseLeave={() => setVisible(false)}
         onTouchStart={() => setVisible(v => !v)}
-        className="ml-1 text-slate-300 hover:text-slate-600 transition-colors"
+        className="ml-1 text-slate-400 hover:text-slate-600 transition-colors"
         aria-label="Más información"
       >
         <span className="material-icons" style={{ fontSize: "15px" }}>info_outline</span>
       </button>
       {visible && (
-        <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-56 bg-cyan-500 text-slate-950 text-xs font-normal rounded-xl px-3 py-2 shadow-xl z-50 leading-relaxed pointer-events-none border border-slate-700">
+        <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-56 bg-[#0F223D] text-white text-xs font-normal rounded-xl px-3 py-2 shadow-xl z-50 leading-relaxed pointer-events-none border border-slate-700">
           {texto}
           <span className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-[#0F223D]" />
         </span>
@@ -111,7 +111,7 @@ function KpiCard({ label, icon, valor, color, bg, border, tooltip, onClick, aler
       role="button"
       tabIndex={0}
       onKeyDown={(e) => e.key === "Enter" && onClick()}
-      className={`bg-slate-900 rounded-2xl p-3.5 border ${border} shadow-sm text-center w-full transition-all hover:shadow-md active:scale-95 cursor-pointer ${alerta ? "ring-2 ring-[#E63946]/40" : ""}`}
+      className={`bg-white rounded-2xl p-3.5 border ${border} shadow-sm text-center w-full transition-all hover:shadow-md active:scale-95 cursor-pointer ${alerta ? "ring-2 ring-[#E63946]/40" : ""}`}
     >
       <div className={`inline-flex items-center justify-center w-9 h-9 rounded-xl ${bg} mb-2`}>
         <span className={`material-icons ${color} ${alerta ? "animate-pulse" : ""}`} style={{ fontSize: "18px" }}>{icon}</span>
@@ -120,7 +120,7 @@ function KpiCard({ label, icon, valor, color, bg, border, tooltip, onClick, aler
         {valor === 0 ? "—" : formatMiles(animado)}
       </div>
       <div className="flex items-center justify-center mt-1.5">
-        <span className="text-xs font-semibold text-slate-100 leading-tight">{label}</span>
+        <span className="text-xs font-semibold text-slate-700 leading-tight">{label}</span>
         <InfoTooltip texto={tooltip} />
       </div>
     </div>
@@ -185,8 +185,8 @@ export default function Dashboard() {
       label: "Pendientes",
       icon: "schedule",
       valor: pedidosActivos.filter((p) => p.estado === "Recibido" || p.estado === "Preparación").length,
-      color: pedidosEnRiesgo.length > 0 ? "text-red-400" : "text-amber-800",
-      bg: pedidosEnRiesgo.length > 0 ? "bg-red-950/50" : "bg-amber-100",
+      color: pedidosEnRiesgo.length > 0 ? "text-red-700" : "text-amber-800",
+      bg: pedidosEnRiesgo.length > 0 ? "bg-red-100" : "bg-amber-100",
       border: pedidosEnRiesgo.length > 0 ? "border-red-400" : "border-amber-300",
       filtro: "Recibido" as EstadoPedido,
       alerta: pedidosEnRiesgo.length > 0,
@@ -225,7 +225,7 @@ export default function Dashboard() {
 
         {/* Offline banner */}
         {!isOnline && (
-          <div className="bg-amber-100 border-2 border-orange-500 rounded-2xl px-4 py-3 flex items-center gap-3">
+          <div className="bg-amber-100 border-2 border-amber-400 rounded-2xl px-4 py-3 flex items-center gap-3">
             <span className="material-icons text-amber-800" style={{ fontSize: "24px" }}>wifi_off</span>
             <div>
               <p className="text-base font-bold text-amber-950">Sin conexión a internet</p>
@@ -235,10 +235,10 @@ export default function Dashboard() {
         )}
 
         {/* Greeting + Revenue hero */}
-        <div className="bg-cyan-500 rounded-3xl p-5 sm:p-6 text-white overflow-hidden relative shadow-xl border border-slate-700">
+        <div className="bg-[#0F223D] rounded-3xl p-5 sm:p-6 text-white overflow-hidden relative shadow-xl border border-slate-700">
           <div className="flex items-start justify-between gap-2 mb-4">
             <div>
-              <p className="text-orange-500 text-xs font-bold uppercase tracking-wider">{saludo()}, Víctor</p>
+              <p className="text-amber-400 text-xs font-bold uppercase tracking-wider">{saludo()}, Víctor</p>
               <p className="text-slate-200 text-xs sm:text-sm font-medium mt-0.5">
                 {ahora.toLocaleDateString("es-PE", { weekday: "long", day: "numeric", month: "long" })}
                 {" · "}
@@ -246,7 +246,7 @@ export default function Dashboard() {
               </p>
             </div>
             {/* indicador "en vivo" */}
-            <div className="flex items-center gap-1.5 bg-slate-900/20 rounded-full px-2.5 sm:px-3 py-1 sm:py-1.5 border border-white/30 shrink-0">
+            <div className="flex items-center gap-1.5 bg-white/20 rounded-full px-2.5 sm:px-3 py-1 sm:py-1.5 border border-white/30 shrink-0">
               <span className="w-2 sm:w-2.5 h-2 sm:h-2.5 rounded-full bg-emerald-400 animate-pulse" />
               <span className="text-[10px] sm:text-xs font-bold text-white tracking-wide">EN VIVO</span>
             </div>
@@ -258,7 +258,7 @@ export default function Dashboard() {
                 <button
                   type="button"
                   onClick={() => setOcultarTotal((v) => !v)}
-                  className="text-slate-300 hover:text-white p-0.5 rounded-md hover:bg-slate-900/10 transition-colors flex items-center"
+                  className="text-slate-400 hover:text-white p-0.5 rounded-md hover:bg-white/10 transition-colors flex items-center"
                   title={ocultarTotal ? "Mostrar ingresos totales" : "Ocultar ingresos totales"}
                   aria-label={ocultarTotal ? "Mostrar ingresos totales" : "Ocultar ingresos totales"}
                 >
@@ -282,7 +282,7 @@ export default function Dashboard() {
                 <button
                   type="button"
                   onClick={() => setOcultarHoy((v) => !v)}
-                  className="text-slate-300 hover:text-white p-0.5 rounded-md hover:bg-slate-900/10 transition-colors flex items-center"
+                  className="text-slate-400 hover:text-white p-0.5 rounded-md hover:bg-white/10 transition-colors flex items-center"
                   title={ocultarHoy ? "Mostrar ingresos de hoy" : "Ocultar ingresos de hoy"}
                   aria-label={ocultarHoy ? "Mostrar ingresos de hoy" : "Ocultar ingresos de hoy"}
                 >
@@ -294,7 +294,7 @@ export default function Dashboard() {
               <MontoPrivado
                 valor={ingresosHoy}
                 privacidad={ocultarHoy || privacidad}
-                className={`${modoAccesible ? "text-2xl sm:text-3xl" : "text-xl sm:text-2xl"} font-extrabold font-display block ${ingresosHoy > 0 ? "text-emerald-400" : "text-slate-300"}`}
+                className={`${modoAccesible ? "text-2xl sm:text-3xl" : "text-xl sm:text-2xl"} font-extrabold font-display block ${ingresosHoy > 0 ? "text-emerald-400" : "text-slate-400"}`}
               />
               <p className="text-slate-300 text-xs font-normal mt-1 sm:mt-2">
                 {pedidosHoy.length} pedido{pedidosHoy.length !== 1 ? "s" : ""}
@@ -323,20 +323,20 @@ export default function Dashboard() {
 
         {/* Alerta: pedidos En Riesgo */}
         {pedidosEnRiesgo.length > 0 && (
-          <div className="bg-red-50 border-2 border-red-900 rounded-3xl p-4 sm:p-5 shadow-sm">
+          <div className="bg-red-50 border-2 border-red-300 rounded-3xl p-4 sm:p-5 shadow-sm">
             <div className="flex items-center gap-2.5 sm:gap-3 mb-3">
               <div className="w-9 h-9 sm:w-10 sm:h-10 bg-red-600 rounded-2xl flex items-center justify-center shrink-0 shadow-md">
                 <span className="material-icons text-white" style={{ fontSize: "20px" }}>warning</span>
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm sm:text-base font-bold text-red-200">
+                <p className="text-sm sm:text-base font-bold text-red-950">
                   {pedidosEnRiesgo.length} pedido{pedidosEnRiesgo.length !== 1 ? "s" : ""} En Riesgo
                 </p>
                 <p className="text-xs text-red-800 font-medium">Llevan más de 24 h sin actualizarse</p>
               </div>
               <button
                 onClick={() => navegarAConFiltro("pedidos", "Recibido")}
-                className="text-xs text-red-800 font-bold hover:underline flex items-center gap-0.5 sm:gap-1 shrink-0 bg-red-950/50 px-2.5 sm:px-3 py-1.5 rounded-xl border border-red-200"
+                className="text-xs text-red-800 font-bold hover:underline flex items-center gap-0.5 sm:gap-1 shrink-0 bg-red-100 px-2.5 sm:px-3 py-1.5 rounded-xl border border-red-200"
               >
                 <span>Ver todos</span>
                 <span className="material-icons" style={{ fontSize: "16px" }}>chevron_right</span>
@@ -346,15 +346,15 @@ export default function Dashboard() {
               {pedidosEnRiesgo.slice(0, 3).map((p) => {
                 const diasAtraso = Math.floor((new Date(HOY).getTime() - new Date(p.fecha).getTime()) / 86_400_000);
                 return (
-                  <div key={p.id} className="bg-slate-900 rounded-2xl px-3.5 sm:px-4 py-3 flex items-center gap-2.5 sm:gap-3 border border-red-100 shadow-sm">
+                  <div key={p.id} className="bg-white rounded-2xl px-3.5 sm:px-4 py-3 flex items-center gap-2.5 sm:gap-3 border border-red-100 shadow-sm">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
-                        <span className="text-xs font-mono font-bold text-slate-100">{p.numero}</span>
-                        <span className="text-xs sm:text-sm font-semibold text-white truncate max-w-[120px] sm:max-w-none">{p.cliente.nombre}</span>
+                        <span className="text-xs font-mono font-bold text-slate-700">{p.numero}</span>
+                        <span className="text-xs sm:text-sm font-semibold text-slate-900 truncate max-w-[120px] sm:max-w-none">{p.cliente.nombre}</span>
                       </div>
                       {p.notas && <p className="text-xs text-slate-600 font-normal truncate mt-0.5">{p.notas}</p>}
                     </div>
-                    <span className="text-[11px] sm:text-xs font-bold text-red-800 bg-red-950/50 border border-red-200 rounded-full px-2 sm:px-2.5 py-0.5 sm:py-1 whitespace-nowrap shrink-0">
+                    <span className="text-[11px] sm:text-xs font-bold text-red-800 bg-red-100 border border-red-200 rounded-full px-2 sm:px-2.5 py-0.5 sm:py-1 whitespace-nowrap shrink-0">
                       {diasAtraso}d atraso
                     </span>
                     <a
@@ -379,7 +379,7 @@ export default function Dashboard() {
             className="bg-amber-50 border-2 border-amber-300 rounded-3xl px-4 sm:px-5 py-3.5 sm:py-4 flex items-center gap-3 cursor-pointer active:scale-[0.99] transition-transform shadow-sm"
             onClick={() => navegarA("productos")}
           >
-            <div className="w-9 h-9 sm:w-10 sm:h-10 bg-orange-500 rounded-2xl flex items-center justify-center shrink-0">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 bg-amber-500 rounded-2xl flex items-center justify-center shrink-0">
               <span className="material-icons text-white" style={{ fontSize: "20px" }}>inventory</span>
             </div>
             <div className="flex-1 min-w-0">
@@ -395,12 +395,12 @@ export default function Dashboard() {
         )}
 
         {/* Pipeline de estados */}
-        <div className="bg-slate-900 rounded-3xl p-4 sm:p-5 shadow-sm border border-slate-700">
+        <div className="bg-white rounded-3xl p-4 sm:p-5 shadow-sm border border-slate-200">
           <div className="flex items-center gap-2 mb-3">
-            <h2 className="text-sm sm:text-base font-bold text-white">Pipeline de pedidos activos</h2>
+            <h2 className="text-sm sm:text-base font-bold text-slate-900">Pipeline de pedidos activos</h2>
             <InfoTooltip texto="Distribución de todos los pedidos activos por estado. Los cancelados no se contabilizan." />
           </div>
-          <div className="flex gap-1 h-3 rounded-full overflow-hidden mb-4 bg-slate-100 border border-slate-700">
+          <div className="flex gap-1 h-3 rounded-full overflow-hidden mb-4 bg-slate-100 border border-slate-200">
             {estadosPipeline.map(({ estado, bg }) => {
               const cant = pedidosActivos.filter((p) => p.estado === estado).length;
               const pct = pedidosActivos.length > 0 ? (cant / pedidosActivos.length) * 100 : 0;
@@ -416,12 +416,12 @@ export default function Dashboard() {
                 <button
                   key={estado}
                   onClick={() => navegarAConFiltro("pedidos", estado)}
-                  className="flex items-center gap-2 p-2 rounded-xl hover:bg-slate-100 transition-colors text-left border border-slate-100 hover:border-slate-700"
+                  className="flex items-center gap-2 p-2 rounded-xl hover:bg-slate-100 transition-colors text-left border border-slate-100 hover:border-slate-200"
                 >
-                  <div className={`w-3 h-3 rounded-full ${bg} shrink-0 border border-slate-700`} />
-                  <span className="text-xs font-semibold text-slate-100 flex-1 truncate">{label}</span>
+                  <div className={`w-3 h-3 rounded-full ${bg} shrink-0 border border-slate-300`} />
+                  <span className="text-xs font-semibold text-slate-700 flex-1 truncate">{label}</span>
                   <span className="text-xs sm:text-sm font-bold font-mono shrink-0" style={{ color }}>{cant}</span>
-                  <span className="text-[11px] text-slate-300 font-medium shrink-0">({pct}%)</span>
+                  <span className="text-[11px] text-slate-500 font-medium shrink-0">({pct}%)</span>
                 </button>
               );
             })}
@@ -438,24 +438,24 @@ export default function Dashboard() {
             <button
               key={acc.label}
               onClick={() => navegarA(acc.pagina)}
-              className={`bg-slate-900 rounded-2xl sm:rounded-3xl p-3 sm:p-4 flex flex-row sm:flex-col items-center justify-start sm:justify-center gap-3 sm:gap-2 shadow-sm border ${acc.bg} hover:shadow-md active:scale-98 transition-all text-left sm:text-center`}
+              className={`bg-white rounded-2xl sm:rounded-3xl p-3 sm:p-4 flex flex-row sm:flex-col items-center justify-start sm:justify-center gap-3 sm:gap-2 shadow-sm border ${acc.bg} hover:shadow-md active:scale-98 transition-all text-left sm:text-center`}
             >
-              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl flex items-center justify-center bg-slate-950 border border-slate-700 shadow-inner shrink-0">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl flex items-center justify-center bg-slate-50 border border-slate-200 shadow-inner shrink-0">
                 <span className={`material-icons ${acc.color}`} style={{ fontSize: "24px" }}>{acc.icon}</span>
               </div>
               <div className="flex flex-col">
-                <span className="text-xs sm:text-sm font-bold text-white leading-tight">{acc.label}</span>
-                <span className="text-[11px] text-slate-300 font-medium mt-0.5">{acc.desc}</span>
+                <span className="text-xs sm:text-sm font-bold text-slate-900 leading-tight">{acc.label}</span>
+                <span className="text-[11px] text-slate-500 font-medium mt-0.5">{acc.desc}</span>
               </div>
             </button>
           ))}
         </div>
 
         {/* Últimos pedidos — Card View en Móvil (<640px) y Tabla en Tablet/Desktop (>=640px) */}
-        <div className="bg-slate-900 rounded-3xl shadow-sm overflow-hidden border border-slate-700">
-          <div className="flex items-center justify-between px-4 sm:px-5 py-3.5 sm:py-4 border-b border-slate-100 bg-slate-950/50">
+        <div className="bg-white rounded-3xl shadow-sm overflow-hidden border border-slate-200">
+          <div className="flex items-center justify-between px-4 sm:px-5 py-3.5 sm:py-4 border-b border-slate-100 bg-slate-50/50">
             <div className="flex items-center gap-2">
-              <h2 className="font-bold text-sm sm:text-base text-white">Últimos Pedidos</h2>
+              <h2 className="font-bold text-sm sm:text-base text-slate-900">Últimos Pedidos</h2>
               <InfoTooltip texto="Pedidos más recientes, ordenados por fecha de creación. Toca el icono de editar para cambiar el estado sin salir del dashboard." />
             </div>
             <button onClick={() => navegarA("pedidos")} className="text-xs text-[#E63946] font-bold hover:underline flex items-center gap-1 bg-red-50 px-2.5 py-1 rounded-xl border border-red-100">
@@ -470,13 +470,13 @@ export default function Dashboard() {
                 <div className="flex items-start justify-between gap-2">
                   <div>
                     <div className="flex items-center gap-1.5 mb-1">
-                      <span className="font-mono text-xs font-bold text-slate-100 bg-slate-100 px-2 py-0.5 rounded border border-slate-700">{pedido.numero}</span>
-                      <span className="text-xs text-slate-300 font-normal">{pedido.fecha}</span>
+                      <span className="font-mono text-xs font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded border border-slate-200">{pedido.numero}</span>
+                      <span className="text-xs text-slate-500 font-normal">{pedido.fecha}</span>
                     </div>
-                    <div className="text-sm font-bold text-white">{pedido.cliente.nombre}</div>
+                    <div className="text-sm font-bold text-slate-900">{pedido.cliente.nombre}</div>
                   </div>
                   <div className="text-right">
-                    <span className="text-sm font-bold font-mono text-white">S/{pedido.total.toFixed(2)}</span>
+                    <span className="text-sm font-bold font-mono text-slate-900">S/{pedido.total.toFixed(2)}</span>
                   </div>
                 </div>
 
@@ -488,7 +488,7 @@ export default function Dashboard() {
                         onChange={(e) => handleCambioEstado(pedido.id, e.target.value as EstadoPedido)}
                         onBlur={() => setEditandoId(null)}
                         autoFocus
-                        className="text-xs font-semibold border-2 border-[#E63946] rounded-xl px-2 py-1.5 focus:outline-none bg-slate-900 shadow-md w-full"
+                        className="text-xs font-semibold border-2 border-[#E63946] rounded-xl px-2 py-1.5 focus:outline-none bg-white shadow-md w-full"
                       >
                         {(["Recibido", "Preparación", "Camino", "Entregado", "Cancelado"] as EstadoPedido[]).map((e) => (
                           <option key={e}>{e}</option>
@@ -500,7 +500,7 @@ export default function Dashboard() {
                   </div>
                   <button
                     onClick={() => setEditandoId(editandoId === pedido.id ? null : pedido.id)}
-                    className="p-2 rounded-xl bg-slate-100 hover:bg-cyan-500 hover:text-white text-slate-100 transition-colors border border-slate-700 shrink-0 flex items-center gap-1 text-xs font-semibold"
+                    className="p-2 rounded-xl bg-slate-100 hover:bg-[#0F223D] hover:text-white text-slate-700 transition-colors border border-slate-200 shrink-0 flex items-center gap-1 text-xs font-semibold"
                     aria-label="Cambiar estado"
                     title="Cambiar estado del pedido"
                   >
@@ -516,7 +516,7 @@ export default function Dashboard() {
           <div className="hidden sm:block overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="bg-slate-100 text-slate-100">
+                <tr className="bg-slate-100 text-slate-700">
                   <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider">N°</th>
                   <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider">Cliente</th>
                   <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider">Total</th>
@@ -527,13 +527,13 @@ export default function Dashboard() {
               <tbody>
                 {ultimosPedidos.map((pedido, i) => (
                   <tr key={pedido.id} className={`transition-colors hover:bg-blue-50/40 ${i < ultimosPedidos.length - 1 ? "border-b border-slate-100" : ""}`}>
-                    <td className="px-4 py-3.5 font-mono text-xs font-semibold text-slate-100">{pedido.numero}</td>
+                    <td className="px-4 py-3.5 font-mono text-xs font-semibold text-slate-700">{pedido.numero}</td>
                     <td className="px-4 py-3.5">
-                      <div className="text-sm font-semibold text-white max-w-[180px] truncate">{pedido.cliente.nombre}</div>
-                      <div className="text-xs font-normal text-slate-300 mt-0.5">{pedido.fecha}</div>
+                      <div className="text-sm font-semibold text-slate-900 max-w-[180px] truncate">{pedido.cliente.nombre}</div>
+                      <div className="text-xs font-normal text-slate-500 mt-0.5">{pedido.fecha}</div>
                     </td>
                     <td className="px-4 py-3.5 text-right">
-                      <span className="text-sm font-bold font-mono text-white">S/{pedido.total.toFixed(2)}</span>
+                      <span className="text-sm font-bold font-mono text-slate-900">S/{pedido.total.toFixed(2)}</span>
                     </td>
                     <td className="px-4 py-3.5">
                       {editandoId === pedido.id ? (
@@ -542,7 +542,7 @@ export default function Dashboard() {
                           onChange={(e) => handleCambioEstado(pedido.id, e.target.value as EstadoPedido)}
                           onBlur={() => setEditandoId(null)}
                           autoFocus
-                          className="text-xs font-semibold border-2 border-[#E63946] rounded-xl px-2 py-1.5 focus:outline-none bg-slate-900 shadow-md"
+                          className="text-xs font-semibold border-2 border-[#E63946] rounded-xl px-2 py-1.5 focus:outline-none bg-white shadow-md"
                         >
                           {(["Recibido", "Preparación", "Camino", "Entregado", "Cancelado"] as EstadoPedido[]).map((e) => (
                             <option key={e}>{e}</option>
@@ -555,7 +555,7 @@ export default function Dashboard() {
                     <td className="px-4 py-3.5 text-center">
                       <button
                         onClick={() => setEditandoId(editandoId === pedido.id ? null : pedido.id)}
-                        className="p-2 rounded-xl bg-slate-100 hover:bg-cyan-500 hover:text-white text-slate-100 transition-colors border border-slate-700"
+                        className="p-2 rounded-xl bg-slate-100 hover:bg-[#0F223D] hover:text-white text-slate-700 transition-colors border border-slate-200"
                         aria-label="Cambiar estado"
                         title="Cambiar estado del pedido"
                       >
@@ -574,7 +574,7 @@ export default function Dashboard() {
       {/* Floating Action Button (Comfortable placement with high contrast ring) */}
       <button
         onClick={() => navegarA("nuevo-pedido")}
-        className="fixed bottom-20 right-4 sm:bottom-8 sm:right-8 bg-cyan-500 hover:bg-[#C62828] active:scale-95 text-white w-14 h-14 sm:w-16 sm:h-16 rounded-full shadow-2xl shadow-red-500/50 flex items-center justify-center transition-all z-30 ring-4 ring-white"
+        className="fixed bottom-20 right-4 sm:bottom-8 sm:right-8 bg-[#E63946] hover:bg-[#C62828] active:scale-95 text-white w-14 h-14 sm:w-16 sm:h-16 rounded-full shadow-2xl shadow-red-500/50 flex items-center justify-center transition-all z-30 ring-4 ring-white"
         aria-label="Nuevo pedido"
         title="Crear un nuevo pedido"
       >
