@@ -20,7 +20,7 @@
 | **Docente Asignado** | Ing. Enrique Lee Huamani Uriarte |
 | **Equipo de Desarrollo (Grupo 01)** | • Loayza Rodriguez, Lady Luz — Código: `U22221489` (Scrum Master / DevSecOps)<br>• Cárdenas Fernández, Víctor Leandro — Código: `U19217414` (Product Owner / Data Architect)<br>• Roman Delgado, Harley Anthony — Código: `U21313032` (Frontend Lead / PWA Specialist)<br>• Dávila Morales, Jim Alessandro — Código: `U18206081` (QA Engineer Lead / Backend)<br>• Rojas Sanchez, Daniel Enrique — Código: `U21214627` (Business Analyst / Cloud DevOps) |
 | **Versión del Documento** | 3.0.0 (Unificación Maestra Total) |
-| **Fecha de Publicación** | Septiembre de 2026 |
+| **Fecha de Publicación** | Diciembre de 2026 |
 | **Estado del Documento** | Aprobado — Versión Oficial Consolidada |
 
 ---
@@ -29,9 +29,10 @@
 
 | Versión | Fecha | Autor(es) | Resumen de Modificaciones y Aportes |
 | :---: | :---: | :--- | :--- |
-| **v1.0** | 10/05/2026 | Grupo 01 | Entrega formal de Avance de Proyecto Final 1 (APF1). Análisis empresarial, requerimientos RF-001 a RF-012, arquitectura preliminar y prototipo UI inicial. Calificación obtenida: 18/20. |
-| **v2.0** | 20/07/2026 | Grupo 01 | Entrega formal de Avance de Proyecto Final 2 (APF2). Despliegue cloud inicial, base de datos relacional PostgreSQL normalizada, catálogo de seguridad OWASP y levantamiento de observaciones. |
-| **v3.0** | 24/09/2026 | Loayza R., Lady Luz (Lead) | **Consolidación Integral y Fusión Total**: Se eliminan 13 documentos fragmentados y dispersos en el repositorio para unificar toda la información técnica, de negocio, arquitectura, base de datos, seguridad, pruebas, evidencias de pantallas (14 pantallas) y gobernanza en un único Documento Maestro Definitivo. |
+| **v1.0** | 10/09/2026 | Grupo 01 | Entrega formal de Avance de Proyecto Final 1 (APF1). Análisis empresarial, requerimientos RF-001 a RF-012, arquitectura preliminar y prototipo UI inicial. Calificación obtenida: 18/20. |
+| **v2.0** | 08/10/2026 | Grupo 01 | Entrega formal de Avance de Proyecto Final 2 (APF2). Despliegue cloud inicial, base de datos relacional PostgreSQL normalizada, catálogo de seguridad OWASP y levantamiento de observaciones. |
+| **v3.0** | 05/11/2026 | Grupo 01 | Entrega formal de Avance de Proyecto Final 3 (APF3). Pruebas E2E, métricas finales y levantamiento de observaciones. |
+| **v4.0** | 03/12/2026 | Loayza R., Lady Luz (Lead) | **Consolidación Integral y Fusión Total (Trabajo Final)**: Se eliminan 13 documentos fragmentados y dispersos en el repositorio para unificar toda la información técnica, de negocio, arquitectura, base de datos, seguridad, pruebas, evidencias de pantallas (14 pantallas) y gobernanza en un único Documento Maestro Definitivo. |
 
 ---
 
