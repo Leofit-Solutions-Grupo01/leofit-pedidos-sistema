@@ -47,7 +47,7 @@ export default function Navbar() {
   return (
     <>
       {/* Header Superior Principal */}
-      <header className="fixed top-0 left-0 right-0 z-40 bg-[#0F223D]/95 backdrop-blur-md h-16 border-b border-slate-700/60 shadow-xl transition-all">
+      <header className="fixed top-0 left-0 right-0 z-40 bg-cyan-500/95 backdrop-blur-md h-16 border-b border-slate-700/60 shadow-xl transition-all">
         <div className="max-w-5xl mx-auto h-full px-3 sm:px-6 flex items-center justify-between gap-2">
           
           {/* 1. SECCIÓN IZQUIERDA: Marca y Contexto */}
@@ -70,7 +70,7 @@ export default function Navbar() {
                 <span className="font-extrabold font-display text-lg sm:text-xl text-[#E63946] tracking-tight">LEO</span>
                 <span className="font-extrabold font-display text-lg sm:text-xl text-white tracking-tight">FIT</span>
               </div>
-              <span className="text-[10px] font-semibold text-slate-400 tracking-wider uppercase mt-0.5 hidden md:inline">
+              <span className="text-[10px] font-semibold text-slate-300 tracking-wider uppercase mt-0.5 hidden md:inline">
                 Gestión de Pedidos
               </span>
             </div>
@@ -86,8 +86,8 @@ export default function Navbar() {
                   onClick={() => navegarA(item.pagina)}
                   className={`flex items-center gap-1.5 px-2.5 lg:px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all ${
                     activo
-                      ? "bg-[#E63946] text-white shadow-md shadow-red-500/30"
-                      : "text-slate-300 hover:text-white hover:bg-white/10"
+                      ? "bg-cyan-500 text-slate-950 shadow-md shadow-red-500/30"
+                      : "text-slate-300 hover:text-white hover:bg-slate-900/10"
                   }`}
                   aria-label={item.label}
                 >
@@ -106,7 +106,7 @@ export default function Navbar() {
               onClick={toggleAccesible}
               className={`px-2.5 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1 transition-all border ${
                 modoAccesible
-                  ? "bg-[#F59E0B] text-slate-950 border-amber-300 shadow-md ring-1 ring-amber-300"
+                  ? "bg-[#F59E0B] text-white border-amber-300 shadow-md ring-1 ring-amber-300"
                   : "bg-slate-800/70 border-slate-700/60 text-slate-300 hover:text-white hover:bg-slate-700/80"
               }`}
               aria-label={modoAccesible ? "Desactivar modo vista grande" : "Activar modo vista grande"}
@@ -128,21 +128,21 @@ export default function Navbar() {
                   L
                 </div>
                 <span className="text-xs font-semibold text-slate-200 hidden sm:inline">Lady Loayza</span>
-                <span className="material-icons text-slate-400" style={{ fontSize: "15px" }}>
+                <span className="material-icons text-slate-300" style={{ fontSize: "15px" }}>
                   {menuUsuarioAbierto ? "expand_less" : "expand_more"}
                 </span>
               </button>
 
               {/* Desplegable de Usuario */}
               {menuUsuarioAbierto && (
-                <div className="absolute right-0 mt-2 w-56 bg-[#0F223D] border border-slate-700 rounded-2xl shadow-2xl p-2.5 z-50 text-slate-200 animate-in fade-in slide-in-from-top-2">
+                <div className="absolute right-0 mt-2 w-56 bg-cyan-500 border border-slate-700 rounded-2xl shadow-2xl p-2.5 z-50 text-slate-200 animate-in fade-in slide-in-from-top-2">
                   <div className="px-3 py-2 border-b border-slate-700/60 mb-1 bg-slate-900/50 rounded-xl">
                     <p className="text-xs font-bold text-white">Lady Luz Loayza Rodriguez</p>
                     <p className="text-[10px] font-medium text-emerald-400">@LadyyLuz · Scrum Master</p>
-                    <p className="text-[10px] font-normal text-slate-400 truncate">168585420+luzylay@users.noreply.github.com</p>
+                    <p className="text-[10px] font-normal text-slate-300 truncate">168585420+luzylay@users.noreply.github.com</p>
                   </div>
 
-                  <div className="px-3 py-1 text-[11px] text-slate-400">
+                  <div className="px-3 py-1 text-[11px] text-slate-300">
                     Operador: <strong className="text-slate-200">Víctor Raúl Cárdenas</strong>
                   </div>
 
@@ -151,9 +151,9 @@ export default function Navbar() {
                       setMenuUsuarioAbierto(false);
                       toggleAccesible();
                     }}
-                    className="w-full flex items-center gap-2 px-3 py-2 text-xs font-medium text-slate-300 hover:text-white hover:bg-white/10 rounded-xl transition-colors text-left mt-1"
+                    className="w-full flex items-center gap-2 px-3 py-2 text-xs font-medium text-slate-300 hover:text-white hover:bg-slate-900/10 rounded-xl transition-colors text-left mt-1"
                   >
-                    <span className="material-icons text-amber-400" style={{ fontSize: "16px" }}>format_size</span>
+                    <span className="material-icons text-orange-500" style={{ fontSize: "16px" }}>format_size</span>
                     <span>{modoAccesible ? "Reducir tamaño fuente" : "Aumentar tamaño fuente"}</span>
                   </button>
 
@@ -178,7 +178,7 @@ export default function Navbar() {
       </header>
 
       {/* Barra de Navegación Inferior (Móvil Ultra-Optimizada) */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#0F223D]/95 backdrop-blur-md border-t border-slate-700/70 flex shadow-2xl safe-bottom">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-cyan-500/95 backdrop-blur-md border-t border-slate-700/70 flex shadow-2xl safe-bottom">
         {navItems.map((item) => {
           const activo = paginaActual === item.pagina;
           return (
@@ -187,8 +187,8 @@ export default function Navbar() {
               onClick={() => navegarA(item.pagina)}
               className={`flex-1 min-w-0 flex flex-col items-center justify-center py-2 px-0.5 gap-0.5 transition-all ${
                 activo
-                  ? "text-[#E63946] bg-white/10 border-t-2 border-[#E63946]"
-                  : "text-slate-400 hover:text-white hover:bg-white/5"
+                  ? "text-[#E63946] bg-slate-900/10 border-t-2 border-[#E63946]"
+                  : "text-slate-300 hover:text-white hover:bg-slate-900/5"
               }`}
               aria-label={item.label}
             >

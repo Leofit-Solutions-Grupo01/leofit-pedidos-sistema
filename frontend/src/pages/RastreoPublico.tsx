@@ -94,13 +94,13 @@ export default function RastreoPublico() {
       <div className="max-w-5xl mx-auto px-3 sm:px-6 py-4 sm:py-5 space-y-4 sm:space-y-5">
 
         {/* Hero de Rastreo */}
-        <div className="bg-[#0F223D] rounded-3xl p-5 sm:p-6 text-white text-center shadow-xl border border-slate-700">
+        <div className="bg-cyan-500 rounded-3xl p-5 sm:p-6 text-white text-center shadow-xl border border-slate-700">
           <div className="inline-flex items-center justify-center w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-br from-[#E63946] to-[#C62828] mb-3 shadow-md">
             <span className="material-icons text-white text-xl sm:text-2xl">track_changes</span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-bold text-white mb-1">Rastreo de Envíos en Vivo</h1>
           <p className="text-slate-300 text-xs sm:text-sm font-normal max-w-md mx-auto leading-relaxed">
-            Ingresa tu código <strong className="text-amber-400 font-mono">LFT-XXX</strong>, DNI/RUC o teléfono para conocer el estado de tu entrega.
+            Ingresa tu código <strong className="text-orange-500 font-mono">LFT-XXX</strong>, DNI/RUC o teléfono para conocer el estado de tu entrega.
           </p>
 
           {/* Formulario de Búsqueda */}
@@ -110,11 +110,11 @@ export default function RastreoPublico() {
               value={codigoBusqueda}
               onChange={(e) => setCodigoBusqueda(e.target.value)}
               placeholder="ej. LFT-004, 72345678 o 934567890"
-              className="flex-1 px-4 py-3 bg-white text-slate-900 placeholder-slate-400 rounded-2xl text-sm sm:text-base font-semibold focus:outline-none focus:ring-4 focus:ring-red-500/40 shadow-inner"
+              className="flex-1 px-4 py-3 bg-slate-900 text-white placeholder-slate-400 rounded-2xl text-sm sm:text-base font-semibold focus:outline-none focus:ring-4 focus:ring-red-500/40 shadow-inner"
             />
             <button
               type="submit"
-              className="px-5 sm:px-6 py-3 bg-[#E63946] hover:bg-[#C62828] active:scale-95 text-white font-bold rounded-2xl transition-all flex items-center justify-center gap-1.5 shadow-md shadow-red-500/30 shrink-0 text-sm sm:text-base"
+              className="px-5 sm:px-6 py-3 bg-cyan-500 hover:bg-[#C62828] active:scale-95 text-white font-bold rounded-2xl transition-all flex items-center justify-center gap-1.5 shadow-md shadow-red-500/30 shrink-0 text-sm sm:text-base"
             >
               <span className="material-icons" style={{ fontSize: "18px" }}>search</span>
               <span>Rastrear</span>
@@ -123,7 +123,7 @@ export default function RastreoPublico() {
 
           {/* Atajos Rápidos de Demostración */}
           <div className="mt-3.5 flex items-center justify-center gap-1.5 sm:gap-2 flex-wrap">
-            <span className="text-[11px] sm:text-xs text-slate-400 font-medium">Ejemplos:</span>
+            <span className="text-[11px] sm:text-xs text-slate-300 font-medium">Ejemplos:</span>
             {[
               { cod: "LFT-004", label: "Shalom Trujillo" },
               { cod: "LFT-003", label: "Lima Directo" },
@@ -147,8 +147,8 @@ export default function RastreoPublico() {
 
         {/* Error si no se encuentra */}
         {errorBusqueda && (
-          <div className="bg-red-100 border-2 border-red-300 rounded-2xl p-3.5 sm:p-4 flex items-center gap-2.5 text-red-950">
-            <span className="material-icons text-red-700" style={{ fontSize: "22px" }}>error_outline</span>
+          <div className="bg-red-950/50 border-2 border-red-900 rounded-2xl p-3.5 sm:p-4 flex items-center gap-2.5 text-red-200">
+            <span className="material-icons text-red-400" style={{ fontSize: "22px" }}>error_outline</span>
             <p className="text-xs sm:text-sm font-semibold">{errorBusqueda}</p>
           </div>
         )}
@@ -158,11 +158,11 @@ export default function RastreoPublico() {
           <div className="space-y-4">
             
             {/* Tarjeta de Resumen y Estado */}
-            <div className="bg-white rounded-3xl p-4 sm:p-6 shadow-sm border border-slate-200">
+            <div className="bg-slate-900 rounded-3xl p-4 sm:p-6 shadow-sm border border-slate-700">
               <div className="flex flex-wrap items-start justify-between gap-3 pb-4 border-b border-slate-100 mb-4 sm:mb-5">
                 <div>
                   <div className="flex items-center gap-1.5 sm:gap-2 mb-1 flex-wrap">
-                    <span className="text-xs sm:text-sm font-mono font-bold text-slate-700 bg-slate-100 px-2 sm:px-2.5 py-0.5 rounded-lg border border-slate-200">
+                    <span className="text-xs sm:text-sm font-mono font-bold text-slate-100 bg-slate-100 px-2 sm:px-2.5 py-0.5 rounded-lg border border-slate-700">
                       {pedidoEncontrado.numero}
                     </span>
                     <span className="text-[11px] sm:text-xs font-semibold px-2 sm:px-2.5 py-0.5 rounded-lg bg-blue-100 text-blue-900 border border-blue-200">
@@ -174,8 +174,8 @@ export default function RastreoPublico() {
                       </span>
                     )}
                   </div>
-                  <h2 className="text-lg sm:text-xl font-bold text-slate-900">{pedidoEncontrado.cliente.nombre}</h2>
-                  <p className="text-xs text-slate-500 font-normal mt-0.5">
+                  <h2 className="text-lg sm:text-xl font-bold text-white">{pedidoEncontrado.cliente.nombre}</h2>
+                  <p className="text-xs text-slate-300 font-normal mt-0.5">
                     Fecha de Compra: {pedidoEncontrado.fecha} · DNI: <strong className="font-mono">{enmascararDni(pedidoEncontrado.cliente.dniRuc)}</strong>
                   </p>
                 </div>
@@ -186,10 +186,10 @@ export default function RastreoPublico() {
 
               {/* Timeline de Envíos */}
               {esCancelado ? (
-                <div className="bg-slate-100 border border-slate-300 rounded-2xl p-4 text-center">
-                  <span className="material-icons text-slate-500 text-4xl block mb-1">cancel</span>
-                  <p className="text-sm sm:text-base font-bold text-slate-800">Este pedido fue cancelado</p>
-                  <p className="text-xs text-slate-500 font-normal mt-1">Comunícate con soporte si tienes alguna duda.</p>
+                <div className="bg-slate-100 border border-slate-700 rounded-2xl p-4 text-center">
+                  <span className="material-icons text-slate-300 text-4xl block mb-1">cancel</span>
+                  <p className="text-sm sm:text-base font-bold text-slate-100">Este pedido fue cancelado</p>
+                  <p className="text-xs text-slate-300 font-normal mt-1">Comunícate con soporte si tienes alguna duda.</p>
                 </div>
               ) : (
                 <div className="relative pl-6 sm:pl-8 space-y-5 sm:space-y-6 my-2">
@@ -206,10 +206,10 @@ export default function RastreoPublico() {
                         <div
                           className={`absolute -left-6 sm:-left-8 w-6 sm:w-8 h-6 sm:h-8 rounded-full flex items-center justify-center border-2 transition-all ${
                             completado
-                              ? "bg-emerald-600 border-emerald-600 text-white shadow-sm"
+                              ? "bg-lime-500 border-lime-500 text-white shadow-sm"
                               : esActual
-                              ? "bg-[#E63946] border-[#E63946] text-white ring-4 ring-red-100 shadow-md animate-pulse"
-                              : "bg-white border-slate-300 text-slate-400"
+                              ? "bg-cyan-500 border-[#E63946] text-white ring-4 ring-red-100 shadow-md animate-pulse"
+                              : "bg-slate-900 border-slate-700 text-slate-300"
                           }`}
                         >
                           <span className="material-icons" style={{ fontSize: "14px" }}>
@@ -220,36 +220,36 @@ export default function RastreoPublico() {
                         {/* Contenido del paso */}
                         <div className="flex-1 pt-0.5">
                           <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
-                            <p className={`text-sm sm:text-base font-bold ${esActual ? "text-slate-950 font-extrabold" : completado ? "text-slate-800" : "text-slate-400"}`}>
+                            <p className={`text-sm sm:text-base font-bold ${esActual ? "text-white font-extrabold" : completado ? "text-slate-100" : "text-slate-300"}`}>
                               {paso.label}
                             </p>
                             {esActual && (
-                              <span className="text-[10px] uppercase font-bold tracking-wider bg-red-100 text-red-700 px-2 py-0.5 rounded-full border border-red-200">
+                              <span className="text-[10px] uppercase font-bold tracking-wider bg-red-950/50 text-red-400 px-2 py-0.5 rounded-full border border-red-200">
                                 Estado Actual
                               </span>
                             )}
                           </div>
-                          <p className={`text-xs ${esActual ? "text-slate-700 font-medium" : "text-slate-500 font-normal"} mt-0.5`}>
+                          <p className={`text-xs ${esActual ? "text-slate-100 font-medium" : "text-slate-300 font-normal"} mt-0.5`}>
                             {paso.desc}
                           </p>
 
                           {/* Si está en camino y es Provincia o Lima, mostrar detalles del transportista */}
                           {paso.estado === "Camino" && (esActual || completado) && (
-                            <div className="mt-2.5 bg-slate-50 border border-slate-200 rounded-2xl p-3 sm:p-3.5 space-y-2">
+                            <div className="mt-2.5 bg-slate-950 border border-slate-700 rounded-2xl p-3 sm:p-3.5 space-y-2">
                               {pedidoEncontrado.tipoEnvio === "Nacional" ? (
                                 <>
-                                  <div className="flex items-center justify-between text-xs font-semibold text-slate-800 gap-2">
+                                  <div className="flex items-center justify-between text-xs font-semibold text-slate-100 gap-2">
                                     <span className="flex items-center gap-1.5 text-blue-900">
                                       <span className="material-icons text-blue-700" style={{ fontSize: "16px" }}>domain</span>
                                       Empresa:
                                     </span>
-                                    <span className="bg-[#0F223D] text-white px-2 py-0.5 rounded-lg font-bold">
+                                    <span className="bg-cyan-500 text-slate-950 px-2 py-0.5 rounded-lg font-bold">
                                       {pedidoEncontrado.agenciaEncomienda || "Shalom"}
                                     </span>
                                   </div>
-                                  <div className="flex items-center justify-between text-xs text-slate-700 gap-2">
+                                  <div className="flex items-center justify-between text-xs text-slate-100 gap-2">
                                     <span className="font-medium">N° Guía:</span>
-                                    <span className="font-mono font-bold text-slate-900 bg-white px-2 py-0.5 rounded border border-slate-300">
+                                    <span className="font-mono font-bold text-white bg-slate-900 px-2 py-0.5 rounded border border-slate-700">
                                       {pedidoEncontrado.numeroGuia || "SH-990123"}
                                     </span>
                                   </div>
@@ -259,7 +259,7 @@ export default function RastreoPublico() {
                                 </>
                               ) : (
                                 <div className="flex items-center justify-between text-xs">
-                                  <div className="flex items-center gap-1.5 text-slate-900 font-semibold">
+                                  <div className="flex items-center gap-1.5 text-white font-semibold">
                                     <span className="material-icons text-emerald-700" style={{ fontSize: "16px" }}>two_wheeler</span>
                                     <span>Reparto Directo en Lima Capital (Víctor / Motorizado)</span>
                                   </div>
@@ -276,18 +276,18 @@ export default function RastreoPublico() {
             </div>
 
             {/* Dirección de Entrega y Referencia */}
-            <div className="bg-white rounded-3xl p-4 sm:p-5 shadow-sm border border-slate-200">
-              <h3 className="text-xs sm:text-sm font-bold text-slate-900 uppercase tracking-wider mb-2.5 flex items-center gap-2">
+            <div className="bg-slate-900 rounded-3xl p-4 sm:p-5 shadow-sm border border-slate-700">
+              <h3 className="text-xs sm:text-sm font-bold text-white uppercase tracking-wider mb-2.5 flex items-center gap-2">
                 <span className="material-icons text-slate-600" style={{ fontSize: "18px" }}>place</span>
                 Destino y Entrega
               </h3>
               <div className="space-y-2 text-xs sm:text-sm">
                 <div>
-                  <span className="text-[11px] sm:text-xs font-semibold text-slate-500 uppercase tracking-wider block">Dirección / Agencia:</span>
-                  <p className="font-medium text-slate-800">{pedidoEncontrado.cliente.direccion}</p>
+                  <span className="text-[11px] sm:text-xs font-semibold text-slate-300 uppercase tracking-wider block">Dirección / Agencia:</span>
+                  <p className="font-medium text-slate-100">{pedidoEncontrado.cliente.direccion}</p>
                 </div>
                 {(pedidoEncontrado.cliente.distrito || pedidoEncontrado.cliente.referencia) && (
-                  <div className="bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs text-slate-700 flex flex-wrap gap-3">
+                  <div className="bg-slate-950 border border-slate-700 rounded-xl p-2.5 text-xs text-slate-100 flex flex-wrap gap-3">
                     {pedidoEncontrado.cliente.distrito && (
                       <span><strong>Distrito:</strong> {pedidoEncontrado.cliente.distrito}</span>
                     )}
@@ -305,16 +305,16 @@ export default function RastreoPublico() {
             </div>
 
             {/* Desglose de Prendas y Pago */}
-            <div className="bg-white rounded-3xl p-4 sm:p-5 shadow-sm border border-slate-200">
-              <h3 className="text-xs sm:text-sm font-bold text-slate-900 uppercase tracking-wider mb-2.5 flex items-center gap-2">
+            <div className="bg-slate-900 rounded-3xl p-4 sm:p-5 shadow-sm border border-slate-700">
+              <h3 className="text-xs sm:text-sm font-bold text-white uppercase tracking-wider mb-2.5 flex items-center gap-2">
                 <span className="material-icons text-slate-600" style={{ fontSize: "18px" }}>checkroom</span>
                 Prendas en tu Pedido
               </h3>
               <div className="space-y-2">
                 {pedidoEncontrado.items.map((item) => (
                   <div key={item.productoId} className="flex items-center justify-between text-xs sm:text-sm py-1 border-b border-slate-100 last:border-none">
-                    <span className="text-slate-800 font-medium">{item.nombre} × {item.cantidad}</span>
-                    <span className="font-mono font-bold text-slate-900">S/{(item.cantidad * item.precio).toFixed(2)}</span>
+                    <span className="text-slate-100 font-medium">{item.nombre} × {item.cantidad}</span>
+                    <span className="font-mono font-bold text-white">S/{(item.cantidad * item.precio).toFixed(2)}</span>
                   </div>
                 ))}
                 {pedidoEncontrado.costoDelivery > 0 && (
@@ -329,7 +329,7 @@ export default function RastreoPublico() {
                     <span className="font-mono">-S/{pedidoEncontrado.descuento.toFixed(2)}</span>
                   </div>
                 )}
-                <div className="pt-2 flex items-center justify-between font-bold text-sm sm:text-base text-slate-950 border-t border-slate-200">
+                <div className="pt-2 flex items-center justify-between font-bold text-sm sm:text-base text-white border-t border-slate-700">
                   <span>Total Pedido:</span>
                   <span className="font-mono text-lg sm:text-xl text-[#E63946]">S/{pedidoEncontrado.total.toFixed(2)}</span>
                 </div>
@@ -343,22 +343,22 @@ export default function RastreoPublico() {
                 <h4 className="text-xs sm:text-sm font-bold text-blue-950 uppercase tracking-wider">Garantía y Confianza LeoFit</h4>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs text-blue-900">
-                <div className="bg-white/70 p-2.5 rounded-xl border border-blue-200/60">
-                  <strong className="flex items-center gap-1 text-slate-900 font-bold mb-0.5">
+                <div className="bg-slate-900/70 p-2.5 rounded-xl border border-blue-200/60">
+                  <strong className="flex items-center gap-1 text-white font-bold mb-0.5">
                     <span className="material-icons text-blue-700" style={{ fontSize: "15px" }}>inventory_2</span>
                     Entrega Segura
                   </strong>
                   Empaque sellado e inspección de costura antes del despacho.
                 </div>
-                <div className="bg-white/70 p-2.5 rounded-xl border border-blue-200/60">
-                  <strong className="flex items-center gap-1 text-slate-900 font-bold mb-0.5">
+                <div className="bg-slate-900/70 p-2.5 rounded-xl border border-blue-200/60">
+                  <strong className="flex items-center gap-1 text-white font-bold mb-0.5">
                     <span className="material-icons text-blue-700" style={{ fontSize: "15px" }}>sync</span>
                     Cambio de Talla
                   </strong>
                   Cambio inmediato si la talla no te queda perfecta.
                 </div>
-                <div className="bg-white/70 p-2.5 rounded-xl border border-blue-200/60">
-                  <strong className="flex items-center gap-1 text-slate-900 font-bold mb-0.5">
+                <div className="bg-slate-900/70 p-2.5 rounded-xl border border-blue-200/60">
+                  <strong className="flex items-center gap-1 text-white font-bold mb-0.5">
                     <span className="material-icons text-blue-700" style={{ fontSize: "15px" }}>support_agent</span>
                     Soporte Directo
                   </strong>
@@ -372,7 +372,7 @@ export default function RastreoPublico() {
               <button
                 type="button"
                 onClick={() => setMostrarRecibo(true)}
-                className="flex items-center justify-center gap-2 bg-[#0F223D] hover:bg-[#1E293B] text-white font-bold px-4 py-3 rounded-2xl text-xs sm:text-sm shadow-md transition-all active:scale-95"
+                className="flex items-center justify-center gap-2 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold px-4 py-3 rounded-2xl text-xs sm:text-sm shadow-md transition-all active:scale-95"
               >
                 <span className="material-icons" style={{ fontSize: "18px" }}>receipt_long</span>
                 <span>Descargar / Imprimir Recibo PDF</span>

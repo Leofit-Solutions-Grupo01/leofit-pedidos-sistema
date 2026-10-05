@@ -48,9 +48,9 @@ export default function ReciboModal({ pedido, onClose }: ReciboModalProps) {
   const subtotalPrendas = pedido.items.reduce((acc, i) => acc + i.cantidad * i.precio, 0);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-slate-900/75 backdrop-blur-sm overflow-y-auto print:p-0 print:bg-white print:static">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-slate-900/75 backdrop-blur-sm overflow-y-auto print:p-0 print:bg-slate-900 print:static">
       {/* Contenedor Principal del Modal */}
-      <div className="bg-white rounded-2xl shadow-2xl max-w-xl w-full overflow-hidden border border-slate-200 my-auto animate-in fade-in zoom-in-95 duration-150 print:shadow-none print:border-none print:max-w-none print:w-full print:rounded-none">
+      <div className="bg-slate-900 rounded-2xl shadow-2xl max-w-xl w-full overflow-hidden border border-slate-700 my-auto animate-in fade-in zoom-in-95 duration-150 print:shadow-none print:border-none print:max-w-none print:w-full print:rounded-none">
         
         {/* Barra superior de control (No se imprime) */}
         <div className="p-3.5 bg-slate-900 text-white flex items-center justify-between gap-2 print:hidden border-b border-slate-800">
@@ -60,7 +60,7 @@ export default function ReciboModal({ pedido, onClose }: ReciboModalProps) {
               onClick={() => setVista("recibo")}
               className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
                 vista === "recibo"
-                  ? "bg-slate-100 text-slate-950 shadow-sm"
+                  ? "bg-slate-100 text-white shadow-sm"
                   : "bg-slate-800 text-slate-300 hover:text-white"
               }`}
             >
@@ -72,7 +72,7 @@ export default function ReciboModal({ pedido, onClose }: ReciboModalProps) {
               onClick={() => setVista("rotulo")}
               className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
                 vista === "rotulo"
-                  ? "bg-slate-100 text-slate-950 shadow-sm"
+                  ? "bg-slate-100 text-white shadow-sm"
                   : "bg-slate-800 text-slate-300 hover:text-white"
               }`}
             >
@@ -95,19 +95,19 @@ export default function ReciboModal({ pedido, onClose }: ReciboModalProps) {
         {/* VISTA 1: COMPROBANTE DIGITAL MINIMALISTA Y ESTRUCTURADO           */}
         {/* ================================================================= */}
         {vista === "recibo" && (
-          <div className="p-3.5 sm:p-6 bg-slate-100/70 overflow-y-auto max-h-[78vh] print:max-h-none print:bg-white print:p-0">
+          <div className="p-3.5 sm:p-6 bg-slate-100/70 overflow-y-auto max-h-[78vh] print:max-h-none print:bg-slate-900 print:p-0">
             {/* Hoja A5 / Comprobante */}
-            <div className="bg-white rounded-xl p-5 sm:p-6 border border-slate-300 text-slate-900 shadow-sm print:border-none print:shadow-none print:p-2">
+            <div className="bg-slate-900 rounded-xl p-5 sm:p-6 border border-slate-700 text-white shadow-sm print:border-none print:shadow-none print:p-2">
               {/* Encabezado Formal */}
               <div className="flex justify-between items-start pb-4 border-b-2 border-slate-900 gap-3">
                 <div>
-                  <h2 className="text-lg sm:text-xl font-bold text-slate-950 tracking-tight leading-none">
+                  <h2 className="text-lg sm:text-xl font-bold text-white tracking-tight leading-none">
                     LEOFIT SOLUTIONS E.I.R.L.
                   </h2>
                   <p className="text-xs text-slate-600 font-medium mt-1">
                     R.U.C. 20600000000 · Lima, Perú
                   </p>
-                  <p className="text-[11px] text-slate-500 font-medium">
+                  <p className="text-[11px] text-slate-300 font-medium">
                     Atención al Cliente: +51 987 654 321
                   </p>
                 </div>
@@ -115,47 +115,47 @@ export default function ReciboModal({ pedido, onClose }: ReciboModalProps) {
                   <span className="inline-block bg-slate-950 text-white px-2.5 py-1 rounded text-xs font-mono font-bold tracking-wider">
                     {pedido.numero}
                   </span>
-                  <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mt-1">
+                  <p className="text-[10px] font-bold text-slate-300 uppercase tracking-wider mt-1">
                     Comprobante Electrónico
                   </p>
-                  <p className="text-xs font-semibold text-slate-700">
+                  <p className="text-xs font-semibold text-slate-100">
                     Fecha: {pedido.fecha}
                   </p>
                 </div>
               </div>
 
               {/* Información del Cliente y Despacho */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 py-3 border-b border-slate-200 text-xs">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 py-3 border-b border-slate-700 text-xs">
                 {/* Cliente */}
                 <div className="space-y-1">
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                  <span className="text-[10px] font-bold text-slate-300 uppercase tracking-wider block">
                     Datos del Cliente
                   </span>
-                  <p className="font-bold text-slate-950 text-sm">{pedido.cliente.nombre}</p>
-                  <p className="text-slate-700">
+                  <p className="font-bold text-white text-sm">{pedido.cliente.nombre}</p>
+                  <p className="text-slate-100">
                     <strong>DNI / RUC:</strong> <span className="font-mono">{pedido.cliente.dniRuc || "No registrado"}</span>
                   </p>
-                  <p className="text-slate-700">
+                  <p className="text-slate-100">
                     <strong>Teléfono:</strong> <span className="font-mono">{pedido.cliente.telefono}</span>
                   </p>
                 </div>
 
                 {/* Entrega */}
                 <div className="space-y-1">
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                  <span className="text-[10px] font-bold text-slate-300 uppercase tracking-wider block">
                     Modalidad de Entrega
                   </span>
-                  <p className="font-bold text-slate-900">
+                  <p className="font-bold text-white">
                     {pedido.tipoEnvio === "Nacional" ? `Nacional (${pedido.agenciaEncomienda || "Encomienda"})` : "Reparto Local Lima"}
                   </p>
-                  <p className="text-slate-700">
+                  <p className="text-slate-100">
                     <strong>Destino:</strong> {pedido.ciudadDestino || "Lima"}
                   </p>
-                  <p className="text-slate-700">
+                  <p className="text-slate-100">
                     <strong>Dirección:</strong> {pedido.cliente.direccion}
                   </p>
                   {pedido.cliente.referencia && (
-                    <p className="text-slate-500 italic">
+                    <p className="text-slate-300 italic">
                       Ref: {pedido.cliente.referencia}
                     </p>
                   )}
@@ -168,10 +168,10 @@ export default function ReciboModal({ pedido, onClose }: ReciboModalProps) {
               </div>
 
               {/* Tabla de Artículos */}
-              <div className="py-3 border-b border-slate-200">
+              <div className="py-3 border-b border-slate-700">
                 <table className="w-full text-xs">
                   <thead>
-                    <tr className="border-b border-slate-300 text-slate-600">
+                    <tr className="border-b border-slate-700 text-slate-600">
                       <th className="text-center pb-1.5 font-bold uppercase text-[10px] w-12">Cant.</th>
                       <th className="text-left pb-1.5 font-bold uppercase text-[10px]">Descripción / Prenda</th>
                       <th className="text-right pb-1.5 font-bold uppercase text-[10px] w-20">P. Unit</th>
@@ -180,11 +180,11 @@ export default function ReciboModal({ pedido, onClose }: ReciboModalProps) {
                   </thead>
                   <tbody className="divide-y divide-slate-100">
                     {pedido.items.map((item, idx) => (
-                      <tr key={idx} className="text-slate-800">
+                      <tr key={idx} className="text-slate-100">
                         <td className="py-1.5 text-center font-mono font-semibold">{item.cantidad}</td>
                         <td className="py-1.5 font-medium">{item.nombre}</td>
                         <td className="py-1.5 text-right font-mono text-slate-600">S/ {item.precio.toFixed(2)}</td>
-                        <td className="py-1.5 text-right font-mono font-bold text-slate-950">
+                        <td className="py-1.5 text-right font-mono font-bold text-white">
                           S/ {(item.cantidad * item.precio).toFixed(2)}
                         </td>
                       </tr>
@@ -196,7 +196,7 @@ export default function ReciboModal({ pedido, onClose }: ReciboModalProps) {
               {/* Resumen Económico & Pago */}
               <div className="pt-3 flex flex-col sm:flex-row justify-between items-start sm:items-end gap-3 text-xs">
                 {/* Pago */}
-                <div className="space-y-1 text-slate-700">
+                <div className="space-y-1 text-slate-100">
                   <p>
                     <strong>Forma de Pago:</strong> {pedido.metodoPago || "Yape"}
                   </p>
@@ -228,7 +228,7 @@ export default function ReciboModal({ pedido, onClose }: ReciboModalProps) {
                       <span className="font-mono">-S/ {pedido.descuento.toFixed(2)}</span>
                     </div>
                   )}
-                  <div className="flex justify-between items-center text-sm font-bold text-slate-950 pt-1.5 border-t-2 border-slate-900">
+                  <div className="flex justify-between items-center text-sm font-bold text-white pt-1.5 border-t-2 border-slate-900">
                     <span>TOTAL PAGADO:</span>
                     <span className="text-base font-mono">S/ {pedido.total.toFixed(2)}</span>
                   </div>
@@ -236,7 +236,7 @@ export default function ReciboModal({ pedido, onClose }: ReciboModalProps) {
               </div>
 
               {/* Pie de página con enlace de rastreo */}
-              <div className="mt-4 pt-2.5 border-t border-dashed border-slate-300 text-center text-[10px] text-slate-500">
+              <div className="mt-4 pt-2.5 border-t border-dashed border-slate-700 text-center text-[10px] text-slate-300">
                 <p>Rastreo de pedido en vivo: <strong>leofit.com/rastreo?codigo={pedido.numero}</strong></p>
                 <p className="mt-0.5">LeoFit Solutions E.I.R.L. · Documento Digital Oficial</p>
               </div>
@@ -248,12 +248,12 @@ export default function ReciboModal({ pedido, onClose }: ReciboModalProps) {
         {/* VISTA 2: RÓTULO DE ENCOMIENDA MINIMALISTA (SHALOM / OLVA)         */}
         {/* ================================================================= */}
         {vista === "rotulo" && (
-          <div className="p-3.5 sm:p-6 bg-slate-100/70 overflow-y-auto max-h-[78vh] print:max-h-none print:bg-white print:p-0">
-            <div className="bg-white rounded-xl p-5 border-2 border-slate-900 text-slate-900 shadow-sm print:border-2 print:border-black print:p-3">
+          <div className="p-3.5 sm:p-6 bg-slate-100/70 overflow-y-auto max-h-[78vh] print:max-h-none print:bg-slate-900 print:p-0">
+            <div className="bg-slate-900 rounded-xl p-5 border-2 border-slate-900 text-white shadow-sm print:border-2 print:border-black print:p-3">
               {/* Encabezado Rótulo */}
               <div className="flex justify-between items-center pb-3 border-b-2 border-slate-900 mb-3">
                 <div>
-                  <h3 className="text-base sm:text-lg font-bold uppercase tracking-tight text-slate-950">
+                  <h3 className="text-base sm:text-lg font-bold uppercase tracking-tight text-white">
                     RÓTULO DE PAQUETERÍA
                   </h3>
                   <p className="text-xs font-semibold text-slate-600">LEOFIT SOLUTIONS E.I.R.L.</p>
@@ -262,26 +262,26 @@ export default function ReciboModal({ pedido, onClose }: ReciboModalProps) {
                   <span className="text-sm font-mono font-bold bg-slate-950 text-white px-2.5 py-1 rounded">
                     {pedido.numero}
                   </span>
-                  <p className="text-[10px] font-semibold text-slate-500 mt-0.5">{pedido.fecha}</p>
+                  <p className="text-[10px] font-semibold text-slate-300 mt-0.5">{pedido.fecha}</p>
                 </div>
               </div>
 
               {/* Destino y Agencia */}
-              <div className="bg-slate-100 p-3 rounded-lg mb-3 border border-slate-300 text-xs">
+              <div className="bg-slate-100 p-3 rounded-lg mb-3 border border-slate-700 text-xs">
                 <div className="flex justify-between items-center font-bold">
                   <span className="text-slate-600 uppercase text-[11px]">AGENCIA / TRANSPORTE:</span>
-                  <span className="text-sm text-slate-950 uppercase">
+                  <span className="text-sm text-white uppercase">
                     {pedido.agenciaEncomienda || (pedido.tipoEnvio === "Nacional" ? "Shalom" : "Reparto Local")}
                   </span>
                 </div>
-                <div className="flex justify-between items-center font-bold mt-1.5 pt-1.5 border-t border-slate-200">
+                <div className="flex justify-between items-center font-bold mt-1.5 pt-1.5 border-t border-slate-700">
                   <span className="text-slate-600 uppercase text-[11px]">CIUDAD DESTINO:</span>
-                  <span className="text-sm text-slate-950 uppercase">
+                  <span className="text-sm text-white uppercase">
                     {pedido.ciudadDestino || "Lima"}
                   </span>
                 </div>
                 {pedido.numeroGuia && (
-                  <div className="flex justify-between items-center font-bold mt-1.5 pt-1.5 border-t border-slate-200 text-blue-900">
+                  <div className="flex justify-between items-center font-bold mt-1.5 pt-1.5 border-t border-slate-700 text-blue-900">
                     <span className="uppercase text-[11px]">N° GUÍA / CLAVE:</span>
                     <span className="font-mono text-sm">{pedido.numeroGuia}</span>
                   </div>
@@ -289,30 +289,30 @@ export default function ReciboModal({ pedido, onClose }: ReciboModalProps) {
               </div>
 
               {/* Destinatario */}
-              <div className="p-3 border border-slate-300 rounded-lg mb-3 text-xs space-y-1">
-                <span className="text-[10px] font-bold text-slate-500 uppercase block">
+              <div className="p-3 border border-slate-700 rounded-lg mb-3 text-xs space-y-1">
+                <span className="text-[10px] font-bold text-slate-300 uppercase block">
                   DESTINATARIO (CONSIGNADO):
                 </span>
-                <p className="text-base font-bold text-slate-950 uppercase">{pedido.cliente.nombre}</p>
-                <div className="grid grid-cols-2 gap-2 pt-1 text-slate-700">
+                <p className="text-base font-bold text-white uppercase">{pedido.cliente.nombre}</p>
+                <div className="grid grid-cols-2 gap-2 pt-1 text-slate-100">
                   <p><strong>DNI/RUC:</strong> <span className="font-mono font-bold">{pedido.cliente.dniRuc || "No registrado"}</span></p>
                   <p><strong>Teléfono:</strong> <span className="font-mono font-bold">{pedido.cliente.telefono}</span></p>
                 </div>
-                <p className="pt-1 text-slate-800">
+                <p className="pt-1 text-slate-100">
                   <strong>Dirección / Agencia:</strong> {pedido.cliente.direccion}
                 </p>
                 {pedido.cliente.referencia && (
-                  <p className="text-slate-500 italic">Ref: {pedido.cliente.referencia}</p>
+                  <p className="text-slate-300 italic">Ref: {pedido.cliente.referencia}</p>
                 )}
               </div>
 
               {/* Remitente */}
-              <div className="p-2.5 bg-slate-50 rounded-lg text-[11px] text-slate-600 border border-slate-200 mb-2">
+              <div className="p-2.5 bg-slate-950 rounded-lg text-[11px] text-slate-600 border border-slate-700 mb-2">
                 <p><strong>REMITENTE:</strong> LEOFIT SOLUTIONS E.I.R.L. · RUC: 20600000000</p>
                 <p>Lima, Perú · Teléfono: +51 987 654 321</p>
               </div>
 
-              <div className="text-center text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+              <div className="text-center text-[10px] font-bold text-slate-300 uppercase tracking-wider">
                 CONTENIDO: INDUMENTARIA DEPORTIVA · MANIPULAR CON CUIDADO
               </div>
             </div>
@@ -320,11 +320,11 @@ export default function ReciboModal({ pedido, onClose }: ReciboModalProps) {
         )}
 
         {/* Barra de Acciones Inferior (No se imprime) */}
-        <div className="p-3.5 bg-white border-t border-slate-200 flex flex-wrap items-center justify-between gap-2 print:hidden">
+        <div className="p-3.5 bg-slate-900 border-t border-slate-700 flex flex-wrap items-center justify-between gap-2 print:hidden">
           <button
             type="button"
             onClick={onClose}
-            className="px-3.5 py-2 text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors"
+            className="px-3.5 py-2 text-xs font-semibold text-slate-600 hover:text-white hover:bg-slate-100 rounded-lg transition-colors"
           >
             Cerrar
           </button>
@@ -343,7 +343,7 @@ export default function ReciboModal({ pedido, onClose }: ReciboModalProps) {
             <button
               type="button"
               onClick={handleDescargarPdf}
-              className="inline-flex items-center gap-1.5 bg-[#E63946] hover:bg-[#C62828] text-white text-xs font-bold px-3.5 py-2 rounded-lg transition-all active:scale-95 shadow-sm"
+              className="inline-flex items-center gap-1.5 bg-cyan-500 hover:bg-[#C62828] text-white text-xs font-bold px-3.5 py-2 rounded-lg transition-all active:scale-95 shadow-sm"
               title="Descargar archivo .pdf nativo"
             >
               <span className="material-icons" style={{ fontSize: "16px" }}>picture_as_pdf</span>
