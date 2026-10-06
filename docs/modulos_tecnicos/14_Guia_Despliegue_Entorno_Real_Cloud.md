@@ -47,7 +47,7 @@ El sistema LeoFit está diseñado con una arquitectura modular desacoplada basad
    - `PORT=4000`
    - `DATABASE_URL=postgresql://postgres:[PASSWORD]@[HOST]:6543/postgres?sslmode=require`
    - `JWT_SECRET=[CLAVE_SEGURA_ALEATORIA_64_CHARS]`
-   - `CORS_ORIGIN=*`
+   - `CORS_ORIGIN=https://<dominio>` (Nota: Fail-fast preventivo; si se despliega en producción sin esta variable o se usa *, el servidor crashea por seguridad).
 6. Presionar **Create Web Service**. Render compilará el código TypeScript y levantará el contenedor en segundos.
 
 ---
