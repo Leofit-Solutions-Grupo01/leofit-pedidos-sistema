@@ -99,6 +99,6 @@ docs/
 
 > [!NOTE]
 > Toda la documentación, scripts y ejemplos de configuración cumplen estrictamente con las siguientes directivas de privacidad y seguridad:
-> 1. **Cero Credenciales en Texto Plano:** Las cadenas de conexión a base de datos y llaves JWT utilizan variables de entorno (`process.env.DATABASE_URL`, `process.env.JWT_SECRET`) o plantillas seguras en `.env.example`.
+> 1. **Cero Credenciales en Texto Plano:** Se impone una política de Fail-Fast. Las llaves críticas (`JWT_SECRET`, `WEBHOOK_SECRET`, `CORS_ORIGIN` en prod) impiden que el backend arranque si están ausentes, forzando la seguridad desde el inicio y sin usar `*` ni fallbacks inseguros.
 > 2. **Datos de Demostración:** Todos los clientes, números telefónicos y correos electrónicos utilizados en las semillas (`seeds.sql`) son datos simulados con fines estrictamente académicos.
 > 3. **Cifrado de Contraseñas:** Las credenciales de prueba en la base de datos se encuentran protegidas mediante algoritmo de derivación de claves **bcrypt** con 10 rondas de salt.
