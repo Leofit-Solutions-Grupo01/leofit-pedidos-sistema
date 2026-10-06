@@ -110,3 +110,14 @@ La ÃƒÂºltima auditorÃƒÂ­a forense (APF3) cerrÃƒÂ³ exitosamente mÃƒ
    - **Fecha LÃ­mite RotaciÃ³n Credencial:** 2026-10-15
    - **Fecha LÃ­mite Purga Git (filter-repo):** 2026-10-15
 
+
+> <TODO: decisi�n del Product Owner>
+> Pol�tica sobre PII en documentos acad�micos (Ficha, Actas). 
+> Opci�n A: Mantener como datos institucionales p�blicos. 
+> Opci�n B: Sanitizar a <autor 1> en el repo p�blico.
+> Archivos afectados:
+> - docs/DOCUMENTO_MAESTRO_INTEGRAL_LEOFIT.md:301,670
+> - docs/modulos_tecnicos/03_Acta_Reunion_1.md:60
+> - docs/modulos_tecnicos/09_Guion_Video_Demo_Remotion.md:33
+> - docs/modulos_tecnicos/13_Evidencia_Cumplimiento_Requerimientos_Software.md:96
+> - docs/modulos_tecnicos/15_Profundizacion_Seguridad_Formal_y_Objetiva.md:24
