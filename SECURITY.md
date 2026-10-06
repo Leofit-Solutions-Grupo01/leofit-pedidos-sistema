@@ -93,3 +93,13 @@ La 煤ltima auditor铆a forense (APF3) cerr贸 exitosamente m煤ltiples vulnerabilid
 3. **Migraci贸n a Cookies httpOnly (Deuda T茅cnica P0)**
    - **Acci贸n:** Migrar almacenamiento del JWT (`sessionStorage`) a cookies de sesi贸n `httpOnly` con flags `Secure` y `SameSite=Strict`, implementando protecci贸n CSRF en los endpoints.
    - **Fecha Objetivo / Owner:** Sprint 3 (Q1 2027) / Frontend Lead & Security Architecture Team.
+
+4. **[SEC-09] Credenciales y PII en documentaci髇 compilada (ESTADO: ABIERTO - P0)**
+   - **Vector:** PDFs y DOCXs compilados y trackeados en git (DOCUMENTO_MAESTRO, 13_Evidencia) con PasswordSeguro2026! y victor@leofit.com.
+   - **Distribuci髇:** PDFs circulan fuera del control del repo (email, Drive, descargas) e historial Git.
+   - **Acci髇 requerida:**
+     1. Rotaci髇 de credencial (SEC-00, DevOps/DBA).
+     2. Regeneraci髇 de binarios desde .md sanitizados (Fase 3) y purga de historial (git filter-repo).
+     3. Notificaci髇 a destinatarios conocidos.
+     4. Evaluar obligaci髇 de reporte bajo Ley 29733.
+   - **Owner:** DevOps / Security
