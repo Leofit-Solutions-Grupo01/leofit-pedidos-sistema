@@ -83,7 +83,7 @@ En `backend/src/app.ts`, se configura la librería **Helmet** para inyectar cabe
     "exp": 1727366400
   }
   ```
-* **Tiempo de Expiración (TTL):** **24 horas**, minimizando la ventana de exposición en caso de extravío del dispositivo.
+* **Tiempo de Expiración (TTL):** **1 hora**, minimizando la ventana de exposición en caso de extravío del dispositivo.
 * **Naturaleza Stateless:** El servidor no requiere almacenar sesiones en memoria RAM ni en base de datos; la validez del token se verifica matemáticamente comprobando la firma criptográfica con la clave `JWT_SECRET`.
 
 ---
@@ -177,3 +177,10 @@ Si el profesor o jurado pregunta:
 
 4. **Verificación Automatizada:**
    *"Toda esta arquitectura está respaldada por una suite automatizada de pruebas de seguridad en Jest (`security.test.ts`) y auditorías estáticas con `npm audit`, registrando cero vulnerabilidades."*
+
+> [AÑADIDO 2026-10-06] **ESTADO DE SEGURIDAD Y DEUDA TÉCNICA (APF3)**
+> A pesar de los controles, la auditoría APF3 determinó que existen deudas activas que están siendo mitigadas operativamente:
+> - **[SEC-00] (P0):** Exposición de credenciales en historial. Requiere rotación de BD y `git filter-repo`.
+> - **[SEC-08] (P1):** Passwords débiles en seeds de desarrollo.
+> - **Migración a HttpOnly (P0):** Migración planificada para Q1 2027 para trasladar el JWT de sessionStorage hacia cookies HttpOnly.
+> Ver `SECURITY.md` para el detalle oficial de incidentes.
