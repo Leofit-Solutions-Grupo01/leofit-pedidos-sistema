@@ -1040,7 +1040,6 @@ Para cumplir a cabalidad con la exigencia académica del docente y evidenciar la
 
 ### Pantalla 01:
 
-![Figura 10.1: Pantalla 01 del Sistema LeoFit](../scripts/extracted_evidence_imgs/evidence_screen_01.png) Catálogo General de Productos y Filtros de Búsqueda
 - **Requerimientos Asociados**: `RF-001`, `RF-002`, `RNF-001`, `RNF-006`.
 - **Propósito Funcional**: Presentar de manera atractiva y ágil la totalidad de prendas deportivas confeccionadas por LeoFit, permitiendo a clientes y vendedores filtrar instantáneamente por categorías (Polos, Shorts, Buzos, Casacas) y buscar por texto libre.
 - **Anatomía Visual y Componentes**:
@@ -1056,7 +1055,6 @@ Para cumplir a cabalidad con la exigencia académica del docente y evidenciar la
 
 ### Pantalla 02:
 
-![Figura 10.2: Pantalla 02 del Sistema LeoFit](../scripts/extracted_evidence_imgs/evidence_screen_02.png) Detalle de Producto y Selección de Tallas y Colores
 - **Requerimientos Asociados**: `RF-001`, `RF-003`, `RNF-004`.
 - **Propósito Funcional**: Proporcionar la ficha técnica completa de una prenda seleccionada, permitiendo al comprador seleccionar su talla (S, M, L, XL), apreciar las opciones de color textil y consultar la composición del tejido (suplex, algodón reactivo).
 - **Anatomía Visual y Componentes**:
@@ -1073,7 +1071,6 @@ Para cumplir a cabalidad con la exigencia académica del docente y evidenciar la
 
 ### Pantalla 03:
 
-![Figura 10.3: Pantalla 03 del Sistema LeoFit](../scripts/extracted_evidence_imgs/evidence_screen_03.png) Carrito de Compras Interactivo y Resumen de Totales
 - **Requerimientos Asociados**: `RF-003`, `RF-004`, `RNF-001`.
 - **Propósito Funcional**: Centralizar los productos preseleccionados por el usuario, permitiendo revisar detalles, modificar cantidades en caliente, remover ítems y visualizar el desglose exacto de la compra (subtotal, descuento mayorista y costo de envío).
 - **Anatomía Visual y Componentes**:
@@ -1090,7 +1087,6 @@ Para cumplir a cabalidad con la exigencia académica del docente y evidenciar la
 
 ### Pantalla 04:
 
-![Figura 10.4: Pantalla 04 del Sistema LeoFit](../scripts/extracted_evidence_imgs/evidence_screen_04.png) Formulario de Registro de Pedido y Datos del Cliente
 - **Requerimientos Asociados**: `RF-004`, `RF-005`, `RNF-003`, `RNF-004`.
 - **Propósito Funcional**: Capturar de manera estructurada y validada la información del comprador final o comerciante mayorista para fines de emisión de la orden y entrega logística.
 - **Anatomía Visual y Componentes**:
@@ -1107,7 +1103,6 @@ Para cumplir a cabalidad con la exigencia académica del docente y evidenciar la
 
 ### Pantalla 05:
 
-![Figura 10.5: Pantalla 05 del Sistema LeoFit](../scripts/extracted_evidence_imgs/evidence_screen_05.png) Confirmación de Pedido y Emisión de Código de Orden
 - **Requerimientos Asociados**: `RF-006`, `RF-017`, `RNF-001`.
 - **Propósito Funcional**: Proporcionar al usuario la constancia formal de que su orden ha sido registrada exitosamente en el sistema de LeoFit, informando su número correlativo oficial y los pasos subsiguientes del despacho.
 - **Anatomía Visual y Componentes**:
@@ -1125,7 +1120,6 @@ Para cumplir a cabalidad con la exigencia académica del docente y evidenciar la
 
 ### Pantalla 06:
 
-![Figura 10.6: Pantalla 06 del Sistema LeoFit](../scripts/extracted_evidence_imgs/evidence_screen_06.png) Módulo de Autenticación de Usuarios (Login Seguro)
 - **Requerimientos Asociados**: `RF-011`, `RNF-003`.
 - **Propósito Funcional**: Controlar y restringir el acceso a las funciones operativas, administrativas y de almacén de LeoFit, garantizando que solo el personal autorizado pueda gestionar pedidos y visualizar métricas de negocio.
 - **Anatomía Visual y Componentes**:
@@ -1142,7 +1136,6 @@ Para cumplir a cabalidad con la exigencia académica del docente y evidenciar la
 
 ### Pantalla 07:
 
-![Figura 10.7: Pantalla 07 del Sistema LeoFit](../scripts/extracted_evidence_imgs/evidence_screen_07.png) Panel Administrativo de Control y Listado de Pedidos
 - **Requerimientos Asociados**: `RF-007`, `RF-008`, `RNF-001`, `RNF-006`.
 - **Propósito Funcional**: Ofrecer una vista panorámica centralizada de todas las órdenes emitidas en LeoFit, permitiendo a los operadores buscar pedidos, filtrar por estado logístico y ordenar por fecha de emisión.
 - **Anatomía Visual y Componentes**:
@@ -1159,7 +1152,6 @@ Para cumplir a cabalidad con la exigencia académica del docente y evidenciar la
 
 ### Pantalla 08:
 
-![Figura 10.8: Pantalla 08 del Sistema LeoFit](../scripts/extracted_evidence_imgs/evidence_screen_08.png) Modal de Detalle de Pedido y Transición de Estados
 - **Requerimientos Asociados**: `RF-007`, `RF-008`, `RF-018`.
 - **Propósito Funcional**: Examinar a profundidad una orden específica, verificar el comprobante de pago bancario adjunto y modificar el estado del pedido a medida que avanza por la cadena logística.
 - **Anatomía Visual y Componentes**:
@@ -1176,7 +1168,6 @@ Para cumplir a cabalidad con la exigencia académica del docente y evidenciar la
 
 ### Pantalla 09:
 
-![Figura 10.9: Pantalla 09 del Sistema LeoFit](../scripts/extracted_evidence_imgs/evidence_screen_09.png) Módulo de Gestión de Inventario y Semáforo de Stock
 - **Requerimientos Asociados**: `RF-009`, `RF-010`, `RNF-009`.
 - **Propósito Funcional**: Monitorear las existencias físicas de cada prenda en almacén, alertar sobre roturas inminentes de stock y permitir a los administradores registrar entradas de nuevos lotes confeccionados.
 - **Anatomía Visual y Componentes**:
@@ -1196,7 +1187,6 @@ Para cumplir a cabalidad con la exigencia académica del docente y evidenciar la
 
 ### Pantalla 10:
 
-![Figura 10.10: Pantalla 10 del Sistema LeoFit](../scripts/extracted_evidence_imgs/evidence_screen_10.png) Modal de Edición y Creación de Nuevas Prendas (Productos)
 - **Requerimientos Asociados**: `RF-001`, `RF-009`, `RF-012`.
 - **Propósito Funcional**: Permitir al personal administrativo registrar nuevas colecciones de ropa deportiva en el catálogo, asignarles códigos SKU, fijar precios y cargar fotografías promocionales.
 - **Anatomía Visual y Componentes**:
@@ -1213,7 +1203,6 @@ Para cumplir a cabalidad con la exigencia académica del docente y evidenciar la
 
 ### Pantalla 11:
 
-![Figura 10.11: Pantalla 11 del Sistema LeoFit](../scripts/extracted_evidence_imgs/evidence_screen_11.png) Dashboard Gerencial de Analítica y Métricas Comerciales
 - **Requerimientos Asociados**: `RF-013`, `RNF-001`, `RNF-004`.
 - **Propósito Funcional**: Proveer a la gerencia de LeoFit un centro de comando visual con indicadores clave de desempeño (KPIs), tendencias de facturación y comportamiento de ventas por categoría para la toma de decisiones informadas.
 - **Anatomía Visual y Componentes**:
@@ -1233,7 +1222,6 @@ Para cumplir a cabalidad con la exigencia académica del docente y evidenciar la
 
 ### Pantalla 12:
 
-![Figura 10.12: Pantalla 12 del Sistema LeoFit](../scripts/extracted_evidence_imgs/evidence_screen_12.png) Módulo de Exportación de Reportes Contables y Comerciales
 - **Requerimientos Asociados**: `RF-014`, `RF-018`.
 - **Propósito Funcional**: Generar y descargar sábanas de datos consolidadas de las operaciones de venta e inventario en formatos estándar (Excel `.xlsx` y PDF) para facilitar la contabilidad y auditorías tributarias.
 - **Anatomía Visual y Componentes**:
@@ -1250,7 +1238,6 @@ Para cumplir a cabalidad con la exigencia académica del docente y evidenciar la
 
 ### Pantalla 13:
 
-![Figura 10.13: Pantalla 13 del Sistema LeoFit](../scripts/extracted_evidence_imgs/evidence_screen_13.png) Vista de Operatividad Offline y Notificación PWA
 - **Requerimientos Asociados**: `RF-015`, `RF-016`, `RNF-010`.
 - **Propósito Funcional**: Garantizar la continuidad operativa del personal cuando la señal celular o WiFi se interrumpe en galerías o sótanos comerciales de Gamarra, mostrando el estado de conectividad e informando que los datos están protegidos localmente.
 - **Anatomía Visual y Componentes**:
@@ -1266,7 +1253,6 @@ Para cumplir a cabalidad con la exigencia académica del docente y evidenciar la
 
 ### Pantalla 14:
 
-![Figura 10.14: Pantalla 14 del Sistema LeoFit](../scripts/extracted_evidence_imgs/evidence_screen_14.png) Vista de Impresión de Guía de Despacho y Ticket Térmico con Código QR
 - **Requerimientos Asociados**: `RF-006`, `RF-017`, `RNF-004`.
 - **Propósito Funcional**: Generar el documento físico estandarizado para adjuntar al paquete textil antes de entregarlo al transportista o courier, facilitando el control en almacén y el seguimiento para el cliente.
 - **Anatomía Visual y Componentes**:
