@@ -1,5 +1,9 @@
 # Evaluación Teórica de Requisitos: SRS frente a la Teoría de Ingeniería de Software
 
+> [VIGENTE HASTA APF2 — 2026-10-01]
+> Este documento refleja el cierre del sprint APF2. Para el estado actual,
+> ver `SECURITY.md` (sección 6) y el cierre APF3 cuando exista.
+
 De acuerdo con las buenas prácticas de la Ingeniería de Requisitos (alineadas a los estándares **ISO/IEC/IEEE 29148**), la especificación de un sistema no debe forzar una simetría artificial entre Requisitos Funcionales (RF) y No Funcionales (RNF). Cada requisito debe estar justificado por una necesidad de negocio o un atributo de calidad crítico, y debe ser verificable.
 
 Al analizar el `DOCUMENTO_MAESTRO_INTEGRAL_LEOFIT.md` (que funge como documento SRS - *Software Requirements Specification* del proyecto), se evidencia el cumplimiento estricto de esta teoría.
