@@ -717,32 +717,24 @@ El sistema implementa tres pilares de observabilidad:
 
 ## 7.1. Arquitectura General del Sistema (Clean Architecture por Capas)
 
-El software sigue los principios de la **Clean Architecture** (Arquitectura Limpia / Puertos y Adaptadores), desacoplando las reglas de negocio de los marcos de trabajo y controladores externos:
+El software sigue los principios de la **Clean Architecture** (Arquitectura Limpia / Puertos y Adaptadores), desacoplando las reglas de negocio de los marcos de trabajo y controladores externos. A continuación se presentan los diagramas de cada capa del sistema.
 
-```
-[ Capa de Presentación (React PWA + Tailwind CSS) ]
-                    ↓  (Peticiones HTTP REST / JSON / JWT)
-[ Capa de Infraestructura (FastAPI / Express + Controllers + Middlewares) ]
-                    ↓
-[ Capa de Aplicación (Casos de Uso: CrearPedido, DescontarStock, Autenticar) ]
-                    ↓
-[ Capa de Dominio (Entidades de Negocio: Pedido, Producto, Inventario, Usuario) ]
-                    ↓
-[ Repositorios y Adaptadores de Datos (PostgreSQL Pool + Supabase + Redis) ]
-```
+### Arquitectura General (Modelo C4)
+![Diagrama General PWA](./diagramas/04_general.png)
 
-## 7.2. Modelo C4 (Diagramas de Contexto, Contenedores y Componentes)
+## 7.2. Desacoplamiento de Subsistemas
 
-### 1. Diagrama de Contexto (Nivel 1):
-Muestra cómo los actores (Clientes, Vendedores, Almaceneros y Administradores) interactúan con el Sistema LeoFit, y cómo este se conecta con servicios externos (Supabase PostgreSQL, Servicio de Almacenamiento Cloud y Notificaciones).
+La arquitectura cliente-servidor se divide en el flujo de la aplicación React y el motor Offline administrado por el Service Worker.
 
-### 2. Diagrama de Contenedores (Nivel 2):
-- **Contenedor 1 - Frontend PWA**: Single Page Application desarrollada en React 18, empaquetada con Vite y servida mediante CDN / Nginx con Service Worker offline.
-- **Contenedor 2 - Backend API**: Servicio RESTful en Node.js/Python encargado de la autenticación, validación de reglas de negocio y transacciones de base de datos.
-- **Contenedor 3 - Base de Datos Relacional**: Instancia de PostgreSQL 16 con esquemas normalizados y soporte de procedimientos transaccionales.
-- **Contenedor 4 - Cache en Memoria**: Redis para almacenamiento temporal de sesiones y catálogo acelerado.
+### Arquitectura de Frontend
+![Diagrama Frontend](./diagramas/01_frontend.png)
 
-![Figura 7.1: Arquitectura General del Sistema - Modelo C4](../diagrams/11_Arquitectura_C4_Model.png)
+### Arquitectura de Service Worker (PWA)
+![Diagrama Service Worker](./diagramas/02_service_worker.png)
+
+### Arquitectura Backend y Datos
+El backend procesa la lógica de negocio y autoriza las transacciones contra la base de datos PostgreSQL.
+![Diagrama Backend y Datos](./diagramas/03_backend.png)
 
 ## 7.3. Arquitectura PWA Offline-First y Estrategia de Service Worker
 

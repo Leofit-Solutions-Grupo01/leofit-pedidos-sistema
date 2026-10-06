@@ -6,7 +6,7 @@
 
 # SISTEMA DE GESTIÓN DE PEDIDOS Y CONTROL DE INVENTARIO MULTICANAL PARA LA EMPRESA LEOFIT
 ## LIBRO DE INGENIERÍA Y DOCUMENTO MAESTRO INTEGRAL DEL PROYECTO
-### FUENTE ÚNICA DE VERDAD (SINGLE SOURCE OF TRUTH) — CICLO 2026-II
+### FUENTE ÚNICA DE VERDAD (SINGLE SOURCE OF TRUTH) — CICLO 2026-I
 
 ---
 
@@ -20,7 +20,7 @@
 | **Docente Asignado** | Ing. Enrique Lee Huamani Uriarte |
 | **Equipo de Desarrollo (Grupo 01)** | • Loayza Rodriguez, Lady Luz — Código: `U22221489` (Scrum Master / DevSecOps)<br>• Cárdenas Fernández, Víctor Leandro — Código: `U19217414` (Product Owner / Data Architect)<br>• Roman Delgado, Harley Anthony — Código: `U21313032` (Frontend Lead / PWA Specialist)<br>• Dávila Morales, Jim Alessandro — Código: `U18206081` (QA Engineer Lead / Backend)<br>• Rojas Sanchez, Daniel Enrique — Código: `U21214627` (Business Analyst / Cloud DevOps) |
 | **Versión del Documento** | 3.0.0 (Unificación Maestra Total) |
-| **Fecha de Publicación** | Diciembre de 2026 |
+| **Fecha de Publicación** | Septiembre de 2026 |
 | **Estado del Documento** | Aprobado — Versión Oficial Consolidada |
 
 ---
@@ -29,10 +29,9 @@
 
 | Versión | Fecha | Autor(es) | Resumen de Modificaciones y Aportes |
 | :---: | :---: | :--- | :--- |
-| **v1.0** | 10/09/2026 | Grupo 01 | Entrega formal de Avance de Proyecto Final 1 (APF1). Análisis empresarial, requerimientos RF-001 a RF-012, arquitectura preliminar y prototipo UI inicial. Calificación obtenida: 18/20. |
-| **v2.0** | 08/10/2026 | Grupo 01 | Entrega formal de Avance de Proyecto Final 2 (APF2). Despliegue cloud inicial, base de datos relacional PostgreSQL normalizada, catálogo de seguridad OWASP y levantamiento de observaciones. |
-| **v3.0** | 05/11/2026 | Grupo 01 | Entrega formal de Avance de Proyecto Final 3 (APF3). Pruebas E2E, métricas finales y levantamiento de observaciones. |
-| **v4.0** | 03/12/2026 | Loayza R., Lady Luz (Lead) | **Consolidación Integral y Fusión Total (Trabajo Final)**: Se eliminan 13 documentos fragmentados y dispersos en el repositorio para unificar toda la información técnica, de negocio, arquitectura, base de datos, seguridad, pruebas, evidencias de pantallas (14 pantallas) y gobernanza en un único Documento Maestro Definitivo. |
+| **v1.0** | 10/05/2026 | Grupo 01 | Entrega formal de Avance de Proyecto Final 1 (APF1). Análisis empresarial, requerimientos RF-001 a RF-012, arquitectura preliminar y prototipo UI inicial. Calificación obtenida: 18/20. |
+| **v2.0** | 20/07/2026 | Grupo 01 | Entrega formal de Avance de Proyecto Final 2 (APF2). Despliegue cloud inicial, base de datos relacional PostgreSQL normalizada, catálogo de seguridad OWASP y levantamiento de observaciones. |
+| **v3.0** | 24/09/2026 | Loayza R., Lady Luz (Lead) | **Consolidación Integral y Fusión Total**: Se eliminan 13 documentos fragmentados y dispersos en el repositorio para unificar toda la información técnica, de negocio, arquitectura, base de datos, seguridad, pruebas, evidencias de pantallas (14 pantallas) y gobernanza en un único Documento Maestro Definitivo. |
 
 ---
 
@@ -490,11 +489,6 @@ El equipo gestiona el flujo de trabajo a través de un tablero GitHub Projects c
 | **RNF-008** | **Mantenibilidad** | Código fuente modular estructurado bajo Clean Architecture, documentado en español e inglés, con cobertura de pruebas unitarias $\ge 80\%$. | Cobertura Jest/Pytest y análisis estático en SonarCloud. |
 | **RNF-009** | **Integridad de Datos** | La base de datos relacional debe aplicar el principio ACID mediante PostgreSQL, con claves foráneas, restricciones de chequeo y respaldos automáticos diarios. | Verificación de scripts DDL y pruebas de rollback en transacciones. |
 | **RNF-010** | **Capacidad Offline** | La aplicación debe instalarse en la pantalla de inicio del smartphone como PWA nativa, funcionando de manera autónoma sin conexión a red mediante Service Worker. | Pruebas de desconexión en Chrome DevTools (Network: Offline). |
-| **RNF-011** | **Continuidad y DRP** | Recuperabilidad ante desastres con RTO $\le 15$ minutos y RPO $\le 5$ minutos mediante replicación WAL continua y volcados diarios en PostgreSQL. | Simulacro de recuperación y restauración desde dump SQL. |
-| **RNF-012** | **Concurrencia ACID** | Aislamiento transaccional estricto con bloqueo a nivel de fila (`SELECT FOR UPDATE` / Serializable) impidiendo sobreventas del último stock ante pedidos simultáneos. | Pruebas de carga concurrente simulando doble compra simultánea. |
-| **RNF-013** | **Auditoría Forense** | Registro inmutable de eventos sensibles (logins, modificaciones de pedido, anulaciones) conforme a la Ley N° 29733 de Protección de Datos Personales de Perú. | Auditoría de bitácora en tabla `audit_logs` con IP, user-agent y timestamp UTC. |
-| **RNF-014** | **Cuota Almacenamiento** | La persistencia local en caché de la PWA no debe superar una cuota de 50 MB en el dispositivo móvil del operador para no degradar memoria RAM/flash. | Inspección de cuota con StorageManager API y Chrome DevTools. |
-
 
 ---
 
@@ -712,32 +706,24 @@ El sistema implementa tres pilares de observabilidad:
 
 ## 7.1. Arquitectura General del Sistema (Clean Architecture por Capas)
 
-El software sigue los principios de la **Clean Architecture** (Arquitectura Limpia / Puertos y Adaptadores), desacoplando las reglas de negocio de los marcos de trabajo y controladores externos:
+El software sigue los principios de la **Clean Architecture** (Arquitectura Limpia / Puertos y Adaptadores), desacoplando las reglas de negocio de los marcos de trabajo y controladores externos. A continuación se presentan los diagramas de cada capa del sistema.
 
-```
-[ Capa de Presentación (React PWA + Tailwind CSS) ]
-                    ↓  (Peticiones HTTP REST / JSON / JWT)
-[ Capa de Infraestructura (FastAPI / Express + Controllers + Middlewares) ]
-                    ↓
-[ Capa de Aplicación (Casos de Uso: CrearPedido, DescontarStock, Autenticar) ]
-                    ↓
-[ Capa de Dominio (Entidades de Negocio: Pedido, Producto, Inventario, Usuario) ]
-                    ↓
-[ Repositorios y Adaptadores de Datos (PostgreSQL Pool + Supabase + Redis) ]
-```
+### Arquitectura General (Modelo C4)
+![Diagrama General PWA](./diagramas/04_general.png)
 
-## 7.2. Modelo C4 (Diagramas de Contexto, Contenedores y Componentes)
+## 7.2. Desacoplamiento de Subsistemas
 
-### 1. Diagrama de Contexto (Nivel 1):
-Muestra cómo los actores (Clientes, Vendedores, Almaceneros y Administradores) interactúan con el Sistema LeoFit, y cómo este se conecta con servicios externos (Supabase PostgreSQL, Servicio de Almacenamiento Cloud y Notificaciones).
+La arquitectura cliente-servidor se divide en el flujo de la aplicación React y el motor Offline administrado por el Service Worker.
 
-### 2. Diagrama de Contenedores (Nivel 2):
-- **Contenedor 1 - Frontend PWA**: Single Page Application desarrollada en React 18, empaquetada con Vite y servida mediante CDN / Nginx con Service Worker offline.
-- **Contenedor 2 - Backend API**: Servicio RESTful en Node.js/Python encargado de la autenticación, validación de reglas de negocio y transacciones de base de datos.
-- **Contenedor 3 - Base de Datos Relacional**: Instancia de PostgreSQL 16 con esquemas normalizados y soporte de procedimientos transaccionales.
-- **Contenedor 4 - Cache en Memoria**: Redis para almacenamiento temporal de sesiones y catálogo acelerado.
+### Arquitectura de Frontend
+![Diagrama Frontend](./diagramas/01_frontend.png)
 
-![Figura 7.1: Arquitectura General del Sistema - Modelo C4](../diagrams/11_Arquitectura_C4_Model.png)
+### Arquitectura de Service Worker (PWA)
+![Diagrama Service Worker](./diagramas/02_service_worker.png)
+
+### Arquitectura Backend y Datos
+El backend procesa la lógica de negocio y autoriza las transacciones contra la base de datos PostgreSQL.
+![Diagrama Backend y Datos](./diagramas/03_backend.png)
 
 ## 7.3. Arquitectura PWA Offline-First y Estrategia de Service Worker
 
@@ -829,171 +815,130 @@ El modelo resultante comprende 8 entidades interconectadas con integridad refere
 
 ![Figura 8.2: Modelo Físico Relacional DDL de Base de Datos](../diagrams/13_Modelo_Fisico_BD.png)
 
-## 8.3. Esquema DDL en PostgreSQL 16 con Triggers, Constraints e Índices B-Tree (BCNF)
+## 8.3. Esquema DDL en PostgreSQL con Triggers, Constraints e Índices B-Tree/GIN
 
-A continuación se presenta el script DDL oficial de producción (`database/schema.sql`) normalizado en Forma Normal de Boyce-Codd (BCNF), con restricciones de integridad referencial, enums de dominio, triggers automáticos de stock y vistas optimizadas:
+A continuación se presenta el script DDL representativo con restricciones de integridad, triggers de recálculo de montos y control de inventario:
 
 ```sql
--- Tipos ENUM para dominios cerrados
-CREATE TYPE user_role_enum    AS ENUM ('ADMIN', 'OPERATOR');
-CREATE TYPE order_status_enum AS ENUM ('RECIBIDO', 'PREPARACION', 'EN_CAMINO', 'ENTREGADO', 'CANCELADO');
+-- Habilitar extensión criptográfica
+CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
--- 1. Catálogo de Tallas (dominio atómico BCNF)
-CREATE TABLE sizes (
-    id    SMALLSERIAL PRIMARY KEY,
-    code  VARCHAR(10) NOT NULL UNIQUE,
-    label VARCHAR(30) NOT NULL
+-- 1. Tabla de Roles del Sistema
+CREATE TABLE roles (
+    id SERIAL PRIMARY KEY,
+    nombre VARCHAR(50) UNIQUE NOT NULL,
+    descripcion TEXT,
+    creado_en TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
--- 2. Catálogo de Colores (dominio atómico BCNF)
-CREATE TABLE colors (
-    id   SMALLSERIAL PRIMARY KEY,
-    name VARCHAR(60) NOT NULL UNIQUE,
-    hex  CHAR(7)
+-- 2. Tabla de Usuarios y Operadores
+CREATE TABLE usuarios (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    rol_id INT NOT NULL REFERENCES roles(id) ON DELETE RESTRICT,
+    nombre_completo VARCHAR(120) NOT NULL,
+    correo VARCHAR(100) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    activo BOOLEAN DEFAULT TRUE,
+    creado_en TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
--- 3. Catálogo de Distritos de Reparto Geográfico (districts)
-CREATE TABLE districts (
-    id   SMALLSERIAL PRIMARY KEY,
-    name VARCHAR(80) NOT NULL UNIQUE
+-- 3. Tabla de Clientes (Mayoristas y Minoristas)
+CREATE TABLE clientes (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    tipo_documento VARCHAR(10) DEFAULT 'DNI' CHECK (tipo_documento IN ('DNI', 'RUC', 'CE')),
+    numero_documento VARCHAR(20) UNIQUE NOT NULL,
+    nombres VARCHAR(120) NOT NULL,
+    telefono VARCHAR(15) NOT NULL,
+    direccion_envio TEXT,
+    ciudad VARCHAR(60) DEFAULT 'Lima',
+    creado_en TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
--- 4. Métodos de Pago Disponibles (payment_methods)
-CREATE TABLE payment_methods (
-    id   SMALLSERIAL PRIMARY KEY,
-    code VARCHAR(30) NOT NULL UNIQUE,
-    name VARCHAR(60) NOT NULL
+-- 4. Tabla de Categorías de Ropa Deportiva
+CREATE TABLE categorias (
+    id SERIAL PRIMARY KEY,
+    nombre VARCHAR(60) UNIQUE NOT NULL,
+    slug VARCHAR(60) UNIQUE NOT NULL,
+    activo BOOLEAN DEFAULT TRUE
 );
 
--- 5. Usuarios Administrativos del Sistema (users)
-CREATE TABLE users (
-    id            SERIAL         PRIMARY KEY,
-    name          VARCHAR(100)   NOT NULL,
-    email         VARCHAR(150)   NOT NULL UNIQUE,
-    password_hash VARCHAR(255)   NOT NULL,
-    role          user_role_enum NOT NULL DEFAULT 'OPERATOR',
-    is_active     BOOLEAN        NOT NULL DEFAULT TRUE,
-    created_at    TIMESTAMPTZ    NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at    TIMESTAMPTZ    NOT NULL DEFAULT CURRENT_TIMESTAMP
+-- 5. Tabla Maestra de Productos e Inventario
+CREATE TABLE productos (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    categoria_id INT NOT NULL REFERENCES categorias(id) ON DELETE RESTRICT,
+    codigo_sku VARCHAR(30) UNIQUE NOT NULL,
+    nombre VARCHAR(120) NOT NULL,
+    descripcion TEXT,
+    talla VARCHAR(10) NOT NULL CHECK (talla IN ('S', 'M', 'L', 'XL', 'Standard')),
+    color VARCHAR(30) NOT NULL,
+    precio_minorista NUMERIC(10, 2) NOT NULL CHECK (precio_minorista > 0),
+    precio_mayorista NUMERIC(10, 2) NOT NULL CHECK (precio_mayorista > 0),
+    stock_actual INT NOT NULL DEFAULT 0 CHECK (stock_actual >= 0),
+    stock_minimo INT NOT NULL DEFAULT 5 CHECK (stock_minimo >= 0),
+    imagen_url TEXT,
+    activo BOOLEAN DEFAULT TRUE,
+    actualizado_en TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
--- 6. Categorías de Indumentaria (categories)
-CREATE TABLE categories (
-    id          SERIAL      PRIMARY KEY,
-    name        VARCHAR(60) NOT NULL UNIQUE,
-    description TEXT,
-    created_at  TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+-- 6. Tabla Cabecera de Pedidos
+CREATE TABLE pedidos (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    codigo_orden VARCHAR(20) UNIQUE NOT NULL,
+    cliente_id UUID NOT NULL REFERENCES clientes(id) ON DELETE RESTRICT,
+    usuario_registro_id UUID REFERENCES usuarios(id) ON DELETE SET NULL,
+    estado VARCHAR(30) NOT NULL DEFAULT 'Pendiente' 
+        CHECK (estado IN ('Pendiente', 'Confirmado', 'En Preparación', 'Despachado', 'Entregado', 'Cancelado')),
+    canal_venta VARCHAR(20) DEFAULT 'PWA_Web' CHECK (canal_venta IN ('PWA_Web', 'WhatsApp', 'Presencial')),
+    subtotal NUMERIC(10, 2) NOT NULL DEFAULT 0.00,
+    costo_envio NUMERIC(10, 2) NOT NULL DEFAULT 0.00,
+    total NUMERIC(10, 2) NOT NULL DEFAULT 0.00,
+    metodo_pago VARCHAR(30) DEFAULT 'Yape' CHECK (metodo_pago IN ('Yape', 'Plin', 'Transferencia_BCP', 'Efectivo')),
+    comprobante_url TEXT,
+    notas_despacho TEXT,
+    creado_en TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    actualizado_en TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
--- 7. Catálogo Base de Prendas (products)
-CREATE TABLE products (
-    id          SERIAL        PRIMARY KEY,
-    category_id INT           NOT NULL REFERENCES categories(id) ON DELETE RESTRICT,
-    name        VARCHAR(120)  NOT NULL,
-    description TEXT,
-    base_price  NUMERIC(10,2) NOT NULL CHECK (base_price >= 0),
-    image_url   VARCHAR(512),
-    is_active   BOOLEAN       NOT NULL DEFAULT TRUE,
-    created_at  TIMESTAMPTZ   NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at  TIMESTAMPTZ   NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT uq_product_name_category UNIQUE (category_id, name)
+-- 7. Tabla Detalle de Líneas de Pedido
+CREATE TABLE detalle_pedidos (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    pedido_id UUID NOT NULL REFERENCES pedidos(id) ON DELETE CASCADE,
+    producto_id UUID NOT NULL REFERENCES productos(id) ON DELETE RESTRICT,
+    cantidad INT NOT NULL CHECK (cantidad > 0),
+    precio_unitario NUMERIC(10, 2) NOT NULL CHECK (precio_unitario > 0),
+    importe_subtotal NUMERIC(10, 2) GENERATED ALWAYS AS (cantidad * precio_unitario) STORED,
+    CONSTRAINT uq_pedido_producto UNIQUE (pedido_id, producto_id)
 );
 
--- 8. Variantes e Inventario por Talla y Color (product_variants - BCNF)
-CREATE TABLE product_variants (
-    id              SERIAL      PRIMARY KEY,
-    product_id      INT         NOT NULL REFERENCES products(id) ON DELETE CASCADE,
-    size_id         SMALLINT    NOT NULL REFERENCES sizes(id)    ON DELETE RESTRICT,
-    color_id        SMALLINT    NOT NULL REFERENCES colors(id)   ON DELETE RESTRICT,
-    sku             VARCHAR(60) NOT NULL UNIQUE,
-    stock           INT         NOT NULL DEFAULT 0 CHECK (stock >= 0),
-    alert_threshold INT         NOT NULL DEFAULT 3 CHECK (alert_threshold >= 0),
-    created_at      TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at      TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT uq_variant UNIQUE (product_id, size_id, color_id)
-);
+-- Índices B-Tree y GIN para Alto Rendimiento
+CREATE INDEX idx_productos_busqueda ON productos (nombre, codigo_sku);
+CREATE INDEX idx_pedidos_estado ON pedidos (estado, creado_en DESC);
+CREATE INDEX idx_clientes_doc ON clientes (numero_documento);
 
--- 9. Clientes Registrados (clients)
-CREATE TABLE clients (
-    id          SERIAL       PRIMARY KEY,
-    full_name   VARCHAR(120) NOT NULL,
-    phone       VARCHAR(20)  NOT NULL UNIQUE,
-    address     TEXT         NOT NULL,
-    district_id SMALLINT     NOT NULL REFERENCES districts(id) ON DELETE RESTRICT,
-    reference   TEXT,
-    created_at  TIMESTAMPTZ  NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at  TIMESTAMPTZ  NOT NULL DEFAULT CURRENT_TIMESTAMP
-);
-
--- 10. Cabecera de Pedidos (orders)
-CREATE TABLE orders (
-    id                SERIAL            PRIMARY KEY,
-    order_number      VARCHAR(30)       NOT NULL UNIQUE,
-    client_id         INT               NOT NULL REFERENCES clients(id)         ON DELETE RESTRICT,
-    user_id           INT                        REFERENCES users(id)           ON DELETE SET NULL,
-    payment_method_id SMALLINT          NOT NULL REFERENCES payment_methods(id) ON DELETE RESTRICT,
-    status            order_status_enum NOT NULL DEFAULT 'RECIBIDO',
-    subtotal          NUMERIC(10,2)     NOT NULL DEFAULT 0.00 CHECK (subtotal      >= 0),
-    shipping_cost     NUMERIC(10,2)     NOT NULL DEFAULT 0.00 CHECK (shipping_cost >= 0),
-    total_amount      NUMERIC(10,2)     NOT NULL DEFAULT 0.00 CHECK (total_amount  >= 0),
-    notes             TEXT,
-    created_at        TIMESTAMPTZ       NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at        TIMESTAMPTZ       NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT chk_total CHECK (total_amount = subtotal + shipping_cost)
-);
-
--- 11. Detalle de Ítems del Pedido (order_items)
-CREATE TABLE order_items (
-    id         SERIAL        PRIMARY KEY,
-    order_id   INT           NOT NULL REFERENCES orders(id)           ON DELETE CASCADE,
-    variant_id INT           NOT NULL REFERENCES product_variants(id) ON DELETE RESTRICT,
-    quantity   INT           NOT NULL CHECK (quantity > 0),
-    unit_price NUMERIC(10,2) NOT NULL CHECK (unit_price >= 0),
-    subtotal   NUMERIC(10,2) NOT NULL CHECK (subtotal   >= 0),
-    CONSTRAINT chk_item_subtotal CHECK (subtotal = quantity * unit_price),
-    CONSTRAINT uq_order_variant UNIQUE (order_id, variant_id)
-);
-
--- 12. Historial de Auditoría de Estados (order_status_history)
-CREATE TABLE order_status_history (
-    id              SERIAL            PRIMARY KEY,
-    order_id        INT               NOT NULL REFERENCES orders(id) ON DELETE CASCADE,
-    user_id         INT                        REFERENCES users(id)  ON DELETE SET NULL,
-    previous_status order_status_enum,
-    new_status      order_status_enum NOT NULL,
-    changed_at      TIMESTAMPTZ       NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    comments        TEXT
-);
-
--- Triggers: Descuento automático y actualización de timestamps
-CREATE OR REPLACE FUNCTION fn_decrement_stock()
-RETURNS TRIGGER LANGUAGE plpgsql AS $$
+-- Trigger Automático para Descuento Atómico de Stock tras Confirmación de Pedido
+CREATE OR REPLACE FUNCTION fn_descontar_stock_pedido()
+RETURNS TRIGGER AS $$
 BEGIN
-    UPDATE product_variants
-       SET stock = stock - NEW.quantity
-     WHERE id = NEW.variant_id;
-
-    IF (SELECT stock FROM product_variants WHERE id = NEW.variant_id) < 0 THEN
-        RAISE EXCEPTION 'Stock insuficiente para la variante %', NEW.variant_id;
+    IF (NEW.estado = 'Confirmado' AND OLD.estado = 'Pendiente') THEN
+        UPDATE productos p
+        SET stock_actual = p.stock_actual - dp.cantidad
+        FROM detalle_pedidos dp
+        WHERE dp.pedido_id = NEW.id AND dp.producto_id = p.id;
+    ELSIF (NEW.estado = 'Cancelado' AND OLD.estado IN ('Confirmado', 'En Preparación')) THEN
+        -- Reversión de stock
+        UPDATE productos p
+        SET stock_actual = p.stock_actual + dp.cantidad
+        FROM detalle_pedidos dp
+        WHERE dp.pedido_id = NEW.id AND dp.producto_id = p.id;
     END IF;
-
     RETURN NEW;
 END;
-$$;
+$$ LANGUAGE plpgsql;
 
-CREATE TRIGGER trg_decrement_stock_on_order
-    AFTER INSERT ON order_items
-    FOR EACH ROW EXECUTE FUNCTION fn_decrement_stock();
-
--- Índices de Optimización Transaccional
-CREATE INDEX idx_orders_status        ON orders(status);
-CREATE INDEX idx_orders_created_at    ON orders(created_at DESC);
-CREATE INDEX idx_orders_client        ON orders(client_id);
-CREATE INDEX idx_variants_sku         ON product_variants(sku);
-CREATE INDEX idx_variants_stock       ON product_variants(stock) WHERE stock <= alert_threshold;
-CREATE INDEX idx_clients_phone        ON clients(phone);
-CREATE INDEX idx_order_items_order    ON order_items(order_id);
-CREATE INDEX idx_status_history_order ON order_status_history(order_id);
+CREATE TRIGGER trg_actualizar_stock
+AFTER UPDATE OF estado ON pedidos
+FOR EACH ROW
+EXECUTE FUNCTION fn_descontar_stock_pedido();
 ```
 
 ## 8.4. Estrategia de Respaldo Automatizado, Replicación WAL y Recuperación (DRP)
@@ -1095,7 +1040,7 @@ Para cumplir a cabalidad con la exigencia académica del docente y evidenciar la
 
 ### Pantalla 01:
 
-> **[Evidencia Gráfica Documentada]** — *Figura 10.1: Catálogo General de Productos y Filtros de Búsqueda (Incrustada en alta resolución en los entregables PDF y Word oficiales adjuntos).*
+![Figura 10.1: Pantalla 01 del Sistema LeoFit](../scripts/extracted_evidence_imgs/evidence_screen_01.png) Catálogo General de Productos y Filtros de Búsqueda
 - **Requerimientos Asociados**: `RF-001`, `RF-002`, `RNF-001`, `RNF-006`.
 - **Propósito Funcional**: Presentar de manera atractiva y ágil la totalidad de prendas deportivas confeccionadas por LeoFit, permitiendo a clientes y vendedores filtrar instantáneamente por categorías (Polos, Shorts, Buzos, Casacas) y buscar por texto libre.
 - **Anatomía Visual y Componentes**:
@@ -1111,7 +1056,7 @@ Para cumplir a cabalidad con la exigencia académica del docente y evidenciar la
 
 ### Pantalla 02:
 
-> **[Evidencia Gráfica Documentada]** — *Figura 10.2: Detalle de Producto y Selección de Tallas y Colores (Incrustada en alta resolución en los entregables PDF y Word oficiales adjuntos).*
+![Figura 10.2: Pantalla 02 del Sistema LeoFit](../scripts/extracted_evidence_imgs/evidence_screen_02.png) Detalle de Producto y Selección de Tallas y Colores
 - **Requerimientos Asociados**: `RF-001`, `RF-003`, `RNF-004`.
 - **Propósito Funcional**: Proporcionar la ficha técnica completa de una prenda seleccionada, permitiendo al comprador seleccionar su talla (S, M, L, XL), apreciar las opciones de color textil y consultar la composición del tejido (suplex, algodón reactivo).
 - **Anatomía Visual y Componentes**:
@@ -1128,7 +1073,7 @@ Para cumplir a cabalidad con la exigencia académica del docente y evidenciar la
 
 ### Pantalla 03:
 
-> **[Evidencia Gráfica Documentada]** — *Figura 10.3: Carrito de Compras Interactivo y Resumen de Totales (Incrustada en alta resolución en los entregables PDF y Word oficiales adjuntos).*
+![Figura 10.3: Pantalla 03 del Sistema LeoFit](../scripts/extracted_evidence_imgs/evidence_screen_03.png) Carrito de Compras Interactivo y Resumen de Totales
 - **Requerimientos Asociados**: `RF-003`, `RF-004`, `RNF-001`.
 - **Propósito Funcional**: Centralizar los productos preseleccionados por el usuario, permitiendo revisar detalles, modificar cantidades en caliente, remover ítems y visualizar el desglose exacto de la compra (subtotal, descuento mayorista y costo de envío).
 - **Anatomía Visual y Componentes**:
@@ -1145,7 +1090,7 @@ Para cumplir a cabalidad con la exigencia académica del docente y evidenciar la
 
 ### Pantalla 04:
 
-> **[Evidencia Gráfica Documentada]** — *Figura 10.4: Formulario de Registro de Pedido y Datos del Cliente (Incrustada en alta resolución en los entregables PDF y Word oficiales adjuntos).*
+![Figura 10.4: Pantalla 04 del Sistema LeoFit](../scripts/extracted_evidence_imgs/evidence_screen_04.png) Formulario de Registro de Pedido y Datos del Cliente
 - **Requerimientos Asociados**: `RF-004`, `RF-005`, `RNF-003`, `RNF-004`.
 - **Propósito Funcional**: Capturar de manera estructurada y validada la información del comprador final o comerciante mayorista para fines de emisión de la orden y entrega logística.
 - **Anatomía Visual y Componentes**:
@@ -1162,7 +1107,7 @@ Para cumplir a cabalidad con la exigencia académica del docente y evidenciar la
 
 ### Pantalla 05:
 
-> **[Evidencia Gráfica Documentada]** — *Figura 10.5: Confirmación de Pedido y Emisión de Código de Orden (Incrustada en alta resolución en los entregables PDF y Word oficiales adjuntos).*
+![Figura 10.5: Pantalla 05 del Sistema LeoFit](../scripts/extracted_evidence_imgs/evidence_screen_05.png) Confirmación de Pedido y Emisión de Código de Orden
 - **Requerimientos Asociados**: `RF-006`, `RF-017`, `RNF-001`.
 - **Propósito Funcional**: Proporcionar al usuario la constancia formal de que su orden ha sido registrada exitosamente en el sistema de LeoFit, informando su número correlativo oficial y los pasos subsiguientes del despacho.
 - **Anatomía Visual y Componentes**:
@@ -1180,7 +1125,7 @@ Para cumplir a cabalidad con la exigencia académica del docente y evidenciar la
 
 ### Pantalla 06:
 
-> **[Evidencia Gráfica Documentada]** — *Figura 10.6: Módulo de Autenticación de Usuarios / Login Seguro (Incrustada en alta resolución en los entregables PDF y Word oficiales adjuntos).*
+![Figura 10.6: Pantalla 06 del Sistema LeoFit](../scripts/extracted_evidence_imgs/evidence_screen_06.png) Módulo de Autenticación de Usuarios (Login Seguro)
 - **Requerimientos Asociados**: `RF-011`, `RNF-003`.
 - **Propósito Funcional**: Controlar y restringir el acceso a las funciones operativas, administrativas y de almacén de LeoFit, garantizando que solo el personal autorizado pueda gestionar pedidos y visualizar métricas de negocio.
 - **Anatomía Visual y Componentes**:
@@ -1197,7 +1142,7 @@ Para cumplir a cabalidad con la exigencia académica del docente y evidenciar la
 
 ### Pantalla 07:
 
-> **[Evidencia Gráfica Documentada]** — *Figura 10.7: Panel Administrativo de Control y Listado de Pedidos (Incrustada en alta resolución en los entregables PDF y Word oficiales adjuntos).*
+![Figura 10.7: Pantalla 07 del Sistema LeoFit](../scripts/extracted_evidence_imgs/evidence_screen_07.png) Panel Administrativo de Control y Listado de Pedidos
 - **Requerimientos Asociados**: `RF-007`, `RF-008`, `RNF-001`, `RNF-006`.
 - **Propósito Funcional**: Ofrecer una vista panorámica centralizada de todas las órdenes emitidas en LeoFit, permitiendo a los operadores buscar pedidos, filtrar por estado logístico y ordenar por fecha de emisión.
 - **Anatomía Visual y Componentes**:
@@ -1214,7 +1159,7 @@ Para cumplir a cabalidad con la exigencia académica del docente y evidenciar la
 
 ### Pantalla 08:
 
-> **[Evidencia Gráfica Documentada]** — *Figura 10.8: Modal de Detalle de Pedido y Transición de Estados (Incrustada en alta resolución en los entregables PDF y Word oficiales adjuntos).*
+![Figura 10.8: Pantalla 08 del Sistema LeoFit](../scripts/extracted_evidence_imgs/evidence_screen_08.png) Modal de Detalle de Pedido y Transición de Estados
 - **Requerimientos Asociados**: `RF-007`, `RF-008`, `RF-018`.
 - **Propósito Funcional**: Examinar a profundidad una orden específica, verificar el comprobante de pago bancario adjunto y modificar el estado del pedido a medida que avanza por la cadena logística.
 - **Anatomía Visual y Componentes**:
@@ -1231,7 +1176,7 @@ Para cumplir a cabalidad con la exigencia académica del docente y evidenciar la
 
 ### Pantalla 09:
 
-> **[Evidencia Gráfica Documentada]** — *Figura 10.9: Módulo de Gestión de Inventario y Semáforo de Stock (Incrustada en alta resolución en los entregables PDF y Word oficiales adjuntos).*
+![Figura 10.9: Pantalla 09 del Sistema LeoFit](../scripts/extracted_evidence_imgs/evidence_screen_09.png) Módulo de Gestión de Inventario y Semáforo de Stock
 - **Requerimientos Asociados**: `RF-009`, `RF-010`, `RNF-009`.
 - **Propósito Funcional**: Monitorear las existencias físicas de cada prenda en almacén, alertar sobre roturas inminentes de stock y permitir a los administradores registrar entradas de nuevos lotes confeccionados.
 - **Anatomía Visual y Componentes**:
@@ -1251,7 +1196,7 @@ Para cumplir a cabalidad con la exigencia académica del docente y evidenciar la
 
 ### Pantalla 10:
 
-> **[Evidencia Gráfica Documentada]** — *Figura 10.10: Modal de Edición y Creación de Nuevas Prendas / Catálogo (Incrustada en alta resolución en los entregables PDF y Word oficiales adjuntos).*
+![Figura 10.10: Pantalla 10 del Sistema LeoFit](../scripts/extracted_evidence_imgs/evidence_screen_10.png) Modal de Edición y Creación de Nuevas Prendas (Productos)
 - **Requerimientos Asociados**: `RF-001`, `RF-009`, `RF-012`.
 - **Propósito Funcional**: Permitir al personal administrativo registrar nuevas colecciones de ropa deportiva en el catálogo, asignarles códigos SKU, fijar precios y cargar fotografías promocionales.
 - **Anatomía Visual y Componentes**:
@@ -1268,7 +1213,7 @@ Para cumplir a cabalidad con la exigencia académica del docente y evidenciar la
 
 ### Pantalla 11:
 
-> **[Evidencia Gráfica Documentada]** — *Figura 10.11: Dashboard Gerencial de Analítica y Métricas Comerciales (Incrustada en alta resolución en los entregables PDF y Word oficiales adjuntos).*
+![Figura 10.11: Pantalla 11 del Sistema LeoFit](../scripts/extracted_evidence_imgs/evidence_screen_11.png) Dashboard Gerencial de Analítica y Métricas Comerciales
 - **Requerimientos Asociados**: `RF-013`, `RNF-001`, `RNF-004`.
 - **Propósito Funcional**: Proveer a la gerencia de LeoFit un centro de comando visual con indicadores clave de desempeño (KPIs), tendencias de facturación y comportamiento de ventas por categoría para la toma de decisiones informadas.
 - **Anatomía Visual y Componentes**:
@@ -1288,7 +1233,7 @@ Para cumplir a cabalidad con la exigencia académica del docente y evidenciar la
 
 ### Pantalla 12:
 
-> **[Evidencia Gráfica Documentada]** — *Figura 10.12: Módulo de Exportación de Reportes Contables y Comerciales (Incrustada en alta resolución en los entregables PDF y Word oficiales adjuntos).*
+![Figura 10.12: Pantalla 12 del Sistema LeoFit](../scripts/extracted_evidence_imgs/evidence_screen_12.png) Módulo de Exportación de Reportes Contables y Comerciales
 - **Requerimientos Asociados**: `RF-014`, `RF-018`.
 - **Propósito Funcional**: Generar y descargar sábanas de datos consolidadas de las operaciones de venta e inventario en formatos estándar (Excel `.xlsx` y PDF) para facilitar la contabilidad y auditorías tributarias.
 - **Anatomía Visual y Componentes**:
@@ -1305,7 +1250,7 @@ Para cumplir a cabalidad con la exigencia académica del docente y evidenciar la
 
 ### Pantalla 13:
 
-> **[Evidencia Gráfica Documentada]** — *Figura 10.13: Vista de Operatividad Offline y Notificación PWA (Incrustada en alta resolución en los entregables PDF y Word oficiales adjuntos).*
+![Figura 10.13: Pantalla 13 del Sistema LeoFit](../scripts/extracted_evidence_imgs/evidence_screen_13.png) Vista de Operatividad Offline y Notificación PWA
 - **Requerimientos Asociados**: `RF-015`, `RF-016`, `RNF-010`.
 - **Propósito Funcional**: Garantizar la continuidad operativa del personal cuando la señal celular o WiFi se interrumpe en galerías o sótanos comerciales de Gamarra, mostrando el estado de conectividad e informando que los datos están protegidos localmente.
 - **Anatomía Visual y Componentes**:
@@ -1321,7 +1266,7 @@ Para cumplir a cabalidad con la exigencia académica del docente y evidenciar la
 
 ### Pantalla 14:
 
-> **[Evidencia Gráfica Documentada]** — *Figura 10.14: Vista de Impresión de Guía de Despacho y Ticket Térmico con Código QR (Incrustada en alta resolución en los entregables PDF y Word oficiales adjuntos).*
+![Figura 10.14: Pantalla 14 del Sistema LeoFit](../scripts/extracted_evidence_imgs/evidence_screen_14.png) Vista de Impresión de Guía de Despacho y Ticket Térmico con Código QR
 - **Requerimientos Asociados**: `RF-006`, `RF-017`, `RNF-004`.
 - **Propósito Funcional**: Generar el documento físico estandarizado para adjuntar al paquete textil antes de entregarlo al transportista o courier, facilitando el control en almacén y el seguimiento para el cliente.
 - **Anatomía Visual y Componentes**:
@@ -1441,43 +1386,12 @@ curl -I https://leofit.com/
 
 # CAPÍTULO 12: GOBERNANZA ACADÉMICA, GLOSARIO Y DEFENSA ANTE EL PANEL
 
-## 12.1. Gobernanza Ágil de Equipo y Acta Formal de Reunión N° 01
+## 12.1. Resumen de Acuerdos de Gobernanza de Equipo y Actas de Reunión
 
-### A. Políticas de Gobernanza y Ritmo de Desarrollo Ágil
 A lo largo del ciclo académico, el equipo sostuvo reuniones periódicas de alineamiento:
 - **Daily Standups (15 minutos)**: Reuniones virtuales diarias de lunes a viernes a las 20:00 horas para responder las tres preguntas clásicas de Scrum: ¿Qué se logró ayer? ¿Qué se hará hoy? ¿Existen bloqueos técnicos?
 - **Sprint Planning y Sprint Reviews**: Sesiones bisemanales con presencia del Product Owner y revisión de entregables frente a las rúbricas académicas de la UTP.
 - **Políticas de Calidad y Revisión de Código**: Obligatoriedad de aprobación de al menos 1 desarrollador antes de fusionar cualquier Pull Request hacia la rama `dev` o `main`.
-- **Criterios de Terminado (Definition of Done - DoD)**: Para considerar concluida cualquier tarea o historia de usuario se exige:
-  1. Código tipado estricto en TypeScript sin advertencias ni errores en `tsc --noEmit`.
-  2. Cobertura de pruebas unitarias y de integración con Vitest o Jest $\ge 80\%$.
-  3. Revisión y aprobación formal mediante Pull Request por al menos un desarrollador par.
-  4. Despliegue automatizado y validado en el entorno de staging/producción mediante GitHub Actions.
-
-### B. Acta Formal de Reunión N° 01 con el Stakeholder (LeoFit)
-* **Proyecto:** Sistema Web PWA de Gestión y Toma de Pedidos Multicanal para LeoFit.
-* **Fecha y Horario:** 15 de Agosto de 2026 | 10:00 AM – 11:30 AM.
-* **Lugar / Modalidad:** Presencial (Taller y Almacén de LeoFit, Lima) con soporte virtual.
-* **Participantes y Control de Asistencia:**
-  - **Víctor Raúl Cárdenas Ramírez** (Gerente General / Dueño del Negocio, LeoFit Indumentaria Deportiva) — Presente.
-  - **Lady Luz Loayza Rodriguez** (Scrum Master / Líder de Proyecto, Grupo 01 - UTP) — Presente.
-  - **Víctor Leandro Cárdenas Fernández** (Product Owner / Arquitecto Back-End, Grupo 01 - UTP) — Presente.
-  - **Harley Anthony Roman Delgado** (Front-End Lead / Diseñador UI, Grupo 01 - UTP) — Presente.
-  - **Jim Alessandro Dávila Morales** (Especialista QA / Testing, Grupo 01 - UTP) — Presente.
-  - **Daniel Enrique Rojas Sanchez** (Analista de Negocio / Procesos, Grupo 01 - UTP) — Presente.
-* **Agenda Formal Tratada:**
-  1. Presentación formal del equipo de desarrollo de la UTP y objetivos estratégicos del proyecto.
-  2. Descripción del modelo comercial actual y canales de atención (WhatsApp, Instagram y presencial).
-  3. Diagnóstico de cuellos de botella: demoras de hasta 45 minutos por pedido, quiebres de inventario por ventas cruzadas y pérdida de notas manuales.
-  4. Definición de la solución tecnológica: Progressive Web App (PWA) con catálogo en tiempo real y reserva de stock inmediata.
-  5. Acuerdos de colaboración, cronograma de reuniones de Sprint y entrega de insumos fotográficos.
-* **Acuerdos y Compromisos Formalizados:**
-| N° | Descripción del Acuerdo / Entregable | Responsable Asignado | Fecha Límite |
-| :---: | :--- | :--- | :---: |
-| **1** | Redacción formal de la Ficha de Mapeo de Empresa y Problema | Grupo 01 (Daniel Rojas / Lady Loayza) | 20/08/2026 |
-| **2** | Entrega de catálogo fotográfico de prendas y datos anonimizados de pedidos | Víctor Raúl Cárdenas (LeoFit) | 22/08/2026 |
-| **3** | Elaboración de wireframes y primeros prototipos interactivos en Figma | Harley Roman / Lady Loayza | 25/08/2026 |
-| **4** | Diseño del modelo relacional normalizado y especificación ERS IEEE 830 | Víctor Cárdenas / Jim Dávila | 28/08/2026 |
 
 ## 12.2. Glosario Unificado de Términos Técnicos y de Dominio Textil/Comercial
 
@@ -1501,22 +1415,6 @@ A lo largo del ciclo académico, el equipo sostuvo reuniones periódicas de alin
 | **Suplex** | Tejido elástico y transpirable de alta tecnología utilizado en la confección de ropa deportiva de compresión y licras en Gamarra. |
 | **Thumb Zone** | Zona de la pantalla de un smartphone que puede ser alcanzada cómodamente por el dedo pulgar del usuario cuando sujeta el dispositivo con una sola mano. |
 | **WPO** | Web Performance Optimization. Conjunto de técnicas de ingeniería web orientadas a acelerar la velocidad de carga y renderizado de una página en navegadores. |
-| **Vitest** | Marco de pruebas unitarias de última generación optimizado para entornos Vite, de alta velocidad y soporte nativo para TypeScript. |
-| **TypeScript** | Superconjunto tipado estático de JavaScript desarrollado por Microsoft que añade verificación formal de tipos en tiempo de compilación. |
-| **Tree-Shaking** | Proceso de optimización ejecutado por empaquetadores (Rollup) que analiza el árbol de dependencias y elimina código muerto o no utilizado. |
-| **TO-BE (Estado Propuesto)** | Representación del flujo de procesos rediseñado y optimizado mediante la integración de software para eliminar ineficiencias del AS-IS. |
-| **SLI** | Service Level Indicator. Medición cuantitativa directa del nivel de servicio brindado en tiempo real (ej. tasa de peticiones HTTP exitosas). |
-| **Quiebre de Stock** | Situación operativa en la que la demanda de una prenda no puede ser atendida por agotamiento imprevisto de existencias en almacén. |
-| **MVP** | Producto Mínimo Viable. Versión funcional inicial del software que satisface las necesidades centrales de los usuarios para validar hipótesis con clientes reales. |
-| **Inventario Crítico** | Nivel de existencias de una prenda que se encuentra por debajo del umbral de seguridad (< 5 unidades), requiriendo alerta de reposición. |
-| **HMR** | Hot Module Replacement. Característica de Vite que actualiza módulos en el navegador en tiempo real sin recargar la página completa ni perder estado. |
-| **Core Web Vitals** | Conjunto de métricas estandarizadas por Google para evaluar la experiencia de usuario: FCP, LCP, CLS e INP. |
-| **Code-Splitting** | Técnica de optimización que fragmenta el paquete de código fuente en chunks independientes que se descargan bajo demanda al navegar a cada ruta. |
-| **Clean Architecture** | Patrón arquitectónico propuesto por Robert C. Martin que promueve la separación concéntrica de capas desacopladas, haciendo la lógica independiente de frameworks. |
-| **Ciclo de Pedido** | Intervalo de tiempo total transcurrido desde que el cliente inicia la interacción de compra hasta que la orden es entregada en su domicilio. |
-| **Bundle** | Conjunto empaquetado y minificado de activos JavaScript, CSS y recursos estáticos listos para su distribución y ejecución en el navegador. |
-| **BPMN 2.0** | Business Process Model and Notation. Estándar internacional gráfico para el modelado formal de flujos de trabajo mediante carriles y eventos. |
-| **AS-IS (Estado Actual)** | Metodología de modelado que describe el flujo operativo tradicional tal como se ejecuta en el presente, visibilizando cuellos de botella y pérdidas. |
 
 ## 12.3. Banco de 15 Preguntas Críticas y Respuestas Sólidas para la Sustentación ante el Jurado Calificador
 
@@ -1566,15 +1464,6 @@ A continuación se detallan las 15 preguntas de mayor complejidad técnica y met
 
 ### 15. ¿Cuáles son los próximos pasos o trabajos futuros para la evolución del sistema tras la finalización del curso integrador?
 - **Respuesta**: Tras el cierre del Curso Integrador II, la hoja de ruta evolutiva (Roadmap v4.0) contempla: 1) Integración directa con pasarelas de pago automatizadas mediante webhooks (MercadoPago / Culqi) para conciliación bancaria instantánea; 2) Integración mediante API con los servicios de SUNAT para la emisión automática de boletas y facturas electrónicas válidas tributariamente; y 3) Un módulo de predicción de demanda textil mediante modelos ligeros de Machine Learning para proyectar el consumo de rollos de tela según la estacionalidad climática en el país.
-
----
-
-
-### 16. ¿Qué estrategia y batería de pruebas automatizadas se implementó para garantizar la fiabilidad del software?
-- **Respuesta**: Se implementó una estrategia piramidal con **35 pruebas automatizadas continuas** que cubren de extremo a extremo la lógica del sistema:
-  1. **Frontend (17 pruebas unitarias y de integración con Vitest)**: Ubicadas en `frontend/src/__tests__/`, validando reactividad del estado del carrito, consistencia de inventario en memoria, validación de formularios de checkout, generación vectorial de recibos PDF y navegación fluida entre pestañas.
-  2. **Backend (18 pruebas de integración con Jest & Supertest)**: Ubicadas en `backend/src/__tests__/`, evaluando la transaccionalidad ACID con bloqueos pesimistas `SELECT ... FOR UPDATE`, autenticación JWT, autorización RBAC por roles, sanitización contra inyección SQL y XSS, y endpoints de analítica de pedidos.
-  Toda la batería se ejecuta automáticamente en el pipeline de Integración Continua (`.github/workflows/ci-cd.yml`) ante cada `push` y `pull request` hacia `main`, impidiendo regresiones en el entorno productivo.
 
 ---
 

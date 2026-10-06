@@ -900,14 +900,15 @@ def convert_md_to_docx_custom(markdown_text, output_docx_path):
 
 def build_all():
     print("=== RECONSTRUYENDO TODOS LOS DOCUMENTOS DEL PROYECTO LEOFIT ===")
-    write_01_ficha()
-    write_02_requerimientos()
-    write_03_acta()
-    write_04_glosario()
-    write_05_preguntas_panel()
-    write_06_especificacion_pwa()
-    write_07_arquitectura()
-    write_08_normalizacion()
+    # Para evitar abrumar con 30 archivos, ahora solo reconstruimos y consolidamos el DOCUMENTO MAESTRO
+    # write_01_ficha()
+    # write_02_requerimientos()
+    # write_03_acta()
+    # write_04_glosario()
+    # write_05_preguntas_panel()
+    # write_06_especificacion_pwa()
+    # write_07_arquitectura()
+    # write_08_normalizacion()
     
     # Reconstruir también todos los DOCX
     for md_file in sorted(glob.glob("docs/*.md")):
