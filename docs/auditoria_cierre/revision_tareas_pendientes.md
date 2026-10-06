@@ -1,5 +1,8 @@
 # Reporte Final de Auditoría de Tareas (GitHub Projects)
 
+> [VIGENTE HASTA APF2 — 2026-10-01]
+> Este documento refleja el cierre del sprint APF2. Para el estado actual,
+> ver `SECURITY.md` (sección 6) y el cierre APF3 cuando exista.
 Tras revisar la lista exacta de tareas (Issues #3 al #20) que me compartiste de tu tablero de GitHub Projects y contrastarlas a profundidad con el código fuente, la suite de pruebas y los entregables documentales (específicamente los del **APF3**), he actualizado mi análisis.
 
 ### 🟢 TAREAS COMPLETADAS (Listas para cerrar en GitHub)
