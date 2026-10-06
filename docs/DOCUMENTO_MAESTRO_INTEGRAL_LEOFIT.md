@@ -481,7 +481,7 @@ El equipo gestiona el flujo de trabajo a través de un tablero GitHub Projects c
 | :---: | :--- | :--- | :--- |
 | **RNF-001** | **Rendimiento (WPO)** | El puntaje en Google Lighthouse para la versión Mobile debe ser $\ge 90$ puntos en Performance, con First Contentful Paint (FCP) $\le 1.2$ s y Largest Contentful Paint (LCP) $\le 2.0$ s. | Auditoría automatizada con Lighthouse CI en pipeline. |
 | **RNF-002** | **Disponibilidad** | El sistema debe ofrecer una disponibilidad contractual (Uptime SLA) del **99.5%** durante el horario comercial (08:00 a 20:00 horas GMT-5). | Monitoreo continuo mediante sondas UptimeRobot y BetterUptime. |
-| **RNF-003** | **Seguridad** | Inmunidad frente a las vulnerabilidades del OWASP Top 10 (Inyección SQL, XSS, CSRF, Broken Access Control). Hashing de claves con Bcrypt (costo 12) y tokens JWT RS256. | Escaneo DAST con OWASP ZAP y SAST con Bandit/ESLint. |
+| **RNF-003** | **Seguridad** | Inmunidad frente a las vulnerabilidades del OWASP Top 10 (Inyección SQL, XSS, CSRF, Broken Access Control). Hashing de claves con Bcrypt (costo 12) y tokens JWT HS256. | Escaneo DAST con OWASP ZAP y SAST con Bandit/ESLint. |
 | **RNF-004** | **Usabilidad UX** | La interfaz debe ser intuitiva (Nivel de Usabilidad SUS $\ge 85$), permitiendo completar un pedido completo en no más de 4 pasos e incorporando modo oscuro/claro semántico. | Pruebas de usabilidad con vendedores reales en Gamarra. |
 | **RNF-005** | **Accesibilidad** | Cumplimiento del estándar **WCAG 2.1 Nivel AA**, con ratios de contraste de color $\ge 4.5:1$ en textos estándar y navegación accesible por teclado. | Auditoría Axe-core y Lighthouse Accessibility $\ge 95$. |
 | **RNF-006** | **Compatibilidad** | Soporte responsivo fluido en pantallas desde 360px (smartphones gama baja) hasta 2560px (monitores 2K), en navegadores Google Chrome, Safari, Edge y Firefox. | Pruebas automatizadas Cross-Browser con Playwright. |
@@ -963,7 +963,7 @@ EXECUTE FUNCTION fn_descontar_stock_pedido();
 | **A04: Insecure Design** | Alto | Implementación de límites de tasa (Rate Limiting) en endpoints de autenticación (máximo 5 intentos fallidos por IP cada 15 minutos). |
 | **A05: Security Misconfiguration** | Alto | Cabeceras de seguridad HTTP inyectadas vía middleware Helmet: `Content-Security-Policy (CSP)`, `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`. |
 | **A06: Vulnerable and Outdated Components** | Alto | Auditoría automatizada de vulnerabilidades en el pipeline CI/CD mediante `npm audit --audit-level=high` y `pip-audit`. |
-| **A07: Identification and Authentication Failures** | Alto | Tokens de acceso JWT de corta duración (15 minutos) combinados con Refresh Tokens rotativos almacenados en cookies HttpOnly y Secure. |
+| **A07: Identification and Authentication Failures** | Alto | Tokens de acceso JWT de duración restringida (1 hora) y fallback de mitigación en `sessionStorage` (ticket P0 pendiente para migración a cookies HttpOnly). |
 | **A08: Software and Data Integrity Failures** | Medio | Verificación de firmas de paquetes npm y plugins PWA; restricción de scripts de terceros en CSP. |
 | **A09: Security Logging and Monitoring Failures** | Medio | Registro de auditoría centralizado de eventos críticos (intentos de login fallidos, borrado de registros, cambio de precios) en tabla `auditoria_logs`. |
 | **A10: Server-Side Request Forgery (SSRF)** | Medio | La aplicación no realiza peticiones HTTP a URLs dinámicas provistas por el usuario; subida de comprobantes restringida a almacenamiento interno. |
@@ -1135,7 +1135,7 @@ Para cumplir a cabalidad con la exigencia académica del docente y evidenciar la
   - Enlace de recuperación de acceso y aviso legal de confidencialidad.
 - **Reglas de Negocio Validadas**:
   - Bloqueo por fuerza bruta: Tras 5 intentos fallidos consecutivos desde la misma dirección IP, el acceso se bloquea temporalmente por 15 minutos.
-  - Emisión de token JWT firmado digitalmente con almacenamiento seguro en cookies HttpOnly y configuración de expiración a los 15 minutos.
+  - Emisión de token JWT firmado digitalmente mediante HMAC-SHA256 (`HS256`) con expiración estricta a 1 hora.
 - **Criterio de Aceptación UAT**: El usuario ingresa credenciales válidas y es redirigido automáticamente al panel que corresponda según su rol asignado (*Administrador, Vendedor o Almacenero*).
 
 ---
@@ -1151,7 +1151,7 @@ Para cumplir a cabalidad con la exigencia académica del docente y evidenciar la
   - Etiquetas visuales semánticas (Badges) con código de color: Amarillo (Pendiente), Azul (Confirmado), Púrpura (En Preparación), Verde (Despachado) y Rojo (Cancelado).
   - Botones de acción rápida por fila: "Ver Detalle", "Cambiar Estado" e "Imprimir Guía".
 - **Reglas de Negocio Validadas**:
-  - Paginación del lado del servidor para garantizar tiempos de respuesta inferiores a 200 ms aun cuando la base de datos supere los 10,000 pedidos.
+  - Paginación del lado del servidor con protección Anti-DoS (`?limit=50` max 100) y cabecera metadato `X-Total-Count` exacta para UX de tablas dinámicas.
   - Los vendedores estándar únicamente pueden visualizar los pedidos gestionados por ellos mismos; los administradores visualizan la totalidad de la empresa.
 - **Criterio de Aceptación UAT**: La tabla actualiza sus registros en tiempo real o mediante un botón de refresco sin recargar la página completa.
 
@@ -1309,10 +1309,11 @@ Crear un archivo `.env` en la raíz del backend con los valores de producción:
 ```ini
 NODE_ENV=production
 PORT=3000
-DATABASE_URL=postgresql://leofit_admin:PasswordSeguro2026!@aws-0-sa-east-1.pooler.supabase.com:5432/leofit_db?sslmode=require
-JWT_SECRET_KEY=clave_secreta_criptografica_sha256_leofit_2026_segura
-JWT_ACCESS_EXPIRATION_MINUTES=15
-JWT_REFRESH_EXPIRATION_DAYS=7
+DATABASE_URL=postgresql://<user>:<password>@<host>:<port>/<db>?sslmode=require
+# Nota: Ver .env.example para el formato completo. Las credenciales reales nunca deben documentarse.
+JWT_SECRET=<clave_secreta_criptografica_sha256_64_chars>
+JWT_EXPIRES_IN=1h
+# Nota: La aplicación usa política Fail-Fast, si falta JWT_SECRET o CORS_ORIGIN crashea inmediatamente.
 CORS_ORIGIN=https://leofit-pedidos.vercel.app
 ```
 
@@ -1451,7 +1452,7 @@ A continuación se detallan las 15 preguntas de mayor complejidad técnica y met
 - **Respuesta**: Adoptamos el flujo de trabajo **GitFlow**. La rama `main` se encuentra protegida contra escritura directa y requiere que cualquier código provenga de un Pull Request originado en ramas temáticas (`feature/*` o `hotfix/*`). Cada Pull Request debe pasar obligatoriamente la suite de integración continua (CI) en GitHub Actions (validación de linters, escaneo de dependencias y pruebas unitarias automáticas) y contar con la aprobación de al menos un revisor par (Peer Review). Además, aplicamos la convención semántica de commits (Conventional Commits) para mantener un historial trazable y limpio.
 
 ### 11. ¿Cómo manejan el ciclo de vida y la revocación de tokens JWT en el sistema de autenticación?
-- **Respuesta**: Aplicamos un esquema de doble token: Access Token de corta duración (15 minutos) firmado con clave criptográfica asimétrica, y Refresh Token de larga duración (7 días) almacenado en una cookie con banderas `HttpOnly`, `Secure` y `SameSite=Strict`. Cuando el Access Token expira, el frontend solicita de forma transparente su renovación enviando el Refresh Token. Para la revocación inmediata de sesiones (por ejemplo, ante el despido o bloqueo de un operador), mantenemos una lista negra en memoria con Redis que verifica el ID único del token (`jti`) con tiempo de expiración equivalente al TTL residual.
+- **Respuesta**: Aplicamos un esquema criptográfico estricto: Access Token firmado con clave simétrica `HS256` y expiración a 1 hora. Además, implementamos protección contra ataques de enumeración (Timing Attacks) usando validación asíncrona de un `DUMMY_HASH_CONSTANT` y `express.raw()` en la verificación de firmas HMAC para los Webhooks de pago de Yape/Plin con `timingSafeEqual`.
 
 ### 12. ¿Cuál es el proceso que siguieron para normalizar la base de datos hasta Tercera Forma Normal (3NF)?
 - **Respuesta**: Partimos de los formatos no normalizados de los cuadernos de LeoFit. En la 1NF eliminamos grupos repetitivos y forzamos la atomicidad, separando la lista de prendas compradas en la entidad `detalle_pedidos`. En la 2NF eliminamos dependencias parciales en tablas con clave compuesta, aislando atributos como nombre o precio base del producto a la tabla `productos`. En la 3NF eliminamos dependencias transitivas entre atributos no clave, aislando los datos personales del comprador a la tabla `clientes` y los roles a la tabla `roles`. Con ello garantizamos 0 redundancia y consistencia matemática referencial.
