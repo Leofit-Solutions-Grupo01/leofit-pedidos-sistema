@@ -215,6 +215,27 @@ El sistema opera de forma autónoma e independiente, interactuando con clientes 
 | **RF-009** | HU-006 (Gestión de Inventario) | EP-01 | `src/pages/ProductosGestion.tsx` |
 | **RF-010** | HU-005 (Métricas de Dashboard) | EP-04 | `src/pages/Dashboard.tsx` |
 | **RF-012** | HU-007 (Seguridad y Acceso) | EP-03 | `src/pages/Login.tsx` |
+
+---
+
+## 6. EVIDENCIAS VISUALES DE REQUERIMIENTOS FUNCIONALES
+
+A continuación se presentan las capturas de pantalla del sistema en funcionamiento que evidencian el cumplimiento de los Requerimientos Funcionales (RF).
+
+### 6.1. Autenticación (RF-012)
+![Login y Autenticación](./evidencias_ui/login_page.png)
+
+### 6.2. Dashboard de Métricas (RF-010)
+![Dashboard Administrativo](./evidencias_ui/dashboard_analytics.png)
+
+### 6.3. Historial de Pedidos (RF-007, RF-008)
+![Historial de Pedidos](./evidencias_ui/order_history.png)
+
+### 6.4. Catálogo de Inventario (RF-001, RF-009)
+![Catálogo de Inventario](./evidencias_ui/inventory_catalog.png)
+
+### 6.5. Rastreo Público de Envíos (RF-005)
+![Rastreo de Pedidos para Clientes](./evidencias_ui/public_tracking.png)
 """
     with open(path, "w", encoding="utf-8") as f:
         f.write(content)
