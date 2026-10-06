@@ -10,6 +10,7 @@ import dotenv from 'dotenv';
 import apiRoutes from './routes';
 import { errorHandler } from './middlewares/error.middleware';
 import { apiRateLimiter } from './middlewares/rateLimit.middleware';
+import { externalController } from './controllers/external.controller';
 
 dotenv.config();
 
@@ -23,9 +24,12 @@ export function createApp(): Express {
   }));
 
   // CORS Policy
-  const corsOrigin = process.env.CORS_ORIGIN || '*';
+  if (process.env.NODE_ENV === 'production' && !process.env.CORS_ORIGIN) {
+    throw new Error('FATAL ERROR: CORS_ORIGIN must be defined in production environment.');
+  }
+  const corsOrigin = process.env.CORS_ORIGIN || 'http://localhost:5173';
   app.use(cors({
-    origin: corsOrigin === '*' ? '*' : corsOrigin.split(','),
+    origin: corsOrigin.split(','),
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
   }));
@@ -33,9 +37,12 @@ export function createApp(): Express {
   // Request Rate Limiting
   app.use('/api/', apiRateLimiter);
 
+  // Webhook Route (MUST be before express.json to capture raw buffer)
+  app.post('/api/external/payments/webhook', express.raw({ type: 'application/json', limit: '1mb' }), externalController.handlePaymentWebhook);
+
   // Body parsers
-  app.use(express.json({ limit: '10mb' }));
-  app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+  app.use(express.json({ limit: '100kb' }));
+  app.use(express.urlencoded({ extended: true, limit: '100kb' }));
 
   // HTTP Request Logging
   if (process.env.NODE_ENV !== 'test') {

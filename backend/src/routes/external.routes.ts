@@ -3,6 +3,7 @@
 // =============================================================================
 
 import { Router } from 'express';
+import express from 'express';
 import { externalController } from '../controllers/external.controller';
 
 const router = Router();
@@ -11,7 +12,7 @@ const router = Router();
 router.post('/whatsapp/notify', externalController.sendWhatsAppNotification);
 
 // Endpoint 2: Conciliación Pasarela de Pagos
-router.post('/payments/webhook', externalController.handlePaymentWebhook);
+// (Webhook montado en app.ts para capturar rawBody correctamente)
 
 // Endpoint 3: Verificación RENIEC / SUNAT
 router.post('/identity/lookup', externalController.lookupIdentity);

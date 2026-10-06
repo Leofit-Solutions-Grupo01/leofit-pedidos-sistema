@@ -5,6 +5,7 @@
  * @author Lady Luz Loayza Rodriguez (@LadyyLuz)
  */
 
+process.env.WEBHOOK_SECRET = 'test_secret_123'; // Setup for fail fast
 import request from 'supertest';
 import { createApp } from '../src/app';
 
@@ -52,6 +53,14 @@ describe('APF3: Pruebas de Integración e Interoperabilidad con Servicios Extern
   });
 
   describe('Sistema Externo 2: Pasarela de Pagos (Yape / Plin / Mercado Pago)', () => {
+    beforeEach(() => {
+      process.env.WEBHOOK_SECRET = 'test_secret_123';
+    });
+
+    afterEach(() => {
+      delete process.env.WEBHOOK_SECRET;
+    });
+
     it('debe recibir y conciliar el webhook de pago aprobado generando código de conciliación fiscal', async () => {
       const webhookPayload = {
         provider: 'YAPE',
@@ -61,9 +70,14 @@ describe('APF3: Pruebas de Integración e Interoperabilidad con Servicios Extern
         status: 'APPROVED'
       };
 
+      const payloadString = JSON.stringify(webhookPayload);
+      const expectedSignature = require('crypto').createHmac('sha256', 'test_secret_123').update(payloadString).digest('hex');
+
       const res = await request(app)
         .post('/api/external/payments/webhook')
-        .send(webhookPayload);
+        .set('Content-Type', 'application/json')
+        .set('x-signature', expectedSignature)
+        .send(payloadString);
 
       expect(res.status).toBe(200);
       expect(res.body.success).toBe(true);
@@ -81,9 +95,14 @@ describe('APF3: Pruebas de Integración e Interoperabilidad con Servicios Extern
         status: 'APPROVED'
       };
 
+      const payloadString = JSON.stringify(invalidWebhook);
+      const expectedSignature = require('crypto').createHmac('sha256', 'test_secret_123').update(payloadString).digest('hex');
+
       const res = await request(app)
         .post('/api/external/payments/webhook')
-        .send(invalidWebhook);
+        .set('Content-Type', 'application/json')
+        .set('x-signature', expectedSignature)
+        .send(payloadString);
 
       expect(res.status).toBe(400);
       expect(res.body.success).toBe(false);

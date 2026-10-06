@@ -23,7 +23,7 @@ jobs:
         run: |
           if [ -d "frontend" ] && [ -f "frontend/package.json" ]; then
             cd frontend
-            npm audit --audit-level=high || echo "Advisories found - review before production"
+            npm audit --audit-level=high
             cd ..
           fi
 
@@ -31,6 +31,23 @@ jobs:
         run: |
           if [ -d "frontend" ] && [ -f "frontend/package.json" ]; then
             cd frontend
+            npm ci
+            npm test
+            cd ..
+          fi
+
+      - name: Scan Backend Dependencies
+        run: |
+          if [ -d "backend" ] && [ -f "backend/package.json" ]; then
+            cd backend
+            npm audit --audit-level=high
+            cd ..
+          fi
+
+      - name: Run Backend Unit Tests
+        run: |
+          if [ -d "backend" ] && [ -f "backend/package.json" ]; then
+            cd backend
             npm ci
             npm test
             cd ..

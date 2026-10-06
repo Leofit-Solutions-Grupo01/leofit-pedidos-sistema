@@ -4,6 +4,7 @@
 
 import { Request, Response } from 'express';
 import { z } from 'zod';
+import crypto from 'crypto';
 
 // Esquemas de validación Zod
 const sendWhatsAppSchema = z.object({
@@ -26,6 +27,11 @@ const identityLookupSchema = z.object({
   type: z.enum(['DNI', 'RUC']),
   number: z.string().min(8).max(11)
 });
+
+if (!process.env.WEBHOOK_SECRET) {
+  throw new Error('FATAL ERROR: WEBHOOK_SECRET must be defined in the environment.');
+}
+const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
 
 export const externalController = {
   // 1. WhatsApp Cloud API / Direct Link Gateway
@@ -61,7 +67,26 @@ export const externalController = {
   // 2. Pasarela de Pagos (Yape, Plin, Mercado Pago)
   async handlePaymentWebhook(req: Request, res: Response) {
     try {
-      const data = paymentWebhookSchema.parse(req.body);
+      const signature = req.headers['x-signature'];
+
+      if (!signature || typeof signature !== 'string') {
+        return res.status(401).json({ success: false, error: 'Missing webhook signature' });
+      }
+
+      const rawBodyBuffer = Buffer.isBuffer(req.body) ? req.body : Buffer.from(req.body || '');
+      const expected = crypto.createHmac('sha256', WEBHOOK_SECRET).update(rawBodyBuffer).digest();
+      const received = Buffer.from(signature, 'hex');
+
+      if (expected.length !== received.length) {
+        return res.status(401).json({ success: false, error: 'INVALID_SIGNATURE' });
+      }
+
+      if (!crypto.timingSafeEqual(expected, received)) {
+        return res.status(401).json({ success: false, error: 'INVALID_SIGNATURE' });
+      }
+
+      const parsedBody = JSON.parse(rawBodyBuffer.toString('utf8'));
+      const data = paymentWebhookSchema.parse(parsedBody);
 
       // Simulación de validación y conciliación transaccional
       const reconciliationId = `REC-${Date.now()}-${Math.floor(Math.random() * 1000)}`;

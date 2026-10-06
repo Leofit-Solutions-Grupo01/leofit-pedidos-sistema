@@ -418,7 +418,7 @@ export class MemoryOrderRepository implements IOrderRepository {
   private clientRepo = new MemoryClientRepository();
   private productRepo = new MemoryProductRepository();
 
-  async listAll(filters?: { status?: OrderStatus; dateFrom?: string; dateTo?: string; search?: string }): Promise<Order[]> {
+  async listAll(filters?: { status?: OrderStatus; dateFrom?: string; dateTo?: string; search?: string; page?: number; limit?: number }): Promise<{ data: Order[], total: number }> {
     let list = InMemoryDataStore.orders.map(o => {
       const client = InMemoryDataStore.clients.find(c => c.id === o.client_id);
       return { ...o, client };
@@ -435,7 +435,16 @@ export class MemoryOrderRepository implements IOrderRepository {
         o.client?.phone.includes(q)
       );
     }
-    return list.sort((a, b) => new Date(b.created_at || '').getTime() - new Date(a.created_at || '').getTime());
+    
+    const sortedList = list.sort((a, b) => new Date(b.created_at || '').getTime() - new Date(a.created_at || '').getTime());
+    const total = sortedList.length;
+    
+    const page = filters?.page || 1;
+    const limit = filters?.limit || 50;
+    const offset = (page - 1) * limit;
+    
+    const data = sortedList.slice(offset, offset + limit);
+    return { data, total };
   }
 
   async findById(id: number): Promise<Order | null> {

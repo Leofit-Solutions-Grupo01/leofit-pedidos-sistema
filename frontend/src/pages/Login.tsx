@@ -25,8 +25,8 @@ export default function Login() {
       return;
     }
     setCargando(true);
-    setTimeout(() => {
-      const ok = iniciarSesion(email, password);
+    setTimeout(async () => {
+      const ok = await iniciarSesion(email, password);
       if (!ok) {
         setError("Credenciales incorrectas. Verifica tus datos.");
         setCargando(false);
@@ -65,7 +65,7 @@ export default function Login() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="victor@leofit.com"
+                  placeholder="correo@ejemplo.com"
                   className="w-full pl-12 pr-4 py-3.5 border-2 border-slate-300 rounded-2xl text-base font-medium text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#0F223D] bg-slate-50 focus:bg-white transition-all shadow-inner"
                 />
               </div>
@@ -126,17 +126,7 @@ export default function Login() {
           </form>
         </div>
 
-        <button
-          type="button"
-          onClick={() => {
-            setEmail("victor@leofit.com");
-            setPassword("leofit2026");
-          }}
-          className="mt-5 w-full flex items-center justify-center gap-2 py-3.5 bg-white/20 hover:bg-white/30 active:scale-[0.98] border-2 border-white/40 text-white rounded-2xl transition-all shadow-lg font-bold text-sm"
-        >
-          <span className="material-icons text-amber-400" style={{ fontSize: "20px" }}>bolt</span>
-          <span>Autocompletar Datos de Prueba</span>
-        </button>
+
 
         <p className="mt-5 text-center text-xs text-slate-300 font-normal">
           Sistema Oficial de Pedidos · LeoFit Sportswear

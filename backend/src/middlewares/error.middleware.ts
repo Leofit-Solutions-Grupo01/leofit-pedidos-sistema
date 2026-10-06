@@ -21,6 +21,14 @@ export function errorHandler(err: any, req: Request, res: Response, next: NextFu
   // Registro en log para observabilidad del servidor
   console.error('❌ [Unhandled Server Error]:', err);
 
+  if (err && err.name === 'ZodError') {
+    res.status(400).json({
+      success: false,
+      error: err.errors || err.message
+    });
+    return;
+  }
+
   const statusCode = err.statusCode || 500;
   const errorCode = err.code || 'INTERNAL_SERVER_ERROR';
   const errorMessage = process.env.NODE_ENV === 'production' && statusCode === 500

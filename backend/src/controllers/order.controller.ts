@@ -16,25 +16,41 @@ import { Request, Response, NextFunction } from 'express';
 import { RepositoryFactory } from '../infrastructure/repositories/factory';
 import { AuthenticatedRequest } from '../middlewares/auth.middleware';
 import { OrderStatus } from '../domain/entities/models';
+import { z } from 'zod';
 
 export class OrderController {
   /**
    * @route GET /api/orders
    * @desc Lista órdenes de compra con opciones de filtrado por estado y término de búsqueda.
    * @access Protegido (ADMIN / OPERATOR)
-   * @query { status?: OrderStatus, search?: string }
+   * @query { status?: OrderStatus, search?: string, page?: number, limit?: number }
    */
   public static async listOrders(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const status = req.query.status as OrderStatus | undefined;
-      const search = req.query.search as string | undefined;
+      const querySchema = z.object({
+        status: z.string().optional(),
+        search: z.string().optional(),
+        page: z.coerce.number().min(1).default(1),
+        limit: z.coerce.number().min(1).max(100).default(50)
+      });
+
+      const parsedQuery = querySchema.parse(req.query);
+
+      const status = parsedQuery.status as OrderStatus | undefined;
+      const search = parsedQuery.search;
+      const page = parsedQuery.page;
+      const limit = parsedQuery.limit;
 
       const orderRepo = RepositoryFactory.getOrderRepository();
-      const orders = await orderRepo.listAll({ status, search });
+      const { data: orders, total } = await orderRepo.listAll({ status, search, page, limit });
 
+      res.setHeader('X-Total-Count', total.toString());
       res.status(200).json({
         success: true,
         count: orders.length,
+        total,
+        page,
+        limit,
         data: orders
       });
     } catch (error) {

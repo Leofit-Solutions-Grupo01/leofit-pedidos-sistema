@@ -294,10 +294,8 @@ export class PgClientRepository implements IClientRepository {
 export class PgOrderRepository implements IOrderRepository {
   private pool: Pool = dbPool;
 
-  async listAll(filters?: { status?: OrderStatus; dateFrom?: string; dateTo?: string; search?: string }): Promise<Order[]> {
-    let query = `
-      SELECT o.*, c.full_name as client_name, c.phone as client_phone, c.address as client_address, c.district as client_district,
-             u.name as user_name
+  async listAll(filters?: { status?: OrderStatus; dateFrom?: string; dateTo?: string; search?: string; page?: number; limit?: number }): Promise<{ data: Order[], total: number }> {
+    let whereQuery = `
       FROM orders o
       JOIN clients c ON o.client_id = c.id
       LEFT JOIN users u ON o.user_id = u.id
@@ -307,15 +305,33 @@ export class PgOrderRepository implements IOrderRepository {
 
     if (filters?.status) {
       params.push(filters.status);
-      query += ` AND o.status = $${params.length}`;
+      whereQuery += ` AND o.status = $${params.length}`;
     }
     if (filters?.search) {
       params.push(`%${filters.search}%`);
-      query += ` AND (LOWER(o.order_number) LIKE LOWER($${params.length}) OR LOWER(c.full_name) LIKE LOWER($${params.length}) OR c.phone LIKE $${params.length})`;
+      whereQuery += ` AND (LOWER(o.order_number) LIKE LOWER($${params.length}) OR LOWER(c.full_name) LIKE LOWER($${params.length}) OR c.phone LIKE $${params.length})`;
     }
 
-    query += ' ORDER BY o.id DESC';
-    const res = await this.pool.query(query, params);
+    const countQuery = `SELECT COUNT(*)::int AS total ${whereQuery}`;
+    const countRes = await this.pool.query(countQuery, params);
+    const total = parseInt(countRes.rows[0].total, 10);
+
+    let dataQuery = `
+      SELECT o.*, c.full_name as client_name, c.phone as client_phone, c.address as client_address, c.district as client_district,
+             u.name as user_name
+      ${whereQuery}
+      ORDER BY o.id DESC
+    `;
+
+    const page = filters?.page || 1;
+    const limit = filters?.limit || 50; // unificado con Zod a 50
+    const offset = (page - 1) * limit;
+
+    const dataParams = [...params];
+    dataParams.push(limit, offset);
+    dataQuery += ` LIMIT $${dataParams.length - 1} OFFSET $${dataParams.length}`;
+
+    const res = await this.pool.query(dataQuery, dataParams);
 
     const orders: Order[] = res.rows.map(row => ({
       id: row.id,
@@ -340,7 +356,7 @@ export class PgOrderRepository implements IOrderRepository {
       updated_at: row.updated_at
     }));
 
-    return orders;
+    return { data: orders, total };
   }
 
   async findById(id: number): Promise<Order | null> {
@@ -582,7 +598,8 @@ export class PgOrderRepository implements IOrderRepository {
       WHERE pv.stock <= pv.alert_threshold AND p.is_active = TRUE
     `);
 
-    const recentOrders = await this.listAll({});
+    const listRes = await this.listAll({});
+    const recentOrders = listRes.data;
 
     const topProdRes = await this.pool.query(`
       SELECT p.id as "productId", p.name, SUM(oi.quantity)::int as "totalQuantity", SUM(oi.subtotal)::float as "totalRevenue"

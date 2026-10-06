@@ -69,3 +69,27 @@ Se debe garantizar que los siguientes artefactos permanezcan permanentemente fue
 * `node_modules/`
 * Certificados y claves privadas (`.pem`, `.key`, `.cert`)
 * Directorios de compilación local (`dist/`, `build/`)
+
+---
+
+## 6. Estado de la Auditoría y Manejo de Secretos (APF3)
+
+El sistema opera bajo una estricta política de **Fail-Fast** en producción. Es mandatorio configurar adecuadamente las siguientes variables de entorno:
+
+- `JWT_SECRET`: Clave criptográfica para firma de tokens. **Falla si falta.**
+- `WEBHOOK_SECRET`: Clave HMAC compartida con la pasarela de pagos. **Falla si falta.**
+- `CORS_ORIGIN`: Orígenes autorizados. **En producción, falla si falta.**
+
+### Incidentes Activos y Deuda Técnica
+La última auditoría forense (APF3) cerró exitosamente múltiples vulnerabilidades críticas. Sin embargo, los siguientes incidentes y deudas permanecen activos y formalmente declarados:
+
+1. **[SEC-00] Credenciales Hardcodeadas en Historial (ESTADO: ABIERTO - P0)**
+   La contraseña original de BD fue expuesta en commits previos. 
+   - **Acción:** Requiere rotación de credenciales inmediata en producción y purga del historial con `git filter-repo`. (Responsable: DevOps/DBA).
+   
+2. **[SEC-08] Contraseñas Débiles en Seeds (ESTADO: ABIERTO - P1)**
+   - **Acción:** Los scripts de seeding deben ser refactorizados para obtener las contraseñas administrativas iniciales desde variables de entorno.
+
+3. **Migración a Cookies httpOnly (Deuda Técnica P0)**
+   - **Acción:** Migrar almacenamiento del JWT (`sessionStorage`) a cookies de sesión `httpOnly` con flags `Secure` y `SameSite=Strict`, implementando protección CSRF en los endpoints.
+   - **Fecha Objetivo / Owner:** Sprint 3 (Q1 2027) / Frontend Lead & Security Architecture Team.

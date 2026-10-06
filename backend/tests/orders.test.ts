@@ -93,4 +93,67 @@ describe('Módulo de Gestión de Pedidos (/api/orders)', () => {
     expect(res.body.success).toBe(true);
     expect(res.body.data.status).toBe('EN_CAMINO');
   });
+
+  describe('Paginación y X-Total-Count', () => {
+    it('X-Total-Count reporta el total real, no el tamaño de la página', async () => {
+      // Creamos un par de pedidos extra para asegurar que el total sea > 1
+      for(let i=0; i<2; i++) {
+        await request(app)
+          .post('/api/orders')
+          .set('Authorization', `Bearer ${testToken}`)
+          .send({
+            clientData: { fullName: `Test User ${i}`, phone: '987000111', address: 'A', district: 'L' },
+            paymentMethod: 'YAPE', shippingCost: 10,
+            items: [{ variantId: 1, quantity: 1, unitPrice: 49.90 }]
+          });
+      }
+
+      // Solicitamos limit=1
+      const res = await request(app)
+        .get('/api/orders?limit=1')
+        .set('Authorization', `Bearer ${testToken}`);
+      
+      expect(res.status).toBe(200);
+      expect(res.header['x-total-count']).toBeDefined();
+      const total = parseInt(res.header['x-total-count'], 10);
+      
+      expect(total).toBeGreaterThanOrEqual(2);      // total real en toda la tabla
+      expect(res.body.data.length).toBe(1);         // página respeta el limit
+      expect(total).not.toBe(res.body.data.length); // Falla si el código buggeado (min(N, limit)) siguiera activo
+      
+      expect(res.body.limit).toBe(1);
+      expect(res.body.page).toBe(1);
+      expect(res.body.total).toBe(total);
+    });
+
+    it('Debe rechazar paginación con limit fuera de rango (limit=0)', async () => {
+      const res = await request(app)
+        .get('/api/orders?limit=0')
+        .set('Authorization', `Bearer ${testToken}`);
+      
+      expect(res.status).toBe(400); // Error de Zod: min(1)
+      expect(res.body.success).toBe(false);
+      expect(JSON.stringify(res.body.error)).toContain('Number must be greater than or equal to 1');
+    });
+
+    it('Debe rechazar paginación con limit exagerado (limit=999999)', async () => {
+      const res = await request(app)
+        .get('/api/orders?limit=999999')
+        .set('Authorization', `Bearer ${testToken}`);
+      
+      expect(res.status).toBe(400); // Error de Zod: max(100)
+      expect(res.body.success).toBe(false);
+      expect(JSON.stringify(res.body.error)).toContain('Number must be less than or equal to 100');
+    });
+
+    it('Debe rechazar paginación con offset negativo (page=0 o negativo)', async () => {
+      const res = await request(app)
+        .get('/api/orders?page=0')
+        .set('Authorization', `Bearer ${testToken}`);
+      
+      expect(res.status).toBe(400); // Error de Zod: min(1)
+      expect(res.body.success).toBe(false);
+      expect(JSON.stringify(res.body.error)).toContain('Number must be greater than or equal to 1');
+    });
+  });
 });

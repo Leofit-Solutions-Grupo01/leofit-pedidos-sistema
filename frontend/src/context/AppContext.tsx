@@ -21,7 +21,7 @@ interface AppContextType {
   modoAccesible: boolean;
   togglePrivacidad: () => void;
   toggleAccesible: () => void;
-  iniciarSesion: (email: string, password: string) => boolean;
+  iniciarSesion: (email: string, password: string) => Promise<boolean>;
   cerrarSesion: () => void;
   navegarA: (pagina: Pagina) => void;
   navegarAConFiltro: (pagina: Pagina, filtro: EstadoPedido | "Todos") => void;
@@ -97,14 +97,25 @@ export function AppProvider({ children }: { children: ReactNode }) {
     };
   }, [autenticado]);
 
-  const iniciarSesion = (email: string, password: string): boolean => {
-    if (email === "victor@leofit.com" && password === "leofit2026") {
-      setAutenticado(true);
-      setPaginaActual("dashboard");
-      sessionStorage.setItem(SESSION_KEY, "victor");
-      return true;
+  const iniciarSesion = async (email: string, password: string): Promise<boolean> => {
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL || '';
+      const res = await fetch(`${apiUrl}/api/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setAutenticado(true);
+        setPaginaActual("dashboard");
+        sessionStorage.setItem(SESSION_KEY, data.data.token);
+        return true;
+      }
+      return false;
+    } catch {
+      return false;
     }
-    return false;
   };
 
   const cerrarSesion = () => {

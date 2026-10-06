@@ -12,8 +12,12 @@ export interface JWTPayload {
   role: UserRole;
 }
 
-const JWT_SECRET = process.env.JWT_SECRET || 'leofit_super_secret_jwt_key_academic_2026_production_ready';
-const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '24h';
+if (!process.env.JWT_SECRET) {
+  throw new Error('FATAL ERROR: JWT_SECRET must be defined in the environment.');
+}
+
+const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '1h';
 
 export class JWTService {
   public static generateToken(payload: JWTPayload): string {
@@ -24,7 +28,7 @@ export class JWTService {
 
   public static verifyToken(token: string): JWTPayload | null {
     try {
-      return jwt.verify(token, JWT_SECRET) as JWTPayload;
+      return jwt.verify(token, JWT_SECRET, { algorithms: ['HS256'] }) as JWTPayload;
     } catch {
       return null;
     }

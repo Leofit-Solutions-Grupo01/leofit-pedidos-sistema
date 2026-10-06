@@ -5,6 +5,9 @@
 import bcrypt from 'bcryptjs';
 
 const SALT_ROUNDS = parseInt(process.env.BCRYPT_SALT_ROUNDS || '10', 10);
+import crypto from 'crypto';
+
+export const DUMMY_HASH_CONSTANT = bcrypt.hashSync(crypto.randomBytes(32).toString('hex'), 10);
 
 export class PasswordHasher {
   public static async hash(password: string): Promise<string> {

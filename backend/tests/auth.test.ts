@@ -24,6 +24,20 @@ describe('Módulo de Autenticación & Seguridad RBAC (/api/auth)', () => {
     expect(res.body.data.user.email).toBe('scrum.master@leofit.pe');
   });
 
+  it('Debe prevenir la enumeración de usuarios en el registro (400) si el correo ya existe', async () => {
+    const res = await request(app)
+      .post('/api/auth/register')
+      .send({
+        name: 'Otro Usuario',
+        email: 'scrum.master@leofit.pe',
+        password: 'Password2026!'
+      });
+
+    expect(res.status).toBe(400);
+    expect(res.body.success).toBe(false);
+    expect(res.body.error.code).toBe('REGISTRATION_FAILED');
+  });
+
   it('Debe iniciar sesión exitosamente con credenciales válidas y retornar JWT', async () => {
     const res = await request(app)
       .post('/api/auth/login')

@@ -13,7 +13,7 @@
 
 import { Request, Response, NextFunction } from 'express';
 import { RepositoryFactory } from '../infrastructure/repositories/factory';
-import { PasswordHasher } from '../infrastructure/security/password.utils';
+import { PasswordHasher, DUMMY_HASH_CONSTANT } from '../infrastructure/security/password.utils';
 import { JWTService } from '../infrastructure/security/jwt.utils';
 import { AuthenticatedRequest } from '../middlewares/auth.middleware';
 
@@ -30,8 +30,9 @@ export class AuthController {
       const userRepo = RepositoryFactory.getUserRepository();
       const user = await userRepo.findByEmail(email);
 
-      // Verificación de existencia del usuario
+      // Verificación de existencia del usuario con mitigación de timing attack
       if (!user) {
+        await PasswordHasher.compare(password, DUMMY_HASH_CONSTANT); // Dummy compare
         res.status(401).json({
           success: false,
           error: {
@@ -92,14 +93,15 @@ export class AuthController {
       const { name, email, password, role } = req.body;
       const userRepo = RepositoryFactory.getUserRepository();
 
-      // Validación de duplicidad de correo
+      // Validación de duplicidad de correo con mitigación de timing attack
       const existing = await userRepo.findByEmail(email);
       if (existing) {
-        res.status(409).json({
+        await PasswordHasher.compare(password, DUMMY_HASH_CONSTANT); // Dummy compare
+        res.status(400).json({
           success: false,
           error: {
-            code: 'USER_ALREADY_EXISTS',
-            message: 'Ya existe un usuario registrado con esta dirección de correo electrónico.'
+            code: 'REGISTRATION_FAILED',
+            message: 'No se pudo completar el registro. Verifique la información proporcionada.'
           }
         });
         return;
