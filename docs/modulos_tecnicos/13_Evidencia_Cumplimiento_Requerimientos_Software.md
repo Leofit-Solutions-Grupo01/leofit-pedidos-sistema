@@ -120,13 +120,13 @@ Es la compuerta de seguridad perimetral de LeoFit. Impide que clientes externos 
 
 > **[Visualización de Evidencia Gráfica]** — *Figura 02: Carga y Verificación de Credenciales de Demostración (Incrustada en alta resolución en el PDF y Word adjuntos).*
 
-*Figura 02: Inyección y validación reactiva de credenciales de operador (`victor@leofit.com`).*
+*Figura 02: Inyección y validación reactiva de credenciales de operador (`admin@<dominio>`).*
 
 #### ¿De qué va esta pantalla?
 Demuestra el comportamiento reactivo del formulario al recepcionar credenciales válidas antes de procesar el hash criptográfico y conceder acceso al token de sesión administrativa.
 
 #### Elementos Visuales y Funcionales Detallados:
-1. **Correo Institucional Asignado:** Cuenta formal del administrador (`victor@leofit.com`), vinculada al rol `ADMIN` en la base de datos PostgreSQL.
+1. **Correo Institucional Asignado:** Cuenta formal del administrador (`<REDACTED>`), vinculada al rol `ADMIN` en la base de datos PostgreSQL.
 2. **Máscara de Seguridad de Contraseña:** Cifrado visual mediante puntos negros para evitar la lectura de hombro (*shoulder surfing*).
 3. **Estado Activo del Botón de Ingreso:** Habilitación inmediata del botón tras validar que los dos campos requeridos cumplen con longitud mínima.
 
