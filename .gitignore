@@ -152,3 +152,10 @@ desktop.ini
 frontend/*.pdf
 frontend/temp/
 frontend/test-results/
+
+# Cleanup APF3
+~$*.docx
+~$*.xlsx
+trufflehog_bin/
+gitleaks_bin/
+*.zip
