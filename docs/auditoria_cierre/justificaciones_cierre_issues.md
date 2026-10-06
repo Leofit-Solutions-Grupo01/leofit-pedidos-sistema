@@ -1,5 +1,9 @@
 # Justificaciones de Cierre de Issues (GitHub Projects) - Versión Extendida y APA 7.ª ed.
 
+> [VIGENTE HASTA APF2 — 2026-10-01]
+> Este documento refleja el cierre del sprint APF2. Para el estado actual,
+> ver `SECURITY.md` (sección 6) y el cierre APF3 cuando exista.
+
 Para cada cierre en el tablero, utilicen este formato ampliado que refleja el rigor académico y técnico del trabajo en equipo.
 
 ---
