@@ -99,7 +99,7 @@ La ÃƒÂºltima auditorÃƒÂ­a forense (APF3) cerrÃƒÂ³ exitosamente mÃƒ
    - **Fecha Objetivo / Owner:** Sprint 3 (Q1 2027) / Frontend Lead & Security Architecture Team.
 
 4. **[SEC-09] Credenciales y PII en documentaciÃ³n compilada (ESTADO: ABIERTO - P0)**
-   - **Vector:** PDFs y DOCXs compilados y trackeados en git (DOCUMENTO_MAESTRO, 13_Evidencia) con PasswordSeguro2026! y victor@leofit.com.
+   - **Vector:** PDFs y DOCXs compilados y trackeados en git (DOCUMENTO_MAESTRO, 13_Evidencia) con la contraseña hardcodeada y correo del administrador.
    - **DistribuciÃ³n:** PDFs circulan fuera del control del repo (email, Drive, descargas) e historial Git.
    - **AcciÃ³n requerida:**
      1. RotaciÃ³n de credencial (SEC-00, DevOps/DBA).
