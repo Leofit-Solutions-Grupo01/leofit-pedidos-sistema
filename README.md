@@ -153,3 +153,11 @@ npm run dev
 - **Licencia:** MIT License. Ver archivo [`LICENSE`](LICENSE).
 - **Gobernanza de Código:** Ver [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md) y [`CONTRIBUTING.md`](CONTRIBUTING.md).
 - **Políticas de Seguridad:** Ver [`SECURITY.md`](SECURITY.md).
+
+## Requisitos de Entorno Local
+
+Para garantizar la seguridad de las credenciales y levantar la infraestructura local (bases de datos y scripts de generacin), es **obligatorio** configurar las variables de entorno.
+
+1. Copie el archivo .env.example a .env en la raz del proyecto.
+2. Complete los valores requeridos, especialmente POSTGRES_PASSWORD y DATABASE_URL.
+3. Sin este archivo, la ejecucin de docker-compose up y de scripts (ej. generate_master_markdown.py) fallarn inmediatamente (Fail-fast).
