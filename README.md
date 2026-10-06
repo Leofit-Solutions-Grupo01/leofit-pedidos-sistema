@@ -156,8 +156,8 @@ npm run dev
 
 ## Requisitos de Entorno Local
 
-Para garantizar la seguridad de las credenciales y levantar la infraestructura local (bases de datos y scripts de generacin), es **obligatorio** configurar las variables de entorno.
+Para garantizar la seguridad de las credenciales y levantar la infraestructura local (bases de datos y scripts de generación), es **obligatorio** configurar las variables de entorno.
 
-1. Copie el archivo .env.example a .env en la raz del proyecto.
+1. Copie el archivo .env.example a .env en la raíz del proyecto.
 2. Complete los valores requeridos, especialmente POSTGRES_PASSWORD y DATABASE_URL.
-3. Sin este archivo, la ejecucin de docker-compose up y de scripts (ej. generate_master_markdown.py) fallarn inmediatamente (Fail-fast).
+3. Sin este archivo, la ejecución de docker-compose up y de scripts (ej. generate_master_markdown.py) fallarán inmediatamente (Fail-fast).

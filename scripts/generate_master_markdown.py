@@ -1,8 +1,3 @@
-import os, sys
-if not os.environ.get('DATABASE_URL'):
-    print('ERROR: DATABASE_URL no definida. Fail-fast.')
-    sys.exit(1)
-
 # -*- coding: utf-8 -*-
 """
 Script generador del Documento Maestro Integral y Definitivo de LeoFit Solutions.
@@ -1520,4 +1515,8 @@ A continuación se detallan las 15 preguntas de mayor complejidad técnica y met
     print(f"     Tamano: {len(content)} caracteres, {len(content.splitlines())} lineas.")
 
 if __name__ == '__main__':
+    import os, sys
+    if not os.environ.get('DATABASE_URL'):
+        print('ERROR: DATABASE_URL no definida. Fail-fast.')
+        sys.exit(1)
     build_master_markdown()

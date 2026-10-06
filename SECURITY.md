@@ -92,6 +92,8 @@ La ÃƒÂºltima auditorÃƒÂ­a forense (APF3) cerrÃƒÂ³ exitosamente mÃƒ
      - [inmediato] Sanitizar los 2 archivos en HEAD vía variables de entorno con fail-fast. Commit normal (no filter-repo).
      - [corto plazo] Rotación de ambas credenciales en el entorno real.
      - [corto plazo] git filter-repo para purgar historia.
+     - **Impacto operativo:** 52 commits reescritos. Todos los clones existentes quedan inválidos. Coordinación obligatoria con contributors. Apertura de ticket a GitHub Support para purga de objetos en caché.
+     - **Ventana de coordinación:** 2026-10-07 a 2026-10-15
      - [corto plazo] Coordinación de clones + soporte GitHub.
    - **Fecha Objetivo / Owner:** Sprint 3 (Q1 2027) / DevOps & DBA Team.
 
