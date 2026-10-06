@@ -26,7 +26,7 @@ Cuando el usuario te pida crear o mejorar diagramas, **DEBES** seguir este flujo
    ```bash
    npx -y @mermaid-js/mermaid-cli -i ruta/del/archivo.mmd -o ruta/del/archivo.png -b transparent
    ```
-4. **Presentar al Usuario**: Genera un artefacto Markdown `.md` e incrusta la imagen resultante `![Diagrama](ruta/absoluta.png)`.
+4. **Presentar al Usuario**: Genera un artefacto Markdown `.md` e incrusta la imagen resultante `![Diagrama](mermaid_ejemplo.png)`.
 
 ## Ejemplo de Plantilla Segura
 

@@ -37,15 +37,15 @@ La interfaz de usuario ha sido concebida específicamente para satisfacer las ne
 
 ## 3. Mockups y Vistas Diseñadas
 
-En la carpeta [`mockups/`](file:///c:/Users/Loayza/Downloads/leofit-pedidos-sistema/frontend/mockups) se encuentran las pantallas clave del sistema:
+En la carpeta [`mockups/`](./mockups) se encuentran las pantallas clave del sistema:
 
 | Mockup | Archivo | Descripción |
 |:---|:---|:---|
-| **01. Login** | [`01_Login.png`](file:///c:/Users/Loayza/Downloads/leofit-pedidos-sistema/frontend/mockups/01_Login.png) | Pantalla de acceso autenticado para el administrador con diseño oscuro y moderno. |
-| **02. Dashboard** | [`02_Dashboard.png`](file:///c:/Users/Loayza/Downloads/leofit-pedidos-sistema/frontend/mockups/02_Dashboard.png) | Panel de control con métricas clave (ventas del día, pedidos activos, alertas de stock crítico). |
-| **03. Listado de Pedidos** | [`03_Listado_Pedidos.png`](file:///c:/Users/Loayza/Downloads/leofit-pedidos-sistema/frontend/mockups/03_Listado_Pedidos.png) | Tabla interactiva con filtros rápidos por estado, buscador predictivo y detalles de entrega. |
-| **04. Formulario de Pedido** | [`04_Formulario_Pedido.png`](file:///c:/Users/Loayza/Downloads/leofit-pedidos-sistema/frontend/mockups/04_Formulario_Pedido.png) | Formulario optimizado de captura de pedido con selector de prendas, cálculo automático de total y delivery. |
-| **05. Gestión de Productos** | [`05_Gestion_Productos.png`](file:///c:/Users/Loayza/Downloads/leofit-pedidos-sistema/frontend/mockups/05_Gestion_Productos.png) | Catálogo de prendas deportivas con tallas, colores, precios y badges de alerta de stock bajo. |
+| **01. Login** | [`01_Login.png`](./mockups/01_Login.png) | Pantalla de acceso autenticado para el administrador con diseño oscuro y moderno. |
+| **02. Dashboard** | [`02_Dashboard.png`](./mockups/02_Dashboard.png) | Panel de control con métricas clave (ventas del día, pedidos activos, alertas de stock crítico). |
+| **03. Listado de Pedidos** | [`03_Listado_Pedidos.png`](./mockups/03_Listado_Pedidos.png) | Tabla interactiva con filtros rápidos por estado, buscador predictivo y detalles de entrega. |
+| **04. Formulario de Pedido** | [`04_Formulario_Pedido.png`](./mockups/04_Formulario_Pedido.png) | Formulario optimizado de captura de pedido con selector de prendas, cálculo automático de total y delivery. |
+| **05. Gestión de Productos** | [`05_Gestion_Productos.png`](./mockups/05_Gestion_Productos.png) | Catálogo de prendas deportivas con tallas, colores, precios y badges de alerta de stock bajo. |
 
 ---
 

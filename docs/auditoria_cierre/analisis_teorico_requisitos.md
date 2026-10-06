@@ -43,7 +43,7 @@ El estándar ISO destaca la necesidad de que cada requisito sea trazable hacia s
 **Figura 3**  
 *Interfaz del Login evidenciando el cumplimiento del RF-011*  
 
-![Mockup de la pantalla de Login](/c:/Users/Loayza/Downloads/leofit-pedidos-sistema/frontend/mockups/01_Login.png)  
+![Mockup de la pantalla de Login](../../frontend/mockups/01_Login.png)  
 
 *Nota.* Captura de pantalla adaptada de los mockups oficiales del proyecto LeoFit, ilustrando el control de acceso protegido (2026).
 
