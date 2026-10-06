@@ -284,7 +284,7 @@ ax.plot([174, 180], [3.6, 3.6], color=C_FLOW_DATA, linewidth=1.5, linestyle='--'
 ax.text(182, 3.6, "WebSocket / API", fontsize=7.8, color=C_TEXT_SUB, va='center')
 
 # Guardar figura
-output_path = r'c:\Users\Loayza\Downloads\leofit-pedidos-sistema\diagrams\01_BPMN_TO-BE.png'
+output_path = 'diagrams/01_BPMN_TO-BE.png'
 plt.tight_layout()
 plt.savefig(output_path, format='png', dpi=300, bbox_inches='tight', pad_inches=0.15)
 plt.close()

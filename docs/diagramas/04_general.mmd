@@ -1,0 +1,31 @@
+flowchart TD
+    classDef actor fill:#f8fafc,stroke:#334155,stroke-width:2px,color:#0f172a;
+    classDef pwa fill:#e0f2fe,stroke:#0284c7,stroke-width:2px,color:#0f172a;
+    classDef backend fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#0f172a;
+    classDef db fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#0f172a;
+
+    Cliente((fa:fa-user Cliente / Admin)):::actor
+
+    subgraph "Capa de Presentacion (Frontend)"
+        PWA["fab:fa-react Progressive Web App \n (React + Vite)"]:::pwa
+        SW["fas:fa-wifi Service Worker \n (Offline PWA)"]:::pwa
+    end
+
+    subgraph "Capa de Servicios (Backend)"
+        API["fab:fa-node-js API RESTful \n (Node.js)"]:::backend
+        Auth["fas:fa-lock Autenticacion \n (Validacion JWT)"]:::backend
+    end
+
+    subgraph "Capa de Persistencia (Datos)"
+        PG[("fas:fa-database Base de Datos \n (PostgreSQL)")]:::db
+    end
+
+    Cliente -->|Navega e interactua| PWA
+    PWA -->|Sincronizacion Transparente| SW
+    SW -->|Peticiones HTTP| API
+    API -->|Respuestas| SW
+    SW -->|Actualiza UI| PWA
+    PWA -->|Inicio de Sesion| Auth
+    Auth -.->|Valida credenciales| API
+    API -->|Consultas SQL| PG
+    PG -->|Resultados| API

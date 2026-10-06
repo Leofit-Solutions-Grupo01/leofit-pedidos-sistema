@@ -209,7 +209,7 @@ draw_flow_arrow(161, 72, 167, 72, label="Ver Estado")
 draw_flow_arrow(178, 56, 178, 25.2, label="Entrega Exitosa")
 
 # Guardar figura
-output_path = r'c:\Users\Loayza\Downloads\leofit-pedidos-sistema\diagrams\10_User_Flow_Navegacion.png'
+output_path = 'diagrams/10_User_Flow_Navegacion.png'
 plt.tight_layout()
 plt.savefig(output_path, format='png', dpi=300, bbox_inches='tight', pad_inches=0.15)
 plt.close()

@@ -1,0 +1,32 @@
+flowchart TD
+    classDef react fill:#e0f2fe,stroke:#0284c7,stroke-width:2px,color:#0f172a;
+    classDef state fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#0f172a;
+    classDef storage fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#0f172a;
+    classDef user fill:#f1f5f9,stroke:#64748b,stroke-width:2px,color:#0f172a,stroke-dasharray: 5 5;
+
+    U((fa:fa-user Usuario)):::user
+
+    subgraph Aplicacion["Capa de Vistas (React Pages)"]
+        Router["fas:fa-route Enrutador (react-router)"]:::react
+        L["fas:fa-sign-in-alt Login.tsx"]:::react
+        D["fas:fa-chart-bar Dashboard.tsx"]:::react
+        P["fas:fa-list PedidosLista.tsx"]:::react
+        F["fas:fa-shopping-cart PedidoForm.tsx"]:::react
+        I["fas:fa-box Productos.tsx"]:::react
+    end
+
+    subgraph EstadoGlobal["Gestión de Estado Central"]
+        Context["fab:fa-react AppContext.tsx (Global State)"]:::state
+        Mock["fas:fa-database mockData.ts"]:::state
+    end
+
+    subgraph Persistencia["Almacenamiento Local PWA"]
+        Local["fas:fa-hdd LocalStorage"]:::storage
+    end
+
+    U -->|Interactua| Router
+    Router --> L & D & P & F & I
+    
+    D & P & F & I -->|Despacha Acciones| Context
+    Context -->|Carga Inicial| Mock
+    Context -->|Persiste Sesion| Local

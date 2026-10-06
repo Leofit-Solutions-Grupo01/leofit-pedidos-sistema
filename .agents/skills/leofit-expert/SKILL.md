@@ -15,7 +15,7 @@ Bienvenido. Como asistente de IA, tu objetivo es ayudar a mantener y desarrollar
 - `frontend/`: Aplicación React PWA construida con Vite.
 
 ## 🛠️ 2. Comandos Esenciales (¡Memoriza esto!)
-Cuando el usuario te pida compilar, probar o generar, utiliza estos comandos desde la raíz (`c:\Users\Loayza\Downloads\leofit-pedidos-sistema`):
+Cuando el usuario te pida compilar, probar o generar, utiliza estos comandos desde la raíz del proyecto (workspace root):
 
 *   **Regenerar y Exportar Documentos (DOCX y PDF):**
     ```bash

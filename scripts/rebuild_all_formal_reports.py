@@ -598,69 +598,31 @@ def write_07_arquitectura():
 
 ## 2. REPRESENTACIÓN ARQUITECTÓNICA (VISTA LÓGICA Y DESACOPLAMIENTO)
 
-El sistema implementa una **Arquitectura Limpia (Clean Architecture)** organizada en capas concéntricas con flujo de dependencias unidireccional:
+El sistema implementa una **Arquitectura Limpia (Clean Architecture)** organizada en capas concéntricas con flujo de dependencias unidireccional. A continuación se presentan los diagramas de cada capa del sistema.
 
-```text
-┌─────────────────────────────────────────────────────────────┐
-│                    CAPA DE PRESENTACIÓN                     │
-│    (React 18 + TypeScript + Tailwind CSS + Lucide Icons)    │
-│  [Vistas: Login, Dashboard, PedidoForm, PedidosLista, etc.] │
-└──────────────────────────────┬──────────────────────────────┘
-                               │
-                               ▼
-┌─────────────────────────────────────────────────────────────┐
-│                  CAPA DE ESTADO Y NEGOCIO                   │
-│   (React Context API: AppContext + Custom Hooks + Reducers) │
-│ [Lógica: Validación Stock, Cálculo Totales, Filtros Reactivos]│
-└──────────────────────────────┬──────────────────────────────┘
-                               │
-                               ▼
-┌─────────────────────────────────────────────────────────────┐
-│                 CAPA DE ACCESO A DATOS                      │
-│ (Mock Data Engine / REST API Client / LocalStorage Cache)   │
-└─────────────────────────────────────────────────────────────┘
-```
+### 2.1. Arquitectura General (Modelo C4)
+![Diagrama General PWA](./diagramas/04_general.png)
 
 ---
 
-## 3. VISTA DE DESARROLLO (ESTRUCTURA MODULAR)
+## 3. VISTA DE DESARROLLO (CAPA FRONTEND Y SERVICE WORKER)
 
-```text
-frontend/src/
-├── __tests__/            # Suite de pruebas unitarias automatizadas (Vitest)
-├── components/           # Componentes modulares reutilizables
-│   ├── common/           # Componentes atómicos (Badge, Modal, MontoPrivado)
-│   └── layout/           # Elementos estructurales (Navbar)
-├── context/              # Capa de estado global inmutable (AppContext.tsx)
-├── data/                 # Modelos de datos TypeScript y catálogo (mockData.ts)
-└── pages/                # Vistas de la aplicación (Dashboard, Pedidos, Productos, Login)
-```
+La arquitectura cliente-servidor se divide en el flujo de la aplicación React y el motor Offline administrado por el Service Worker.
+
+### 3.1. Arquitectura de Frontend
+![Diagrama Frontend](./diagramas/01_frontend.png)
+
+### 3.2. Arquitectura de Service Worker (PWA)
+![Diagrama Service Worker](./diagramas/02_service_worker.png)
 
 ---
 
-## 4. VISTA DE PROCESOS (FLUJO TRANSACCIONAL DE PEDIDOS)
+## 4. VISTA DE PROCESOS (FLUJO TRANSACCIONAL Y BACKEND)
 
-```text
-[Cliente: Confirmar Pedido]
-           │
-           ▼
-[AppContext: Validar Existencias de Ítems]
-           │
-     ┌─────┴─────┐
-[Hay Stock]   [Sin Stock] ──► [Notificar Error y Bloquear Envío]
-     │
-     ▼
-[Generar ID Único: PED-2026-XXXX]
-     │
-     ▼
-[Deducir Stock de Productos en Memoria/BD]
-     │
-     ▼
-[Agregar Pedido a Lista Global con Estado: 'Recibido']
-     │
-     ▼
-[Actualizar Tarjetas de Métricas en Dashboard]
-```
+El backend procesa la lógica de negocio y autoriza las transacciones contra la base de datos PostgreSQL.
+
+### 4.1. Arquitectura Backend y Datos
+![Diagrama Backend y Datos](./diagramas/03_backend.png)
 
 ---
 

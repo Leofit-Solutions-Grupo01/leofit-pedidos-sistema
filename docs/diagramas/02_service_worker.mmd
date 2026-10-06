@@ -1,0 +1,22 @@
+sequenceDiagram
+    participant Nav as fas:fa-browser Navegador
+    participant SW as fas:fa-cogs Service Worker
+    participant Cache as fas:fa-hdd Caché PWA
+    participant Red as fas:fa-cloud Servidor Web
+
+    Nav->>SW: Petición HTTP (index.html)
+    activate SW
+    SW->>Cache: ¿Existe recurso en Caché Local?
+    
+    alt Recurso estático (Cache-First)
+        Cache-->>SW: Devuelve Archivo Rápido (<50ms)
+        SW-->>Nav: Renderiza UI Offline
+    else Datos Dinámicos (Network-First)
+        SW->>Red: Petición a Servidor
+        activate Red
+        Red-->>SW: Datos Frescos
+        deactivate Red
+        SW->>Cache: Guarda actualización en 2do plano
+        SW-->>Nav: Devuelve JSON
+    end
+    deactivate SW

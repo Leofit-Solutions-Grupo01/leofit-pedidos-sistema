@@ -224,7 +224,7 @@ for r in risk_catalog:
     start_y -= card_height
 
 # Guardar figura en alta resolución (300 DPI)
-output_path = r'c:\Users\Loayza\Downloads\leofit-pedidos-sistema\diagrams\02_Mapa_Riesgos.png'
+output_path = 'diagrams/02_Mapa_Riesgos.png'
 plt.tight_layout()
 plt.savefig(output_path, format='png', dpi=300, bbox_inches='tight', pad_inches=0.2)
 plt.close()

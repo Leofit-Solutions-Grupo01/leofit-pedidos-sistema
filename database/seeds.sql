@@ -79,8 +79,8 @@ SELECT setval('payment_methods_id_seq', (SELECT MAX(id) FROM payment_methods));
 -- Contraseña de prueba: "password" — hash bcrypt $2b$ rounds=10
 -- =============================================================================
 INSERT INTO users (id, name, email, password_hash, role, is_active) VALUES
-(1, 'Víctor Leandro Cárdenas Fernández', 'admin@leofit.pe',    '$2b$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'ADMIN',    TRUE),
-(2, 'Lady Luz Loayza Rodriguez',          'operador@leofit.pe', '$2b$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'OPERATOR', TRUE)
+(1, 'Administrador LeoFit', 'admin@leofit.pe',    '$2b$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'ADMIN',    TRUE),
+(2, 'Operador Logistico',   'operador@leofit.pe', '$2b$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'OPERATOR', TRUE)
 ON CONFLICT (id) DO NOTHING;
 
 SELECT setval('users_id_seq', (SELECT MAX(id) FROM users));

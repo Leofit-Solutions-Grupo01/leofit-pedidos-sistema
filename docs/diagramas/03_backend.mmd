@@ -1,0 +1,27 @@
+flowchart LR
+    classDef actor fill:#f8fafc,stroke:#334155,stroke-width:2px,color:#0f172a;
+    classDef sys fill:#e0f2fe,stroke:#0284c7,stroke-width:2px,color:#0f172a;
+    classDef auth fill:#fee2e2,stroke:#ef4444,stroke-width:2px,color:#0f172a;
+    classDef logic fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#0f172a;
+    classDef db fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#0f172a;
+
+    C((fa:fa-mobile-alt Cliente PWA)):::actor
+    
+    subgraph Servidor["API Node.js (Express)"]
+        R["fas:fa-network-wired Enrutador \n (POST /api/pedidos)"]:::sys
+        M["fas:fa-shield-alt Middleware \n (Validar JWT)"]:::auth
+        L["fas:fa-cogs Logica de Negocio \n (Validar Stock)"]:::logic
+    end
+    
+    DB[("fas:fa-database PostgreSQL \n (Insercion SQL)")]:::db
+
+    C -->|1. Peticion HTTP| R
+    R -->|2. Intercepta| M
+    M -->|3. Token Valido| L
+    L -->|4. Guarda Datos| DB
+    
+    DB -.->|5. ID Generado| L
+    L -.->|6. 201 Created| C
+    
+    M -.->|401 No Autorizado| C
+    L -.->|400 Sin Stock| C

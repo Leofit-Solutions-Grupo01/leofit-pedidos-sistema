@@ -21,7 +21,7 @@ BEGIN
     ) THEN
         CREATE ROLE replicator_leofit
             WITH REPLICATION LOGIN
-            ENCRYPTED PASSWORD 'Leofit_Repl_2026!SecurePass';
+            ENCRYPTED PASSWORD '<TU_PASSWORD_REPLICACION_AQUI>';
         RAISE NOTICE '✅ Role replicator_leofit creado exitosamente.';
     ELSE
         RAISE NOTICE 'ℹ️  Role replicator_leofit ya existe — omitido.';
