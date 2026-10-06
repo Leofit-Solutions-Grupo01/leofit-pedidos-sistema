@@ -17,7 +17,7 @@ services:
       -c archive_mode=off
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgrespassword2026!
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: leofit_db
     ports:
       - "5432:5432"
@@ -45,7 +45,7 @@ services:
         condition: service_healthy
     environment:
       DB_USER: postgres
-      DB_PASSWORD: postgrespassword2026!
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
       DB_HOST: postgres
       DB_PORT: 5432
       DB_NAME: leofit_db
@@ -79,7 +79,7 @@ services:
     environment:
       NODE_ENV: production
       PORT: 4000
-      DATABASE_URL: postgresql://postgres:postgrespassword2026!@pgbouncer:6432/leofit_db
+      DATABASE_URL: postgresql://postgres:${POSTGRES_PASSWORD}@pgbouncer:6432/leofit_db
       JWT_SECRET: leofit_super_secret_jwt_key_academic_2026_production_ready
       CORS_ORIGIN: "*"
     ports:

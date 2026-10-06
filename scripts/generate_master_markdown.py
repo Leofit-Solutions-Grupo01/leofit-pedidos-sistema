@@ -1,3 +1,8 @@
+import os, sys
+if not os.environ.get('DATABASE_URL'):
+    print('ERROR: DATABASE_URL no definida. Fail-fast.')
+    sys.exit(1)
+
 # -*- coding: utf-8 -*-
 """
 Script generador del Documento Maestro Integral y Definitivo de LeoFit Solutions.
@@ -1320,7 +1325,7 @@ Crear un archivo `.env` en la raíz del backend con los valores de producción:
 ```ini
 NODE_ENV=production
 PORT=3000
-DATABASE_URL=postgresql://leofit_admin:PasswordSeguro2026!@aws-0-sa-east-1.pooler.supabase.com:5432/leofit_db?sslmode=require
+DATABASE_URL=${DATABASE_URL}
 JWT_SECRET_KEY=clave_secreta_criptografica_sha256_leofit_2026_segura
 JWT_ACCESS_EXPIRATION_MINUTES=15
 JWT_REFRESH_EXPIRATION_DAYS=7

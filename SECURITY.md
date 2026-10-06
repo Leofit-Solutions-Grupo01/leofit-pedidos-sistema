@@ -83,12 +83,18 @@ El sistema opera bajo una estricta polÃƒÂ­tica de **Fail-Fast** en producci�
 ### Incidentes Activos y Deuda TÃƒÂ©cnica
 La ÃƒÂºltima auditorÃƒÂ­a forense (APF3) cerrÃƒÂ³ exitosamente mÃƒÂºltiples vulnerabilidades crÃƒÂ­ticas. Sin embargo, los siguientes incidentes y deudas permanecen activos y formalmente declarados:
 
-1. **[SEC-00] Credenciales Hardcodeadas en Historial (ESTADO: ABIERTO - P0)**
-   La contraseÃƒÂ±a original de BD fue expuesta en commits previos. 
-   - **AcciÃƒÂ³n:** Requiere rotaciÃƒÂ³n de credenciales inmediata en producciÃƒÂ³n y purga del historial con `git filter-repo`.
-   - **Owner:** Product Owner / Back-End Lead
-   - **Fecha Límite:** 2026-10-15
-   
+1. **[SEC-00] Credenciales activas expuestas (ABIERTO - P0)**
+   - **Vectores:**
+     1. HEAD actual: `docker-compose.yml` (postgrespassword2026!), `scripts/generate_master_markdown.py` (PasswordSeguro2026!).
+     2. Historia git: commits 900c375, 5653086, 1e42944, 6bfe2e1, 1f9531d, 827cd62... (lista completa).
+     3. Binarios históricos: cubierto por SEC-09.
+   - **Mitigación en curso:**
+     - [inmediato] Sanitizar los 2 archivos en HEAD vía variables de entorno con fail-fast. Commit normal (no filter-repo).
+     - [corto plazo] Rotación de ambas credenciales en el entorno real.
+     - [corto plazo] git filter-repo para purgar historia.
+     - [corto plazo] Coordinación de clones + soporte GitHub.
+   - **Fecha Objetivo / Owner:** Sprint 3 (Q1 2027) / DevOps & DBA Team.
+
 2. **[SEC-08] ContraseÃƒÂ±as DÃƒÂ©biles en Seeds (ESTADO: ABIERTO - P1)**
    - **AcciÃƒÂ³n:** Los scripts de seeding deben ser refactorizados para obtener las contraseÃƒÂ±as administrativas iniciales desde variables de entorno.
    - **Owner:** Product Owner / Back-End Lead
@@ -111,10 +117,10 @@ La ÃƒÂºltima auditorÃƒÂ­a forense (APF3) cerrÃƒÂ³ exitosamente mÃƒ
    - **Fecha LÃ­mite Purga Git (filter-repo):** 2026-10-15
 
 
-> <TODO: decisi�n del Product Owner>
-> Pol�tica sobre PII en documentos acad�micos (Ficha, Actas). 
-> Opci�n A: Mantener como datos institucionales p�blicos. 
-> Opci�n B: Sanitizar a <autor 1> en el repo p�blico.
+> <TODO: decisi�n del Product Owner>
+> Pol�tica sobre PII en documentos acad�micos (Ficha, Actas). 
+> Opci�n A: Mantener como datos institucionales p�blicos. 
+> Opci�n B: Sanitizar a <autor 1> en el repo p�blico.
 > Archivos afectados:
 > - docs/DOCUMENTO_MAESTRO_INTEGRAL_LEOFIT.md:301,670
 > - docs/modulos_tecnicos/03_Acta_Reunion_1.md:60
