@@ -20,7 +20,7 @@ Se ha utilizado un diagrama de flujo con dos zonas separadas visualmente (subgra
 
 | Componente | Fuente |
 | --- | --- |
-| Morgan setup | `backend/src/app.ts:49` |
+| Morgan setup | `backend/src/app.ts:50` |
 | Dependencias de observabilidad | `backend/package.json` (solo `morgan` instalado) |
 | CI/CD Performance Jobs | `.github/workflows/backend-ci-cd.yml` (Ausentes) |
 
