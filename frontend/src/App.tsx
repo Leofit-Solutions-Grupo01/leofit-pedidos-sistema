@@ -15,6 +15,8 @@ import PedidoForm from "./pages/PedidoForm";
 import ProductosGestion from "./pages/ProductosGestion";
 import RastreoPublico from "./pages/RastreoPublico";
 
+import Analytics from "./pages/Analytics";
+
 function AppContent() {
   const { autenticado, paginaActual } = useApp();
 
@@ -23,11 +25,20 @@ function AppContent() {
   return (
     <div className="min-h-screen bg-[#F1FAEE]">
       <Navbar />
-      {paginaActual === "dashboard" && <Dashboard />}
+      {(paginaActual === "dashboard" || paginaActual === "nuevo-pedido") && <Dashboard />}
+      {paginaActual === "analytics" && <Analytics />}
       {paginaActual === "pedidos" && <PedidosLista />}
-      {paginaActual === "nuevo-pedido" && <PedidoForm />}
       {paginaActual === "productos" && <ProductosGestion />}
       {paginaActual === "rastreo" && <RastreoPublico />}
+      
+      {/* Modal Nuevo Pedido */}
+      {paginaActual === "nuevo-pedido" && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-900/60 backdrop-blur-sm">
+          <div className="bg-white w-full max-w-4xl max-h-[95vh] overflow-y-auto rounded-2xl shadow-2xl relative">
+            <PedidoForm />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

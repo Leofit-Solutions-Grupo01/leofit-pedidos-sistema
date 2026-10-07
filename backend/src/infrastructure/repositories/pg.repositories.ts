@@ -435,81 +435,115 @@ export class PgOrderRepository implements IOrderRepository {
     return this.findById(res.rows[0].id);
   }
 
-  async create(dto: CreateOrderDTO): Promise<Order> {
-    const client = await this.pool.connect();
-    try {
-      await client.query('BEGIN');
+  async create(dto: CreateOrderDTO, isolationLevel: IsolationLevel = 'READ COMMITTED'): Promise<Order> {
+    const MAX_RETRIES = 10;
+    const BASE_BACKOFF_MS = 2;
+    const MAX_BACKOFF_MS = 100;
 
-      // 1. Resolve client
-      let clientId = dto.clientId;
-      if (!clientId && dto.clientData) {
-        const checkClient = await client.query('SELECT id FROM clients WHERE phone = $1', [dto.clientData.phone]);
-        if (checkClient.rows.length > 0) {
-          clientId = checkClient.rows[0].id;
-        } else {
-          const newClientRes = await client.query(
-            `INSERT INTO clients (full_name, phone, address, district, reference)
-             VALUES ($1, $2, $3, $4, $5) RETURNING id`,
-            [dto.clientData.fullName, dto.clientData.phone, dto.clientData.address, dto.clientData.district, dto.clientData.reference || null]
-          );
-          clientId = newClientRes.rows[0].id;
+    const isolationSql: Record<IsolationLevel, string> = {
+      'READ COMMITTED': 'READ COMMITTED',
+      'REPEATABLE READ': 'REPEATABLE READ',
+      'SERIALIZABLE': 'SERIALIZABLE',
+    };
+
+    for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+      const client = await this.pool.connect();
+      try {
+        await client.query(`BEGIN ISOLATION LEVEL ${isolationSql[isolationLevel]}`);
+
+        // 1. Resolve client
+        let clientId = dto.clientId;
+        if (!clientId && dto.clientData) {
+          const checkClient = await client.query('SELECT id FROM clients WHERE phone = $1', [dto.clientData.phone]);
+          if (checkClient.rows.length > 0) {
+            clientId = checkClient.rows[0].id;
+          } else {
+            const newClientRes = await client.query(
+              `INSERT INTO clients (full_name, phone, address, district, reference)
+               VALUES ($1, $2, $3, $4, $5) RETURNING id`,
+              [dto.clientData.fullName, dto.clientData.phone, dto.clientData.address, dto.clientData.district, dto.clientData.reference || null]
+            );
+            clientId = newClientRes.rows[0].id;
+          }
         }
-      }
 
-      if (!clientId) throw new Error('Cliente inválido');
+        if (!clientId) throw new Error('Cliente inválido');
 
-      // 2. Validate and deduct stock
-      let subtotal = 0;
-      for (const item of dto.items) {
-        const vRes = await client.query('SELECT stock, sku FROM product_variants WHERE id = $1 FOR UPDATE', [item.variantId]);
-        if (vRes.rows.length === 0) throw new Error(`Variante ID ${item.variantId} no encontrada`);
-        const stock = vRes.rows[0].stock;
-        if (stock < item.quantity) {
-          throw new Error(`Stock insuficiente para SKU ${vRes.rows[0].sku}. Disponible: ${stock}, pedido: ${item.quantity}`);
+        // 2. Validate and deduct stock
+        let subtotal = 0;
+        for (const item of dto.items) {
+          const selectQuery = isolationLevel === 'SERIALIZABLE'
+            ? 'SELECT stock, sku FROM product_variants WHERE id = $1'
+            : 'SELECT stock, sku FROM product_variants WHERE id = $1 FOR UPDATE';
+
+          const vRes = await client.query(selectQuery, [item.variantId]);
+          if (vRes.rows.length === 0) throw new Error(`Variante ID ${item.variantId} no encontrada`);
+          const stock = vRes.rows[0].stock;
+          if (stock < item.quantity) {
+            throw new Error(`Stock insuficiente para SKU ${vRes.rows[0].sku}. Disponible: ${stock}, pedido: ${item.quantity}`);
+          }
+
+          await client.query('UPDATE product_variants SET stock = stock - $1, updated_at = CURRENT_TIMESTAMP WHERE id = $2', [item.quantity, item.variantId]);
+          subtotal += item.unitPrice * item.quantity;
         }
 
-        await client.query('UPDATE product_variants SET stock = stock - $1, updated_at = CURRENT_TIMESTAMP WHERE id = $2', [item.quantity, item.variantId]);
-        subtotal += item.unitPrice * item.quantity;
-      }
+        // 3. Create Order
+        const dateStr = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+        const seqRes = await client.query("SELECT nextval('order_number_seq') AS seq");
+        const seq = parseInt(seqRes.rows[0].seq, 10).toString().padStart(6, '0');
+        const orderNumber = `LEO-${dateStr}-${seq}`;
+        const totalAmount = subtotal + dto.shippingCost;
 
-      // 3. Create Order
-      const dateStr = new Date().toISOString().slice(0, 10).replace(/-/g, '');
-      const countRes = await client.query('SELECT COUNT(*) FROM orders');
-      const seq = (parseInt(countRes.rows[0].count, 10) + 1).toString().padStart(3, '0');
-      const orderNumber = `LEO-${dateStr}-${seq}`;
-      const totalAmount = subtotal + dto.shippingCost;
-
-      const orderRes = await client.query(
-        `INSERT INTO orders (order_number, client_id, user_id, status, subtotal, shipping_cost, total_amount, payment_method, notes)
-         VALUES ($1, $2, $3, 'RECIBIDO', $4, $5, $6, $7, $8) RETURNING id`,
-        [orderNumber, clientId, dto.userId || null, subtotal, dto.shippingCost, totalAmount, dto.paymentMethod, dto.notes || null]
-      );
-      const orderId = orderRes.rows[0].id;
-
-      // 4. Insert Order Items
-      for (const item of dto.items) {
-        await client.query(
-          `INSERT INTO order_items (order_id, variant_id, quantity, unit_price, subtotal)
-           VALUES ($1, $2, $3, $4, $5)`,
-          [orderId, item.variantId, item.quantity, item.unitPrice, item.unitPrice * item.quantity]
+        const orderRes = await client.query(
+          `INSERT INTO orders (order_number, client_id, user_id, status, subtotal, shipping_cost, total_amount, payment_method, notes)
+           VALUES ($1, $2, $3, 'RECIBIDO', $4, $5, $6, $7, $8) RETURNING id`,
+          [orderNumber, clientId, dto.userId || null, subtotal, dto.shippingCost, totalAmount, dto.paymentMethod, dto.notes || null]
         );
+        const orderId = orderRes.rows[0].id;
+
+        // 4. Insert Order Items
+        for (const item of dto.items) {
+          await client.query(
+            `INSERT INTO order_items (order_id, variant_id, quantity, unit_price, subtotal)
+             VALUES ($1, $2, $3, $4, $5)`,
+            [orderId, item.variantId, item.quantity, item.unitPrice, item.unitPrice * item.quantity]
+          );
+        }
+
+        // 5. Insert History
+        await client.query(
+          `INSERT INTO order_status_history (order_id, user_id, previous_status, new_status, comments)
+           VALUES ($1, $2, NULL, 'RECIBIDO', 'Pedido creado exitosamente')`,
+          [orderId, dto.userId || null]
+        );
+
+        await client.query('COMMIT');
+        
+        // No liberar el client aqui todavia para evitar fugas si findById falla
+        // El cliente se liberara en el finally block global de la iteracion.
+        return await this.findById(orderId) as Order;
+      } catch (e: any) {
+        try { await client.query('ROLLBACK'); } catch { /* no-op si no hay tx activa */ }
+        
+        const isSerializationError = e.code === '40001';
+        const isDeadlockError = e.code === '40P01';
+
+        if ((isSerializationError || isDeadlockError) && attempt < MAX_RETRIES) {
+          // Exponential backoff con 20% jitter
+          const backoff = Math.min(MAX_BACKOFF_MS, BASE_BACKOFF_MS * Math.pow(2, attempt - 1));
+          const jitter = backoff * 0.2;
+          const waitTime = backoff - jitter + Math.random() * (jitter * 2);
+          await new Promise(resolve => setTimeout(resolve, waitTime));
+          continue; // Retry
+        }
+
+        throw e;
+      } finally {
+        client.release(); // Safe release UNA SOLA VEZ garantizado por iteración
       }
-
-      // 5. Insert History
-      await client.query(
-        `INSERT INTO order_status_history (order_id, user_id, previous_status, new_status, comments)
-         VALUES ($1, $2, NULL, 'RECIBIDO', 'Pedido creado exitosamente')`,
-        [orderId, dto.userId || null]
-      );
-
-      await client.query('COMMIT');
-      return this.findById(orderId) as Promise<Order>;
-    } catch (e) {
-      await client.query('ROLLBACK');
-      throw e;
-    } finally {
-      client.release();
     }
+    
+    throw new Error('Max retries reached without successful transaction.');
   }
 
   async updateStatus(orderId: number, newStatus: OrderStatus, userId?: number, comments?: string): Promise<Order | null> {

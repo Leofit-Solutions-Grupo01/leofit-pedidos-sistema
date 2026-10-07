@@ -60,7 +60,7 @@ Para cada cierre en el tablero, utilicen este formato ampliado que refleja el ri
 
 *Nota.* Captura de pantalla de elaboración propia de la interfaz cliente-servidor (2026).
 
-**Sugerencia de mejora continua:** La PWA actual depende de conectividad continua. Para maximizar su potencial, se sugiere enriquecer los *Service Workers* e integrar IndexedDB de modo que se habilite un "modo offline" real. Esto permitiría al equipo de ventas capturar órdenes en ferias sin internet y sincronizar el lote de pedidos automáticamente al recuperar la señal.
+**Sugerencia de mejora continua:** La arquitectura Modal (Glassmorphism) actual permite una entrada de datos rápida y sin pérdida de contexto. Sin embargo, la PWA actual depende de conectividad continua. Para maximizar su potencial, se sugiere enriquecer los *Service Workers* e integrar IndexedDB de modo que se habilite un "modo offline" real (más allá del banner de alerta implementado). Esto permitiría capturar órdenes en ferias sin internet y sincronizar el lote de pedidos automáticamente.
 
 ---
 
@@ -163,7 +163,7 @@ Para cada cierre en el tablero, utilicen este formato ampliado que refleja el ri
 ---
 
 ### #15 y #16 (Pruebas ISO 25010 y Usabilidad WCAG)
-**Evidencia y Contenido:** El aseguramiento de la calidad basado en el modelo ISO/IEC 25010 ha sido ejecutado mediante pruebas reactivas en el cliente web. El equipo utilizó el motor Vitest para redactar aserciones precisas (`usability_iso25010.test.ts`) que evalúan factores como la protección contra errores (ej. impedir asignación de cupones excesivos o pedidos con stock cero) y la facilidad de aprendizaje. La Figura 12 muestra el reporte de evaluación, validando cuantitativamente el cumplimiento de la norma y respaldando el cálculo del System Usability Scale (SUS) detallado en el APF3.
+**Evidencia y Contenido:** El aseguramiento de la calidad basado en el modelo ISO/IEC 25010 ha sido ejecutado mediante pruebas reactivas en el cliente web y la implementación directa de características WCAG (Web Content Accessibility Guidelines). El equipo introdujo el modo "A+ Vista" (Alto Contraste y Fuente Grande), controlable desde el Menú de Usuario Dinámico, lo que mejora drásticamente la usabilidad para usuarios con discapacidad visual. Adicionalmente, el equipo utilizó el motor Vitest para redactar aserciones precisas (`usability_iso25010.test.ts`) que evalúan factores como la protección contra errores (ej. impedir asignación de cupones excesivos o pedidos con stock cero) y la facilidad de aprendizaje. La Figura 12 muestra el reporte de evaluación, validando cuantitativamente el cumplimiento de la norma y respaldando el cálculo del System Usability Scale (SUS) detallado en el APF3.
 
 **Figura 12**  
 *Resultados de la suite automatizada de métricas de calidad y usabilidad ISO 25010*  

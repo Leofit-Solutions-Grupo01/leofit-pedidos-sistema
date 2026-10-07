@@ -114,3 +114,17 @@ export interface Pedido {
   fechaActualizacion: string;
 }
 ```
+
+---
+
+## 6. ALINEACIÓN CON EL ESTADO DEL ARTE Y CONCURRENCIA OPTIMISTA (INTEGRACIÓN TEÓRICA)
+
+Para dotar a la Progressive Web App de un valor operativo significativo y un rigor académico alineado con el marco teórico del proyecto, la experiencia de usuario y el diseño del flujo de compra (Checkout Flow) están diseñados utilizando los principios de **Control de Concurrencia Optimista (Optimistic Concurrency Control)**, tal como fue formalizado por **Kung y Robinson (1981)** y contrastado en arquitecturas modernas por **Menascé (1982)** y **Yu et al. (2014)**.
+
+### 6.1. ¿Cómo se refleja el marco teórico en la PWA?
+A nivel de frontend, la PWA asume una postura *Optimista*:
+1. **Fase de Lectura (Read Phase):** El cliente navega por el catálogo y agrega productos al carrito asumiendo que el stock mostrado en la caché (vía Service Worker) es válido. **No se imponen bloqueos (locks)** ni se congela la interfaz del usuario. Esto maximiza la fluidez (WPO) y evita tiempos de espera innecesarios.
+2. **Fase de Validación y Escritura (Validation & Write Phase):** Cuando el usuario confirma el pedido, la PWA lanza la solicitud al backend. Si en ese microsegundo otro usuario concurrentemente agotó el stock (generando un error de asilamiento bajo SSI), la PWA captura el rechazo del backend de forma limpia.
+3. **Manejo Resiliente del Conflicto:** En lugar de lanzar errores técnicos crípticos (típicos de bloqueos pesimistas donde la petición entra en un timeout de *deadlock*), la PWA notifica al cliente elegante y reactivamente: *"Lo sentimos, el producto acaba de agotarse. Su carrito ha sido actualizado."*
+
+Este diseño demuestra que las decisiones tomadas en el backend (Niveles de Aislamiento) no son entes aislados, sino que **potencian la agilidad y escalabilidad del Frontend PWA**, alineando el comportamiento empírico del sistema de LeoFit con la literatura científica de la carpeta `vu`.

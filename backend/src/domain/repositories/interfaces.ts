@@ -123,6 +123,8 @@ export interface CreateOrderDTO {
   }>;
 }
 
+export type IsolationLevel = 'READ COMMITTED' | 'REPEATABLE READ' | 'SERIALIZABLE';
+
 /**
  * Contrato de persistencia para la gestión transaccional de órdenes de compra.
  */
@@ -139,7 +141,7 @@ export interface IOrderRepository {
    * 2. Registra cabecera de orden y detalle de items.
    * 3. Inserta registro inicial en la pista de auditoría.
    */
-  create(dto: CreateOrderDTO): Promise<Order>;
+  create(dto: CreateOrderDTO, isolationLevel?: IsolationLevel): Promise<Order>;
   /**
    * Ejecuta una transición controlada de estado en la máquina de estados del pedido.
    */

@@ -141,6 +141,9 @@ CREATE TABLE clients (
 COMMENT ON TABLE clients IS
   'Clientes. district_id FK a tabla districts (dominio extraído → BCNF eliminó dependencia transitiva).';
 
+  -- Secuencia para order_number
+  CREATE SEQUENCE IF NOT EXISTS order_number_seq;
+
 -- 6. Cabecera de pedidos
 CREATE TABLE orders (
     id                SERIAL             PRIMARY KEY,

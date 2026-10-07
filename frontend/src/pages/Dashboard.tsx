@@ -429,11 +429,12 @@ export default function Dashboard() {
         </div>
 
         {/* Acciones rápidas (Responsive: Stack on narrow mobile, horizontal on sm+) */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3">
           {[
             { label: "Nuevo Pedido", desc: "Registrar venta", icon: "add_circle", pagina: "nuevo-pedido" as const, color: "text-[#E63946]", bg: "bg-red-50 border-red-200" },
             { label: "Ver Pedidos", desc: "Historial completo", icon: "receipt_long", pagina: "pedidos" as const, color: "text-[#1D3557]", bg: "bg-blue-50 border-blue-200" },
             { label: "Inventario", desc: "Stock de prendas", icon: "inventory_2", pagina: "productos" as const, color: "text-emerald-800", bg: "bg-emerald-50 border-emerald-200" },
+            { label: "Analíticas", desc: "Reportes gráficos", icon: "bar_chart", pagina: "analytics" as const, color: "text-purple-800", bg: "bg-purple-50 border-purple-200" },
           ].map((acc) => (
             <button
               key={acc.label}

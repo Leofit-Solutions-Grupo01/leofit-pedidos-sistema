@@ -1,0 +1,104 @@
+# Directorio Maestro de Documentación — LeoFit Solutions
+## Curso Integrador II: Software (100000S12F) — UTP
+**Docente:** Ing. Enrique Lee Huamani Uriarte  
+**Grupo 01:** *LeoFit Pedidos Sistema*
+
+---
+
+## Índice General de Entregables y Documentos
+
+Toda la documentación técnica y académica del proyecto se encuentra organizada bajo estándares de ingeniería de software, arquitectura limpia y normas de redacción formal.
+
+```text
+docs/
+├── FUENTE ÚNICA DE VERDAD (DOCUMENTO MAESTRO TOTAL):
+│   ├── DOCUMENTO_MAESTRO_INTEGRAL_LEOFIT.pdf   # Libro Maestro Integral (70 págs, 13 Capítulos, Diagramas y 14 Pantallas)
+│   ├── DOCUMENTO_MAESTRO_INTEGRAL_LEOFIT.docx  # Documento Maestro Editable en Microsoft Word
+│   └── DOCUMENTO_MAESTRO_INTEGRAL_LEOFIT.md    # Versión Markdown completa y trazable
+│
+├── entregas_academicas/                # Entregables Oficiales y Gobernanza:
+│   ├── INFORME_FINAL_APF2_LEOFIT.pdf       # Entregable Oficial Maestro APF2 (PDF)
+│   ├── INFORME_FINAL_APF2_LEOFIT.docx      # Entregable Oficial Maestro APF2 (Word)
+│   ├── INFORME_FINAL_APF1_LEOFIT.pdf       # Entregable Oficial Maestro APF1 (PDF - Calificación: 18/20)
+│   └── INFORME_FINAL_APF1_LEOFIT.docx      # Entregable Oficial Maestro APF1 (Word)
+│
+├── Instrumentos de Evaluación y Gobernanza:
+│   ├── Checklist_Integral_Evaluacion_Software.md / .docx / .pdf  # Checklist Integral UTP (Funcionalidad, UX, Rendimiento, Seguridad)
+│   ├── GUIA_CARGA_ISSUES_GITHUB.md / .docx / .pdf               # Guía Maestra del Tablero GitHub Projects (Sprints 1 al 5)
+│   └── PLAN_ACADEMICO_GITHUB_PROJECTS_LEOFIT.md / .docx / .pdf   # Plan de Evaluaciones, RACI y Fórmulas UTP
+│
+├── academic/                           # Material Académico, Rúbricas y Diapositivas UTP
+│   ├── Silabo_Curso_Integrador_II.pdf  # Sílabo oficial del curso
+│   ├── rubricas/                       # Rúbricas oficiales de evaluación (APF1, APF2, APF3)
+│   ├── diapositivas/                   # Diapositivas de clase (Semanas 01 a 18)
+│   ├── evaluaciones/                   # Retroalimentación oficial de notas UTP
+│   └── recursos/                       # Documentación institucional y recursos UTP:
+│       └── Ficha_Mapeo_Empresa_Semana_1.pdf # Ficha oficial de mapeo empresarial suscrita
+│
+└── modulos_tecnicos/                  # Anexos Especializados de Ingeniería (01 al 13):
+    ├── 01_Ficha_Identificacion         # Ficha institucional de identificación del proyecto
+    ├── 02_Requerimientos               # Especificación de Requerimientos de Software (ERS/IEEE 830)
+    ├── 03_Acta_Reunion_1               # Acta y minuta de reunión con la empresa LeoFit
+    ├── 04_Glosario                     # Glosario de términos del negocio textil e ingeniería
+    ├── 05_Preguntas_Criticas_Panel     # Balotario de defensa y sustentación técnica
+    ├── 06_Especificacion_PWA_Prompt    # Especificación de interfaz y componentes PWA
+    ├── 07_Arquitectura_Sistema         # Documento de Arquitectura de Software (SAD - Modelo 4+1)
+    ├── 08_Normalizacion_Base_Datos     # Normalización Relacional (1FN, 2FN, 3FN y BCNF)
+    ├── 09_Guion_Video_Demo_Remotion    # Guion técnico y código de video demo
+    ├── 10_Catalogo_Controles_Seguridad_OWASP # Matriz de mitigación OWASP Top 10
+    ├── 11_Informe_Seguridad_Cifrado_Pruebas_Web # Reporte técnico SAST/DAST y Cifrado
+    ├── 12_Manual_Despliegue_Cloud_Produccion    # Manual de Despliegue en Cloud v1
+    └── 13_Evidencia_Cumplimiento_Requerimientos_Software # Informe formal con capturas de pantalla de todos los RF/RNF
+```
+
+---
+
+## 1. Documento Maestro y Entregables Consolidados
+
+| Documento / Hito | Semana | Estado | Formato Word | Formato PDF | Formato MD |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| **DOCUMENTO MAESTRO INTEGRAL (SSOT)** | **Consolidado** | **Aprobado (Definitivo)** | [Descargar .docx](./DOCUMENTO_MAESTRO_INTEGRAL_LEOFIT.docx) | [Descargar .pdf](./DOCUMENTO_MAESTRO_INTEGRAL_LEOFIT.pdf) | [Ver .md](./DOCUMENTO_MAESTRO_INTEGRAL_LEOFIT.md) |
+| **Avance de Proyecto Final 2 (APF2)** | S12 | Entregado / Calificado | [Descargar .docx](./entregas_academicas/INFORME_FINAL_APF2_LEOFIT.docx) | [Descargar .pdf](./entregas_academicas/INFORME_FINAL_APF2_LEOFIT.pdf) | — |
+| **Avance de Proyecto Final 1 (APF1)** | S07 | Aprobado (**18/20**) | [Descargar .docx](./entregas_academicas/INFORME_FINAL_APF1_LEOFIT.docx) | [Descargar .pdf](./entregas_academicas/INFORME_FINAL_APF1_LEOFIT.pdf) | [Ver .md](./entregas_academicas/INFORME_FINAL_APF1_LEOFIT.md) |
+| **Avance de Proyecto Final 3 (APF3)** | S14 | Planificado (Sprint 4) | *En desarrollo para Semana 14* | *En desarrollo para Semana 14* | — |
+| **Evaluación Final (PROY)** | S18 | Planificado (Sprint 5) | *En desarrollo para Semana 18* | *En desarrollo para Semana 18* | — |
+
+---
+
+## 2. Instrumentos de Evaluación y Gobernanza Transversal
+
+| Documento | Formato MD | Formato DOCX | Formato PDF | Descripción |
+| :--- | :---: | :---: | :---: | :--- |
+| **Checklist Integral de Evaluación** | [`MD`](./entregas_academicas/Checklist_Integral_Evaluacion_Software.md) | [`DOCX`](./entregas_academicas/Checklist_Integral_Evaluacion_Software.docx) | [`PDF`](./entregas_academicas/Checklist_Integral_Evaluacion_Software.pdf) | Evaluación técnica exhaustiva (Funcionalidad, Usabilidad UX, Rendimiento y Seguridad/Costos). |
+| **Guía de Carga de Issues GitHub** | [`MD`](./entregas_academicas/GUIA_CARGA_ISSUES_GITHUB.md) | [`DOCX`](./entregas_academicas/GUIA_CARGA_ISSUES_GITHUB.docx) | [`PDF`](./entregas_academicas/GUIA_CARGA_ISSUES_GITHUB.pdf) | Guía de gestión ágil de sprints, backlog, tareas y trazabilidad de requerimientos. |
+| **Plan Académico GitHub Projects** | [`MD`](./entregas_academicas/PLAN_ACADEMICO_GITHUB_PROJECTS_LEOFIT.md) | [`DOCX`](./entregas_academicas/PLAN_ACADEMICO_GITHUB_PROJECTS_LEOFIT.docx) | [`PDF`](./entregas_academicas/PLAN_ACADEMICO_GITHUB_PROJECTS_LEOFIT.pdf) | Plan de hitos académicos, matriz de responsabilidades RACI y ponderaciones UTP. |
+
+---
+
+## 3. Módulos Temáticos de Ingeniería y Arquitectura
+
+| N° | Documento | Formato MD | Formato DOCX | Formato PDF | Descripción |
+| :---: | :--- | :---: | :---: | :---: | :--- |
+| **01** | **Ficha de Identificación** | [`MD`](./modulos_tecnicos/01_Ficha_Identificacion.md) | [`DOCX`](./modulos_tecnicos/01_Ficha_Identificacion.docx) | [`PDF`](./modulos_tecnicos/01_Ficha_Identificacion.pdf) | Datos de la MYPE LeoFit, integrantes, roles y resumen del proyecto. |
+| **02** | **Especificación de Requerimientos** | [`MD`](./modulos_tecnicos/02_Requerimientos.md) | [`DOCX`](./modulos_tecnicos/02_Requerimientos.docx) | [`PDF`](./modulos_tecnicos/02_Requerimientos.pdf) | Requerimientos Funcionales (RF), No Funcionales (RNF) e Historias de Usuario con formato Gherkin. |
+| **03** | **Acta de Reunión N° 1** | [`MD`](./modulos_tecnicos/03_Acta_Reunion_1.md) | [`DOCX`](./modulos_tecnicos/03_Acta_Reunion_1.docx) | [`PDF`](./modulos_tecnicos/03_Acta_Reunion_1.pdf) | Entrevista con el dueño de la empresa textil, levantamiento de procesos y acuerdos. |
+| **04** | **Glosario de Términos** | [`MD`](./modulos_tecnicos/04_Glosario.md) | [`DOCX`](./modulos_tecnicos/04_Glosario.docx) | [`PDF`](./modulos_tecnicos/04_Glosario.pdf) | Terminología técnica (PWA, BCNF, JWT, ACID, WAL) y textil (Oversize, Dry-Fit, SKU). |
+| **05** | **Preguntas Críticas de Panel** | [`MD`](./modulos_tecnicos/05_Preguntas_Criticas_Panel.md) | [`DOCX`](./modulos_tecnicos/05_Preguntas_Criticas_Panel.docx) | [`PDF`](./modulos_tecnicos/05_Preguntas_Criticas_Panel.pdf) | Balotario de 20 preguntas y respuestas técnicas preparadas para la sustentación. |
+| **06** | **Especificación PWA & UI/UX** | [`MD`](./modulos_tecnicos/06_Especificacion_PWA_Prompt.md) | [`DOCX`](./modulos_tecnicos/06_Especificacion_PWA_Prompt.docx) | [`PDF`](./modulos_tecnicos/06_Especificacion_PWA_Prompt.pdf) | Diseño de interfaz, modo oscuro, 10 heurísticas de Nielsen y Service Workers. |
+| **07** | **Arquitectura de Software (SAD)** | [`MD`](./modulos_tecnicos/07_Arquitectura_Sistema.md) | [`DOCX`](./modulos_tecnicos/07_Arquitectura_Sistema.docx) | [`PDF`](./modulos_tecnicos/07_Arquitectura_Sistema.pdf) | Vistas del modelo 4+1, diagrama C4 de contenedores, patrones arquitectónicos y Clean Architecture. |
+| **08** | **Normalización de Base de Datos** | [`MD`](./modulos_tecnicos/08_Normalizacion_Base_Datos.md) | [`DOCX`](./modulos_tecnicos/08_Normalizacion_Base_Datos.docx) | [`PDF`](./modulos_tecnicos/08_Normalizacion_Base_Datos.pdf) | Proceso de normalización formal desde 1FN, 2FN, 3FN hasta BCNF y DDL en PostgreSQL. |
+| **09** | **Guion de Video Demo** | [`MD`](./modulos_tecnicos/09_Guion_Video_Demo_Remotion.md) | [`DOCX`](./modulos_tecnicos/09_Guion_Video_Demo_Remotion.docx) | [`PDF`](./modulos_tecnicos/09_Guion_Video_Demo_Remotion.pdf) | Estructura del pitch audiovisual y código de animación en Remotion. |
+| **10** | **Controles de Seguridad OWASP** | [`MD`](./modulos_tecnicos/10_Catalogo_Controles_Seguridad_OWASP.md) | [`DOCX`](./modulos_tecnicos/10_Catalogo_Controles_Seguridad_OWASP.docx) | [`PDF`](./modulos_tecnicos/10_Catalogo_Controles_Seguridad_OWASP.pdf) | Catálogo de mitigación técnica para el OWASP Top 10 (SQLi, XSS, RBAC, Rate-Limit). |
+| **11** | **Informe de Seguridad y SAST/DAST** | [`MD`](./modulos_tecnicos/11_Informe_Seguridad_Cifrado_Pruebas_Web.md) | [`DOCX`](./modulos_tecnicos/11_Informe_Seguridad_Cifrado_Pruebas_Web.docx) | [`PDF`](./modulos_tecnicos/11_Informe_Seguridad_Cifrado_Pruebas_Web.pdf) | Informe de auditoría estática (`npm audit`), pruebas dinámicas y cifrado en tránsito/reposo. |
+| **12** | **Manual de Despliegue en Cloud** | [`MD`](./modulos_tecnicos/12_Manual_Despliegue_Cloud_Produccion.md) | [`DOCX`](./modulos_tecnicos/12_Manual_Despliegue_Cloud_Produccion.docx) | [`PDF`](./modulos_tecnicos/12_Manual_Despliegue_Cloud_Produccion.pdf) | Guía de aprovisionamiento en Render (Backend), Vercel (Frontend) y Supabase (DB). |
+| **13** | **Evidencia de Requerimientos de Software** | [`MD`](./modulos_tecnicos/13_Evidencia_Cumplimiento_Requerimientos_Software.md) | [`DOCX`](./modulos_tecnicos/13_Evidencia_Cumplimiento_Requerimientos_Software.docx) | [`PDF`](./modulos_tecnicos/13_Evidencia_Cumplimiento_Requerimientos_Software.pdf) | Informe formal de validación con 15 capturas de pantalla de alta fidelidad de todos los RF-001/018 y RNF-001/010. |
+
+---
+
+## 4. Políticas de Seguridad y Manejo de Información Sensible
+
+> [!NOTE]
+> Toda la documentación, scripts y ejemplos de configuración cumplen estrictamente con las siguientes directivas de privacidad y seguridad:
+> 1. **Cero Credenciales en Texto Plano:** Se impone una política de Fail-Fast. Las llaves críticas (`JWT_SECRET`, `WEBHOOK_SECRET`, `CORS_ORIGIN` en prod) impiden que el backend arranque si están ausentes, forzando la seguridad desde el inicio y sin usar `*` ni fallbacks inseguros.
+> 2. **Datos de Demostración:** Todos los clientes, números telefónicos y correos electrónicos utilizados en las semillas (`seeds.sql`) son datos simulados con fines estrictamente académicos.
+> 3. **Cifrado de Contraseñas:** Las credenciales de prueba en la base de datos se encuentran protegidas mediante algoritmo de derivación de claves **bcrypt** con 10 rondas de salt.
