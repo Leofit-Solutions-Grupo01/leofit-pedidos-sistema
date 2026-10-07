@@ -7,7 +7,7 @@
 
 #### A. Cifrado en Reposo (Data at Rest)
 1. **Credenciales de Usuario:** No se almacenan contraseñas en texto claro. Se procesan mediante la función de derivación de claves **bcrypt** utilizando un factor de costo (Work Factor) de 10 rondas de hashing salado criptográficamente aleatorio.
-2. **Tablas de Base de Datos:** PostgreSQL en producción (Supabase / AWS RDS) opera bajo cifrado de volumen a nivel de bloque **AES-256**.
+2. **Tablas de Base de Datos:** PostgreSQL en el entorno cloud target (Supabase) opera bajo cifrado de volumen a nivel de bloque **AES-256**.
 
 #### B. Cifrado en Tránsito (Data in Transit)
 1. **Protocolo:** TLS 1.3 / HTTPS obligatorio en todas las conexiones entre cliente (PWA), proxy inverso y API REST.
