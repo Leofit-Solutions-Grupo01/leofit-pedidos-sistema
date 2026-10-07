@@ -757,18 +757,18 @@ export default function PedidoForm() {
         </div>
 
         {/* Actions */}
-        <div className="flex flex-col-reverse sm:flex-row gap-2.5 sm:gap-4">
+        <div className="flex flex-col-reverse sm:flex-row gap-3 sm:gap-4 mt-4">
           <button
             onClick={() => navegarA("dashboard")}
-            className="w-full sm:flex-1 py-3 sm:py-3.5 border-2 border-slate-300 text-slate-700 font-bold text-sm sm:text-base rounded-2xl hover:bg-slate-100 transition-colors shadow-sm"
+            className="w-full sm:flex-1 py-3.5 px-4 border-2 border-slate-300 text-slate-700 font-bold text-sm sm:text-base rounded-2xl hover:bg-slate-100 transition-colors shadow-sm whitespace-normal break-words"
           >
             Cancelar
           </button>
           <button
             onClick={handleGuardar}
-            className="w-full sm:flex-[2] py-3 sm:py-3.5 bg-emerald-700 hover:bg-emerald-800 active:scale-[0.98] text-white font-bold text-sm sm:text-base rounded-2xl transition-all flex items-center justify-center gap-2 shadow-xl shadow-emerald-700/30 ring-2 ring-white"
+            className="w-full sm:flex-[2] py-3.5 px-4 bg-emerald-700 hover:bg-emerald-800 active:scale-[0.98] text-white font-bold text-sm sm:text-base rounded-2xl transition-all flex flex-wrap items-center justify-center gap-2 shadow-xl shadow-emerald-700/30 ring-2 ring-white whitespace-normal text-center leading-tight break-words"
           >
-            <span className="material-icons" style={{ fontSize: "20px" }}>save</span>
+            <span className="material-icons shrink-0" style={{ fontSize: "20px" }}>save</span>
             <span>Guardar y Registrar Pedido</span>
           </button>
         </div>
