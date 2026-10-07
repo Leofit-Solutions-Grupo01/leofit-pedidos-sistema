@@ -159,3 +159,10 @@ frontend/test-results/
 trufflehog_bin/
 gitleaks_bin/
 *.zip
+
+# Forensic analysis artifacts (one-shot, no commitear)
+pg_repos.diff
+appcontext.diff
+app_pedido.diff
+order.txt
+interfaces.txt

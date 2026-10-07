@@ -22,7 +22,8 @@ import {
   IProductRepository,
   IClientRepository,
   IOrderRepository,
-  CreateOrderDTO
+  CreateOrderDTO,
+  IsolationLevel
 } from '../../domain/repositories/interfaces';
 
 export class PgUserRepository implements IUserRepository {
