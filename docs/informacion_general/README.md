@@ -57,9 +57,9 @@ docs/
 
 | Documento / Hito | Semana | Estado | Formato Word | Formato PDF | Formato MD |
 | :--- | :---: | :---: | :---: | :---: | :---: |
-| **DOCUMENTO MAESTRO INTEGRAL (SSOT)** | **Consolidado** | **Aprobado (Definitivo)** | [Descargar .docx](./DOCUMENTO_MAESTRO_INTEGRAL_LEOFIT.docx) | [Descargar .pdf](./DOCUMENTO_MAESTRO_INTEGRAL_LEOFIT.pdf) | [Ver .md](./DOCUMENTO_MAESTRO_INTEGRAL_LEOFIT.md) |
-| **Avance de Proyecto Final 2 (APF2)** | S12 | Entregado / Calificado | [Descargar .docx](./entregas_academicas/INFORME_FINAL_APF2_LEOFIT.docx) | [Descargar .pdf](./entregas_academicas/INFORME_FINAL_APF2_LEOFIT.pdf) | — |
-| **Avance de Proyecto Final 1 (APF1)** | S07 | Aprobado (**18/20**) | [Descargar .docx](./entregas_academicas/INFORME_FINAL_APF1_LEOFIT.docx) | [Descargar .pdf](./entregas_academicas/INFORME_FINAL_APF1_LEOFIT.pdf) | [Ver .md](./entregas_academicas/INFORME_FINAL_APF1_LEOFIT.md) |
+| **DOCUMENTO MAESTRO INTEGRAL (SSOT)** | **Consolidado** | **Aprobado (Definitivo)** | [Descargar .docx](../documento_maestro/DOCUMENTO_MAESTRO_INTEGRAL_LEOFIT.docx) | [Descargar .pdf](../documento_maestro/DOCUMENTO_MAESTRO_INTEGRAL_LEOFIT.pdf) | [Ver .md](../documento_maestro/DOCUMENTO_MAESTRO_INTEGRAL_LEOFIT.md) |
+| **Avance de Proyecto Final 2 (APF2)** | S12 | Entregado / Calificado | [Descargar .docx](../gestion_academica/entregas/INFORME_FINAL_APF2_LEOFIT.docx) | [Descargar .pdf](../gestion_academica/entregas/INFORME_FINAL_APF2_LEOFIT.pdf) | — |
+| **Avance de Proyecto Final 1 (APF1)** | S07 | Aprobado (**18/20**) | [Descargar .docx](../gestion_academica/entregas/INFORME_FINAL_APF1_LEOFIT.docx) | [Descargar .pdf](../gestion_academica/entregas/INFORME_FINAL_APF1_LEOFIT.pdf) | [Ver .md](../gestion_academica/entregas/INFORME_FINAL_APF1_LEOFIT.md) |
 | **Avance de Proyecto Final 3 (APF3)** | S14 | Planificado (Sprint 4) | *En desarrollo para Semana 14* | *En desarrollo para Semana 14* | — |
 | **Evaluación Final (PROY)** | S18 | Planificado (Sprint 5) | *En desarrollo para Semana 18* | *En desarrollo para Semana 18* | — |
 
@@ -69,9 +69,9 @@ docs/
 
 | Documento | Formato MD | Formato DOCX | Formato PDF | Descripción |
 | :--- | :---: | :---: | :---: | :--- |
-| **Checklist Integral de Evaluación** | [`MD`](./entregas_academicas/Checklist_Integral_Evaluacion_Software.md) | [`DOCX`](./entregas_academicas/Checklist_Integral_Evaluacion_Software.docx) | [`PDF`](./entregas_academicas/Checklist_Integral_Evaluacion_Software.pdf) | Evaluación técnica exhaustiva (Funcionalidad, Usabilidad UX, Rendimiento y Seguridad/Costos). |
-| **Guía de Carga de Issues GitHub** | [`MD`](./entregas_academicas/GUIA_CARGA_ISSUES_GITHUB.md) | [`DOCX`](./entregas_academicas/GUIA_CARGA_ISSUES_GITHUB.docx) | [`PDF`](./entregas_academicas/GUIA_CARGA_ISSUES_GITHUB.pdf) | Guía de gestión ágil de sprints, backlog, tareas y trazabilidad de requerimientos. |
-| **Plan Académico GitHub Projects** | [`MD`](./entregas_academicas/PLAN_ACADEMICO_GITHUB_PROJECTS_LEOFIT.md) | [`DOCX`](./entregas_academicas/PLAN_ACADEMICO_GITHUB_PROJECTS_LEOFIT.docx) | [`PDF`](./entregas_academicas/PLAN_ACADEMICO_GITHUB_PROJECTS_LEOFIT.pdf) | Plan de hitos académicos, matriz de responsabilidades RACI y ponderaciones UTP. |
+| **Checklist Integral de Evaluación** | [`MD`](../gestion_academica/entregas/Checklist_Integral_Evaluacion_Software.md) | [`DOCX`](../gestion_academica/entregas/Checklist_Integral_Evaluacion_Software.docx) | [`PDF`](../gestion_academica/entregas/Checklist_Integral_Evaluacion_Software.pdf) | Evaluación técnica exhaustiva (Funcionalidad, Usabilidad UX, Rendimiento y Seguridad/Costos). |
+| **Guía de Carga de Issues GitHub** | [`MD`](../gestion_academica/entregas/GUIA_CARGA_ISSUES_GITHUB.md) | [`DOCX`](../gestion_academica/entregas/GUIA_CARGA_ISSUES_GITHUB.docx) | [`PDF`](../gestion_academica/entregas/GUIA_CARGA_ISSUES_GITHUB.pdf) | Guía de gestión ágil de sprints, backlog, tareas y trazabilidad de requerimientos. |
+| **Plan Académico GitHub Projects** | [`MD`](../gestion_academica/entregas/PLAN_ACADEMICO_GITHUB_PROJECTS_LEOFIT.md) | [`DOCX`](../gestion_academica/entregas/PLAN_ACADEMICO_GITHUB_PROJECTS_LEOFIT.docx) | [`PDF`](../gestion_academica/entregas/PLAN_ACADEMICO_GITHUB_PROJECTS_LEOFIT.pdf) | Plan de hitos académicos, matriz de responsabilidades RACI y ponderaciones UTP. |
 
 ---
 

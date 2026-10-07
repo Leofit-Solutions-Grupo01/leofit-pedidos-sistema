@@ -163,7 +163,7 @@ flowchart TD
     I --> J([Almacenero empaqueta y despacha de forma descoordinada])
 ```
 
-![Figura 1.1: Diagrama BPMN del Proceso Operativo Actual (AS-IS)](.../diagramas/01_BPMN_AS-IS.png)
+![Figura 1.1: Diagrama BPMN del Proceso Operativo Actual (AS-IS)](../diagramas/01_BPMN_AS-IS.png)
 
 ### Tabla de Desglose del Proceso AS-IS (8 Pasos Operativos):
 
@@ -196,7 +196,7 @@ flowchart TD
     H --> I([Almacenero despacha con Guía Digital e Imprime Ticket QR])
 ```
 
-![Figura 1.2: Diagrama BPMN del Proceso Propuesto Optimizado (TO-BE)](.../diagramas/01_BPMN_TO-BE.png)
+![Figura 1.2: Diagrama BPMN del Proceso Propuesto Optimizado (TO-BE)](../diagramas/01_BPMN_TO-BE.png)
 
 ## 1.6. Matriz Comparativa de Brechas (Gap Analysis)
 
@@ -210,7 +210,7 @@ flowchart TD
 
 ## 1.7. Documento de Análisis de Negocio (Lean Canvas)
 
-![Figura 1.3: Modelo de Negocio Lean Canvas de LeoFit Solutions](.../diagramas/06_Lean_Canvas.png)
+![Figura 1.3: Modelo de Negocio Lean Canvas de LeoFit Solutions](../diagramas/06_Lean_Canvas.png)
 
 El modelo de negocio validado se sintetiza en la siguiente matriz Lean Canvas estructurada:
 
@@ -277,7 +277,7 @@ El modelo de negocio validado se sintetiza en la siguiente matriz Lean Canvas es
 | **S15 - S16** | QA, UAT y Carga | Pruebas End-to-End Playwright, Pruebas de Carga k6 (target propuesto), Auditoría Final | 100% Completado |
 | **S17 - S18** | **Cierre y Defensa Final** | **Sustentación Final ante Jurado UTP y Entrega de Memoria Técnica** | **Listo para Defensa** |
 
-![Figura 2.1: Diagrama de Gantt del Cronograma Maestro (Semanas 1 a 18)](.../diagramas/07_Cronograma_Gantt.png)
+![Figura 2.1: Diagrama de Gantt del Cronograma Maestro (Semanas 1 a 18)](../diagramas/07_Cronograma_Gantt.png)
 
 ## 2.4. Planificación Ágil de Sprints (Sprint Planning S0 al S4)
 
@@ -324,7 +324,7 @@ El equipo gestiona el flujo de trabajo a través de un tablero GitHub Projects c
 | **4. Code Review / QA** | Pull Request abierto con pruebas automáticas ejecutándose en CI/CD. | **Max. 3** | Revisión aprobada por al menos un par (peer review), 0 errores en SonarCloud/Linter y cobertura > 80%. |
 | **5. Done** | Funcionalidad desplegada en ambiente de staging o producción. | Sin límite | Aprobada por el Product Owner y documentada en la memoria técnica del proyecto. |
 
-![Figura 2.2: Tablero Kanban / Scrum con Políticas y Límites WIP](.../diagramas/08_Tablero_Kanban.png)
+![Figura 2.2: Tablero Kanban / Scrum con Políticas y Límites WIP](../diagramas/08_Tablero_Kanban.png)
 
 ## 2.7. Product Backlog Priorizado (Metodología MoSCoW)
 
@@ -577,7 +577,7 @@ leofit-pedidos-sistema/
 
 El diseño del sistema inició con wireframes de baja fidelidad enfocados en la ergonomía móvil de los vendedores que transitan por las galerías de Gamarra. Los componentes principales (barra de navegación inferior, botones de llamada a la acción y buscador) fueron ubicados estratégicamente dentro de la "zona del pulgar" (Thumb Zone) para facilitar la operación con una sola mano.
 
-![Figura 4.1: Wireframes Mobile-First de Baja Fidelidad](.../diagramas/09_Wireframes_Baja_Fidelidad.png)
+![Figura 4.1: Wireframes Mobile-First de Baja Fidelidad](../diagramas/09_Wireframes_Baja_Fidelidad.png)
 
 ## 4.2. Design System Corporativo de LeoFit (Tokens, Colores HSL y Tipografía)
 
@@ -625,7 +625,7 @@ stateDiagram-v2
 
 ---
 
-![Figura 4.2: Diagrama de Flujo de Navegación del Usuario (User Flow)](.../diagramas/10_User_Flow_Navegacion.png)
+![Figura 4.2: Diagrama de Flujo de Navegación del Usuario (User Flow)](../diagramas/10_User_Flow_Navegacion.png)
 
 # CAPÍTULO 5: GESTIÓN INTEGRAL DE RIESGOS DEL PROYECTO
 
@@ -658,7 +658,7 @@ Se identificaron 10 riesgos potenciales clasificados en 4 categorías: Técnicos
 
 *Interpretación de Severidad*: Los riesgos **R-01 (Conectividad)**, **R-06 (Seguridad)**, **R-03 (Resistencia al cambio)** y **R-07 (Discrepancia de stock)** se ubican en la zona de severidad crítica/alta, recibiendo planes de mitigación prioritarios.
 
-![Figura 5.1: Matriz de Probabilidad e Impacto 5x5 y Heatmap de Riesgos](.../diagramas/02_Mapa_Riesgos.png)
+![Figura 5.1: Matriz de Probabilidad e Impacto 5x5 y Heatmap de Riesgos](../diagramas/02_Mapa_Riesgos.png)
 
 ## 5.3. Plan de Contingencia y Mitigación Preventiva y Reactiva
 
@@ -812,9 +812,9 @@ El modelo resultante comprende 8 entidades interconectadas con integridad refere
                                 └──< N [ MOVIMIENTOS_INVENTARIO ]            └──< N 1 [ CLIENTES ]
 ```
 
-![Figura 8.1: Modelo Entidad-Relación Lógico de Base de Datos](.../diagramas/12_Modelo_Logico_BD.png)
+![Figura 8.1: Modelo Entidad-Relación Lógico de Base de Datos](../diagramas/12_Modelo_Logico_BD.png)
 
-![Figura 8.2: Modelo Físico Relacional DDL de Base de Datos](.../diagramas/13_Modelo_Fisico_BD.png)
+![Figura 8.2: Modelo Físico Relacional DDL de Base de Datos](../diagramas/13_Modelo_Fisico_BD.png)
 
 ## 8.3. Esquema DDL en PostgreSQL con Triggers, Constraints e Índices B-Tree/GIN
 
