@@ -8,7 +8,7 @@
 ```mermaid
 graph TD
   User([Usuario / Smartphone PWA]) -->|HTTPS / CDN Global| Vercel[Vercel Edge Network / Frontend PWA]
-  Vercel -->|REST API HTTPS / CORS| Render[Render.com / Containerized Node.js API]
+  Vercel -->|REST API HTTPS / CORS| Render[Target Render / Actual localhost:3000]
   Render -->|SSL Connection Pool (5432)| Supabase[(Supabase Cloud / Managed PostgreSQL 16)]
   Supabase -->|Automated Backups| S3[(Amazon S3 Cold Storage)]
 ```
@@ -36,7 +36,7 @@ graph TD
    - `database/seeds.sql` (poblado de categorías, catálogo y credenciales iniciales).
 3. Obtener la cadena de conexión con SSL obligatorio (`Transaction Pooler URL - Port 6543`).
 
-#### B. Despliegue del Backend API (Render / Railway / Docker)
+#### B. Despliegue del Backend API (Target Propuesto: Render / Railway / Docker)
 1. Conectar el repositorio de GitHub con **Render.com**.
 2. Configurar el servicio web con:
    - **Environment:** `Docker` (usando `backend/Dockerfile`) o `Node.js` (`npm run build` y `npm start`).
