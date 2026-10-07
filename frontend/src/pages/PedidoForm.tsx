@@ -532,31 +532,31 @@ export default function PedidoForm() {
             </span>
             <span>3. Selección de Prendas</span>
           </h2>
-          <div className="flex flex-col sm:flex-row gap-2.5 mb-4 flex-wrap">
+          <div className="flex flex-col sm:flex-row gap-2.5 mb-4">
             <select
               value={productoSeleccionado}
               onChange={(e) => setProductoSeleccionado(e.target.value)}
-              className="flex-1 min-w-[200px] text-xs sm:text-base border-2 border-slate-300 rounded-2xl px-3 sm:px-4 py-2.5 sm:py-3 focus:outline-none focus:border-[#0F223D] bg-slate-50 font-semibold text-slate-900"
+              className="w-full sm:flex-1 text-xs sm:text-base border-2 border-slate-300 rounded-2xl px-3 sm:px-4 py-2.5 sm:py-3 focus:outline-none focus:border-[#0F223D] bg-slate-50 font-semibold text-slate-900"
             >
               {productos.map((p) => (
                 <option key={p.id} value={p.id}>
-                  {p.nombre} — S/{p.precio.toFixed(2)} {p.stock <= 5 ? `([ULTIMAS UNIDADES] Solo quedan ${p.stock} uds)` : `(Stock: ${p.stock})`}
+                  {p.nombre} — S/{p.precio.toFixed(2)} {p.stock <= 5 ? `([ULTIMAS] Quedan ${p.stock})` : `(Stock: ${p.stock})`}
                 </option>
               ))}
             </select>
-            <div className="flex gap-2">
+            <div className="flex flex-row sm:flex-row gap-2 w-full sm:w-auto">
               <input
                 type="number"
                 min="1"
                 value={cantidad}
                 onChange={(e) => setCantidad(Math.max(1, parseInt(e.target.value) || 1))}
-                className="w-20 text-sm sm:text-base border-2 border-slate-300 rounded-2xl px-2 sm:px-3 py-2.5 sm:py-3 text-center focus:outline-none focus:border-[#0F223D] font-bold font-mono text-slate-900 bg-slate-50"
+                className="w-20 shrink-0 text-sm sm:text-base border-2 border-slate-300 rounded-2xl px-2 sm:px-3 py-2.5 sm:py-3 text-center focus:outline-none focus:border-[#0F223D] font-bold font-mono text-slate-900 bg-slate-50"
               />
               <button
                 onClick={agregarItem}
-                className="flex-1 sm:flex-initial px-4 sm:px-5 py-2.5 sm:py-3 bg-[#0F223D] hover:bg-[#1D3557] text-white rounded-2xl font-bold transition-all flex items-center justify-center gap-1.5 shadow-md text-xs sm:text-sm"
+                className="flex-1 px-4 sm:px-5 py-2.5 sm:py-3 bg-[#0F223D] hover:bg-[#1D3557] text-white rounded-2xl font-bold transition-all flex flex-wrap items-center justify-center gap-1.5 shadow-md text-xs sm:text-sm whitespace-normal break-words text-center"
               >
-                <span className="material-icons" style={{ fontSize: "18px" }}>add</span>
+                <span className="material-icons shrink-0" style={{ fontSize: "18px" }}>add</span>
                 <span>Agregar</span>
               </button>
             </div>
@@ -606,18 +606,18 @@ export default function PedidoForm() {
               <span className="material-icons text-amber-600" style={{ fontSize: "16px" }}>local_offer</span>
               Cupón de Descuento Promocional
             </label>
-            <div className="flex gap-2">
+            <div className="flex flex-col sm:flex-row gap-2">
               <input
                 type="text"
                 value={codigoCuponInput}
                 onChange={(e) => setCodigoCuponInput(e.target.value.toUpperCase())}
                 placeholder="ej. LEOFIT10 o PROMOVERANO"
-                className="flex-1 px-3.5 py-2.5 bg-white border-2 border-slate-300 rounded-xl text-xs sm:text-sm font-mono font-bold text-slate-900 focus:outline-none focus:border-[#0F223D]"
+                className="w-full sm:flex-1 px-3.5 py-2.5 bg-white border-2 border-slate-300 rounded-xl text-xs sm:text-sm font-mono font-bold text-slate-900 focus:outline-none focus:border-[#0F223D]"
               />
               <button
                 type="button"
                 onClick={handleAplicarCupon}
-                className="px-4 py-2.5 bg-[#0F223D] hover:bg-[#1D3557] text-white font-bold text-xs sm:text-sm rounded-xl transition-all shadow-sm shrink-0"
+                className="w-full sm:w-auto px-4 py-2.5 bg-[#0F223D] hover:bg-[#1D3557] text-white font-bold text-xs sm:text-sm rounded-xl transition-all shadow-sm shrink-0 whitespace-normal break-words"
               >
                 Aplicar
               </button>
@@ -692,7 +692,7 @@ export default function PedidoForm() {
               <span>Subtotal de Prendas</span>
               <span className="text-sm sm:text-base font-bold font-mono text-slate-900">S/{subtotal.toFixed(2)}</span>
             </div>
-            <div className="flex items-center justify-between text-xs sm:text-sm font-semibold text-slate-700">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 sm:gap-0 text-xs sm:text-sm font-semibold text-slate-700">
               <label>{tipoEnvio === "Nacional" ? "Costo Encomienda (S/)" : "Costo Delivery Local (S/)"}</label>
               <input
                 type="number"
@@ -700,7 +700,7 @@ export default function PedidoForm() {
                 step="1"
                 value={costoDelivery}
                 onChange={(e) => setCostoDelivery(Math.max(0, parseFloat(e.target.value) || 0))}
-                className="w-20 sm:w-24 text-sm sm:text-base font-bold font-mono border-2 border-slate-300 rounded-xl px-2.5 sm:px-3 py-1 text-right focus:outline-none focus:border-[#0F223D] bg-white text-slate-900 shadow-sm"
+                className="w-full sm:w-24 text-sm sm:text-base font-bold font-mono border-2 border-slate-300 rounded-xl px-2.5 sm:px-3 py-1 sm:text-right focus:outline-none focus:border-[#0F223D] bg-white text-slate-900 shadow-sm"
               />
             </div>
             {cuponAplicado && (
@@ -709,7 +709,7 @@ export default function PedidoForm() {
                 <span className="font-mono">-S/{cuponAplicado.descuento.toFixed(2)}</span>
               </div>
             )}
-            <div className="flex items-center justify-between text-xs sm:text-sm font-semibold text-slate-700">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 sm:gap-0 text-xs sm:text-sm font-semibold text-slate-700">
               <label>Descuento Adicional Manual (S/)</label>
               <input
                 type="number"
@@ -717,7 +717,7 @@ export default function PedidoForm() {
                 step="1"
                 value={descuentoManual}
                 onChange={(e) => setDescuentoManual(Math.max(0, parseFloat(e.target.value) || 0))}
-                className="w-20 sm:w-24 text-sm sm:text-base font-bold font-mono border-2 border-emerald-400 rounded-xl px-2.5 sm:px-3 py-1 text-right focus:outline-none focus:border-emerald-600 bg-white text-emerald-900 shadow-sm"
+                className="w-full sm:w-24 text-sm sm:text-base font-bold font-mono border-2 border-emerald-400 rounded-xl px-2.5 sm:px-3 py-1 sm:text-right focus:outline-none focus:border-emerald-600 bg-white text-emerald-900 shadow-sm"
               />
             </div>
             <div className="flex items-center justify-between bg-[#0F223D] rounded-2xl px-4 sm:px-5 py-3.5 sm:py-4 text-white shadow-md mt-3">
