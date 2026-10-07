@@ -1,0 +1,19 @@
+flowchart TD
+    subgraph Actual [ZONA 1 — ESTADO ACTUAL]
+        direction TB
+        App[backend/src/app.ts] -->|morgan 'dev'| Stdout[Terminal stdout]
+        Ctrl[Controladores] -->|console.log / console.error| Stdout
+        Dash[DashboardMetrics] -->|Métricas de negocio| UI[Frontend]
+    end
+
+    subgraph Propuesto [ZONA 2 — TARGET PROPUESTO]
+        direction TB
+        OTel[OpenTelemetry SDK] -->|Exporta métricas y trazas| PromExp[Prometheus Exporter]
+        PromExp -->|Scraping| Prometheus[(Prometheus DB)]
+        Prometheus -->|Query| Grafana[Grafana Dashboards]
+        
+        Grafana -.-> SLIs[SLIs / SLOs]
+        SLIs -.-> Latency[P50 / P95 / P99 Latency]
+        SLIs -.-> Errors[Error Rate]
+        SLIs -.-> TP[Throughput]
+    end
