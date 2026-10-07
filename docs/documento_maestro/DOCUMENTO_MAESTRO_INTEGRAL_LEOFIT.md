@@ -696,6 +696,8 @@ Se identificaron 10 riesgos potenciales clasificados en 4 categorías: Técnicos
 
 ## 6.3. Plan de Medición, Telemetría y Observabilidad
 
+> Ver diagrama [D6 — Evaluación de Rendimiento y SLIs](../diagramas/D6-rendimiento/README.md)
+
 El sistema implementa tres pilares de observabilidad:
 1. **Métricas y Monitoreo de Salud**: Endpoint `/health` que verifica en tiempo real la conectividad con la base de datos PostgreSQL, espacio en disco y memoria disponible.
 2. **Logging Estructurado en Formato JSON**: Todos los eventos de servidor (peticiones HTTP, errores no controlados, cambios de estado) se registran con campos estándar: `timestamp`, `level`, `service`, `endpoint`, `status_code`, `response_time_ms` y `user_id`.
@@ -706,6 +708,8 @@ El sistema implementa tres pilares de observabilidad:
 # CAPÍTULO 7: ARQUITECTURA DE SOFTWARE E INGENIERÍA FRONT-END
 
 ## 7.1. Arquitectura General del Sistema (Clean Architecture por Capas)
+
+> Ver diagrama [D3 — Contratos de API REST (Endpoints)](../diagramas/D3-contratos-api/README.md)
 
 El software sigue los principios de la **Clean Architecture** (Arquitectura Limpia / Puertos y Adaptadores), desacoplando las reglas de negocio de los marcos de trabajo y controladores externos. A continuación se presentan los diagramas de cada capa del sistema.
 
@@ -970,6 +974,8 @@ EXECUTE FUNCTION fn_descontar_stock_pedido();
 | **A10: Server-Side Request Forgery (SSRF)** | Medio | La aplicación no realiza peticiones HTTP a URLs dinámicas provistas por el usuario; subida de comprobantes restringida a almacenamiento interno. |
 
 ## 9.2. Módulo de Control de Acceso Basado en Roles (RBAC) y Ciclo de Vida de Tokens JWT
+
+> Ver diagrama [D4 — Formato de retorno JSON](../diagramas/D4-formato-retorno/README.md)
 
 El sistema cuenta con tres niveles de privilegio claramente delimitados:
 
@@ -1271,6 +1277,8 @@ Para cumplir a cabalidad con la exigencia académica del docente y evidenciar la
 # CAPÍTULO 11: MANUAL DE DESPLIEGUE EN LA NUBE Y OPERATIVIDAD
 
 ## 11.1. Topología Cloud y Arquitectura de Infraestructura
+
+> Ver diagrama [D7 — Topología de Despliegue](../diagramas/D7-despliegue/README.md)
 
 La arquitectura de despliegue productivo de LeoFit aprovecha un esquema híbrido y escalable de servicios en la nube de alta disponibilidad:
 
