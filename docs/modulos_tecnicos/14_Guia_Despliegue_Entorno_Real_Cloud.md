@@ -6,6 +6,8 @@
 
 ## 1. ARQUITECTURA DE DESPLIEGUE CLOUD MULTI-NIVEL
 
+> Ver diagrama [D7 — Topología de Despliegue](../diagramas/D7-despliegue/README.md)
+
 El sistema LeoFit está diseñado con una arquitectura modular desacoplada basada en microservicios y Clean Architecture, permitiendo un despliegue cloud de alto rendimiento, bajo costo y alta disponibilidad:
 
 | Componente | Tecnología | Proveedor Cloud Recomendado | Estrategia de Despliegue | URL de Producción |
