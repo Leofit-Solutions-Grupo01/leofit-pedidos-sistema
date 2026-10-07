@@ -1,0 +1,41 @@
+flowchart TD
+    %% ==========================================
+    %% FRONTEND (React SPA)
+    %% ==========================================
+    subgraph Frontend ["Frontend (React SPA)"]
+        direction TB
+        Pages["Páginas / UI Components<br/>(Ej: PedidoForm, Login)"]
+        Context["Global State<br/>(AppContext.tsx)"]
+        MockData[("Memoria Local<br/>mockData.ts")]
+        
+        Pages -->|Usa hooks| Context
+        Context -.->|"Lee/Escribe estado simulado<br/>%% GAP UI-Backend"| MockData
+    end
+
+    %% ==========================================
+    %% BACKEND (Node.js / Express)
+    %% ==========================================
+    subgraph Backend ["Backend (API REST Express)"]
+        direction TB
+        Routes["Enrutadores<br/>(routes/*.ts)"]
+        Mids["Middlewares<br/>(auth, error, rateLimit)"]
+        Controllers["Controladores<br/>(controllers/*.ts)"]
+        Interfaces{"Contratos de Dominio<br/>(interfaces.ts)"}
+        Repos["Repositorios<br/>(pg.repositories.ts)"]
+        
+        Routes -->|Intercepta| Mids
+        Mids -->|Pasa req/res| Controllers
+        Controllers -->|Implementa lógica| Interfaces
+        Interfaces -->|Abstracción| Repos
+    end
+
+    %% ==========================================
+    %% INFRAESTRUCTURA
+    %% ==========================================
+    subgraph Infra ["Capa de Datos"]
+        DB[("PostgreSQL<br/>Supabase")]
+    end
+
+    %% Relaciones End-to-End
+    Context ==>|"HTTP /api/auth/login<br/>(Fetch)"| Routes
+    Repos ==>|"Consultas SQL (pg)"| DB
