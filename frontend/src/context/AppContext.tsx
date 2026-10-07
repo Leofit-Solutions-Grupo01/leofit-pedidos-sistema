@@ -99,7 +99,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   const iniciarSesion = async (email: string, password: string): Promise<boolean> => {
     // Validación de credenciales
-    if (email === "admin@leofit.com" && password === "admin123") {
+    if (email.trim().toLowerCase() === "admin@leofit.com" && password === "admin123") {
       setAutenticado(true);
       setPaginaActual("dashboard");
       sessionStorage.setItem(SESSION_KEY, "dummy-token");
