@@ -94,7 +94,7 @@
     - 10.3 Catálogo Fotográfico y Técnico Exhaustivo de Evidencias de Pantalla (14 Pantallas del Sistema)
 11. **CAPÍTULO 11: MANUAL DE DESPLIEGUE EN LA NUBE Y OPERATIVIDAD**
     - 11.1 Topología Cloud y Arquitectura de Infraestructura
-    - 11.2 Guía Paso a Paso de Despliegue con Docker y Docker Compose
+    - 11.2 Guía Paso a Paso de Despliegue con Docker y Docker Compose (Target Cloud vs Actual localhost)
     - 11.3 Pipeline de Integración y Despliegue Continuo (CI/CD con GitHub Actions)
     - 11.4 Verificación de Operatividad y Monitoreo de Endpoints en Producción
 12. **CAPÍTULO 12: GOBERNANZA ACADÉMICA, GLOSARIO Y DEFENSA ANTE EL PANEL**
@@ -190,7 +190,7 @@ flowchart TD
     B --> C[Agrega prendas al Carrito Interactivo]
     C --> D[Ingresa datos validados del cliente: DNI, Teléfono, Destino]
     D --> E[Selecciona Método de Pago y Adjunta Comprobante Digital]
-    E --> F[PWA emite Reserva Atómica de Stock vía API REST / PostgreSQL]
+    E --> F[PWA emite Reserva Atómica de Stock vía API REST / PostgreSQL<br/>%% GAP: PedidoForm aún usa mock local]
     F --> G[Generación Inmediata de Pedido con Código Único]
     G --> H[Notificación Automática a Panel de Almacén]
     H --> I([Almacenero despacha con Guía Digital e Imprime Ticket QR])
@@ -274,7 +274,7 @@ El modelo de negocio validado se sintetiza en la siguiente matriz Lean Canvas es
 | **S10 - S11** | Seguridad y Cifrado | OWASP Top 10, Auth JWT RBAC, Cifrado AES-256-GCM, Pruebas SAST/DAST | 100% Completado |
 | **S12** | **Hito APF2 (Entrega 2)** | **Sustentación de Avance 2: Despliegue Cloud, BD integrada y Seguridad** | **100% Completado** |
 | **S13 - S14** | PWA Offline & Reportes | Service Worker Workbox, Cache IndexedDB, Exportación Excel/PDF | 100% Completado |
-| **S15 - S16** | QA, UAT y Carga | Pruebas End-to-End Playwright, Pruebas de Carga k6, Auditoría Final | 100% Completado |
+| **S15 - S16** | QA, UAT y Carga | Pruebas End-to-End Playwright, Pruebas de Carga k6 (target propuesto), Auditoría Final | 100% Completado |
 | **S17 - S18** | **Cierre y Defensa Final** | **Sustentación Final ante Jurado UTP y Entrega de Memoria Técnica** | **Listo para Defensa** |
 
 ![Figura 2.1: Diagrama de Gantt del Cronograma Maestro (Semanas 1 a 18)](../diagrams/07_Cronograma_Gantt.png)
@@ -485,7 +485,7 @@ El equipo gestiona el flujo de trabajo a través de un tablero GitHub Projects c
 | **RNF-004** | **Usabilidad UX** | La interfaz debe ser intuitiva (SUS $\ge 85$), permitiendo completar un pedido completo en no más de 4 pasos mediante Modales Flotantes, e incorporando Modo "A+ Vista" (Alto Contraste WCAG) con menú de usuario dinámico. | Pruebas de usabilidad con vendedores reales en Gamarra. |
 | **RNF-005** | **Accesibilidad** | Cumplimiento del estándar **WCAG 2.1 Nivel AA**, con ratios de contraste de color $\ge 4.5:1$ en textos estándar y navegación accesible por teclado. | Auditoría Axe-core y Lighthouse Accessibility $\ge 95$. |
 | **RNF-006** | **Compatibilidad** | Soporte responsivo fluido en pantallas desde 360px (smartphones gama baja) hasta 2560px (monitores 2K), en navegadores Google Chrome, Safari, Edge y Firefox. | Pruebas automatizadas Cross-Browser con Playwright. |
-| **RNF-007** | **Escalabilidad** | La API backend y la base de datos deben soportar un mínimo de 150 peticiones concurrentes por segundo sin degradación de latencia ($p95 \le 350$ ms). | Pruebas de estrés y carga con herramientas k6 y Apache Bench. |
+| **RNF-007** | **Escalabilidad** | La API backend y la base de datos deben soportar un mínimo de 150 peticiones concurrentes por segundo sin degradación de latencia ($p95 \le 350$ ms). | Pruebas de estrés y carga con herramientas k6 y Apache Bench (target propuesto). |
 | **RNF-008** | **Mantenibilidad** | Código fuente modular estructurado bajo Clean Architecture, documentado en español e inglés, con cobertura de pruebas unitarias $\ge 80\%$. | Cobertura Jest/Pytest y análisis estático en SonarCloud. |
 | **RNF-009** | **Integridad de Datos** | La base de datos relacional debe aplicar el principio ACID mediante PostgreSQL, con claves foráneas, restricciones de chequeo y respaldos automáticos diarios. | Verificación de scripts DDL y pruebas de rollback en transacciones. |
 | **RNF-010** | **Capacidad Offline** | La aplicación debe instalarse en la pantalla de inicio del smartphone como PWA nativa, funcionando de manera autónoma sin conexión a red mediante Service Worker. | Pruebas de desconexión en Chrome DevTools (Network: Offline). |
@@ -688,10 +688,11 @@ Se identificaron 10 riesgos potenciales clasificados en 4 categorías: Técnicos
 ## 6.2. Definición Contractual de Niveles de Servicio (SLA 99.5% y SLOs de Latencia/Error)
 
 - **Acuerdo de Nivel de Servicio (SLA)**: El equipo se compromete a mantener el sistema operativo con una tasa de disponibilidad del **99.5%** mensual en el horario de 08:00 a 20:00 GMT-5, lo que tolera un tiempo de inactividad máximo no programado de **3.6 horas al mes**.
-- **Objetivos de Nivel de Servicio (SLOs)**:
+- **Objetivos de Nivel de Servicio (SLOs) [Target Propuesto]**:
   - *SLO de Latencia*: 98% de las peticiones GET al catálogo deben responder en $< 150$ ms.
   - *SLO de Integridad*: 99.9% de las transacciones de descuento de inventario deben ejecutarse sin errores de concurrencia.
   - *SLO de Errores 5xx*: La tasa de errores de servidor HTTP 5xx debe ser inferior al $0.1\%$ del volumen total de solicitudes.
+  *(GAP Actual: La observabilidad se limita a logs locales sincrónicos vía morgan, no hay k6 en CI/CD).*
 
 ## 6.3. Plan de Medición, Telemetría y Observabilidad
 
@@ -1279,7 +1280,7 @@ La arquitectura de despliegue productivo de LeoFit aprovecha un esquema híbrido
       [ CDN Global / Edge Hosting (Vercel / GitHub Pages) ]
       └── Frontend PWA (React 18 + Vite + Service Worker)
                      ↓ (API REST / JSON / JWT)
-      [ Servidor de Aplicaciones Cloud (Render / VPS Docker) ]
+      [ Servidor de Aplicaciones Cloud (Target Render / Actual localhost:3000) ]
       └── Backend RESTful (Node.js / FastAPI Container)
                      ↓ (Conexión Pool SSL Segura)
       [ Plataforma de Base de Datos Cloud (Supabase PostgreSQL 16) ]
