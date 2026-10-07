@@ -124,7 +124,7 @@ Como consecuencia directa, las empresas enfrentan problemas críticos de pérdid
 | **7** | Administrador | Empaqueta prendas y coordina con motorizado. | Llamada / Libreta | Falta de control del estado de avance del empaque. | Módulo de estados con cambio de estado en un clic. |
 | **8** | Cliente | Pregunta reiteradamente por el estado de su envío. | WhatsApp | Sobrecarga de mensajes preguntando "¿Ya salió mi pedido?". | Trazabilidad del pedido y consulta de estado en línea. |
 
-* **Diagrama Formal Integrado:** El diagrama BPMN 2.0 correspondiente se encuentra formalmente documentado en [`diagrams/01_BPMN_AS-IS.png`](diagrams/01_BPMN_AS-IS.png).
+* **Diagrama Formal Integrado:** El diagrama BPMN 2.0 correspondiente se encuentra formalmente documentado en [`../../diagramas/01_BPMN_AS-IS.png`](../../diagramas/01_BPMN_AS-IS.png).
 
 ## 1.7. Oportunidades de Mejora y Modelo Propuesto (TO-BE)
 
@@ -358,7 +358,7 @@ npm run preview    # Previsualización local del bundle optimizado
 
 ## 4.2. Mockups de Alta Fidelidad y Sistema de Diseño
 
-Los mockups interactivos están implementados en el código de la PWA y archivados en [`frontend/mockups/`](frontend/mockups/):
+Los mockups interactivos están implementados en el código de la PWA y archivados en [`../../../frontend/mockups/`](../../../frontend/mockups/):
 * `01_Login.png`: Acceso administrativo seguro con modo oscuro corporativo.
 * `02_Dashboard.png`: Tablero operativo ágil centrado en la acción con Menú de Usuario Dinámico.
 * `03_Listado_Pedidos.png`: Tabla interactiva con badges de estado y opciones de edición.
