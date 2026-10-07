@@ -3,23 +3,31 @@ classDiagram
     
     class ObjetoSingular {
         <<JSON Entity>>
-        +number id
-        +string ...campos_dinamicos
+        +boolean success
+        +Object data
     }
 
     class ColeccionPaginada {
         <<JSON Envelope>>
-        +Array~Object~ data
+        +boolean success
+        +number count
         +number total
+        +Array~Object~ data
     }
     
-    class RespuestaError {
-        <<JSON Error>>
-        +string error
-        +string message
-        +Array~Object~ details
+    class RespuestaErrorZod {
+        <<JSON Error Zod>>
+        +boolean success
+        +Array~Object~ error
     }
 
-    note for ObjetoSingular "Usado en GET/:id, POST, PATCH.\nRetorna la entidad directamente."
-    note for ColeccionPaginada "Usado en listados (GET /).\nIncluye Header X-Total-Count."
-    note for RespuestaError "Usado en 400, 401, 404, 500.\nMapea errores de Zod en 'details'."
+    class RespuestaErrorGenerico {
+        <<JSON Error Generico>>
+        +boolean success
+        +Object error
+    }
+
+    note for ObjetoSingular "Envuelve entidad única en 'data'."
+    note for ColeccionPaginada "Envuelve listados en 'data'.\nIncluye metadatos."
+    note for RespuestaErrorZod "Mapea errores de validación."
+    note for RespuestaErrorGenerico "Errores con 'code' y 'message'.\nIncluye stack en dev."
