@@ -59,7 +59,7 @@ En `backend/src/app.ts`, se configura la librería **Helmet** para inyectar cabe
 1. **Anti Clickjacking (`X-Frame-Options: DENY`):** Impide que atacantes incrusten la plataforma LeoFit dentro de un `<iframe>` invisible en un sitio malicioso para inducir clics involuntarios de compra.
 2. **Anti MIME Sniffing (`X-Content-Type-Options: nosniff`):** Prohíbe al navegador interpretar archivos JSON o imágenes como scripts ejecutables JavaScript.
 3. **Protección de Referencias (`Referrer-Policy: strict-origin-when-cross-origin`):** Evita que tokens o parámetros sensibles de la URL se filtren hacia servidores de analítica externa.
-4. **Política CORS Estricta:** Se deniegan peticiones de orígenes cruzados arbitrarios, aceptando únicamente el dominio de producción de LeoFit y localhost en desarrollo.
+4. **Política CORS Estricta:** Se deniegan peticiones de orígenes cruzados arbitrarios, aceptando únicamente el dominio de producción (Target) de LeoFit y localhost (Actual) en desarrollo.
 
 ---
 
