@@ -1,6 +1,6 @@
 flowchart TD
     Start([Inicio create]) --> Begin[BEGIN ISOLATION LEVEL READ COMMITTED]
-    Begin --> SelectForUpdate[SELECT stock FROM products FOR UPDATE]
+    Begin --> SelectForUpdate[SELECT stock FROM product_variants WHERE id=$1 FOR UPDATE]
     SelectForUpdate --> CheckStock{¿Hay stock<br/>disponible?}
     
     CheckStock -->|No| Rollback[ROLLBACK]
@@ -8,6 +8,6 @@ flowchart TD
     
     CheckStock -->|Sí| InsertOrder[INSERT INTO orders]
     InsertOrder --> InsertItems[INSERT INTO order_items]
-    InsertItems --> UpdateStock[UPDATE products SET stock = stock - N]
+    InsertItems --> UpdateStock[UPDATE product_variants SET stock = stock - N]
     UpdateStock --> CommitDB[COMMIT]
     CommitDB --> Return[return Order]
