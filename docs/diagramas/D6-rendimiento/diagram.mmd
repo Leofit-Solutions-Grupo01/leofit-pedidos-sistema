@@ -12,8 +12,5 @@ flowchart TD
         PromExp -->|Scraping| Prometheus[(Prometheus DB)]
         Prometheus -->|Query| Grafana[Grafana Dashboards]
         
-        Grafana -.-> SLIs[SLIs / SLOs]
-        SLIs -.-> Latency[P50 / P95 / P99 Latency]
-        SLIs -.-> Errors[Error Rate]
-        SLIs -.-> TP[Throughput]
+        Grafana --> SLIs[SLIs / SLOs<br/>- P50 / P95 / P99 Latency<br/>- Error Rate<br/>- Throughput]
     end
