@@ -48,7 +48,7 @@ El archivo `manifest.json` define los metadatos necesarios para permitir la inst
 ## 3. ESTRATEGIAS DE SERVICE WORKER Y ALMACENAMIENTO EN CACHÉ
 
 1. **Estrategia Cache-First (Recursos Estáticos):** Tipografías, hojas de estilo CSS minificadas y componentes gráficos estáticos se sirven directamente desde la memoria caché del Service Worker para garantizar renderizado instantáneo en $< 300$ ms.
-2. **Estrategia Network-First con Fallback (Datos Dinámicos):** Las transacciones de pedidos e inventario consultan primero la capa de red; en caso de interrupción de conectividad, se utiliza el almacenamiento local inmutable (*LocalStorage*) para evitar pérdidas de información.
+2. **Estrategia Network-First con Fallback (Datos Dinámicos):** Las transacciones de pedidos e inventario consultan primero la capa de red; en caso de interrupción de conectividad, se utiliza el almacenamiento local inmutable (*LocalStorage*) para evitar pérdidas de información. *(GAP: PedidoForm actualmente usa 100% mock local)*
 
 ---
 

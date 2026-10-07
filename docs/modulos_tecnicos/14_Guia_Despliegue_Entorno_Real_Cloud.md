@@ -6,12 +6,14 @@
 
 ## 1. ARQUITECTURA DE DESPLIEGUE CLOUD MULTI-NIVEL
 
+> Ver diagrama [D7 — Topología de Despliegue](../diagramas/D7-despliegue/README.md)
+
 El sistema LeoFit está diseñado con una arquitectura modular desacoplada basada en microservicios y Clean Architecture, permitiendo un despliegue cloud de alto rendimiento, bajo costo y alta disponibilidad:
 
 | Componente | Tecnología | Proveedor Cloud Recomendado | Estrategia de Despliegue | URL de Producción |
 |:---|:---|:---|:---|:---|
 | **Frontend PWA** | React 19 + Vite + Tailwind | **GitHub Pages** / **Vercel** | CI/CD Automático (GitHub Actions / Vercel Bot) | `https://leofit-solutions-grupo01.github.io/leofit-pedidos-sistema/` |
-| **Backend API REST** | Node.js 20 + TypeScript + Express | **Render.com** / **Railway** | Contenedor Docker Multi-Stage (`backend/Dockerfile`) | `https://leofit-backend-api.onrender.com` |
+| **Backend API REST** | Node.js 20 + TypeScript + Express | **Render.com** (Target) / **Railway** | Contenedor Docker Multi-Stage (`backend/Dockerfile`) | `https://leofit-backend-api.onrender.com` |
 | **Base de Datos** | PostgreSQL 16 + Triggers | **Supabase** / **Neon Tech** / Render PG | Conexión SSL pooled (PgBouncer) | `postgresql://postgres:[PASSWORD]@[HOST]:6543/postgres` |
 | **Monitoreo & Logs** | Healthcheck + Morgan | **Render Telemetry** / Sentry | Endpoint `/api/health` con probe HTTP cada 30s | `https://leofit-backend-api.onrender.com/api/health` |
 
@@ -37,7 +39,7 @@ El sistema LeoFit está diseñado con una arquitectura modular desacoplada basad
    - `database/seeds.sql` (población de usuarios, roles, catálogo y pedidos).
 4. Copiar la URI de conexión de producción con connection pooling transaccional habilitado (`Transaction Pooler, puerto 6543`).
 
-#### Paso 3: Despliegue del Backend API REST en Render.com
+#### Paso 3: Despliegue del Backend API REST en Render.com (Target)
 1. Iniciar sesión en [Render.com](https://render.com).
 2. Seleccionar **New +** > **Blueprint** (o **Web Service**).
 3. Conectar el repositorio de GitHub: `Leofit-Solutions-Grupo01/leofit-pedidos-sistema`.

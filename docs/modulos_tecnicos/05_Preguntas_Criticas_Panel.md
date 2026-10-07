@@ -62,7 +62,7 @@ Se implementaron cinco estrategias técnicas: Tree-shaking, minificación con es
 * Incremento de la puntuación Lighthouse de 68/100 a **98/100** (+44.1%).
 * Reducción del First Contentful Paint (FCP) de 2.4 s a **0.3 s** (-87.5%).
 * Reducción del tamaño del bundle JavaScript gzipped de 450.0 kB a **74.49 kB** (-83.4%).
-* Tiempo de compilación en producción reducido a **0.73 segundos**.
+* Tiempo de compilación local reducido a **0.73 segundos** *(estimado con Vite/esbuild)*.
 
 ### Pregunta 5.2: ¿Cuáles son los compromisos de SLA y SLO establecidos para LeoFit?
 **Fundamentación Técnica y de Negocio:**

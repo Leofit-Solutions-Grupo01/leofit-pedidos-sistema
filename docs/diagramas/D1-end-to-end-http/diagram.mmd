@@ -1,0 +1,90 @@
+sequenceDiagram
+    autonumber
+    
+    %% ==========================================
+    %% FLUJO A: AUTH (integrado)
+    %% ==========================================
+    box "Flujo A: Autenticación (E2E Real)"
+    participant U as Usuario
+    participant UI as Login.tsx (Frontend)
+    participant Ctx as AppContext (fetch)
+    participant Rate as express-rate-limit
+    participant Zod as validateBody (Middleware)
+    participant Ctrl as auth.controller
+    participant Bcrypt as bcrypt / JWT
+    end
+
+    U->>UI: Ingresa email y password
+    UI->>Ctx: iniciarSesion(email, pass)
+    Ctx->>Rate: POST /api/auth/login
+    
+    alt Límite excedido
+        Rate-->>Ctx: 429 Too Many Requests
+    else Dentro de límite
+        Rate->>Zod: Pasa a middleware
+        Zod->>Zod: Validación Zod (LoginSchema)
+        
+        alt Falla validación
+            Zod-->>Ctx: 400 Bad Request
+        else Validación exitosa
+            Zod->>Ctrl: Ejecuta lógica de login
+            Ctrl->>Bcrypt: compare(pass, hash) o dummy hash (mitigación timing attack)
+            
+            alt Credenciales inválidas
+                Bcrypt-->>Ctrl: false
+                Ctrl-->>Ctx: 401 Unauthorized
+            else Credenciales correctas
+                Note over Ctrl,Bcrypt: Fail-fast: Falla si JWT_SECRET no está (500)
+                Ctrl->>Bcrypt: jwt.sign(..., { algorithm: 'HS256' })
+                Bcrypt-->>Ctrl: Token emitido
+                Ctrl-->>Ctx: 200 OK + { data: { token } }
+                Ctx->>Ctx: sessionStorage.setItem('auth_token', token)
+                Ctx-->>UI: true (redirige a /dashboard)
+            end
+        end
+    end
+
+    %% ==========================================
+    %% FLUJO B: OPERACIONES DE NEGOCIO
+    %% ==========================================
+    box "Flujo B: Pedidos (Backend listo, Frontend desconectado)"
+    participant PM as Postman / cURL
+    participant UI_GAP as PedidoForm.tsx (UI)
+    participant Mid as auth.middleware
+    participant OrderCtrl as order.controller (Zod)
+    participant Repo as pg.repositories
+    participant DB as PostgreSQL
+    end
+
+    Note right of UI_GAP: GAP: PedidoForm.tsx no invoca este endpoint.<br/>Reemplazar "Postman/curl" por "PedidoForm"<br/>cuando se integre.
+    
+    PM->>Mid: POST /api/orders (Authorization: Bearer <token>)
+    Mid->>Mid: jwt.verify(token)
+    
+    alt Token inválido
+        Mid-->>PM: 401 / 403 Forbidden
+    else Token válido
+        Mid->>OrderCtrl: req.user populado
+        OrderCtrl->>OrderCtrl: Validación Zod (CreateOrderDTO)
+        
+        alt Falla validación
+            OrderCtrl-->>PM: 400 Bad Request
+        else Validación exitosa
+            OrderCtrl->>Repo: create(data, 'READ COMMITTED')
+            Repo->>DB: BEGIN
+            Repo->>DB: SELECT stock FROM products FOR UPDATE
+            
+            alt Sin stock
+                DB-->>Repo: error / 0 rows
+                Repo->>DB: ROLLBACK
+                Repo-->>OrderCtrl: Error (throw)
+                OrderCtrl-->>PM: 400 Bad Request / 500
+            else Con stock
+                Repo->>DB: INSERT INTO orders
+                Repo->>DB: UPDATE products SET stock = stock - N
+                Repo->>DB: COMMIT
+                Repo-->>OrderCtrl: order id generado
+                OrderCtrl-->>PM: 201 Created
+            end
+        end
+    end

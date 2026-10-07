@@ -21,7 +21,7 @@ Este documento establece el guion técnico, estructura de escenas (storyboard), 
 
 ### Escena 1: Presentación Institucional y Problemática de Negocio
 * **Tiempo:** `00:00 - 00:35` (35 seg)
-* **Visual / Animación:** Renderizado en **Remotion** con logo LeoFit Solutions, títulos con Motion Blur, nombres de los 5 integrantes UTP y transición hacia diagrama BPMN AS-IS ([`01_BPMN_AS-IS.png`](../../diagrams/01_BPMN_AS-IS.png)) con resaltado de puntos de dolor (mensajes de WhatsApp perdidos, descontrol de stock).
+* **Visual / Animación:** Renderizado en **Remotion** con logo LeoFit Solutions, títulos con Motion Blur, nombres de los 5 integrantes UTP y transición hacia diagrama BPMN AS-IS ([`01_BPMN_AS-IS.png`](../diagramas/01_BPMN_AS-IS.png)) con resaltado de puntos de dolor (mensajes de WhatsApp perdidos, descontrol de stock).
 * **Voz en Off (Lady Loayza / Daniel Rojas):**
   > "Buenas tardes, profesor y miembros del jurado. Somos el Grupo 01 de Curso Integrador II y presentamos LeoFit Solutions, una Plataforma Web Progresiva diseñada para digitalizar la recepción de pedidos multicanal y el control de inventario en tiempo real de la marca textil deportiva LeoFit. Actualmente, LeoFit opera de forma manual mediante libretas y chats dispersos de WhatsApp, generando pérdida de pedidos y retrasos en las entregas. Hoy demostraremos cómo nuestra solución resuelve esta problemática con rigor técnico y eficiencia de software."
 
@@ -29,7 +29,7 @@ Este documento establece el guion técnico, estructura de escenas (storyboard), 
 
 ### Escena 2: Arquitectura del Sistema, C4 Model y Normalización de BD
 * **Tiempo:** `00:35 - 01:15` (40 seg)
-* **Visual / Animación:** Zoom dinámico en **C4 Model Nivel 2** ([`11_Arquitectura_C4_Model.png`](../../diagrams/11_Arquitectura_C4_Model.png)) y Modelos de BD ([`12_Modelo_Logico_BD.png`](../../diagrams/12_Modelo_Logico_BD.png) / [`13_Modelo_Fisico_BD.png`](../../diagrams/13_Modelo_Fisico_BD.png)). Resaltado de transacciones ACID y relaciones 3FN/BCNF.
+* **Visual / Animación:** Zoom dinámico en **C4 Model Nivel 2** ([`11_Arquitectura_C4_Model.png`](../diagramas/11_Arquitectura_C4_Model.png)) y Modelos de BD ([`12_Modelo_Logico_BD.png`](../diagramas/12_Modelo_Logico_BD.png) / [`13_Modelo_Fisico_BD.png`](../diagramas/13_Modelo_Fisico_BD.png)). Resaltado de transacciones ACID y relaciones 3FN/BCNF.
 * **Voz en Off (Víctor Cárdenas):**
   > "El núcleo de la solución se basa en una arquitectura desacoplada y robusta. En el frontend contamos con una Single Page Application en React 19 y Vite con capacidades PWA y soporte offline. En la capa de datos, implementamos un modelo relacional normalizado en Tercera Forma Normal y BCNF con 8 tablas vinculadas por llaves foráneas estrictas, garantizando atomicidad transaccional al momento de descontar inventario y persistir el historial de cambios de estado."
 

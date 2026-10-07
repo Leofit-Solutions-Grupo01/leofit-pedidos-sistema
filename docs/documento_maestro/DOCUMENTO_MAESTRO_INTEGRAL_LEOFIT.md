@@ -1,4 +1,4 @@
-# UNIVERSIDAD TECNOLÓGICA DEL PERÚ
+﻿# UNIVERSIDAD TECNOLÓGICA DEL PERÚ
 ## FACULTAD DE INGENIERÍA DE SISTEMAS E INFORMÁTICA
 ### CURSO INTEGRADOR II: SOFTWARE (100000S12F)
 
@@ -94,7 +94,7 @@
     - 10.3 Catálogo Fotográfico y Técnico Exhaustivo de Evidencias de Pantalla (14 Pantallas del Sistema)
 11. **CAPÍTULO 11: MANUAL DE DESPLIEGUE EN LA NUBE Y OPERATIVIDAD**
     - 11.1 Topología Cloud y Arquitectura de Infraestructura
-    - 11.2 Guía Paso a Paso de Despliegue con Docker y Docker Compose
+    - 11.2 Guía Paso a Paso de Despliegue con Docker y Docker Compose (Target Cloud vs Actual localhost)
     - 11.3 Pipeline de Integración y Despliegue Continuo (CI/CD con GitHub Actions)
     - 11.4 Verificación de Operatividad y Monitoreo de Endpoints en Producción
 12. **CAPÍTULO 12: GOBERNANZA ACADÉMICA, GLOSARIO Y DEFENSA ANTE EL PANEL**
@@ -163,7 +163,7 @@ flowchart TD
     I --> J([Almacenero empaqueta y despacha de forma descoordinada])
 ```
 
-![Figura 1.1: Diagrama BPMN del Proceso Operativo Actual (AS-IS)](../diagrams/01_BPMN_AS-IS.png)
+![Figura 1.1: Diagrama BPMN del Proceso Operativo Actual (AS-IS)](../diagramas/01_BPMN_AS-IS.png)
 
 ### Tabla de Desglose del Proceso AS-IS (8 Pasos Operativos):
 
@@ -182,6 +182,8 @@ flowchart TD
 
 ## 1.5. Modelo Propuesto y Oportunidades de Mejora (TO-BE)
 
+> Ver diagrama [D5 — Flujo de creación de pedido](../diagramas/D5-crear-pedido/README.md) y [D1 — Flujo End-to-End de un Pedido HTTP](../diagramas/D1-end-to-end-http/README.md)
+
 La solución implementada automatiza y centraliza la toma de pedidos mediante una **Aplicación Web Progresiva (PWA)** accesible desde cualquier dispositivo móvil o de escritorio, permitiendo a clientes y vendedores operar con catálogo en tiempo real y reserva de stock inmediata:
 
 ```mermaid
@@ -190,13 +192,13 @@ flowchart TD
     B --> C[Agrega prendas al Carrito Interactivo]
     C --> D[Ingresa datos validados del cliente: DNI, Teléfono, Destino]
     D --> E[Selecciona Método de Pago y Adjunta Comprobante Digital]
-    E --> F[PWA emite Reserva Atómica de Stock vía API REST / PostgreSQL]
+    E --> F[PWA emite Reserva Atómica de Stock vía API REST / PostgreSQL<br/>GAP: PedidoForm aún usa mock local]
     F --> G[Generación Inmediata de Pedido con Código Único]
     G --> H[Notificación Automática a Panel de Almacén]
     H --> I([Almacenero despacha con Guía Digital e Imprime Ticket QR])
 ```
 
-![Figura 1.2: Diagrama BPMN del Proceso Propuesto Optimizado (TO-BE)](../diagrams/01_BPMN_TO-BE.png)
+![Figura 1.2: Diagrama BPMN del Proceso Propuesto Optimizado (TO-BE)](../diagramas/01_BPMN_TO-BE.png)
 
 ## 1.6. Matriz Comparativa de Brechas (Gap Analysis)
 
@@ -210,7 +212,7 @@ flowchart TD
 
 ## 1.7. Documento de Análisis de Negocio (Lean Canvas)
 
-![Figura 1.3: Modelo de Negocio Lean Canvas de LeoFit Solutions](../diagrams/06_Lean_Canvas.png)
+![Figura 1.3: Modelo de Negocio Lean Canvas de LeoFit Solutions](../diagramas/06_Lean_Canvas.png)
 
 El modelo de negocio validado se sintetiza en la siguiente matriz Lean Canvas estructurada:
 
@@ -274,10 +276,10 @@ El modelo de negocio validado se sintetiza en la siguiente matriz Lean Canvas es
 | **S10 - S11** | Seguridad y Cifrado | OWASP Top 10, Auth JWT RBAC, Cifrado AES-256-GCM, Pruebas SAST/DAST | 100% Completado |
 | **S12** | **Hito APF2 (Entrega 2)** | **Sustentación de Avance 2: Despliegue Cloud, BD integrada y Seguridad** | **100% Completado** |
 | **S13 - S14** | PWA Offline & Reportes | Service Worker Workbox, Cache IndexedDB, Exportación Excel/PDF | 100% Completado |
-| **S15 - S16** | QA, UAT y Carga | Pruebas End-to-End Playwright, Pruebas de Carga k6, Auditoría Final | 100% Completado |
+| **S15 - S16** | QA, UAT y Carga | Pruebas End-to-End Playwright, Pruebas de Carga k6 (target propuesto), Auditoría Final | 100% Completado |
 | **S17 - S18** | **Cierre y Defensa Final** | **Sustentación Final ante Jurado UTP y Entrega de Memoria Técnica** | **Listo para Defensa** |
 
-![Figura 2.1: Diagrama de Gantt del Cronograma Maestro (Semanas 1 a 18)](../diagrams/07_Cronograma_Gantt.png)
+![Figura 2.1: Diagrama de Gantt del Cronograma Maestro (Semanas 1 a 18)](../diagramas/07_Cronograma_Gantt.png)
 
 ## 2.4. Planificación Ágil de Sprints (Sprint Planning S0 al S4)
 
@@ -324,7 +326,7 @@ El equipo gestiona el flujo de trabajo a través de un tablero GitHub Projects c
 | **4. Code Review / QA** | Pull Request abierto con pruebas automáticas ejecutándose en CI/CD. | **Max. 3** | Revisión aprobada por al menos un par (peer review), 0 errores en SonarCloud/Linter y cobertura > 80%. |
 | **5. Done** | Funcionalidad desplegada en ambiente de staging o producción. | Sin límite | Aprobada por el Product Owner y documentada en la memoria técnica del proyecto. |
 
-![Figura 2.2: Tablero Kanban / Scrum con Políticas y Límites WIP](../diagrams/08_Tablero_Kanban.png)
+![Figura 2.2: Tablero Kanban / Scrum con Políticas y Límites WIP](../diagramas/08_Tablero_Kanban.png)
 
 ## 2.7. Product Backlog Priorizado (Metodología MoSCoW)
 
@@ -485,7 +487,7 @@ El equipo gestiona el flujo de trabajo a través de un tablero GitHub Projects c
 | **RNF-004** | **Usabilidad UX** | La interfaz debe ser intuitiva (SUS $\ge 85$), permitiendo completar un pedido completo en no más de 4 pasos mediante Modales Flotantes, e incorporando Modo "A+ Vista" (Alto Contraste WCAG) con menú de usuario dinámico. | Pruebas de usabilidad con vendedores reales en Gamarra. |
 | **RNF-005** | **Accesibilidad** | Cumplimiento del estándar **WCAG 2.1 Nivel AA**, con ratios de contraste de color $\ge 4.5:1$ en textos estándar y navegación accesible por teclado. | Auditoría Axe-core y Lighthouse Accessibility $\ge 95$. |
 | **RNF-006** | **Compatibilidad** | Soporte responsivo fluido en pantallas desde 360px (smartphones gama baja) hasta 2560px (monitores 2K), en navegadores Google Chrome, Safari, Edge y Firefox. | Pruebas automatizadas Cross-Browser con Playwright. |
-| **RNF-007** | **Escalabilidad** | La API backend y la base de datos deben soportar un mínimo de 150 peticiones concurrentes por segundo sin degradación de latencia ($p95 \le 350$ ms). | Pruebas de estrés y carga con herramientas k6 y Apache Bench. |
+| **RNF-007** | **Escalabilidad** | La API backend y la base de datos deben soportar un mínimo de 150 peticiones concurrentes por segundo sin degradación de latencia ($p95 \le 350$ ms). | Pruebas de estrés y carga con herramientas k6 y Apache Bench (target propuesto). |
 | **RNF-008** | **Mantenibilidad** | Código fuente modular estructurado bajo Clean Architecture, documentado en español e inglés, con cobertura de pruebas unitarias $\ge 80\%$. | Cobertura Jest/Pytest y análisis estático en SonarCloud. |
 | **RNF-009** | **Integridad de Datos** | La base de datos relacional debe aplicar el principio ACID mediante PostgreSQL, con claves foráneas, restricciones de chequeo y respaldos automáticos diarios. | Verificación de scripts DDL y pruebas de rollback en transacciones. |
 | **RNF-010** | **Capacidad Offline** | La aplicación debe instalarse en la pantalla de inicio del smartphone como PWA nativa, funcionando de manera autónoma sin conexión a red mediante Service Worker. | Pruebas de desconexión en Chrome DevTools (Network: Offline). |
@@ -577,7 +579,7 @@ leofit-pedidos-sistema/
 
 El diseño del sistema inició con wireframes de baja fidelidad enfocados en la ergonomía móvil de los vendedores que transitan por las galerías de Gamarra. Los componentes principales (barra de navegación inferior, botones de llamada a la acción y buscador) fueron ubicados estratégicamente dentro de la "zona del pulgar" (Thumb Zone) para facilitar la operación con una sola mano.
 
-![Figura 4.1: Wireframes Mobile-First de Baja Fidelidad](../diagrams/09_Wireframes_Baja_Fidelidad.png)
+![Figura 4.1: Wireframes Mobile-First de Baja Fidelidad](../diagramas/09_Wireframes_Baja_Fidelidad.png)
 
 ## 4.2. Design System Corporativo de LeoFit (Tokens, Colores HSL y Tipografía)
 
@@ -625,7 +627,7 @@ stateDiagram-v2
 
 ---
 
-![Figura 4.2: Diagrama de Flujo de Navegación del Usuario (User Flow)](../diagrams/10_User_Flow_Navegacion.png)
+![Figura 4.2: Diagrama de Flujo de Navegación del Usuario (User Flow)](../diagramas/10_User_Flow_Navegacion.png)
 
 # CAPÍTULO 5: GESTIÓN INTEGRAL DE RIESGOS DEL PROYECTO
 
@@ -658,7 +660,7 @@ Se identificaron 10 riesgos potenciales clasificados en 4 categorías: Técnicos
 
 *Interpretación de Severidad*: Los riesgos **R-01 (Conectividad)**, **R-06 (Seguridad)**, **R-03 (Resistencia al cambio)** y **R-07 (Discrepancia de stock)** se ubican en la zona de severidad crítica/alta, recibiendo planes de mitigación prioritarios.
 
-![Figura 5.1: Matriz de Probabilidad e Impacto 5x5 y Heatmap de Riesgos](../diagrams/02_Mapa_Riesgos.png)
+![Figura 5.1: Matriz de Probabilidad e Impacto 5x5 y Heatmap de Riesgos](../diagramas/02_Mapa_Riesgos.png)
 
 ## 5.3. Plan de Contingencia y Mitigación Preventiva y Reactiva
 
@@ -688,12 +690,15 @@ Se identificaron 10 riesgos potenciales clasificados en 4 categorías: Técnicos
 ## 6.2. Definición Contractual de Niveles de Servicio (SLA 99.5% y SLOs de Latencia/Error)
 
 - **Acuerdo de Nivel de Servicio (SLA)**: El equipo se compromete a mantener el sistema operativo con una tasa de disponibilidad del **99.5%** mensual en el horario de 08:00 a 20:00 GMT-5, lo que tolera un tiempo de inactividad máximo no programado de **3.6 horas al mes**.
-- **Objetivos de Nivel de Servicio (SLOs)**:
+- **Objetivos de Nivel de Servicio (SLOs) [Target Propuesto]**:
   - *SLO de Latencia*: 98% de las peticiones GET al catálogo deben responder en $< 150$ ms.
   - *SLO de Integridad*: 99.9% de las transacciones de descuento de inventario deben ejecutarse sin errores de concurrencia.
   - *SLO de Errores 5xx*: La tasa de errores de servidor HTTP 5xx debe ser inferior al $0.1\%$ del volumen total de solicitudes.
+  *(GAP Actual: La observabilidad se limita a logs locales sincrónicos vía morgan, no hay k6 en CI/CD).*
 
 ## 6.3. Plan de Medición, Telemetría y Observabilidad
+
+> Ver diagrama [D6 — Evaluación de Rendimiento y SLIs](../diagramas/D6-rendimiento/README.md)
 
 El sistema implementa tres pilares de observabilidad:
 1. **Métricas y Monitoreo de Salud**: Endpoint `/health` que verifica en tiempo real la conectividad con la base de datos PostgreSQL, espacio en disco y memoria disponible.
@@ -706,24 +711,28 @@ El sistema implementa tres pilares de observabilidad:
 
 ## 7.1. Arquitectura General del Sistema (Clean Architecture por Capas)
 
+> Ver diagrama [D3 — Contratos de API REST (Endpoints)](../diagramas/D3-contratos-api/README.md)
+
 El software sigue los principios de la **Clean Architecture** (Arquitectura Limpia / Puertos y Adaptadores), desacoplando las reglas de negocio de los marcos de trabajo y controladores externos. A continuación se presentan los diagramas de cada capa del sistema.
 
 ### Arquitectura General (Modelo C4)
-![Diagrama General PWA](./diagramas/04_general.png)
+![Diagrama General PWA](../diagramas/04_general.png)
 
 ## 7.2. Desacoplamiento de Subsistemas
+
+> Ver diagrama [D2 — Flujo entre áreas/módulos del sistema](../diagramas/D2-modulos/README.md)
 
 La arquitectura cliente-servidor se divide en el flujo de la aplicación React y el motor Offline administrado por el Service Worker.
 
 ### Arquitectura de Frontend
-![Diagrama Frontend](./diagramas/01_frontend.png)
+![Diagrama Frontend](../diagramas/01_frontend.png)
 
 ### Arquitectura de Service Worker (PWA)
-![Diagrama Service Worker](./diagramas/02_service_worker.png)
+![Diagrama Service Worker](../diagramas/02_service_worker.png)
 
 ### Arquitectura Backend y Datos
 El backend procesa la lógica de negocio y autoriza las transacciones contra la base de datos PostgreSQL.
-![Diagrama Backend y Datos](./diagramas/03_backend.png)
+![Diagrama Backend y Datos](../diagramas/03_backend.png)
 
 ## 7.3. Arquitectura PWA Offline-First y Estrategia de Service Worker
 
@@ -811,9 +820,9 @@ El modelo resultante comprende 8 entidades interconectadas con integridad refere
                                 └──< N [ MOVIMIENTOS_INVENTARIO ]            └──< N 1 [ CLIENTES ]
 ```
 
-![Figura 8.1: Modelo Entidad-Relación Lógico de Base de Datos](../diagrams/12_Modelo_Logico_BD.png)
+![Figura 8.1: Modelo Entidad-Relación Lógico de Base de Datos](../diagramas/12_Modelo_Logico_BD.png)
 
-![Figura 8.2: Modelo Físico Relacional DDL de Base de Datos](../diagrams/13_Modelo_Fisico_BD.png)
+![Figura 8.2: Modelo Físico Relacional DDL de Base de Datos](../diagramas/13_Modelo_Fisico_BD.png)
 
 ## 8.3. Esquema DDL en PostgreSQL con Triggers, Constraints e Índices B-Tree/GIN
 
@@ -969,6 +978,8 @@ EXECUTE FUNCTION fn_descontar_stock_pedido();
 | **A10: Server-Side Request Forgery (SSRF)** | Medio | La aplicación no realiza peticiones HTTP a URLs dinámicas provistas por el usuario; subida de comprobantes restringida a almacenamiento interno. |
 
 ## 9.2. Módulo de Control de Acceso Basado en Roles (RBAC) y Ciclo de Vida de Tokens JWT
+
+> Ver diagrama [D4 — Formato de retorno JSON](../diagramas/D4-formato-retorno/README.md)
 
 El sistema cuenta con tres niveles de privilegio claramente delimitados:
 
@@ -1271,6 +1282,8 @@ Para cumplir a cabalidad con la exigencia académica del docente y evidenciar la
 
 ## 11.1. Topología Cloud y Arquitectura de Infraestructura
 
+> Ver diagrama [D7 — Topología de Despliegue](../diagramas/D7-despliegue/README.md)
+
 La arquitectura de despliegue productivo de LeoFit aprovecha un esquema híbrido y escalable de servicios en la nube de alta disponibilidad:
 
 ```
@@ -1279,7 +1292,7 @@ La arquitectura de despliegue productivo de LeoFit aprovecha un esquema híbrido
       [ CDN Global / Edge Hosting (Vercel / GitHub Pages) ]
       └── Frontend PWA (React 18 + Vite + Service Worker)
                      ↓ (API REST / JSON / JWT)
-      [ Servidor de Aplicaciones Cloud (Render / VPS Docker) ]
+      [ Servidor de Aplicaciones Cloud (Target Render / Actual localhost:3000) ]
       └── Backend RESTful (Node.js / FastAPI Container)
                      ↓ (Conexión Pool SSL Segura)
       [ Plataforma de Base de Datos Cloud (Supabase PostgreSQL 16) ]

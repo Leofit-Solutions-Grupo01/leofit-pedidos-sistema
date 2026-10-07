@@ -1,0 +1,33 @@
+classDiagram
+    direction TB
+    
+    class ObjetoSingular {
+        <<JSON Entity>>
+        +boolean success
+        +Object data
+    }
+
+    class ColeccionPaginada {
+        <<JSON Envelope>>
+        +boolean success
+        +number count
+        +number total
+        +Array~Object~ data
+    }
+    
+    class RespuestaErrorZod {
+        <<JSON Error Zod>>
+        +boolean success
+        +Array~Object~ error
+    }
+
+    class RespuestaErrorGenerico {
+        <<JSON Error Generico>>
+        +boolean success
+        +Object error
+    }
+
+    note for ObjetoSingular "Envuelve entidad única en 'data'."
+    note for ColeccionPaginada "Envuelve listados en 'data'.\nIncluye metadatos."
+    note for RespuestaErrorZod "Mapea errores de validación."
+    note for RespuestaErrorGenerico "Errores con 'code' y 'message'.\nIncluye stack en dev."

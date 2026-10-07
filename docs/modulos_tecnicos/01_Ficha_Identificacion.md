@@ -79,7 +79,7 @@
 | **Alcance Acotado** | Sí | Enfocado estrictamente en la gestión de pedidos e inventario. |
 | **Factibilidad Técnica** | Sí | Pila tecnológica madura y probada (React 18, TypeScript, Vite, Tailwind CSS y Node.js). |
 | **Protección de Datos** | Sí | Uso de datos sintéticos y homologación conforme a la Ley de Protección de Datos Personales. |
-| **Despliegue Operativo** | Sí | Despliegue automatizado en CDN Serverless (GitHub Pages / Vercel) con alta disponibilidad. |
+| **Despliegue Operativo** | Sí | Despliegue automatizado en CDN Serverless (GitHub Pages) con alta disponibilidad. |
 
 ---
 
