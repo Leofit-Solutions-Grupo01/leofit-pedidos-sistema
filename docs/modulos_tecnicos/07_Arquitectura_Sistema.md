@@ -27,6 +27,8 @@
 
 ## 2. REPRESENTACIÓN ARQUITECTÓNICA (VISTA LÓGICA Y DESACOPLAMIENTO)
 
+> Ver diagrama [D2 — Flujo entre áreas/módulos del sistema](../diagramas/D2-modulos/README.md)
+
 El sistema implementa una **Arquitectura Limpia (Clean Architecture)** organizada en capas concéntricas con flujo de dependencias unidireccional y motor de despacho dual:
 
 ```text
@@ -76,6 +78,8 @@ frontend/src/
 ---
 
 ## 4. VISTA DE PROCESOS (FLUJO DE DESPACHO DUAL Y RASTREO)
+
+> Ver diagrama [D5 — Flujo de creación de pedido](../diagramas/D5-crear-pedido/README.md)
 
 ```text
                         [Registro del Pedido]
