@@ -47,8 +47,8 @@ El sistema implementa una **Arquitectura Limpia (Clean Architecture)** organizad
                                      ▼
 ┌─────────────────────────────────────────────────────────────────────────┐
 │                       CAPA DE ACCESO A DATOS                            │
-│    (Backend REST Express + PostgreSQL Supabase / Cache Offline LocalStorage /     │
-│     Integración con APIs de Mensajería WhatsApp wa.me)                  │
+│   (Backend REST Express ↔ PostgreSQL Supabase / Cache LocalStorage /    │
+│            Integración con APIs de Mensajería WhatsApp wa.me)           │
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 
