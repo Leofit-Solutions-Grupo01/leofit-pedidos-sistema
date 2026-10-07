@@ -1,0 +1,48 @@
+sequenceDiagram
+    autonumber
+    
+    box "Proceso HTTP y Negocio"
+    participant PM as Postman / cURL
+    participant UI_GAP as PedidoForm.tsx (UI)
+    participant Mid as auth.middleware
+    participant Zod as validateBody (Middleware)
+    participant Ctrl as order.controller
+    participant Repo as pg.repositories
+    participant DB as PostgreSQL
+    end
+
+    Note right of UI_GAP: GAP: PedidoForm.tsx no invoca este endpoint todavía.
+    
+    PM->>Mid: POST /api/orders
+    Mid->>Mid: jwt.verify(token)
+    
+    alt Token inválido
+        Mid-->>PM: 401 Unauthorized
+    else Token válido
+        Mid->>Zod: req.user populado
+        Zod->>Zod: Validación (CreateOrderSchema)
+        
+        alt Falla validación
+            Zod-->>PM: 400 Bad Request
+        else Validación exitosa
+            Zod->>Ctrl: createOrder(req, res)
+            Note right of Ctrl: Nota: El código real incluye reintentos con backoff que no se dibujan aquí.
+            Ctrl->>Repo: create(dto, 'READ COMMITTED')
+            Repo->>DB: BEGIN ISOLATION LEVEL READ COMMITTED
+            Repo->>DB: SELECT stock FROM products FOR UPDATE
+            
+            alt Sin stock
+                DB-->>Repo: 0 rows / error
+                Repo->>DB: ROLLBACK
+                Repo-->>Ctrl: throw error
+                Ctrl-->>PM: 400 Bad Request
+            else Con stock
+                Repo->>DB: INSERT INTO orders
+                Repo->>DB: INSERT INTO order_items
+                Repo->>DB: UPDATE products SET stock = stock - N
+                Repo->>DB: COMMIT
+                Repo-->>Ctrl: Order
+                Ctrl-->>PM: 201 Created { success: true, message, data: Order }
+            end
+        end
+    end
