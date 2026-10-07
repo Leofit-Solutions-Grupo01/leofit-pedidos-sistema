@@ -182,6 +182,8 @@ flowchart TD
 
 ## 1.5. Modelo Propuesto y Oportunidades de Mejora (TO-BE)
 
+> Ver diagrama [D5 — Flujo de creación de pedido](../diagramas/D5-crear-pedido/README.md) y [D1 — Flujo End-to-End de un Pedido HTTP](../diagramas/D1-end-to-end-http/README.md)
+
 La solución implementada automatiza y centraliza la toma de pedidos mediante una **Aplicación Web Progresiva (PWA)** accesible desde cualquier dispositivo móvil o de escritorio, permitiendo a clientes y vendedores operar con catálogo en tiempo real y reserva de stock inmediata:
 
 ```mermaid
@@ -717,6 +719,8 @@ El software sigue los principios de la **Clean Architecture** (Arquitectura Limp
 ![Diagrama General PWA](../diagramas/04_general.png)
 
 ## 7.2. Desacoplamiento de Subsistemas
+
+> Ver diagrama [D2 — Flujo entre áreas/módulos del sistema](../diagramas/D2-modulos/README.md)
 
 La arquitectura cliente-servidor se divide en el flujo de la aplicación React y el motor Offline administrado por el Service Worker.
 
