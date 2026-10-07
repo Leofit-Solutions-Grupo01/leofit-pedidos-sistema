@@ -5,6 +5,8 @@
 
 ### 1. Arquitectura de Despliegue en la Nube (Cloud Topology)
 
+> Ver diagrama [D7 — Topología de Despliegue](../diagramas/D7-despliegue/README.md)
+
 ```mermaid
 graph TD
   User([Usuario / Smartphone PWA]) -->|HTTPS / CDN Global| Vercel[Vercel Edge Network / Frontend PWA]
