@@ -1,0 +1,25 @@
+classDiagram
+    direction TB
+    
+    class ObjetoSingular {
+        <<JSON Entity>>
+        +number id
+        +string ...campos_dinamicos
+    }
+
+    class ColeccionPaginada {
+        <<JSON Envelope>>
+        +Array~Object~ data
+        +number total
+    }
+    
+    class RespuestaError {
+        <<JSON Error>>
+        +string error
+        +string message
+        +Array~Object~ details
+    }
+
+    note for ObjetoSingular "Usado en GET/:id, POST, PATCH.\nRetorna la entidad directamente."
+    note for ColeccionPaginada "Usado en listados (GET /).\nIncluye Header X-Total-Count."
+    note for RespuestaError "Usado en 400, 401, 404, 500.\nMapea errores de Zod en 'details'."
