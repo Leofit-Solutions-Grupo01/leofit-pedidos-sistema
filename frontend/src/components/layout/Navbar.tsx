@@ -76,22 +76,21 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* 2. SECCIÓN CENTRAL: Navegación de Escritorio (Tablet/Desktop) */}
-          <nav className="hidden md:flex items-center gap-1 bg-slate-800/60 p-1 rounded-2xl border border-slate-700/70 shadow-inner">
+          <nav className="hidden md:flex items-center gap-2 lg:gap-4 px-2 py-1">
             {navItems.map((item) => {
               const activo = paginaActual === item.pagina;
               return (
                 <button
                   key={item.pagina}
                   onClick={() => navegarA(item.pagina)}
-                  className={`flex items-center gap-1.5 px-2.5 lg:px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all ${
+                  className={`flex items-center gap-1.5 px-2 py-1.5 text-xs font-semibold transition-transform duration-200 ${
                     activo
-                      ? "bg-[#E63946] text-white shadow-md shadow-red-500/30"
-                      : "text-slate-300 hover:text-white hover:bg-white/10"
+                      ? "text-[#E63946] scale-110"
+                      : "text-slate-400 hover:text-white hover:scale-105"
                   }`}
                   aria-label={item.label}
                 >
-                  <span className="material-icons" style={{ fontSize: "16px" }}>{item.icon}</span>
+                  <span className="material-icons" style={{ fontSize: "18px" }}>{item.icon}</span>
                   <span>{item.label}</span>
                 </button>
               );

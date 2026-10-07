@@ -532,32 +532,32 @@ export default function PedidoForm() {
             </span>
             <span>3. Selección de Prendas</span>
           </h2>
-          <div className="flex flex-col sm:flex-row gap-2.5 mb-4">
+          <div className="flex flex-col sm:flex-row gap-2.5 mb-4 max-w-full">
             <select
               value={productoSeleccionado}
               onChange={(e) => setProductoSeleccionado(e.target.value)}
-              className="w-full sm:flex-1 text-xs sm:text-base border-2 border-slate-300 rounded-2xl px-3 sm:px-4 py-2.5 sm:py-3 focus:outline-none focus:border-[#0F223D] bg-slate-50 font-semibold text-slate-900"
+              className="w-full sm:flex-1 min-w-0 max-w-full text-[11px] sm:text-base border-2 border-slate-300 rounded-2xl px-2 sm:px-4 py-2.5 sm:py-3 focus:outline-none focus:border-[#0F223D] bg-slate-50 font-semibold text-slate-900 truncate"
             >
               {productos.map((p) => (
                 <option key={p.id} value={p.id}>
-                  {p.nombre} — S/{p.precio.toFixed(2)} {p.stock <= 5 ? `([ULTIMAS] Quedan ${p.stock})` : `(Stock: ${p.stock})`}
+                  {p.nombre} - S/{p.precio.toFixed(2)} (Stock: {p.stock})
                 </option>
               ))}
             </select>
-            <div className="flex flex-row sm:flex-row gap-2 w-full sm:w-auto">
+            <div className="flex flex-row gap-2 w-full sm:w-auto">
               <input
                 type="number"
                 min="1"
                 value={cantidad}
                 onChange={(e) => setCantidad(Math.max(1, parseInt(e.target.value) || 1))}
-                className="w-20 shrink-0 text-sm sm:text-base border-2 border-slate-300 rounded-2xl px-2 sm:px-3 py-2.5 sm:py-3 text-center focus:outline-none focus:border-[#0F223D] font-bold font-mono text-slate-900 bg-slate-50"
+                className="w-16 sm:w-20 shrink-0 text-sm sm:text-base border-2 border-slate-300 rounded-2xl px-1 sm:px-3 py-2.5 sm:py-3 text-center focus:outline-none focus:border-[#0F223D] font-bold font-mono text-slate-900 bg-slate-50"
               />
               <button
                 onClick={agregarItem}
-                className="flex-1 px-4 sm:px-5 py-2.5 sm:py-3 bg-[#0F223D] hover:bg-[#1D3557] text-white rounded-2xl font-bold transition-all flex flex-wrap items-center justify-center gap-1.5 shadow-md text-xs sm:text-sm whitespace-normal break-words text-center"
+                className="flex-1 min-w-0 px-2 sm:px-5 py-2.5 sm:py-3 bg-[#0F223D] hover:bg-[#1D3557] text-white rounded-2xl font-bold transition-all flex items-center justify-center gap-1 shadow-md text-xs sm:text-sm truncate"
               >
-                <span className="material-icons shrink-0" style={{ fontSize: "18px" }}>add</span>
-                <span>Agregar</span>
+                <span className="material-icons shrink-0" style={{ fontSize: "16px" }}>add</span>
+                <span className="truncate">Agregar</span>
               </button>
             </div>
           </div>
