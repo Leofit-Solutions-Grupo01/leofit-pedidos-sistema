@@ -98,14 +98,36 @@ export function AppProvider({ children }: { children: ReactNode }) {
   }, [autenticado]);
 
   const iniciarSesion = async (email: string, password: string): Promise<boolean> => {
-    // Validación de credenciales
-    if (email.trim().toLowerCase() === "admin@leofit.com" && password === "admin123") {
-      setAutenticado(true);
-      setPaginaActual("dashboard");
-      sessionStorage.setItem(SESSION_KEY, "dummy-token");
-      return true;
+    try {
+      const USE_MOCK = import.meta.env.VITE_USE_MOCK_AUTH === 'true';
+
+      if (USE_MOCK) {
+        if (email.trim().toLowerCase() === "admin@leofit.com" && password === "admin123") {
+          setAutenticado(true);
+          setPaginaActual("dashboard");
+          sessionStorage.setItem(SESSION_KEY, "dummy-token");
+          return true;
+        }
+        return false;
+      }
+
+      const apiUrl = import.meta.env.VITE_API_URL || '';
+      const res = await fetch(`${apiUrl}/api/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setAutenticado(true);
+        setPaginaActual("dashboard");
+        sessionStorage.setItem(SESSION_KEY, data.data.token);
+        return true;
+      }
+      return false;
+    } catch {
+      return false;
     }
-    return false;
   };
 
   const cerrarSesion = () => {
