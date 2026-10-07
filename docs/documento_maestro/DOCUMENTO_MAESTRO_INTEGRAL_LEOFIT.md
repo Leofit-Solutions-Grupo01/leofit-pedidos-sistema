@@ -190,7 +190,7 @@ flowchart TD
     B --> C[Agrega prendas al Carrito Interactivo]
     C --> D[Ingresa datos validados del cliente: DNI, Teléfono, Destino]
     D --> E[Selecciona Método de Pago y Adjunta Comprobante Digital]
-    E --> F[PWA emite Reserva Atómica de Stock vía API REST / PostgreSQL<br/>%% GAP: PedidoForm aún usa mock local]
+    E --> F[PWA emite Reserva Atómica de Stock vía API REST / PostgreSQL<br/>GAP: PedidoForm aún usa mock local]
     F --> G[Generación Inmediata de Pedido con Código Único]
     G --> H[Notificación Automática a Panel de Almacén]
     H --> I([Almacenero despacha con Guía Digital e Imprime Ticket QR])
