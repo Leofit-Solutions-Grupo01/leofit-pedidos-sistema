@@ -20,7 +20,7 @@
 
 | Endpoint | Definición de ruta | Validación Zod | Controlador |
 | --- | --- | --- | --- |
-| POST /api/auth/login | `backend/src/routes/auth.routes.ts:14` | `LoginSchema` en validateBody | `auth.controller.ts` |
+| POST /api/auth/login | `backend/src/routes/auth.routes.ts:14` | `LoginSchema` en `backend/src/infrastructure/validators/schemas.ts:7` | `auth.controller.ts:27` |
 | GET /api/orders | `backend/src/routes/order.routes.ts:17` | N/A | `order.controller.ts:48` |
 | POST /api/orders | `backend/src/routes/order.routes.ts:19` | `CreateOrderSchema` | `order.controller.ts:136` |
 | GET /api/orders/:id | `backend/src/routes/order.routes.ts:18` | N/A | `order.controller.ts:81` |
