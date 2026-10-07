@@ -65,6 +65,8 @@ En `backend/src/app.ts`, se configura la librería **Helmet** para inyectar cabe
 
 ### NIVEL 3: Autenticación Robusta y Criptografía de Credenciales (Bcrypt + JWT)
 
+> Ver diagrama [D4 — Formato de retorno JSON](../diagramas/D4-formato-retorno/README.md)
+
 #### 1. Hashing de Contraseñas con Bcrypt
 * **Algoritmo:** Función de derivación de claves basada en el cifrador por bloques *Blowfish*.
 * **Factor de Costo (Work Factor / Rounds):** **10 rondas** ($2^{10} = 1,024$ iteraciones).
