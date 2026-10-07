@@ -14,21 +14,25 @@ Por lo tanto, este diagrama se ha dividido en dos secuencias (`Flujo A` y `Flujo
 | Nodo | Descripción | Fuente |
 | --- | --- | --- |
 | `UI` | Componente de Login | `frontend/src/pages/Login.tsx` |
-| `Ctx` | Contexto global de la App | `frontend/src/context/AppContext.tsx:114` (fetch a `/api/auth/login`) |
+| `Ctx` | Contexto global de la App | `frontend/src/context/AppContext.tsx:115` (fetch a `/api/auth/login`) |
 | `Rate` | Middleware de Rate Limiting | `backend/src/app.ts:38` |
-| `Zod` | Validación de body | `backend/src/controllers/auth.controller.ts:40` |
-| `Auth` | Lógica de controlador | `backend/src/controllers/auth.controller.ts` |
+| `Zod` | Validación de body | `backend/src/routes/auth.routes.ts:14` y `backend/src/middlewares/validate.middleware.ts:24` |
+| `Ctrl` | Lógica de controlador (Auth) | `backend/src/controllers/auth.controller.ts:29` |
 | `Bcrypt` | Utilidades de seguridad / hash | `backend/src/infrastructure/security/jwt.utils.ts` y `auth.controller.ts` |
 | `UI_GAP` | Componente desconectado | `frontend/src/pages/PedidoForm.tsx` (Usa `mockData.ts`) |
 | `Mid` | Middleware de autenticación | `backend/src/middlewares/auth.middleware.ts` |
-| `Ctrl` | Controlador de órdenes | `backend/src/controllers/order.controller.ts:126` |
-| `Repo` | Persistencia en BD | `backend/src/infrastructure/repositories/pg.repositories.ts:450` (`create()`) |
-| `DB` | Postgres (Transacción) | `backend/src/infrastructure/repositories/pg.repositories.ts:470` (`BEGIN`, `FOR UPDATE`) |
+| `OrderCtrl` | Controlador de órdenes | `backend/src/controllers/order.controller.ts:126` |
+| `Repo` | Persistencia en BD | `backend/src/infrastructure/repositories/pg.repositories.ts:445` (`create()`) |
+| `DB` | Postgres (Transacción) | `backend/src/infrastructure/repositories/pg.repositories.ts:453` (`BEGIN`) y `:478` (`FOR UPDATE`) |
 
 ## Límites explícitos
 - El **Flujo A** no muestra las interacciones con la base de datos (PostgreSQL/Memoria) en el login, se centra en la emisión del JWT y mitigación de timing attacks.
-- El **Flujo B** muestra la transacción de BD (`FOR UPDATE`, `COMMIT`) pero asume un request válido desde Postman/cURL, evidenciando el `%% GAP` con la UI.
+- El **Flujo B** muestra la transacción de BD (`FOR UPDATE`, `COMMIT`) pero asume un request válido desde Postman/cURL, evidenciando el `GAP` con la UI.
 - No se detallan latencias (no existen SLA / timeouts predefinidos hardcodeados).
+
+## Nota sobre el tamaño
+El SVG pesa ~200 KB porque mmdc embebe una tipografía completa.
+Para versiones optimizadas, regenerar con mmdc --no-svg-fonts (verificar visualmente antes de commitear).
 
 ## Cómo regenerar
 ```bash
