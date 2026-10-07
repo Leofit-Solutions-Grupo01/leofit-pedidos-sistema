@@ -1,0 +1,22 @@
+flowchart TD
+    subgraph Actual [ZONA 1 — ESTADO ACTUAL]
+        direction TB
+        FE[Frontend React SPA] -->|Desplegado en| GHPages[GitHub Pages]
+        BE[Backend Express] -->|Corre localmente en| Local[localhost:3000]
+        DB[(PostgreSQL)] -->|Alojada en| Supa[Supabase]
+        CI[CI/CD] -->|Workflows| GHA[GitHub Actions]
+        
+        FE -.->|CORS / Fetch| Local
+        Local -->|pg pool| DB
+    end
+
+    subgraph Target [ZONA 2 — TARGET PROPUESTO]
+        direction TB
+        FE2[Frontend React SPA] -->|CDN Global| Vercel[Vercel / GitHub Pages]
+        BE2[Backend Express Docker] -->|Contenedor en la nube| Render[Render / Railway]
+        DB2[(PostgreSQL)] -->|Alojada en| Supa2[Supabase]
+        CI2[CI/CD] -->|Deploy Automático| GHA2[GitHub Actions]
+        
+        FE2 -->|API HTTPS| Render
+        Render -->|pg pool| DB2
+    end
