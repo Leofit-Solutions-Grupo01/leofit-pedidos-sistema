@@ -198,9 +198,9 @@ CREATE TABLE order_status_history (
 
 ## 3. DIAGRAMAS ARQUITECTURALES DE BASE DE DATOS
 
-* 📐 **Diagrama de Modelo Lógico (DER Conceptual):** [`diagrams/12_Modelo_Logico_BD.png`](../../diagrams/12_Modelo_Logico_BD.png)
-* 🗄️ **Diagrama de Modelo Físico (DDL Relacional 3FN/BCNF):** [`diagrams/13_Modelo_Fisico_BD.png`](../../diagrams/13_Modelo_Fisico_BD.png)
-* 📊 **Diagrama de Entidades Complementario:** [`diagrams/14_Diagrama_DB.png`](../../diagrams/14_Diagrama_DB.png)
+* 📐 **Diagrama de Modelo Lógico (DER Conceptual):** [`diagrams/12_Modelo_Logico_BD.png`](../diagramas/12_Modelo_Logico_BD.png)
+* 🗄️ **Diagrama de Modelo Físico (DDL Relacional 3FN/BCNF):** [`diagrams/13_Modelo_Fisico_BD.png`](../diagramas/13_Modelo_Fisico_BD.png)
+* 📊 **Diagrama de Entidades Complementario:** [`diagrams/14_Diagrama_DB.png`](../diagramas/14_Diagrama_DB.png)
 
 ---
 
