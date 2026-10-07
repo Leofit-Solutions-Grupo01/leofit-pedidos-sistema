@@ -1,0 +1,51 @@
+classDiagram
+    %% Modelos Core de Negocio y DTOs
+    class CreateOrderDTO {
+        +number? clientId
+        +Object? clientData
+        +number? userId
+        +PaymentMethod paymentMethod
+        +number shippingCost
+        +string? notes
+        +Array items
+    }
+
+    class Order {
+        +number id
+        +string order_number
+        +number client_id
+        +OrderStatus status
+        +number subtotal
+        +number shipping_cost
+        +number total_amount
+        +PaymentMethod payment_method
+        +Date created_at
+    }
+
+    class OrderItem {
+        +number variant_id
+        +number quantity
+        +number unit_price
+        +number subtotal
+    }
+
+    class Client {
+        +number id
+        +string full_name
+        +string phone
+        +string address
+        +string district
+    }
+
+    class DashboardMetrics {
+        +number totalOrders
+        +Record ordersByStatus
+        +number totalRevenue
+        +number lowStockCount
+        +Array recentOrders
+        +Array topSellingProducts
+    }
+
+    CreateOrderDTO --> Order : Genera >
+    Order "1" *-- "1..*" OrderItem : Contiene
+    Order "1" --> "1" Client : Pertenece a
