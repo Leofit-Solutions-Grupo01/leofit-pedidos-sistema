@@ -126,18 +126,12 @@ export class OrderController {
   public static async createOrder(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> {
     try {
       const orderRepo = RepositoryFactory.getOrderRepository();
-      
-      const ALLOWED_LEVELS = ['READ COMMITTED', 'REPEATABLE READ', 'SERIALIZABLE'] as const;
-      const requested = (req.headers['x-isolation-level'] as string) ?? 'READ COMMITTED';
-      const isolationLevel = ALLOWED_LEVELS.includes(requested as any)
-        ? requested
-        : 'READ COMMITTED';
 
       // Ejecución de la transacción ACID a través de la capa de persistencia
       const order = await orderRepo.create({
         ...req.body,
         userId: req.user?.userId
-      }, isolationLevel);
+      }, 'READ COMMITTED');
 
       res.status(201).json({
         success: true,
