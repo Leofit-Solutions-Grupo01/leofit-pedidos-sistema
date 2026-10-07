@@ -21,7 +21,6 @@ render SVG.
 ## GAPs consolidados
 Lista única de todos los GAPs marcados en los 7 diagramas:
 - PedidoForm.tsx no consume el endpoint POST /api/orders (D1, D5).
-- Auth flow: verificar si el frontend usa sessionStorage o cookies (D4).
 - No hay OpenTelemetry / Prometheus / APM (D6).
 - No hay SLIs/SLOs definidos (D6).
 - No hay tests de carga en CI/CD (D6).
@@ -30,15 +29,21 @@ Lista única de todos los GAPs marcados en los 7 diagramas:
 - No hay IaC / K8s (D7).
 
 ## Cómo regenerar todos los SVG
+
+### Bash (Linux/Mac/WSL)
 ```bash
-cd docs/diagramas
-for d in D*/; do
-  cd "$d"
-  for f in *.mmd; do
-    mmdc -i "$f" -o "${f%.mmd}.svg"
-  done
-  cd ..
-done
+for d in D*/; do (cd "$d" && for f in *.mmd; do mmdc -i "$f" -o "${f%.mmd}.svg"; done); done
+```
+
+### PowerShell (Windows)
+```powershell
+Get-ChildItem -Directory | ForEach-Object {
+  Push-Location $_.FullName
+  Get-ChildItem *.mmd | ForEach-Object {
+    mmdc -i $_.Name -o ($_.Name -replace '\.mmd$', '.svg')
+  }
+  Pop-Location
+}
 ```
 
 ## Nota sobre el peso
