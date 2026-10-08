@@ -1,6 +1,6 @@
-# PolÃƒÂ­tica de Seguridad y Directrices TÃƒÂ©cnicas - Leofit Solutions
+# Política de Seguridad y Directrices Técnicas - Leofit Solutions
 
-Este documento establece las polÃƒÂ­ticas de divulgaciÃƒÂ³n responsable de vulnerabilidades y los estÃƒÂ¡ndares de seguridad obligatorios para el desarrollo y despliegue del proyecto.
+Este documento establece las políticas de divulgación responsable de vulnerabilidades y los estándares de seguridad obligatorios para el desarrollo y despliegue del proyecto.
 
 ---
 
@@ -8,7 +8,7 @@ Este documento establece las polÃƒÂ­ticas de divulgaciÃƒÂ³n responsable 
 
 Actualmente se proporciona soporte y parches de seguridad para las siguientes versiones activas:
 
-| VersiÃƒÂ³n | Estado de Soporte |
+| Versión | Estado de Soporte |
 |:--- |:---: |
 | `1.0.x-beta` | Soportada (Activa) |
 | `< 1.0.0` | No compatible |
@@ -17,48 +17,48 @@ Actualmente se proporciona soporte y parches de seguridad para las siguientes ve
 
 ## 2. Procedimiento de Reporte Responsable de Vulnerabilidades
 
-Si se identifica una vulnerabilidad de seguridad en este proyecto, se solicita no divulgarla pÃƒÂºblicamente a travÃƒÂ©s de incidencias abiertas o foros pÃƒÂºblicos. En su lugar, se debe proceder segÃƒÂºn el siguiente protocolo:
+Si se identifica una vulnerabilidad de seguridad en este proyecto, se solicita no divulgarla públicamente a través de incidencias abiertas o foros públicos. En su lugar, se debe proceder según el siguiente protocolo:
 
-1. **Contacto Confidencial:** Enviar un correo electrÃƒÂ³nico formal al equipo de seguridad a `seguridad@leofit.com` o comunicarse directamente con los mantenedores principales del repositorio.
-2. **InformaciÃƒÂ³n Requerida:**
-  - DescripciÃƒÂ³n tÃƒÂ©cnica detallada del hallazgo.
-  - Pasos estructurados o prueba de concepto (*PoC*) para su reproducciÃƒÂ³n.
+1. **Contacto Confidencial:** Enviar un correo electrónico formal al equipo de seguridad a `seguridad@leofit.com` o comunicarse directamente con los mantenedores principales del repositorio.
+2. **Información Requerida:**
+  - Descripción técnica detallada del hallazgo.
+  - Pasos estructurados o prueba de concepto (*PoC*) para su reproducción.
   - Componente afectado (Frontend, Backend, Base de Datos, CI/CD).
-  - EstimaciÃƒÂ³n del nivel de severidad e impacto potencial.
+  - Estimación del nivel de severidad e impacto potencial.
 3. **Compromiso de Respuesta:**
-  - Acuse de recibo formal en un plazo mÃƒÂ¡ximo de 48 horas.
-  - Plan de evaluaciÃƒÂ³n y mitigaciÃƒÂ³n en un lapso no mayor a 7 dÃƒÂ­as hÃƒÂ¡biles.
-  - NotificaciÃƒÂ³n de cierre una vez desplegado el parche correctivo.
+  - Acuse de recibo formal en un plazo máximo de 48 horas.
+  - Plan de evaluación y mitigación en un lapso no mayor a 7 días hábiles.
+  - Notificación de cierre una vez desplegado el parche correctivo.
 
 ---
 
 ## 3. Directrices de Seguridad para Frontend y GitHub Pages
 
 1. **Ausencia Estricta de Secretos en el Cliente:**
-  - El cÃƒÂ³digo fuente publicado en GitHub Pages es de dominio pÃƒÂºblico y accesible desde el navegador web (cÃƒÂ³digo HTML, CSS, JavaScript y bundles).
+  - El código fuente publicado en GitHub Pages es de dominio público y accesible desde el navegador web (código HTML, CSS, JavaScript y bundles).
   - Queda terminantemente prohibido almacenar credenciales de base de datos, claves privadas (`JWT_SECRET`), tokens maestros o llaves de API sensibles en archivos del frontend o en variables de entorno expuestas (`VITE_*`).
 2. **Enrutamiento Seguro y Resiliencia SPA:**
-  - Empleo de rutas relativas (`base: './'`) en `vite.config.ts` para evitar fallos de resoluciÃƒÂ³n de recursos estÃƒÂ¡ticos.
-  - ImplementaciÃƒÂ³n del manejador de respaldo `404.html` en `frontend/public/` para garantizar la persistencia de navegaciÃƒÂ³n en recargas de pÃƒÂ¡gina.
-3. **MitigaciÃƒÂ³n de Ataques Cross-Site Scripting (XSS):**
-  - UtilizaciÃƒÂ³n de React DOM con asignaciÃƒÂ³n mediante `textContent` en sustituciÃƒÂ³n de `innerHTML` o `dangerouslySetInnerHTML`.
-  - SanitizaciÃƒÂ³n rigurosa de toda entrada suministrada por el usuario o retornada por servicios externos.
-4. **PolÃƒÂ­tica de Seguridad de Contenidos (CSP):**
-  - InclusiÃƒÂ³n de directivas Content Security Policy (CSP) en las cabeceras HTML para restringir las conexiones salientes exclusivamente a endpoints autorizados.
+  - Empleo de rutas relativas (`base: './'`) en `vite.config.ts` para evitar fallos de resolución de recursos estáticos.
+  - Implementación del manejador de respaldo `404.html` en `frontend/public/` para garantizar la persistencia de navegación en recargas de página.
+3. **Mitigación de Ataques Cross-Site Scripting (XSS):**
+  - Utilización de React DOM con asignación mediante `textContent` en sustitución de `innerHTML` o `dangerouslySetInnerHTML`.
+  - Sanitización rigurosa de toda entrada suministrada por el usuario o retornada por servicios externos.
+4. **Política de Seguridad de Contenidos (CSP):**
+  - Inclusión de directivas Content Security Policy (CSP) en las cabeceras HTML para restringir las conexiones salientes exclusivamente a endpoints autorizados.
 
 ---
 
 ## 4. Directrices de Seguridad en Backend y Persistencia
 
-1. **AutenticaciÃƒÂ³n y Cifrado de ContraseÃƒÂ±as:**
-  - Uso obligatorio de la librerÃƒÂ­a `bcrypt` con un factor de salting (cost) no menor a 10 para el almacenamiento de contraseÃƒÂ±as.
-  - Firma criptogrÃƒÂ¡fica de tokens JWT con algoritmos HMAC-SHA256 y vigencia mÃƒÂ¡xima de 7 dÃƒÂ­as.
-2. **Control de Acceso y PolÃƒÂ­tica CORS:**
-  - RestricciÃƒÂ³n estricta del middleware `cors()` ÃƒÂºnicamente a los orÃƒÂ­genes autorizados de desarrollo y al dominio oficial de producciÃƒÂ³n en GitHub Pages.
-3. **PrevenciÃƒÂ³n de Inyecciones SQL:**
-  - UtilizaciÃƒÂ³n exclusiva de ORM (Prisma / Sequelize) y sentencias parametrizadas (*Prepared Statements*) para cualquier interacciÃƒÂ³n con la base de datos relacional.
-4. **ProtecciÃƒÂ³n contra Fuerza Bruta (Rate Limiting):**
-  - ImplementaciÃƒÂ³n de lÃƒÂ­mites de tasa de peticiones (`express-rate-limit`) en los endpoints crÃƒÂ­ticos de autenticaciÃƒÂ³n (`/api/auth/login`).
+1. **Autenticación y Cifrado de Contraseñas:**
+  - Uso obligatorio de la librería `bcrypt` con un factor de salting (cost) no menor a 10 para el almacenamiento de contraseñas.
+  - Firma criptográfica de tokens JWT con algoritmos HMAC-SHA256 y vigencia máxima de 7 días.
+2. **Control de Acceso y Política CORS:**
+  - Restricción estricta del middleware `cors()` únicamente a los orígenes autorizados de desarrollo y al dominio oficial de producción en GitHub Pages.
+3. **Prevención de Inyecciones SQL:**
+  - Utilización exclusiva de ORM (Prisma / Sequelize) y sentencias parametrizadas (*Prepared Statements*) para cualquier interacción con la base de datos relacional.
+4. **Protección contra Fuerza Bruta (Rate Limiting):**
+  - Implementación de límites de tasa de peticiones (`express-rate-limit`) en los endpoints críticos de autenticación (`/api/auth/login`).
 
 ---
 
@@ -68,20 +68,20 @@ Se debe garantizar que los siguientes artefactos permanezcan permanentemente fue
 * `.env`, `.env.local`, `.env.production`
 * `node_modules/`
 * Certificados y claves privadas (`.pem`, `.key`, `.cert`)
-* Directorios de compilaciÃƒÂ³n local (`dist/`, `build/`)
+* Directorios de compilación local (`dist/`, `build/`)
 
 ---
 
-## 6. Estado de la AuditorÃƒÂ­a y Manejo de Secretos (APF3)
+## 6. Estado de la Auditoría y Manejo de Secretos (APF3)
 
-El sistema opera bajo una estricta polÃƒÂ­tica de **Fail-Fast** en producciÃƒÂ³n. Es mandatorio configurar adecuadamente las siguientes variables de entorno:
+El sistema opera bajo una estricta política de **Fail-Fast** en producción. Es mandatorio configurar adecuadamente las siguientes variables de entorno:
 
-- `JWT_SECRET`: Clave criptogrÃƒÂ¡fica para firma de tokens. **Falla si falta.**
+- `JWT_SECRET`: Clave criptográfica para firma de tokens. **Falla si falta.**
 - `WEBHOOK_SECRET`: Clave HMAC compartida con la pasarela de pagos. **Falla si falta.**
-- `CORS_ORIGIN`: OrÃƒÂ­genes autorizados. **En producciÃƒÂ³n, falla si falta.**
+- `CORS_ORIGIN`: Orígenes autorizados. **En producción, falla si falta.**
 
-### Incidentes Activos y Deuda TÃƒÂ©cnica
-La ÃƒÂºltima auditorÃƒÂ­a forense (APF3) cerrÃƒÂ³ exitosamente mÃƒÂºltiples vulnerabilidades crÃƒÂ­ticas. Sin embargo, los siguientes incidentes y deudas permanecen activos y formalmente declarados:
+### Incidentes Activos y Deuda Técnica
+La última auditoría forense (APF3) cerró exitosamente múltiples vulnerabilidades críticas. Sin embargo, los siguientes incidentes y deudas permanecen activos y formalmente declarados:
 
 ### [SEC-10] Fallback hardcodeado de JWT_SECRET en docker-compose.yml
 
@@ -123,13 +123,13 @@ La ÃƒÂºltima auditorÃƒÂ­a forense (APF3) cerrÃƒÂ³ exitosamente mÃƒ
      - [corto plazo] Coordinación de clones + soporte GitHub.
    - **Fecha Objetivo / Owner:** Sprint 3 (Q1 2027) / DevOps & DBA Team.
 
-2. **[SEC-08] ContraseÃƒÂ±as DÃƒÂ©biles en Seeds (ESTADO: ABIERTO - P1)**
-   - **AcciÃƒÂ³n:** Los scripts de seeding deben ser refactorizados para obtener las contraseÃƒÂ±as administrativas iniciales desde variables de entorno.
+2. **[SEC-08] Contraseñas Débiles en Seeds (ESTADO: ABIERTO - P1)**
+   - **Acción:** Los scripts de seeding deben ser refactorizados para obtener las contraseñas administrativas iniciales desde variables de entorno.
    - **Owner:** Product Owner / Back-End Lead
    - **Fecha Límite:** 2026-10-15
 
-3. **MigraciÃƒÂ³n a Cookies httpOnly (Deuda TÃƒÂ©cnica P0)**
-   - **AcciÃƒÂ³n:** Migrar almacenamiento del JWT (`sessionStorage`) a cookies de sesiÃƒÂ³n `httpOnly` con flags `Secure` y `SameSite=Strict`, implementando protecciÃƒÂ³n CSRF en los endpoints.
+3. **Migración a Cookies httpOnly (Deuda Técnica P0)**
+   - **Acción:** Migrar almacenamiento del JWT (`sessionStorage`) a cookies de sesión `httpOnly` con flags `Secure` y `SameSite=Strict`, implementando protección CSRF en los endpoints.
    - **Fecha Objetivo / Owner:** Sprint 3 (Q1 2027) / Frontend Lead & Security Architecture Team.
 
 4. **[SEC-09] Credenciales y PII en documentaciÃ³n compilada (ESTADO: ABIERTO - P0)**
