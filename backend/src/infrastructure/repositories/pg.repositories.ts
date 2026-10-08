@@ -300,6 +300,7 @@ export class PgOrderRepository implements IOrderRepository {
       FROM orders o
       JOIN clients c ON o.client_id = c.id
       LEFT JOIN users u ON o.user_id = u.id
+      JOIN payment_methods pm ON o.payment_method_id = pm.id
       WHERE 1=1
     `;
     const params: any[] = [];
@@ -319,7 +320,7 @@ export class PgOrderRepository implements IOrderRepository {
 
     let dataQuery = `
       SELECT o.*, c.full_name as client_name, c.phone as client_phone, c.address as client_address, c.district as client_district,
-             u.name as user_name
+             u.name as user_name, pm.code as payment_method
       ${whereQuery}
       ORDER BY o.id DESC
     `;
@@ -352,6 +353,10 @@ export class PgOrderRepository implements IOrderRepository {
       shipping_cost: parseFloat(row.shipping_cost),
       total_amount: parseFloat(row.total_amount),
       payment_method: row.payment_method,
+      shippingType: row.shipping_type || undefined,
+      destinationCity: row.destination_city || undefined,
+      shippingAgency: row.shipping_agency || undefined,
+      trackingNumber: row.tracking_number || undefined,
       notes: row.notes,
       created_at: row.created_at,
       updated_at: row.updated_at
@@ -363,10 +368,11 @@ export class PgOrderRepository implements IOrderRepository {
   async findById(id: number): Promise<Order | null> {
     const res = await this.pool.query(
       `SELECT o.*, c.full_name as client_name, c.phone as client_phone, c.address as client_address, c.district as client_district, c.reference as client_reference,
-              u.name as user_name
+              u.name as user_name, pm.code as payment_method
        FROM orders o
        JOIN clients c ON o.client_id = c.id
        LEFT JOIN users u ON o.user_id = u.id
+       JOIN payment_methods pm ON o.payment_method_id = pm.id
        WHERE o.id = $1`,
       [id]
     );
@@ -412,6 +418,10 @@ export class PgOrderRepository implements IOrderRepository {
       shipping_cost: parseFloat(row.shipping_cost),
       total_amount: parseFloat(row.total_amount),
       payment_method: row.payment_method,
+      shippingType: row.shipping_type || undefined,
+      destinationCity: row.destination_city || undefined,
+      shippingAgency: row.shipping_agency || undefined,
+      trackingNumber: row.tracking_number || undefined,
       notes: row.notes,
       items: itemsRes.rows.map(item => ({
         id: item.id,
@@ -495,10 +505,24 @@ export class PgOrderRepository implements IOrderRepository {
         const orderNumber = `LEO-${dateStr}-${seq}`;
         const totalAmount = subtotal + dto.shippingCost;
 
+        const pmRes = await client.query('SELECT id FROM payment_methods WHERE code = $1', [dto.paymentMethod]);
+        if (pmRes.rows.length === 0) {
+          throw new Error(`Método de pago no soportado por el esquema de DB: ${dto.paymentMethod}`);
+        }
+        const paymentMethodId = pmRes.rows[0].id;
+
         const orderRes = await client.query(
-          `INSERT INTO orders (order_number, client_id, user_id, status, subtotal, shipping_cost, total_amount, payment_method, notes)
-           VALUES ($1, $2, $3, 'RECIBIDO', $4, $5, $6, $7, $8) RETURNING id`,
-          [orderNumber, clientId, dto.userId || null, subtotal, dto.shippingCost, totalAmount, dto.paymentMethod, dto.notes || null]
+          `INSERT INTO orders (
+             order_number, client_id, user_id, status, subtotal, shipping_cost, total_amount, 
+             payment_method_id, notes, shipping_type, destination_city, shipping_agency, tracking_number
+           )
+           VALUES ($1, $2, $3, 'RECIBIDO', $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING id`,
+          [
+            orderNumber, clientId, dto.userId || null, 
+            subtotal, dto.shippingCost, totalAmount, 
+            paymentMethodId, dto.notes || null,
+            dto.shippingType || null, dto.destinationCity || null, dto.shippingAgency || null, dto.trackingNumber || null
+          ]
         );
         const orderId = orderRes.rows[0].id;
 

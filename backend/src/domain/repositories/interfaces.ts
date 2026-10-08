@@ -113,6 +113,11 @@ export interface CreateOrderDTO {
   paymentMethod: Order['payment_method'];
   /** Tarifa de delivery calculada en PEN */
   shippingCost: number;
+  /** Campos opcionales para logística de despachos (Local vs Provincial) */
+  shippingType?: 'LIMA' | 'PROVINCIA';
+  destinationCity?: string;
+  shippingAgency?: string;
+  trackingNumber?: string;
   /** Notas u observaciones de entrega */
   notes?: string;
   /** Líneas de productos solicitadas con sus variantes y precios acordados */
