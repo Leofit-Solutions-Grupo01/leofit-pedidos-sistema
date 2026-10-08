@@ -54,6 +54,10 @@ export const CreateOrderSchema = z.object({
   clientData: CreateClientSchema.optional(),
   paymentMethod: z.enum(['YAPE', 'PLIN', 'TRANSFERENCIA', 'CONTRAENTREGA', 'EFECTIVO']),
   shippingCost: z.number().min(0).default(0),
+  shippingType: z.enum(['LIMA', 'PROVINCIA']).optional(),
+  destinationCity: z.string().min(2).max(100).optional(),
+  shippingAgency: z.string().min(2).max(50).optional(),
+  trackingNumber: z.string().min(5).max(50).optional(),
   notes: z.string().max(500).optional(),
   items: z.array(
     z.object({
@@ -64,7 +68,12 @@ export const CreateOrderSchema = z.object({
   ).min(1, 'El pedido debe contener al menos un producto')
 }).refine(data => data.clientId || data.clientData, {
   message: 'Debe especificar clientId o clientData'
-});
+}).refine(data => {
+  if (data.shippingType === 'PROVINCIA') {
+    return !!data.destinationCity && !!data.shippingAgency;
+  }
+  return true;
+}, { message: 'Para envíos a PROVINCIA, la ciudad de destino y agencia son obligatorias' });
 
 export const UpdateOrderStatusSchema = z.object({
   status: z.enum(['RECIBIDO', 'PREPARACION', 'EN_CAMINO', 'ENTREGADO', 'CANCELADO']),
