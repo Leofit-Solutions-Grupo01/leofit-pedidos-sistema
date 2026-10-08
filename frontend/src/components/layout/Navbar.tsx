@@ -76,7 +76,7 @@ export default function Navbar() {
             </div>
           </div>
 
-          <nav className="hidden md:flex items-center gap-2 lg:gap-4 px-2 py-1">
+          <nav className="hidden lg:flex items-center gap-2 xl:gap-4 px-2 py-1">
             {navItems.map((item) => {
               const activo = paginaActual === item.pagina;
               return (
@@ -177,7 +177,7 @@ export default function Navbar() {
       </header>
 
       {/* Barra de Navegación Inferior (Móvil Ultra-Optimizada) */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#0F223D]/95 backdrop-blur-md border-t border-slate-700/70 flex shadow-2xl safe-bottom">
+      <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#0F223D]/95 backdrop-blur-md border-t border-slate-700/70 flex shadow-2xl safe-bottom">
         {navItems.map((item) => {
           const activo = paginaActual === item.pagina;
           return (
