@@ -132,7 +132,9 @@ export default function PedidoForm() {
   };
   const quitarCupon = handleRemoverCupon;
 
-  const handleGuardar = () => {
+  const [guardando, setGuardando] = useState(false);
+  const handleGuardar = async () => {
+    if (guardando) return;
     const errList: string[] = [];
     if (!nombre.trim()) errList.push("El nombre completo del cliente es obligatorio.");
     if (!telefono.trim()) errList.push("El teléfono de contacto es obligatorio.");
@@ -177,8 +179,17 @@ export default function PedidoForm() {
       notas: notas.trim() || undefined,
     };
 
-    agregarPedido(nuevoPedido);
-    setPedidoCreado(nuevoPedido);
+    setGuardando(true);
+    try {
+      // Con backend devuelve el pedido definitivo (número LEO-... asignado por el servidor)
+      const creado = await agregarPedido(nuevoPedido);
+      setPedidoCreado(creado);
+    } catch (e) {
+      setErrores([e instanceof Error ? e.message : "No se pudo registrar el pedido."]);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } finally {
+      setGuardando(false);
+    }
   };
 
   if (pedidoCreado) {
@@ -720,6 +731,7 @@ export default function PedidoForm() {
           </button>
           <button
             onClick={handleGuardar}
+            disabled={guardando}
             className="w-full sm:flex-[2] py-3 sm:py-3.5 bg-emerald-700 hover:bg-emerald-800 active:scale-[0.98] text-white font-bold text-sm sm:text-base rounded-2xl transition-all flex items-center justify-center gap-2 shadow-xl shadow-emerald-700/30 ring-2 ring-white"
           >
             <span className="material-icons" style={{ fontSize: "20px" }}>save</span>

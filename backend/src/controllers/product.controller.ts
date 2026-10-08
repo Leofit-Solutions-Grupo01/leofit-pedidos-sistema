@@ -16,6 +16,25 @@
 import { Request, Response, NextFunction } from 'express';
 import { RepositoryFactory } from '../infrastructure/repositories/factory';
 
+/**
+ * Traduce el cuerpo validado por Zod (camelCase, contrato de la API) al modelo de dominio
+ * del repositorio (snake_case). Sin este mapeo los repositorios reciben `undefined`
+ * en category_id/base_price y la creación/edición de productos falla.
+ */
+export const toProductDomain = (b: any): any => ({
+  ...(b.categoryId !== undefined && { category_id: b.categoryId }),
+  ...(b.name !== undefined && { name: b.name }),
+  ...(b.description !== undefined && { description: b.description }),
+  ...(b.basePrice !== undefined && { base_price: b.basePrice }),
+  ...(b.imageUrl !== undefined && { image_url: b.imageUrl || null }),
+  ...(b.isActive !== undefined && { is_active: b.isActive }),
+  ...(b.variants !== undefined && {
+    variants: b.variants.map((v: any) => ({
+      size: v.size, color: v.color, sku: v.sku, stock: v.stock, alert_threshold: v.alertThreshold
+    }))
+  })
+});
+
 export class ProductController {
   /**
    * @route GET /api/products
@@ -80,7 +99,7 @@ export class ProductController {
   public static async createProduct(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const productRepo = RepositoryFactory.getProductRepository();
-      const product = await productRepo.create(req.body);
+      const product = await productRepo.create(toProductDomain(req.body));
 
       res.status(201).json({
         success: true,
@@ -102,7 +121,7 @@ export class ProductController {
     try {
       const id = parseInt(req.params.id, 10);
       const productRepo = RepositoryFactory.getProductRepository();
-      const updated = await productRepo.update(id, req.body);
+      const updated = await productRepo.update(id, toProductDomain(req.body));
 
       if (!updated) {
         res.status(404).json({

@@ -3,7 +3,7 @@
 // PARAMETERIZED QUERIES AGAINST SQL INJECTION & ACID TRANSACTIONS
 // =============================================================================
 
-import { Pool } from 'pg';
+import { Pool, PoolClient } from 'pg';
 import { dbPool } from '../../config/database';
 import {
   User,
@@ -24,6 +24,59 @@ import {
   IOrderRepository,
   CreateOrderDTO
 } from '../../domain/repositories/interfaces';
+
+// -----------------------------------------------------------------------------
+// FRAGMENTOS SQL COMPARTIDOS — alineados con el esquema normalizado (BCNF)
+// de database/schema.sql: tallas, colores, distritos y métodos de pago viven en
+// tablas de catálogo y se resuelven con JOIN (no son columnas de texto).
+// -----------------------------------------------------------------------------
+const VARIANT_COLUMNS = `
+  pv.id, pv.product_id, s.code AS size, col.name AS color, pv.sku, pv.stock,
+  pv.alert_threshold, pv.created_at, pv.updated_at`;
+const VARIANT_FROM = `
+  FROM product_variants pv
+  JOIN sizes  s   ON s.id   = pv.size_id
+  JOIN colors col ON col.id = pv.color_id`;
+const CLIENT_COLUMNS = `
+  c.id, c.full_name, c.phone, c.address, d.name AS district,
+  c.reference, c.created_at, c.updated_at`;
+const CLIENT_FROM = `
+  FROM clients c
+  JOIN districts d ON d.id = c.district_id`;
+const ORDER_ITEM_SELECT = `
+  SELECT oi.id, oi.order_id, oi.variant_id, oi.quantity, oi.unit_price, oi.subtotal,
+         p.name AS product_name, s.code AS size, col.name AS color, pv.sku
+  FROM order_items oi
+  JOIN product_variants pv ON oi.variant_id = pv.id
+  JOIN sizes   s   ON s.id   = pv.size_id
+  JOIN colors  col ON col.id = pv.color_id
+  JOIN products p  ON pv.product_id = p.id`;
+
+/** Redondeo monetario a 2 decimales (evita 99.80000000000001 en CHECK de NUMERIC). */
+const round2 = (n: number): number => Math.round((n + Number.EPSILON) * 100) / 100;
+
+/** Devuelve el id del distrito, creándolo si aún no existe en el catálogo. */
+async function upsertDistrict(db: Pool | PoolClient, name: string): Promise<number> {
+  const res = await db.query(
+    `INSERT INTO districts (name) VALUES ($1)
+     ON CONFLICT (name) DO UPDATE SET name = EXCLUDED.name
+     RETURNING id`,
+    [name.trim()]
+  );
+  return res.rows[0].id;
+}
+
+const mapOrderItem = (item: any) => ({
+  id: item.id,
+  variant_id: item.variant_id,
+  product_name: item.product_name,
+  size: item.size,
+  color: item.color,
+  sku: item.sku,
+  quantity: item.quantity,
+  unit_price: parseFloat(item.unit_price),
+  subtotal: parseFloat(item.subtotal)
+});
 
 export class PgUserRepository implements IUserRepository {
   private pool: Pool = dbPool;
@@ -110,11 +163,17 @@ export class PgProductRepository implements IProductRepository {
     query += ' ORDER BY p.id ASC';
     const res = await this.pool.query(query, params);
 
-    // Fetch variants
+    // Variantes de todos los productos en UNA consulta (evita N+1)
     const products: Product[] = res.rows;
-    for (const prod of products) {
-      const vRes = await this.pool.query('SELECT * FROM product_variants WHERE product_id = $1 ORDER BY id ASC', [prod.id]);
-      prod.variants = vRes.rows;
+    if (products.length > 0) {
+      const vRes = await this.pool.query(
+        `SELECT ${VARIANT_COLUMNS} ${VARIANT_FROM}
+         WHERE pv.product_id = ANY($1::int[]) ORDER BY pv.id ASC`,
+        [products.map((p) => p.id)]
+      );
+      for (const prod of products) {
+        prod.variants = vRes.rows.filter((v) => v.product_id === prod.id);
+      }
     }
 
     return products;
@@ -130,13 +189,19 @@ export class PgProductRepository implements IProductRepository {
     );
     if (res.rows.length === 0) return null;
     const prod: Product = res.rows[0];
-    const vRes = await this.pool.query('SELECT * FROM product_variants WHERE product_id = $1 ORDER BY id ASC', [prod.id]);
+    const vRes = await this.pool.query(
+      `SELECT ${VARIANT_COLUMNS} ${VARIANT_FROM} WHERE pv.product_id = $1 ORDER BY pv.id ASC`,
+      [prod.id]
+    );
     prod.variants = vRes.rows;
     return prod;
   }
 
   async findBySku(sku: string): Promise<ProductVariant | null> {
-    const res = await this.pool.query('SELECT * FROM product_variants WHERE LOWER(sku) = LOWER($1)', [sku]);
+    const res = await this.pool.query(
+      `SELECT ${VARIANT_COLUMNS} ${VARIANT_FROM} WHERE LOWER(pv.sku) = LOWER($1)`,
+      [sku]
+    );
     return res.rows[0] || null;
   }
 
@@ -153,10 +218,17 @@ export class PgProductRepository implements IProductRepository {
 
       if (product.variants && product.variants.length > 0) {
         for (const v of product.variants) {
+          const sizeRes = await client.query('SELECT id FROM sizes WHERE code = $1', [v.size]);
+          if (sizeRes.rows.length === 0) throw new Error(`Talla no válida: ${v.size}`);
+          const colorRes = await client.query(
+            `INSERT INTO colors (name) VALUES ($1)
+             ON CONFLICT (name) DO UPDATE SET name = EXCLUDED.name RETURNING id`,
+            [v.color]
+          );
           await client.query(
-            `INSERT INTO product_variants (product_id, size, color, sku, stock, alert_threshold)
+            `INSERT INTO product_variants (product_id, size_id, color_id, sku, stock, alert_threshold)
              VALUES ($1, $2, $3, $4, $5, $6)`,
-            [newProd.id, v.size, v.color, v.sku, v.stock, v.alert_threshold || 3]
+            [newProd.id, sizeRes.rows[0].id, colorRes.rows[0].id, v.sku, v.stock, v.alert_threshold ?? 3]
           );
         }
       }
@@ -175,6 +247,10 @@ export class PgProductRepository implements IProductRepository {
     const fields: string[] = [];
     const values: any[] = [];
 
+    if (product.category_id !== undefined) {
+      values.push(product.category_id);
+      fields.push(`category_id = $${values.length}`);
+    }
     if (product.name !== undefined) {
       values.push(product.name);
       fields.push(`name = $${values.length}`);
@@ -209,13 +285,14 @@ export class PgProductRepository implements IProductRepository {
       `UPDATE product_variants 
        SET stock = stock + $1, updated_at = CURRENT_TIMESTAMP 
        WHERE id = $2 AND (stock + $1) >= 0 
-       RETURNING *`,
+        RETURNING id`,
       [quantityDelta, variantId]
     );
     if (res.rows.length === 0) {
       throw new Error(`Stock insuficiente o variante no encontrada (ID: ${variantId})`);
     }
-    return res.rows[0];
+    const vRes = await this.pool.query(`SELECT ${VARIANT_COLUMNS} ${VARIANT_FROM} WHERE pv.id = $1`, [variantId]);
+    return vRes.rows[0];
   }
 
   async delete(id: number): Promise<boolean> {
@@ -228,11 +305,11 @@ export class PgProductRepository implements IProductRepository {
 
   async getLowStockVariants(): Promise<Array<ProductVariant & { productName: string }>> {
     const res = await this.pool.query(`
-      SELECT v.*, p.name as "productName" 
-      FROM product_variants v
-      JOIN products p ON v.product_id = p.id
-      WHERE v.stock <= v.alert_threshold AND p.is_active = TRUE
-      ORDER BY v.stock ASC
+      SELECT ${VARIANT_COLUMNS}, p.name AS "productName"
+      ${VARIANT_FROM}
+      JOIN products p ON pv.product_id = p.id
+      WHERE pv.stock <= pv.alert_threshold AND p.is_active = TRUE
+      ORDER BY pv.stock ASC
     `);
     return res.rows;
   }
@@ -243,63 +320,65 @@ export class PgClientRepository implements IClientRepository {
 
   async listAll(search?: string): Promise<Client[]> {
     if (search) {
-      const q = `%${search}%`;
       const res = await this.pool.query(
-        `SELECT * FROM clients 
-         WHERE LOWER(full_name) LIKE LOWER($1) OR phone LIKE $1 OR LOWER(district) LIKE LOWER($1)
-         ORDER BY id DESC`,
-        [q]
+        `SELECT ${CLIENT_COLUMNS} ${CLIENT_FROM}
+         WHERE LOWER(c.full_name) LIKE LOWER($1) OR c.phone LIKE $1 OR LOWER(d.name) LIKE LOWER($1)
+         ORDER BY c.id DESC`,
+        [`%${search}%`]
       );
       return res.rows;
     }
-    const res = await this.pool.query('SELECT * FROM clients ORDER BY id DESC');
+    const res = await this.pool.query(`SELECT ${CLIENT_COLUMNS} ${CLIENT_FROM} ORDER BY c.id DESC`);
     return res.rows;
   }
 
   async findById(id: number): Promise<Client | null> {
-    const res = await this.pool.query('SELECT * FROM clients WHERE id = $1', [id]);
+    const res = await this.pool.query(`SELECT ${CLIENT_COLUMNS} ${CLIENT_FROM} WHERE c.id = $1`, [id]);
     return res.rows[0] || null;
   }
 
   async findByPhone(phone: string): Promise<Client | null> {
-    const res = await this.pool.query('SELECT * FROM clients WHERE phone = $1', [phone]);
+    const res = await this.pool.query(`SELECT ${CLIENT_COLUMNS} ${CLIENT_FROM} WHERE c.phone = $1`, [phone]);
     return res.rows[0] || null;
   }
 
   async create(client: Omit<Client, 'id' | 'created_at' | 'updated_at'>): Promise<Client> {
+    const districtId = await upsertDistrict(this.pool, client.district);
     const res = await this.pool.query(
-      `INSERT INTO clients (full_name, phone, address, district, reference)
-       VALUES ($1, $2, $3, $4, $5) RETURNING *`,
-      [client.full_name, client.phone, client.address, client.district, client.reference || null]
+      `INSERT INTO clients (full_name, phone, address, district_id, reference)
+       VALUES ($1, $2, $3, $4, $5) RETURNING id`,
+      [client.full_name, client.phone, client.address, districtId, client.reference || null]
     );
-    return res.rows[0];
+    return (await this.findById(res.rows[0].id)) as Client;
   }
 
   async update(id: number, client: Partial<Client>): Promise<Client | null> {
+    const districtId = client.district ? await upsertDistrict(this.pool, client.district) : null;
     const res = await this.pool.query(
-      `UPDATE clients 
+      `UPDATE clients
        SET full_name = COALESCE($1, full_name),
            phone = COALESCE($2, phone),
            address = COALESCE($3, address),
-           district = COALESCE($4, district),
+           district_id = COALESCE($4, district_id),
            reference = COALESCE($5, reference),
            updated_at = CURRENT_TIMESTAMP
-       WHERE id = $6 RETURNING *`,
-      [client.full_name, client.phone, client.address, client.district, client.reference, id]
+       WHERE id = $6 RETURNING id`,
+      [client.full_name, client.phone, client.address, districtId, client.reference, id]
     );
-    return res.rows[0] || null;
+    if (res.rows.length === 0) return null;
+    return this.findById(id);
   }
 }
 
 export class PgOrderRepository implements IOrderRepository {
   private pool: Pool = dbPool;
 
-  async listAll(filters?: { status?: OrderStatus; dateFrom?: string; dateTo?: string; search?: string }): Promise<Order[]> {
-    let query = `
-      SELECT o.*, c.full_name as client_name, c.phone as client_phone, c.address as client_address, c.district as client_district,
-             u.name as user_name
+  async listAll(filters?: { status?: OrderStatus; dateFrom?: string; dateTo?: string; search?: string; page?: number; limit?: number }): Promise<{ data: Order[], total: number }> {
+    let whereQuery = `
       FROM orders o
       JOIN clients c ON o.client_id = c.id
+      JOIN districts d ON c.district_id = d.id
+      JOIN payment_methods pm ON o.payment_method_id = pm.id
       LEFT JOIN users u ON o.user_id = u.id
       WHERE 1=1
     `;
@@ -307,15 +386,46 @@ export class PgOrderRepository implements IOrderRepository {
 
     if (filters?.status) {
       params.push(filters.status);
-      query += ` AND o.status = $${params.length}`;
+      whereQuery += ` AND o.status = $${params.length}`;
     }
     if (filters?.search) {
       params.push(`%${filters.search}%`);
-      query += ` AND (LOWER(o.order_number) LIKE LOWER($${params.length}) OR LOWER(c.full_name) LIKE LOWER($${params.length}) OR c.phone LIKE $${params.length})`;
+      whereQuery += ` AND (LOWER(o.order_number) LIKE LOWER($${params.length}) OR LOWER(c.full_name) LIKE LOWER($${params.length}) OR c.phone LIKE $${params.length})`;
     }
 
-    query += ' ORDER BY o.id DESC';
-    const res = await this.pool.query(query, params);
+    const countRes = await this.pool.query(`SELECT COUNT(*)::int AS total ${whereQuery}`, params);
+    const total = parseInt(countRes.rows[0].total, 10);
+
+    const page = filters?.page || 1;
+    const limit = filters?.limit || 50;
+    const offset = (page - 1) * limit;
+    const dataParams = [...params, limit, offset];
+    const res = await this.pool.query(
+      `SELECT o.id, o.order_number, o.client_id, o.user_id, o.status, o.subtotal, o.shipping_cost,
+              o.total_amount, o.notes, o.created_at, o.updated_at,
+              pm.code AS payment_method,
+              c.full_name AS client_name, c.phone AS client_phone, c.address AS client_address,
+              d.name AS client_district, c.reference AS client_reference,
+              u.name AS user_name
+       ${whereQuery}
+       ORDER BY o.id DESC
+       LIMIT $${dataParams.length - 1} OFFSET $${dataParams.length}`,
+      dataParams
+    );
+
+    // Ítems de TODOS los pedidos de la página en una sola consulta (evita N+1)
+    const itemsByOrder = new Map<number, any[]>();
+    if (res.rows.length > 0) {
+      const itemsRes = await this.pool.query(
+        `${ORDER_ITEM_SELECT} WHERE oi.order_id = ANY($1::int[]) ORDER BY oi.id ASC`,
+        [res.rows.map((r) => r.id)]
+      );
+      for (const it of itemsRes.rows) {
+        const list = itemsByOrder.get(it.order_id) || [];
+        list.push(mapOrderItem(it));
+        itemsByOrder.set(it.order_id, list);
+      }
+    }
 
     const orders: Order[] = res.rows.map(row => ({
       id: row.id,
@@ -326,7 +436,8 @@ export class PgOrderRepository implements IOrderRepository {
         full_name: row.client_name,
         phone: row.client_phone,
         address: row.client_address,
-        district: row.client_district
+        district: row.client_district,
+        reference: row.client_reference
       },
       user_id: row.user_id,
       user_name: row.user_name,
@@ -336,19 +447,26 @@ export class PgOrderRepository implements IOrderRepository {
       total_amount: parseFloat(row.total_amount),
       payment_method: row.payment_method,
       notes: row.notes,
+      items: itemsByOrder.get(row.id) || [],
       created_at: row.created_at,
       updated_at: row.updated_at
     }));
 
-    return orders;
+    return { data: orders, total };
   }
 
   async findById(id: number): Promise<Order | null> {
     const res = await this.pool.query(
-      `SELECT o.*, c.full_name as client_name, c.phone as client_phone, c.address as client_address, c.district as client_district, c.reference as client_reference,
-              u.name as user_name
+      `SELECT o.id, o.order_number, o.client_id, o.user_id, o.status, o.subtotal, o.shipping_cost,
+              o.total_amount, o.notes, o.created_at, o.updated_at,
+              pm.code AS payment_method,
+              c.full_name AS client_name, c.phone AS client_phone, c.address AS client_address,
+              d.name AS client_district, c.reference AS client_reference,
+              u.name AS user_name
        FROM orders o
        JOIN clients c ON o.client_id = c.id
+       JOIN districts d ON c.district_id = d.id
+       JOIN payment_methods pm ON o.payment_method_id = pm.id
        LEFT JOIN users u ON o.user_id = u.id
        WHERE o.id = $1`,
       [id]
@@ -356,17 +474,8 @@ export class PgOrderRepository implements IOrderRepository {
     if (res.rows.length === 0) return null;
     const row = res.rows[0];
 
-    // Items
-    const itemsRes = await this.pool.query(
-      `SELECT oi.*, p.name as product_name, pv.size, pv.color, pv.sku
-       FROM order_items oi
-       JOIN product_variants pv ON oi.variant_id = pv.id
-       JOIN products p ON pv.product_id = p.id
-       WHERE oi.order_id = $1`,
-      [id]
-    );
+    const itemsRes = await this.pool.query(`${ORDER_ITEM_SELECT} WHERE oi.order_id = $1 ORDER BY oi.id ASC`, [id]);
 
-    // History
     const histRes = await this.pool.query(
       `SELECT osh.*, u.name as user_name
        FROM order_status_history osh
@@ -396,22 +505,12 @@ export class PgOrderRepository implements IOrderRepository {
       total_amount: parseFloat(row.total_amount),
       payment_method: row.payment_method,
       notes: row.notes,
-      items: itemsRes.rows.map(item => ({
-        id: item.id,
-        variant_id: item.variant_id,
-        product_name: item.product_name,
-        size: item.size,
-        color: item.color,
-        sku: item.sku,
-        quantity: item.quantity,
-        unit_price: parseFloat(item.unit_price),
-        subtotal: parseFloat(item.subtotal)
-      })),
+      items: itemsRes.rows.map(mapOrderItem),
       history: histRes.rows,
       created_at: row.created_at,
       updated_at: row.updated_at
     };
-  }
+  }  
 
   async findByOrderNumber(orderNumber: string): Promise<Order | null> {
     const res = await this.pool.query('SELECT id FROM orders WHERE LOWER(order_number) = LOWER($1)', [orderNumber]);
@@ -431,10 +530,11 @@ export class PgOrderRepository implements IOrderRepository {
         if (checkClient.rows.length > 0) {
           clientId = checkClient.rows[0].id;
         } else {
+          const districtId = await upsertDistrict(client, dto.clientData.district);
           const newClientRes = await client.query(
-            `INSERT INTO clients (full_name, phone, address, district, reference)
-             VALUES ($1, $2, $3, $4, $5) RETURNING id`,
-            [dto.clientData.fullName, dto.clientData.phone, dto.clientData.address, dto.clientData.district, dto.clientData.reference || null]
+            `INSERT INTO clients (full_name, phone, address, district_id, reference)
+            VALUES ($1, $2, $3, $4, $5) RETURNING id`,
+            [dto.clientData.fullName, dto.clientData.phone, dto.clientData.address, districtId, dto.clientData.reference || null]
           );
           clientId = newClientRes.rows[0].id;
         }
@@ -452,7 +552,9 @@ export class PgOrderRepository implements IOrderRepository {
           throw new Error(`Stock insuficiente para SKU ${vRes.rows[0].sku}. Disponible: ${stock}, pedido: ${item.quantity}`);
         }
 
-        await client.query('UPDATE product_variants SET stock = stock - $1, updated_at = CURRENT_TIMESTAMP WHERE id = $2', [item.quantity, item.variantId]);
+        // El descuento de stock lo realiza el trigger trg_decrement_stock_on_order al insertar
+        // en order_items (database/schema.sql). Hacerlo aquí también descontaría dos veces.
+        //await client.query('UPDATE product_variants SET stock = stock - $1, updated_at = CURRENT_TIMESTAMP WHERE id = $2', [item.quantity, item.variantId]);
         subtotal += item.unitPrice * item.quantity;
       }
 
@@ -464,9 +566,9 @@ export class PgOrderRepository implements IOrderRepository {
       const totalAmount = subtotal + dto.shippingCost;
 
       const orderRes = await client.query(
-        `INSERT INTO orders (order_number, client_id, user_id, status, subtotal, shipping_cost, total_amount, payment_method, notes)
-         VALUES ($1, $2, $3, 'RECIBIDO', $4, $5, $6, $7, $8) RETURNING id`,
-        [orderNumber, clientId, dto.userId || null, subtotal, dto.shippingCost, totalAmount, dto.paymentMethod, dto.notes || null]
+          `INSERT INTO orders (order_number, client_id, user_id, payment_method_id, status, subtotal, shipping_cost, total_amount, notes)
+           VALUES ($1, $2, $3, (SELECT id FROM payment_methods WHERE code = $4), 'RECIBIDO', $5, $6, $7, $8) RETURNING id`,
+          [orderNumber, clientId, dto.userId || null, dto.paymentMethod, subtotal, dto.shippingCost, totalAmount, dto.notes || null]
       );
       const orderId = orderRes.rows[0].id;
 

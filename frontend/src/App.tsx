@@ -16,13 +16,24 @@ import ProductosGestion from "./pages/ProductosGestion";
 import RastreoPublico from "./pages/RastreoPublico";
 
 function AppContent() {
-  const { autenticado, paginaActual } = useApp();
+  const { autenticado, paginaActual, errorApi, limpiarError, cargando } = useApp();
 
   if (!autenticado) return <Login />;
 
   return (
     <div className="min-h-screen bg-[#F1FAEE]">
       <Navbar />
+      {cargando && (
+        <div role="status" className="fixed top-14 inset-x-0 z-40 text-center text-xs font-semibold bg-slate-800 text-white py-1">
+          Sincronizando con el servidor…
+        </div>
+      )}
+      {errorApi && (
+        <div role="alert" className="fixed top-16 inset-x-2 sm:inset-x-auto sm:right-4 sm:max-w-md z-50 bg-red-50 border border-red-300 text-red-900 text-sm rounded-xl shadow-lg p-3 flex items-start gap-3">
+          <span className="flex-1">{errorApi}</span>
+          <button onClick={limpiarError} aria-label="Cerrar aviso" className="font-bold text-red-700 hover:text-red-900">×</button>
+        </div>
+      )}
       {paginaActual === "dashboard" && <Dashboard />}
       {paginaActual === "pedidos" && <PedidosLista />}
       {paginaActual === "nuevo-pedido" && <PedidoForm />}
