@@ -1,5 +1,6 @@
 # =============================================================================
 # MULTI-STAGE DOCKERFILE - LEOFIT BACKEND PRODUCTION READY
+# NO USADO EN PRODUCCIÓN. Ver render.yaml para el deploy activo (Node nativo).
 # =============================================================================
 
 FROM node:20-alpine AS builder

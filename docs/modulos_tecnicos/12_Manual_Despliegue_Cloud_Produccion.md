@@ -9,10 +9,10 @@
 
 ```mermaid
 graph TD
-  User([Usuario / Smartphone PWA]) -->|HTTPS / CDN Global| Vercel[Vercel Edge Network / Frontend PWA]
-  Vercel -->|REST API HTTPS / CORS| Render[Target Render / Actual localhost:3000]
-  Render -->|SSL Connection Pool (5432)| Supabase[(Supabase Cloud / Managed PostgreSQL 16)]
-  Supabase -->|Automated Backups| S3[(Amazon S3 Cold Storage)]
+  User([Usuario / Smartphone PWA]) -->|HTTPS / CDN Global| GitHub[GitHub Pages / Frontend PWA]
+  GitHub -->|REST API HTTPS / CORS| Render[Target Render / Actual localhost:3000]
+  Render -->|SSL Connection Pool (5432)| RenderPostgres[(PostgreSQL 16 Managed Database en Render)]
+  RenderPostgres -->|Automated Backups| S3[(Amazon S3 Cold Storage)]
 ```
 
 ---
@@ -25,28 +25,28 @@ graph TD
 | `PORT` | Puerto de escucha | `4000` (asignado por el PaaS) |
 | `DATABASE_URL` | Cadena de conexión PostgreSQL | `postgresql://postgres:[PASSWORD]@[HOST]:5432/postgres?sslmode=require` |
 | `JWT_SECRET` | Clave criptográfica para firma JWT | Cadena secreta de 64 caracteres alfanuméricos |
-| `CORS_ORIGIN` | Dominios autorizados para invocar la API | `https://leofit-pedidos.vercel.app` |
+| `CORS_ORIGIN` | Dominios autorizados para invocar la API | `https://leofit-solutions-grupo01.github.io` |
 
 ---
 
 ### 3. Procedimiento de Despliegue Paso a Paso
 
-#### A. Aprovisionamiento de la Base de Datos (Supabase / Neon / AWS)
-1. Iniciar sesión en la consola de **Supabase** y crear un nuevo proyecto denominado `leofit-production-db`.
+#### A. Aprovisionamiento de la Base de Datos (PostgreSQL Gestionado en Render)
+1. La base de datos es provisionada automáticamente por el archivo `render.yaml` (PostgreSQL 16 Managed Database).
 2. Acceder al **SQL Editor** y ejecutar en orden:
    - `database/schema.sql` (creación de tablas, llaves foráneas e índices).
    - `database/seeds.sql` (poblado de categorías, catálogo y credenciales iniciales).
 3. Obtener la cadena de conexión con SSL obligatorio (`Transaction Pooler URL - Port 6543`).
 
-#### B. Despliegue del Backend API (Target Propuesto: Render / Railway / Docker)
+#### B. Despliegue del Backend API (Target Propuesto: Render)
 1. Conectar el repositorio de GitHub con **Render.com**.
 2. Configurar el servicio web con:
-   - **Environment:** `Docker` (usando `backend/Dockerfile`) o `Node.js` (`npm run build` y `npm start`).
+   - **Environment:** Node.js (`npm run build` y `npm start`). La alternativa Docker (usando `backend/Dockerfile`) no está activa.
    - **Environment Variables:** Añadir `DATABASE_URL`, `JWT_SECRET`, `CORS_ORIGIN`.
 3. Iniciar despliegue automático con cada commit a la rama `main`.
 
-#### C. Despliegue del Frontend PWA (Vercel / GitHub Pages)
-1. Importar el repositorio en **Vercel**.
+#### C. Despliegue del Frontend PWA (GitHub Pages)
+1. El frontend se despliega automáticamente en **GitHub Pages** vía GitHub Actions.
 2. Establecer el directorio raíz en `frontend`.
 3. Configurar la variable `VITE_API_URL` apuntando a la URL del backend en producción.
 4. Desplegar y verificar la asignación del certificado SSL gratuito Let's Encrypt.

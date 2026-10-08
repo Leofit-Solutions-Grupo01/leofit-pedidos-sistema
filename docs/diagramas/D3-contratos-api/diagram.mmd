@@ -36,6 +36,43 @@ classDiagram
         +string address
         +string district
     }
+    
+    class ClientDTO {
+        +string full_name
+        +string phone
+        +string address
+        +string district
+        +string? reference
+    }
+
+    class Product {
+        +number id
+        +number category_id
+        +string name
+        +string description
+        +number base_price
+        +string image_url
+        +boolean is_active
+        +Date created_at
+    }
+
+    class ProductDTO {
+        +number categoryId
+        +string name
+        +string? description
+        +number basePrice
+        +string? imageUrl
+        +boolean isActive
+        +Array variants
+    }
+
+    class PaymentWebhookPayload {
+        +string provider
+        +string transactionId
+        +string orderCode
+        +number amount
+        +string status
+    }
 
     class DashboardMetrics {
         +number totalOrders
@@ -49,3 +86,5 @@ classDiagram
     CreateOrderDTO --> Order : Genera >
     Order "1" *-- "1..*" OrderItem : Contiene
     Order "1" --> "1" Client : Pertenece a
+    ProductDTO --> Product : Genera >
+    ClientDTO --> Client : Genera >
