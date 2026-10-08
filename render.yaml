@@ -21,7 +21,7 @@ services:
       - key: JWT_SECRET
         generateValue: true
       - key: WEBHOOK_SECRET
-        generateValue: true
+        sync: false
       - key: CORS_ORIGIN
         value: "https://leofit-solutions-grupo01.github.io"
 
