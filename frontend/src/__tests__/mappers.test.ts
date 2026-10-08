@@ -53,17 +53,17 @@ describe('mappers: toCreateOrderDTO', () => {
 
   it('T4: Fail-Fast - Debe arrojar error si cliente.telefono está vacío', () => {
     const sinTel = { ...basePedido, cliente: { ...basePedido.cliente, telefono: " " } };
-    expect(() => toCreateOrderDTO(sinTel)).toThrowError();
+    expect(() => toCreateOrderDTO(sinTel)).toThrowError('El teléfono del cliente es obligatorio.');
   });
 
   it('T5: Fail-Fast - Debe arrojar error si es Nacional y falta cliente.dniRuc', () => {
     const sinDni = { ...basePedido, tipoEnvio: "Nacional", cliente: { ...basePedido.cliente, dniRuc: "" } };
-    expect(() => toCreateOrderDTO(sinDni as any)).toThrowError();
+    expect(() => toCreateOrderDTO(sinDni as any)).toThrowError('El DNI o RUC es obligatorio para envíos Nacionales.');
   });
 
   it('T6: Fail-Fast - Debe arrojar error si es Nacional y falta ciudadDestino', () => {
-    const sinCiudad = { ...basePedido, tipoEnvio: "Nacional", ciudadDestino: "  " };
-    expect(() => toCreateOrderDTO(sinCiudad as any)).toThrowError();
+    const sinCiudad = { ...basePedido, tipoEnvio: "Nacional", ciudadDestino: "  ", cliente: { ...basePedido.cliente, dniRuc: "12345678" } };
+    expect(() => toCreateOrderDTO(sinCiudad as any)).toThrowError('La ciudad de destino es obligatoria para envíos Nacionales.');
   });
 
   it('T7: Fail-Fast - Debe arrojar error si un item tiene productoId no parseable', () => {
