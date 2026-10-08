@@ -83,6 +83,14 @@ El sistema opera bajo una estricta polÃƒÂ­tica de **Fail-Fast** en producci�
 ### Incidentes Activos y Deuda TÃƒÂ©cnica
 La ÃƒÂºltima auditorÃƒÂ­a forense (APF3) cerrÃƒÂ³ exitosamente mÃƒÂºltiples vulnerabilidades crÃƒÂ­ticas. Sin embargo, los siguientes incidentes y deudas permanecen activos y formalmente declarados:
 
+1. **[SEC-10] Exposición accidental de JWT_SECRET y desconfiguración de WEBHOOK_SECRET (ESTADO: CERRADO)**
+   - **Vector:** El archivo `docker-compose.yml` expuso el valor `leofit_super_secret_jwt_key_academic_2026_production_ready` como un fallback en `main`. A su vez, `WEBHOOK_SECRET` se configuró erróneamente en `render.yaml` con `generateValue: true`, rompiendo la compatibilidad HMAC con pasarelas de pago.
+   - **Mitigación:** 
+     1. Se purgó el fallback de `docker-compose.yml` adoptando un esquema de inyección directa y Fail-Fast.
+     2. Se ajustó `render.yaml` con `sync: false` para requerir inyección manual del secreto de webhook desde el Dashboard de Render.
+     3. Se solicitó la rotación manual de las llaves en el entorno Cloud (Render).
+   - **Fecha Cierre:** 2026-10-08
+
 1. **[SEC-00] Credenciales activas expuestas (ABIERTO - P0)**
    - **Vectores:**
      1. HEAD actual: `docker-compose.yml` (postgrespassword2026!), `scripts/generate_master_markdown.py` (PasswordSeguro2026!).
