@@ -8,8 +8,8 @@
 -- MOTOR   : PostgreSQL 16+
 -- =============================================================================
 
--- Deshabilitar triggers de FK durante la carga masiva
-SET session_replication_role = replica;
+-- Deshabilitar triggers de FK
+-- SET session_replication_role = replica;
 
 -- =============================================================================
 -- 1. TALLAS (tabla sizes)
@@ -297,7 +297,7 @@ ON CONFLICT (id) DO NOTHING;
 SELECT setval('order_status_history_id_seq', (SELECT MAX(id) FROM order_status_history));
 
 -- Restaurar rol de replicación
-SET session_replication_role = DEFAULT;
+-- SET session_replication_role = DEFAULT;
 
 -- =============================================================================
 -- VERIFICACIÓN RÁPIDA POST-SEED
