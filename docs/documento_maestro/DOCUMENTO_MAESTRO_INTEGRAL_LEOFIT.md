@@ -1,4 +1,4 @@
-﻿# UNIVERSIDAD TECNOLÓGICA DEL PERÚ
+# UNIVERSIDAD TECNOLÓGICA DEL PERÚ
 ## FACULTAD DE INGENIERÍA DE SISTEMAS E INFORMÁTICA
 ### CURSO INTEGRADOR II: SOFTWARE (100000S12F)
 
@@ -1289,7 +1289,7 @@ La arquitectura de despliegue productivo de LeoFit aprovecha un esquema híbrido
 ```
 [ Usuarios y Vendedores en Móviles/Desktop ]
                      ↓ (HTTPS / TLS 1.3)
-      [ CDN Global / Edge Hosting (Vercel / GitHub Pages) ]
+      [ CDN Global / Edge Hosting (GitHub Pages) ]
       └── Frontend PWA (React 18 + Vite + Service Worker)
                      ↓ (API REST / JSON / JWT)
       [ Servidor de Aplicaciones Cloud (Target Render / Actual localhost:3000) ]
@@ -1313,7 +1313,7 @@ DATABASE_URL=postgresql://<user>:<password>@<host>:<port>/<db>?sslmode=require
 JWT_SECRET=<clave_secreta_criptografica_sha256_64_chars>
 JWT_EXPIRES_IN=1h
 # Nota: La aplicación usa política Fail-Fast, si falta JWT_SECRET o CORS_ORIGIN crashea inmediatamente.
-CORS_ORIGIN=https://leofit-pedidos.vercel.app
+CORS_ORIGIN=https://leofit-solutions-grupo01.github.io
 ```
 
 ### Paso 2: Construcción y Levantamiento de Contenedores Docker
@@ -1364,7 +1364,7 @@ jobs:
       - name: Build Frontend Bundle
         run: |
           cd frontend && npm run build
-      - name: Deploy to Vercel / GitHub Pages
+      - name: Deploy to GitHub Pages
         run: |
           echo "Despliegue automático completado con éxito."
 ```
@@ -1457,7 +1457,7 @@ A continuación se detallan las 15 preguntas de mayor complejidad técnica y met
 - **Respuesta**: Partimos de los formatos no normalizados de los cuadernos de LeoFit. En la 1NF eliminamos grupos repetitivos y forzamos la atomicidad, separando la lista de prendas compradas en la entidad `detalle_pedidos`. En la 2NF eliminamos dependencias parciales en tablas con clave compuesta, aislando atributos como nombre o precio base del producto a la tabla `productos`. En la 3NF eliminamos dependencias transitivas entre atributos no clave, aislando los datos personales del comprador a la tabla `clientes` y los roles a la tabla `roles`. Con ello garantizamos 0 redundancia y consistencia matemática referencial.
 
 ### 13. ¿Qué métricas cuantitativas sustentan que la solución es viable económicamente para una MYPE como LeoFit?
-- **Respuesta**: La solución tiene un costo de infraestructura cloud en servidores gestionados de aproximadamente $20 a $25 USD mensuales (Supabase Free/Pro tier, Vercel Edge Hosting gratuito y VPS ligero para el backend). Frente a este costo operativo ínfimo, la reducción del tiempo de toma de pedidos de 45 minutos a 90 segundos permite a cada vendedor procesar hasta 12 veces más cotizaciones diarias, incrementando la tasa de conversión en un 35% y recuperando la inversión del proyecto en menos de 2 meses de operación.
+- **Respuesta**: La solución tiene un costo de infraestructura cloud en servidores gestionados de aproximadamente $20 a $25 USD mensuales (Supabase Free/Pro tier, GitHub Pages gratuito y VPS ligero para el backend). Frente a este costo operativo ínfimo, la reducción del tiempo de toma de pedidos de 45 minutos a 90 segundos permite a cada vendedor procesar hasta 12 veces más cotizaciones diarias, incrementando la tasa de conversión en un 35% y recuperando la inversión del proyecto en menos de 2 meses de operación.
 
 ### 14. ¿Cómo validaron que la aplicación es accesible según los estándares internacionales de la W3C?
 - **Respuesta**: Evaluamos el cumplimiento del estándar **WCAG 2.1 Nivel AA**. Verificamos mediante herramientas automatizadas (Axe-core y Lighthouse Accessibility con puntaje $\ge 95$) y pruebas manuales: ratios de contraste de color superiores a 4.5:1 entre textos y fondos en ambos temas (claro y oscuro), navegación íntegra de la tienda mediante teclado (uso de tabuladores y focos visuales claros), y atributos semánticos ARIA en botones interactivos y modales para lectores de pantalla de personas con discapacidad visual.
