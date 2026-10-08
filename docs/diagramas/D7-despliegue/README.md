@@ -12,7 +12,7 @@ Se estructuró el diagrama dividiendo el ecosistema en dos zonas (Estado Actual 
 
 ## GAPs a marcar explícitamente
 - El **Backend no está desplegado** en producción (solo corre en `localhost:3000`).
-- No existe un `Dockerfile` de producción (hay un `docker-compose.yml` para desarrollo local).
+- El `Dockerfile` existe pero no es el deploy activo (el deploy se realiza usando Node nativo según render.yaml).
 - No hay manifiestos de Kubernetes (K8s) ni Infraestructura como Código (Terraform/Pulumi).
 - No hay dominios custom configurados (frontend y backend dependen de URLs asignadas por plataformas como GitHub o Render).
 
