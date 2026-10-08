@@ -304,7 +304,7 @@ export default function Dashboard() {
         </div>
 
         {/* KPI strip */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-3">
           {kpis.map((kpi) => (
             <KpiCard
               key={kpi.label}
@@ -408,7 +408,7 @@ export default function Dashboard() {
               return <div key={estado} className={`${bg} h-full`} style={{ width: `${pct}%` }} />;
             })}
           </div>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3">
             {estadosPipeline.map(({ estado, label, bg, color }) => {
               const cant = pedidosActivos.filter((p) => p.estado === estado).length;
               const pct = pedidosActivos.length > 0 ? Math.round((cant / pedidosActivos.length) * 100) : 0;
