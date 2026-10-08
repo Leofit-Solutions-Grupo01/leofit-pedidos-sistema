@@ -1,5 +1,5 @@
 services:
-  # ── 1. LeoFit Backend API REST Service ──────────────────────────────────────
+  # 1. LeoFit Backend API REST Service
   - type: web
     name: leofit-backend-api
     env: node
@@ -21,10 +21,10 @@ services:
       - key: JWT_SECRET
         generateValue: true
       - key: CORS_ORIGIN
-        value: "*"
+        value: "https://leofit-solutions-grupo01.github.io"
 
 databases:
-  # ── 2. PostgreSQL 16 Managed Database ──────────────────────────────────────
+  # 2. PostgreSQL 16 Managed Database
   - name: leofit-postgres
     plan: free
     region: oregon
