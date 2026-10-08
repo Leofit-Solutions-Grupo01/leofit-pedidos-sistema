@@ -80,7 +80,7 @@ services:
       NODE_ENV: production
       PORT: 4000
       DATABASE_URL: postgresql://postgres:${POSTGRES_PASSWORD}@pgbouncer:6432/leofit_db
-      JWT_SECRET: ${JWT_SECRET:-leofit_super_secret_jwt_key_academic_2026_production_ready}
+      JWT_SECRET: ${JWT_SECRET}
       CORS_ORIGIN: "*"
     ports:
       - "4000:4000"
