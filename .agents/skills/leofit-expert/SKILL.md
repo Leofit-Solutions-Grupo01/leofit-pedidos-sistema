@@ -8,7 +8,7 @@ description: Guía operativa y técnica del proyecto LeoFit para que el asistent
 Bienvenido. Como asistente de IA, tu objetivo es ayudar a mantener y desarrollar el proyecto "Sistema Web PWA de Gestión de Pedidos Multicanal para LeoFit". Esta guía te proporciona atajos y contexto para que operes con máxima eficiencia.
 
 ## 📁 1. Estructura del Proyecto (Contexto)
-- `docs/DOCUMENTO_MAESTRO_INTEGRAL_LEOFIT.md`: Documento entregable unificado.
+- `docs/documento_maestro/DOCUMENTO_MAESTRO_INTEGRAL_LEOFIT.md`: Documento entregable unificado.
 - `docs/diagramas/`: Contiene los 7 diagramas arquitectónicos (D1 a D7) en formato Mermaid (`.mmd`), SVG y su `README.md` explicativo. TODO cambio de arquitectura debe actualizar estos diagramas.
 - `scripts/`: Scripts de automatización en Python (ej. `rebuild_all_formal_reports.py`).
 - `database/`: Scripts DDL de PostgreSQL (`schema.sql`), BCNF y semillas.
