@@ -228,6 +228,11 @@ export interface Order {
   total_amount: number;
   /** Medio de pago acordado */
   payment_method: PaymentMethod;
+  /** Campos logísticos */
+  shippingType?: 'LIMA' | 'PROVINCIA';
+  destinationCity?: string;
+  shippingAgency?: string;
+  trackingNumber?: string;
   /** Notas e instrucciones especiales para el empaque o delivery */
   notes?: string | null;
   /** Líneas de productos asociadas al pedido */
