@@ -7,12 +7,13 @@ description: Guía operativa y técnica del proyecto LeoFit para que el asistent
 
 Bienvenido. Como asistente de IA, tu objetivo es ayudar a mantener y desarrollar el proyecto "Sistema Web PWA de Gestión de Pedidos Multicanal para LeoFit". Esta guía te proporciona atajos y contexto para que operes con máxima eficiencia.
 
-## 📁 1. Estructura del Proyecto (Single Source of Truth)
-- `docs/DOCUMENTO_MAESTRO_INTEGRAL_LEOFIT.md`: **¡El archivo más importante!** Es el documento entregable unificado. Contiene desde el APF1 hasta el Trabajo Final. Si el usuario pide actualizar documentación, este es el archivo a modificar.
-- `scripts/`: Contiene los scripts de automatización en Python.
-- `database/`: Scripts DDL de PostgreSQL (`schema.sql`), BCNF y respaldos.
-- `backend/`: API RESTful Node.js bajo arquitectura limpia (Clean Architecture: Repositorios, Casos de Uso, Controladores).
-- `frontend/`: Aplicación React PWA construida con Vite.
+## 📁 1. Estructura del Proyecto (Contexto)
+- `docs/DOCUMENTO_MAESTRO_INTEGRAL_LEOFIT.md`: Documento entregable unificado.
+- `docs/diagramas/`: Contiene los 7 diagramas arquitectónicos (D1 a D7) en formato Mermaid (`.mmd`), SVG y su `README.md` explicativo. TODO cambio de arquitectura debe actualizar estos diagramas.
+- `scripts/`: Scripts de automatización en Python (ej. `rebuild_all_formal_reports.py`).
+- `database/`: Scripts DDL de PostgreSQL (`schema.sql`), BCNF y semillas.
+- `backend/`: API RESTful Node.js (Express, TypeScript) desplegado en Render (`render.yaml`). Usa ESM compilado a CommonJS con resolución `node16`.
+- `frontend/`: Aplicación React PWA construida con Vite, desplegada en GitHub Pages.
 
 ## 🛠️ 2. Comandos Esenciales (¡Memoriza esto!)
 Cuando el usuario te pida compilar, probar o generar, utiliza estos comandos desde la raíz del proyecto (workspace root):
@@ -34,9 +35,11 @@ Cuando el usuario te pida compilar, probar o generar, utiliza estos comandos des
 *   **Despliegue a Producción:**
     El proyecto utiliza *zero-config GitHub Pages* mediante GitHub Actions. Todo push a la rama `main` despliega automáticamente el frontend.
 
-## 🔒 3. Reglas Críticas de Seguridad
-- **Cero Credenciales:** JAMÁS subas o expongas archivos `.env`. Si necesitas probar variables de entorno, asegúrate de que están en el `.gitignore`.
-- OWASP: El backend ya cuenta con protección (Helmet, Zod, bcrypt, JWT). Si agregas un endpoint, DEBE pasar por el middleware de autenticación (`requireRole`).
+## 🔒 3. Reglas Críticas de Seguridad (APF3 & SEC-10)
+- **Cero Credenciales y Política Fail-Fast:** JAMÁS subas o expongas archivos `.env`. NUNCA incluyas strings de fallback en `docker-compose.yml` (ej. usa `${JWT_SECRET}` en vez de `${JWT_SECRET:-secreto}`). Si falta un secreto, la aplicación DEBE fallar inmediatamente (Fail-Fast).
+- **Prohibido revelar secretos:** JAMÁS imprimas contraseñas, tokens JWT (`JWT_SECRET`) o `WEBHOOK_SECRET` reales en el chat o en commits. Utiliza siempre placeholders descriptivos como `<TU_SECRETO_SEGURO>`.
+- **Configuración Cloud (`render.yaml`):** El backend se despliega en Render. Los secretos inyectables internamente (como `JWT_SECRET`) usan `generateValue: true`. Secretos compartidos con terceros (como `WEBHOOK_SECRET`) usan `sync: false` para inyección manual desde el dashboard.
+- OWASP: El backend usa Helmet, Zod, bcrypt y JWT. Todo nuevo endpoint requiere middleware de autenticación (`requireRole`).
 
 ## 🚀 4. Flujo de Trabajo Recomendado
 1. Entiende el requerimiento del usuario (ej. "Prepara el APF3").
