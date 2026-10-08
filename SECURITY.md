@@ -83,6 +83,32 @@ El sistema opera bajo una estricta polÃƒÂ­tica de **Fail-Fast** en producci�
 ### Incidentes Activos y Deuda TÃƒÂ©cnica
 La ÃƒÂºltima auditorÃƒÂ­a forense (APF3) cerrÃƒÂ³ exitosamente mÃƒÂºltiples vulnerabilidades crÃƒÂ­ticas. Sin embargo, los siguientes incidentes y deudas permanecen activos y formalmente declarados:
 
+### [SEC-10] Fallback hardcodeado de JWT_SECRET en docker-compose.yml
+
+- **Estado:** MITIGADO
+- **Severidad:** ALTA
+- **Vector:** Sintaxis `${VAR:-fallback}` en `docker-compose.yml` deja
+  un string literal como clave de firma por defecto si la variable
+  de entorno no está definida. Fallback efectivo:
+  `leofit_super_secret_jwt_key_academic_2026_production_ready`.
+- **Commits afectados:**
+  - Introducción: `28d043b` (repo público).
+  - Mitigación: `57f5a79` (merge de `fix/secret-exposure-v2`).
+- **Acciones tomadas:**
+  1. Eliminado el fallback de `docker-compose.yml` → ahora es
+     `${JWT_SECRET}` sin default. Fail-fast si falta.
+  2. `WEBHOOK_SECRET` cambiado a `sync: false` en `render.yaml`
+     (valor configurado manualmente, no generado por Render).
+  3. `JWT_SECRET` y `WEBHOOK_SECRET` rotados en el dashboard de
+     Render con valores nuevos.
+- **Deuda residual:** el string sigue en la historia de git en el
+  commit `28d043b`. La mitigación completa requeriría `filter-repo`.
+  No se ejecutó por bajo impacto (el secreto ya está rotado y es
+  inutilizable).
+- **Owner:** DevOps / Security
+- **Fecha de detección:** 2026-10-08
+- **Fecha de mitigación:** 2026-10-08
+
 1. **[SEC-00] Credenciales activas expuestas (ABIERTO - P0)**
    - **Vectores:**
      1. HEAD actual: `docker-compose.yml` (postgrespassword2026!), `scripts/generate_master_markdown.py` (PasswordSeguro2026!).
