@@ -171,3 +171,90 @@ describe('AppContext: fetch productos', () => {
     errorSpy.mockRestore();
   });
 });
+
+describe('AppContext: crearPedido', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    sessionStorage.clear();
+    vi.stubEnv('VITE_USE_MOCK_ORDERS', 'false');
+  });
+
+  afterEach(() => {
+    vi.unstubAllEnvs();
+    cleanup();
+  });
+
+  it('T1: crearPedido con VITE_USE_MOCK_ORDERS=true no llama apiFetch, escribe a mock', async () => {
+    vi.stubEnv('VITE_USE_MOCK_ORDERS', 'true');
+    let contextVal: any;
+    const TestComp = () => {
+      contextVal = useApp();
+      return null;
+    };
+    render(<AppProvider><TestComp /></AppProvider>);
+    
+    const mockPedido = { id: 'm1', cliente: { nombre: 'Test' }, items: [] };
+    const res = await contextVal.crearPedido(mockPedido);
+    
+    expect(res).toEqual({ ok: true, pedido: mockPedido });
+    expect(apiFetch).not.toHaveBeenCalled();
+  });
+
+  it('T2: crearPedido modo real hace POST y devuelve { ok: true }', async () => {
+    vi.mocked(apiFetch).mockImplementation(async (url) => {
+      if (url === '/api/orders') return { id: 'real1', cliente: { nombre: 'Test API' }, items: [] };
+      return [];
+    });
+    
+    let contextVal: any;
+    const TestComp = () => {
+      contextVal = useApp();
+      return null;
+    };
+    render(<AppProvider><TestComp /></AppProvider>);
+    
+    // El frontend espera enviar un objeto tipo Pedido, el mapper lo transforma
+    const mockPedido = { 
+      id: 'mock', 
+      cliente: { nombre: 'Juan', telefono: '1234567', dniRuc: '123', ciudadDestino: 'Lima', direccion: 'Calle 123' }, 
+      items: [{ productoId: 'p1', cantidad: 1, precio: 10, nombre: 'prod' }], 
+      metodoPago: 'Yape',
+      tipoEnvio: 'Nacional',
+      ciudadDestino: 'Lima',
+      total: 10
+    };
+    
+    const res = await contextVal.crearPedido(mockPedido);
+    
+    expect(res.ok).toBe(true);
+    expect(apiFetch).toHaveBeenCalledWith('/api/orders', expect.objectContaining({ method: 'POST' }));
+  });
+
+  it('T3: crearPedido con backend 400 devuelve { ok: false, code: VALIDATION_ERROR }', async () => {
+    vi.mocked(apiFetch).mockImplementation(async (url) => {
+      if (url === '/api/orders') throw { code: 'VALIDATION_ERROR', message: 'Falta campo' };
+      return [];
+    });
+    
+    let contextVal: any;
+    const TestComp = () => {
+      contextVal = useApp();
+      return null;
+    };
+    render(<AppProvider><TestComp /></AppProvider>);
+    
+    const mockPedido = { 
+      id: 'mock', 
+      cliente: { nombre: 'Juan', telefono: '1234567', dniRuc: '123', ciudadDestino: 'Lima', direccion: 'Calle 123' }, 
+      items: [{ productoId: 'p1', cantidad: 1, precio: 10, nombre: 'prod' }], 
+      metodoPago: 'Yape',
+      tipoEnvio: 'Nacional',
+      ciudadDestino: 'Lima',
+      total: 10
+    };
+    
+    const res = await contextVal.crearPedido(mockPedido);
+    
+    expect(res).toEqual({ ok: false, error: 'Falta campo', code: 'VALIDATION_ERROR' });
+  });
+});

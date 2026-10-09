@@ -28,6 +28,7 @@ interface AppContextType {
   navegarA: (pagina: Pagina) => void;
   navegarAConFiltro: (pagina: Pagina, filtro: EstadoPedido | "Todos") => void;
   agregarPedido: (pedido: Pedido) => void;
+  crearPedido: (datos: Pedido) => Promise<{ ok: true; pedido: Pedido } | { ok: false; error: string; code?: string }>;
   actualizarEstadoPedido: (id: string, estado: EstadoPedido) => void;
   agregarProducto: (producto: Producto) => void;
   editarProducto: (producto: Producto) => void;
@@ -205,6 +206,30 @@ export function AppProvider({ children }: { children: ReactNode }) {
     );
   };
 
+  const crearPedido = async (datos: Pedido): Promise<{ ok: true; pedido: Pedido } | { ok: false; error: string; code?: string }> => {
+    const USE_MOCK = import.meta.env.VITE_USE_MOCK_ORDERS === 'true';
+    if (USE_MOCK) {
+      agregarPedido(datos);
+      return { ok: true, pedido: datos };
+    }
+
+    try {
+      const { toCreateOrderDTO } = await import('../services/mappers');
+      const dto = toCreateOrderDTO(datos);
+      const { apiFetch } = await import('../services/api');
+      const data = await apiFetch<any>('/api/orders', {
+        method: 'POST',
+        body: JSON.stringify(dto)
+      });
+      
+      const nuevoPedido = { ...datos, id: data.id || datos.id };
+      agregarPedido(nuevoPedido);
+      return { ok: true, pedido: nuevoPedido };
+    } catch (err: any) {
+      return { ok: false, error: err.message || 'Error al crear pedido', code: err.code };
+    }
+  };
+
   const actualizarEstadoPedido = (id: string, estado: EstadoPedido) => {
     const pedidoActual = pedidos.find((p) => p.id === id);
     if (!pedidoActual) return;
@@ -259,7 +284,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         autenticado, paginaActual, pedidos, productos, cargandoProductos, errorProductos, filtroInicial, privacidad, modoAccesible,
         togglePrivacidad, toggleAccesible,
         iniciarSesion, cerrarSesion, navegarA, navegarAConFiltro,
-        agregarPedido, actualizarEstadoPedido,
+        agregarPedido, crearPedido, actualizarEstadoPedido,
         agregarProducto, editarProducto, eliminarProducto,
       }}
     >

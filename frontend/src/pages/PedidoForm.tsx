@@ -30,7 +30,7 @@ interface ItemTemp {
 }
 
 export default function PedidoForm() {
-  const { productos, pedidos, agregarPedido, navegarA, modoAccesible } = useApp();
+  const { productos, pedidos, crearPedido, navegarA, modoAccesible } = useApp();
   const [nombre, setNombre] = useState("");
   const [telefono, setTelefono] = useState("");
   const [dniRuc, setDniRuc] = useState("");
@@ -57,6 +57,8 @@ export default function PedidoForm() {
   const [pedidoCreado, setPedidoCreado] = useState<Pedido | null>(null);
   const [mostrarRecibo, setMostrarRecibo] = useState(false);
   const [errores, setErrores] = useState<string[]>([]);
+  const [enviando, setEnviando] = useState(false);
+  const [errorApi, setErrorApi] = useState<string | null>(null);
 
   const fechaHoy = new Date().toLocaleDateString("es-PE", { day: "2-digit", month: "2-digit", year: "numeric" });
 
@@ -169,7 +171,7 @@ export default function PedidoForm() {
    *    son estrictamente obligatorios conforme a las normativas de transporte interprovincial de encomiendas.
    * 3. Debe existir al menos una prenda en el carrito.
    */
-  const handleGuardar = () => {
+  const handleGuardar = async () => {
     const errList: string[] = [];
     if (!nombre.trim()) errList.push("El nombre completo del cliente es obligatorio.");
     if (!telefono.trim()) errList.push("El teléfono de contacto es obligatorio.");
@@ -185,6 +187,7 @@ export default function PedidoForm() {
       return;
     }
     setErrores([]);
+    setErrorApi(null);
 
     const nuevoPedido: Pedido = {
       id: `o${Date.now()}`,
@@ -214,8 +217,16 @@ export default function PedidoForm() {
       notas: notas.trim() || undefined,
     };
 
-    agregarPedido(nuevoPedido);
-    setPedidoCreado(nuevoPedido);
+    setEnviando(true);
+    const result = await crearPedido(nuevoPedido);
+    setEnviando(false);
+
+    if (result.ok) {
+      setPedidoCreado(result.pedido);
+    } else {
+      setErrorApi(result.error);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
   };
 
   if (pedidoCreado) {
@@ -308,6 +319,16 @@ export default function PedidoForm() {
                 <p className="text-xs sm:text-sm text-red-900 font-medium">{e}</p>
               </div>
             ))}
+          </div>
+        )}
+
+        {errorApi && (
+          <div className="bg-red-100 border-2 border-red-400 rounded-2xl p-3.5 sm:p-4 mb-5 shadow-sm animate-shake">
+            <p className="text-sm font-bold text-red-950 mb-1 flex items-center gap-1.5">
+              <span className="material-icons text-red-700" style={{ fontSize: "18px" }}>cloud_off</span>
+              Error al enviar el pedido:
+            </p>
+            <p className="text-xs sm:text-sm text-red-900 font-medium ml-6">{errorApi}</p>
           </div>
         )}
 
@@ -766,10 +787,22 @@ export default function PedidoForm() {
           </button>
           <button
             onClick={handleGuardar}
-            className="w-full sm:flex-[2] py-3.5 px-4 bg-emerald-700 hover:bg-emerald-800 active:scale-[0.98] text-white font-bold text-sm sm:text-base rounded-2xl transition-all flex flex-wrap items-center justify-center gap-2 shadow-xl shadow-emerald-700/30 ring-2 ring-white whitespace-normal text-center leading-tight break-words"
+            disabled={enviando}
+            className={`w-full sm:flex-[2] py-3.5 px-4 text-white font-bold text-sm sm:text-base rounded-2xl transition-all flex flex-wrap items-center justify-center gap-2 shadow-xl ring-2 ring-white whitespace-normal text-center leading-tight break-words ${
+              enviando ? "bg-slate-500 cursor-not-allowed" : "bg-emerald-700 hover:bg-emerald-800 active:scale-[0.98] shadow-emerald-700/30"
+            }`}
           >
-            <span className="material-icons shrink-0" style={{ fontSize: "20px" }}>save</span>
-            <span>Guardar y Registrar Pedido</span>
+            {enviando ? (
+              <>
+                <span className="material-icons shrink-0 animate-spin" style={{ fontSize: "20px" }}>autorenew</span>
+                <span>Enviando...</span>
+              </>
+            ) : (
+              <>
+                <span className="material-icons shrink-0" style={{ fontSize: "20px" }}>save</span>
+                <span>Confirmar y Guardar</span>
+              </>
+            )}
           </button>
         </div>
       </div>
