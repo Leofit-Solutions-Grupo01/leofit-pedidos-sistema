@@ -87,4 +87,15 @@ describe('apiFetch', () => {
     const result = await apiFetch<{ id: number; name: string }>('/test');
     expect(result).toEqual({ id: 1, name: 'Pedro' });
   });
+
+  it('T6: Lanza error si VITE_API_URL no está definido', async () => {
+    vi.stubEnv('VITE_API_URL', '');
+    try {
+      await apiFetch('/test');
+      expect.fail('Should have thrown');
+    } catch (e: any) {
+      expect(e).toBeInstanceOf(Error);
+      expect(e.message).toBe('VITE_API_URL no está definido');
+    }
+  });
 });
