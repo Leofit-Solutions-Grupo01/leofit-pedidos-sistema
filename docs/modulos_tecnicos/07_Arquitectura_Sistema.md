@@ -127,3 +127,11 @@ El diagrama de contenedores formal documenta los siguientes límites de sistema:
 * **Seguridad y Transporte:** Certificado SSL/TLS nativo (HTTPS forzado).
 * **Distribución de Contenidos:** Red de Entrega de Contenidos (CDN) global con puntos de presencia de baja latencia.
 * **Integración Continua:** GitHub Actions ejecutando pipelines automáticos de auditoría de seguridad y despliegue continuo ante cada confirmación a la rama `main`.
+
+---
+
+## 7. DOCUMENTACIÓN DE INCIDENCIAS TÉCNICAS Y BUGS CONOCIDOS
+
+### 7.1. Resolución de Patrones de Reemplazo Estático en Vite
+**Problema Detectado:** El uso de *Optional Chaining* (`?.`) al acceder a variables de entorno en Vite (ej. `import.meta.env?.VITE_API_URL`) provoca que el analizador de dependencias y AST durante el *build time* no reconozca la cadena exacta. Como resultado, Vite no reemplaza el valor de la variable, dejando la instrucción intacta en el bundle final. Al ejecutarse en el navegador, esto evalúa a `undefined` y rompe la integración con el backend (por ejemplo, enviando llamadas POST relativas que derivan en un error HTTP 405 Method Not Allowed en Pages).
+**Decisión Arquitectónica:** Queda estrictamente prohibido utilizar *Optional Chaining* sobre el objeto `import.meta.env`. Toda lectura de variables de entorno debe realizarse mediante acceso de propiedad directa y estática (ej. `import.meta.env.VITE_API_URL`), delegando cualquier validación de existencia a la lógica de JavaScript subsiguiente.
