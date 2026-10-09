@@ -66,6 +66,31 @@ describe('PedidoForm: submit', () => {
     });
   });
 
+  it('T5: PedidoForm muestra banner de error si crearPedido falla', async () => {
+    mockCrearPedido.mockResolvedValueOnce({ ok: false, error: 'Error de red', code: 'NETWORK_ERROR' });
+    
+    render(<PedidoForm />);
+
+    // Llenar campos requeridos
+    fireEvent.change(screen.getByPlaceholderText(/Juan Carlos Pérez/i), { target: { value: 'Juan' } });
+    fireEvent.change(screen.getByPlaceholderText(/987654321/i), { target: { value: '1234567' } });
+    fireEvent.change(screen.getByPlaceholderText(/Av. Las Flores 456/i), { target: { value: 'Calle 123' } });
+    
+    // Seleccionar producto
+    const selectProducto = screen.getByRole('combobox');
+    fireEvent.change(selectProducto, { target: { value: '1' } });
+    fireEvent.click(screen.getByText('Agregar'));
+
+    // Submit
+    const btnSubmit = screen.getByRole('button', { name: /confirmar/i });
+    fireEvent.click(btnSubmit);
+
+    await waitFor(() => {
+      expect(screen.getByText(/Error al enviar el pedido/i)).toBeTruthy();
+      expect(screen.getByText('Error de red')).toBeTruthy();
+    });
+  });
+
   it('T6: PedidoForm no muestra Tarjeta/Link en métodos de pago', () => {
     render(<PedidoForm />);
     
