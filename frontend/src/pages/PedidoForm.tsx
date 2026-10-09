@@ -19,7 +19,6 @@ const METODOS_PAGO: { id: MetodoPago; label: string; icon: string; color: string
   { id: "Transferencia BCP", label: "BCP", icon: "account_balance", color: "bg-blue-800 text-white" },
   { id: "Transferencia BBVA", label: "BBVA", icon: "account_balance", color: "bg-blue-600 text-white" },
   { id: "Contra Entrega", label: "Contra Entrega", icon: "payments", color: "bg-emerald-700 text-white" },
-  { id: "Tarjeta/Link", label: "Tarjeta / Link", icon: "credit_card", color: "bg-slate-800 text-white" },
 ];
 
 interface ItemTemp {

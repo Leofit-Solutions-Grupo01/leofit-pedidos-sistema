@@ -65,4 +65,12 @@ describe('PedidoForm: submit', () => {
       expect(screen.getByText(/¡Pedido Registrado con Éxito!/i)).toBeTruthy();
     });
   });
+
+  it('T6: PedidoForm no muestra Tarjeta/Link en métodos de pago', () => {
+    render(<PedidoForm />);
+    
+    // El texto "Tarjeta / Link" o "Tarjeta/Link" no debería estar en el documento
+    const tarjeta = screen.queryByText(/Tarjeta \/ Link/i) || screen.queryByText(/Tarjeta\/Link/i);
+    expect(tarjeta).toBeNull();
+  });
 });
