@@ -419,4 +419,8 @@ Muestra la transformación de la aplicación al activar el botón de accesibilid
 | **Analista de Negocio** | Daniel Enrique Rojas Sanchez | Modelado de Requerimientos | **CONFORME** |
 
 ---
+**NOTA DE CIERRE DE AUDITORÍA (OCTUBRE 2026):**
+Se hace constar que los hallazgos documentados durante la **Fase 1 (Limpieza de Formato Documental)** y **Fase 2 (Integración CI/CD, Variables de Entorno y Generación de Entregables PPTX)** han sido subsanados y validados en su totalidad. Las políticas arquitectónicas (ej. prohibición de `import.meta.env?.`) y estándares de calidad se encuentran implementados y asegurados mediante pipelines continuos.
+
+---
 *Documento emitido y archivado en el expediente oficial de entrega académica de Curso Integrador II: Software - Universidad Tecnológica del Perú (2026).*

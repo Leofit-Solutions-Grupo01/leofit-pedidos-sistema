@@ -6,14 +6,18 @@ Este documento centraliza las oportunidades de mejora continua y refactorizació
 
 ## 1. Migración del Framework de Testing Backend (Jest → Vitest)
 * **Prioridad:** Media
-* **Esfuerzo Estimado:** Medio día de trabajo.
+* **Impacto:** Alto (estabilidad de CI, seguridad en cadena de suministro).
+* **Esfuerzo Estimado:** Medio día de trabajo (1-2 Story Points).
+* **Disparador:** Si la empresa prohíbe despliegues con vulnerabilidades moderadas en auditorías de CI o al actualizar React/Node.
 * **Motivación:** 
   Actualmente el backend utiliza Jest junto con `ts-jest`. Esta cadena de dependencias arrastra vulnerabilidades indirectas de severidad moderada (reportadas en `npm audit`). 
   Migrar a Vitest eliminará esta cadena de vulnerabilidades, unificará el stack de testing (el frontend ya utiliza el ecosistema de Vite/Vitest) y mejorará los tiempos de ejecución por ser nativo para TypeScript.
 
 ## 2. CI Dedicado para Documentación (Docs Pipeline)
 * **Prioridad:** Baja
-* **Esfuerzo Estimado:** 2 horas.
+* **Impacto:** Bajo (calidad documental, prevención de deuda técnica).
+* **Esfuerzo Estimado:** 2 horas (0.5 Story Points).
+* **Disparador:** Si la cantidad de mantenedores aumenta y se empiezan a perder estándares de formato (APA 7) o se rompen links frecuentemente.
 * **Motivación:** 
   Para evitar regresiones en la calidad documental (como reintroducir emojis no formales, aspas decorativas o enlaces rotos entre Markdowns). 
 * **Acción sugerida:** 
@@ -23,7 +27,9 @@ Este documento centraliza las oportunidades de mejora continua y refactorizació
 
 ## 3. Pruebas End-to-End (E2E) Automatizadas en Producción
 * **Prioridad:** Alta
-* **Esfuerzo Estimado:** 1 a 2 días.
+* **Impacto:** Crítico (garantiza continuidad del negocio y funcionalidad core).
+* **Esfuerzo Estimado:** 1 a 2 días (3-5 Story Points).
+* **Disparador:** Requisito obligatorio antes del lanzamiento oficial a usuarios reales (Go-Live) o cuando se refactoricen contextos globales (AppContext).
 * **Motivación:** 
   Actualmente, un cambio en la configuración de Vite (ej. un bug de AST) puede romper la integración con el backend sin que las pruebas unitarias fallen.
 * **Acción sugerida:** 
