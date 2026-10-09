@@ -166,3 +166,8 @@ appcontext.diff
 app_pedido.diff
 order.txt
 interfaces.txt
+
+# Backup files
+*.bak
+*.old
+*.orig
