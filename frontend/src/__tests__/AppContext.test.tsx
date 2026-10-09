@@ -261,4 +261,33 @@ describe('AppContext: crearPedido', () => {
     
     expect(res).toEqual({ ok: false, error: 'Falta campo', code: 'VALIDATION_ERROR' });
   });
+
+  it('T8: crearPedido lanza error si el backend devuelve id null', async () => {
+    vi.mocked(apiFetch).mockImplementation(async (url) => {
+      if (url === '/api/orders') return { id: null, cliente: { nombre: 'Test API' }, items: [] };
+      return [];
+    });
+    
+    let contextVal: any;
+    const TestComp = () => {
+      contextVal = useApp();
+      return null;
+    };
+    render(<AppProvider><TestComp /></AppProvider>);
+    
+    const mockPedido = { 
+      id: 'mock', 
+      cliente: { nombre: 'Juan', telefono: '1234567', dniRuc: '123', ciudadDestino: 'Lima', direccion: 'Calle 123' }, 
+      items: [{ productoId: 'p1', cantidad: 1, precio: 10, nombre: 'prod' }], 
+      metodoPago: 'Yape',
+      tipoEnvio: 'Nacional',
+      ciudadDestino: 'Lima',
+      total: 10
+    };
+    
+    const res = await contextVal.crearPedido(mockPedido);
+    
+    expect(res.ok).toBe(false);
+    expect(res.error).toContain('no devolvió id');
+  });
 });

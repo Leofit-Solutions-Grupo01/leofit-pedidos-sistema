@@ -222,7 +222,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
         body: JSON.stringify(dto)
       });
       
-      const nuevoPedido = { ...datos, id: data.id || datos.id };
+      if (data.id == null) {
+        throw new Error('El backend no devolvió id de pedido');
+      }
+      const nuevoPedido = { ...datos, id: String(data.id) };
       agregarPedido(nuevoPedido);
       return { ok: true, pedido: nuevoPedido };
     } catch (err: any) {
