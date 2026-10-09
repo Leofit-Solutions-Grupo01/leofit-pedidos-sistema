@@ -27,6 +27,11 @@ Lista única de todos los GAPs marcados en los 7 diagramas:
 - Backend no desplegado en producción (D7).
 - No hay Dockerfile de producción (D7).
 - No hay IaC / K8s (D7).
+- [DEUDA] Separar mockData.ts en types/, utils/ y data/mocks.ts
+  (owner: Frontend Lead, prioridad media)
+  Razón: 10 archivos de runtime importan tipos/utilidades de
+  mockData.ts. Marcarlo test-only sin refactor previo rompe
+  esos imports.
 
 ## Cómo regenerar todos los SVG
 
