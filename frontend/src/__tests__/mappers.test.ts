@@ -73,4 +73,9 @@ describe('mappers: toCreateOrderDTO', () => {
     const malo2 = { ...basePedido, items: [{ ...basePedido.items[0], productoId: "" }] };
     expect(() => toCreateOrderDTO(malo2)).toThrowError('variantId inválido: ');
   });
+
+  it('T8: Fail-Fast - Debe arrojar error si cliente.direccion está vacía', () => {
+    const sinDir = { ...basePedido, cliente: { ...basePedido.cliente, direccion: " " } };
+    expect(() => toCreateOrderDTO(sinDir)).toThrowError('La dirección de entrega es obligatoria.');
+  });
 });

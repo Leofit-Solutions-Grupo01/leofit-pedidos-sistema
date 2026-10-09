@@ -29,6 +29,9 @@ export function toCreateOrderDTO(pedido: Pedido): CreateOrderDTO {
   if (!pedido.cliente.telefono || !pedido.cliente.telefono.trim()) {
     throw new Error("El teléfono del cliente es obligatorio.");
   }
+  if (!pedido.cliente.direccion || !pedido.cliente.direccion.trim()) {
+    throw new Error("La dirección de entrega es obligatoria.");
+  }
   
   const tipoEnvioMapped = pedido.tipoEnvio === "Nacional" ? "PROVINCIA" : "LIMA";
 
