@@ -125,7 +125,49 @@ describe('AppContext: fetch productos', () => {
     });
 
     expect(apiFetch).not.toHaveBeenCalled();
-    // Assuming initial mocks have 5 products
     expect(screen.getByTestId('productos-count').textContent).toBe('5');
+  });
+
+  it('T6: Si la cache está corrupta, hace refetch', async () => {
+    sessionStorage.setItem('leofit_products_cache', 'not-valid-json');
+    vi.mocked(apiFetch).mockResolvedValueOnce([{ id: 'new1' }]);
+    
+    render(
+      <AppProvider>
+        <TestComponent />
+      </AppProvider>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByTestId('cargando').textContent).toBe('false');
+    });
+
+    expect(apiFetch).toHaveBeenCalledWith('/api/products');
+    expect(screen.getByTestId('productos-count').textContent).toBe('1');
+  });
+
+  it('T7: No hace setState si el componente se desmontó durante el fetch', async () => {
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    let resolveApi: (val: any) => void = () => {};
+    vi.mocked(apiFetch).mockImplementationOnce(() => new Promise((resolve) => {
+      resolveApi = resolve;
+    }));
+
+    const { unmount } = render(
+      <AppProvider>
+        <TestComponent />
+      </AppProvider>
+    );
+
+    unmount();
+    
+    // Resolvemos el API después del unmount
+    resolveApi([{ id: 'prod1' }]);
+    
+    // Esperamos un tick
+    await new Promise(r => setTimeout(r, 50));
+    
+    expect(errorSpy).not.toHaveBeenCalled();
+    errorSpy.mockRestore();
   });
 });
