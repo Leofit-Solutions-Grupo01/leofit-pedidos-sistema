@@ -32,7 +32,7 @@ Lista única de todos los GAPs marcados en los 7 diagramas:
   Razón: 10 archivos de runtime importan tipos/utilidades de
   mockData.ts. Marcarlo test-only sin refactor previo rompe
   esos imports.
-- ~~[DEUDA] Crear sección de "Actividad Reciente" (Timeline) en el Dashboard~~ **(COMPLETADO ✔️)**
+- ~~[DEUDA] Crear sección de "Actividad Reciente" (Timeline) en el Dashboard~~ **(COMPLETADO)**
   Implementado en el último sprint con Endpoint `/api/dashboard/activity` y
   el componente `RecentActivity.tsx` en el frontend.
 

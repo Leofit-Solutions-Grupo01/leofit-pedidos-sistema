@@ -716,7 +716,7 @@ El sistema implementa tres pilares de observabilidad:
 El software sigue los principios de la **Clean Architecture** (Arquitectura Limpia / Puertos y Adaptadores), desacoplando las reglas de negocio de los marcos de trabajo y controladores externos. A continuación se presentan los diagramas de cada capa del sistema.
 
 ### Arquitectura General (Modelo C4)
-![Diagrama General PWA](../diagramas/04_general.png)
+![Figura 7.1: Diagrama General PWA](../diagramas/04_general.png)
 
 ## 7.2. Desacoplamiento de Subsistemas
 
@@ -725,14 +725,14 @@ El software sigue los principios de la **Clean Architecture** (Arquitectura Limp
 La arquitectura cliente-servidor se divide en el flujo de la aplicación React y el motor Offline administrado por el Service Worker.
 
 ### Arquitectura de Frontend
-![Diagrama Frontend](../diagramas/01_frontend.png)
+![Figura 7.2: Diagrama Frontend](../diagramas/01_frontend.png)
 
 ### Arquitectura de Service Worker (PWA)
-![Diagrama Service Worker](../diagramas/02_service_worker.png)
+![Figura 7.3: Diagrama Service Worker](../diagramas/02_service_worker.png)
 
 ### Arquitectura Backend y Datos
 El backend procesa la lógica de negocio y autoriza las transacciones contra la base de datos PostgreSQL.
-![Diagrama Backend y Datos](../diagramas/03_backend.png)
+![Figura 7.4: Diagrama Backend y Datos](../diagramas/03_backend.png)
 
 ## 7.3. Arquitectura PWA Offline-First y Estrategia de Service Worker
 
