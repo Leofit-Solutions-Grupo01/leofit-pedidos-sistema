@@ -16,6 +16,8 @@ interface AppContextType {
   paginaActual: Pagina;
   pedidos: Pedido[];
   productos: Producto[];
+  cargandoProductos: boolean;
+  errorProductos: string | null;
   filtroInicial: EstadoPedido | "Todos";
   privacidad: boolean;
   modoAccesible: boolean;
@@ -26,6 +28,7 @@ interface AppContextType {
   navegarA: (pagina: Pagina) => void;
   navegarAConFiltro: (pagina: Pagina, filtro: EstadoPedido | "Todos") => void;
   agregarPedido: (pedido: Pedido) => void;
+  crearPedido: (datos: Pedido) => Promise<{ ok: true; pedido: Pedido } | { ok: false; error: string; code?: string }>;
   actualizarEstadoPedido: (id: string, estado: EstadoPedido) => void;
   agregarProducto: (producto: Producto) => void;
   editarProducto: (producto: Producto) => void;
@@ -42,7 +45,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [autenticado, setAutenticado] = useState(false);
   const [paginaActual, setPaginaActual] = useState<Pagina>("login");
   const [pedidos, setPedidos] = useState<Pedido[]>(pedidosIniciales);
-  const [productos, setProductos] = useState<Producto[]>(productosIniciales);
+  const [productos, setProductos] = useState<Producto[]>([]);
+  const [cargandoProductos, setCargandoProductos] = useState(false);
+  const [errorProductos, setErrorProductos] = useState<string | null>(null);
   const [filtroInicial, setFiltroInicial] = useState<EstadoPedido | "Todos">("Todos");
   const [privacidad, setPrivacidad] = useState(false);
   const [modoAccesible, setModoAccesible] = useState<boolean>(() => {
@@ -66,8 +71,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     });
   };
 
-  // Restaurar sesión al montar (sessionStorage: persiste durante la sesión del navegador,
-  // se borra al cerrar la pestaña — equilibrio entre conveniencia y seguridad)
+  // Restaurar sesión al montar
   useEffect(() => {
     try {
       const guardado = sessionStorage.getItem(SESSION_KEY);
@@ -76,8 +80,50 @@ export function AppProvider({ children }: { children: ReactNode }) {
         setPaginaActual("dashboard");
       }
     } catch {
-      // Ignora restricciones de iframe/sandbox
+      // Ignora restricciones
     }
+  }, []);
+
+  // Cargar productos
+  useEffect(() => {
+    const USE_MOCK = import.meta.env.VITE_USE_MOCK_ORDERS === 'true';
+    if (USE_MOCK) {
+      setProductos(productosIniciales);
+      return;
+    }
+
+    const CACHE_KEY = "leofit_products_cache";
+    const FIVE_MIN = 5 * 60 * 1000;
+
+    const loadProducts = async () => {
+      try {
+        const cached = sessionStorage.getItem(CACHE_KEY);
+        if (cached) {
+          const parsed = JSON.parse(cached);
+          if (Date.now() - parsed.timestamp < FIVE_MIN) {
+            setProductos(parsed.data);
+            return;
+          }
+        }
+      } catch {
+        // Fallback to fetch if parse fails
+      }
+
+      setCargandoProductos(true);
+      setErrorProductos(null);
+      try {
+        const { apiFetch } = await import('../services/api');
+        const data = await apiFetch<Producto[]>('/api/products');
+        setProductos(data);
+        sessionStorage.setItem(CACHE_KEY, JSON.stringify({ timestamp: Date.now(), data }));
+      } catch (err: any) {
+        setErrorProductos(err.message || 'Error al cargar productos');
+      } finally {
+        setCargandoProductos(false);
+      }
+    };
+    
+    loadProducts();
   }, []);
 
   // Auto-logout por inactividad (30 min)
@@ -160,6 +206,33 @@ export function AppProvider({ children }: { children: ReactNode }) {
     );
   };
 
+  const crearPedido = async (datos: Pedido): Promise<{ ok: true; pedido: Pedido } | { ok: false; error: string; code?: string }> => {
+    const USE_MOCK = import.meta.env.VITE_USE_MOCK_ORDERS === 'true';
+    if (USE_MOCK) {
+      agregarPedido(datos);
+      return { ok: true, pedido: datos };
+    }
+
+    try {
+      const { toCreateOrderDTO } = await import('../services/mappers');
+      const dto = toCreateOrderDTO(datos);
+      const { apiFetch } = await import('../services/api');
+      const data = await apiFetch<{ id: number | string }>('/api/orders', {
+        method: 'POST',
+        body: JSON.stringify(dto)
+      });
+      
+      if (data.id == null) {
+        throw new Error('El backend no devolvió id de pedido');
+      }
+      const nuevoPedido = { ...datos, id: String(data.id) };
+      agregarPedido(nuevoPedido);
+      return { ok: true, pedido: nuevoPedido };
+    } catch (err: any) {
+      return { ok: false, error: err.message || 'Error al crear pedido', code: err.code };
+    }
+  };
+
   const actualizarEstadoPedido = (id: string, estado: EstadoPedido) => {
     const pedidoActual = pedidos.find((p) => p.id === id);
     if (!pedidoActual) return;
@@ -211,10 +284,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
   return (
     <AppContext.Provider
       value={{
-        autenticado, paginaActual, pedidos, productos, filtroInicial, privacidad, modoAccesible,
+        autenticado, paginaActual, pedidos, productos, cargandoProductos, errorProductos, filtroInicial, privacidad, modoAccesible,
         togglePrivacidad, toggleAccesible,
         iniciarSesion, cerrarSesion, navegarA, navegarAConFiltro,
-        agregarPedido, actualizarEstadoPedido,
+        agregarPedido, crearPedido, actualizarEstadoPedido,
         agregarProducto, editarProducto, eliminarProducto,
       }}
     >
