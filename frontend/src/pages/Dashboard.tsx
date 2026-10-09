@@ -11,6 +11,7 @@ import { useApp } from "../context/AppContext";
 import Badge from "../components/common/Badge";
 import { EstadoPedido, Pedido, estaEnRiesgo, calcularIngresos } from "../data/mockData";
 import MontoPrivado from "../components/common/MontoPrivado";
+import RecentActivity from "../components/dashboard/RecentActivity";
 
 /**
  * Hook personalizado para animar transiciones numéricas fluidas (Count-Up).
@@ -570,6 +571,10 @@ export default function Dashboard() {
           </div>
         </div>
 
+      </div>
+
+      <div className="max-w-5xl mx-auto px-3 sm:px-6 py-4">
+        <RecentActivity />
       </div>
 
       {/* Floating Action Button (Comfortable placement with high contrast ring) */}

@@ -202,6 +202,17 @@ export interface OrderStatusHistory {
 }
 
 /**
+ * Entidad de Actividad Reciente para el Dashboard (Timeline).
+ * Representa un evento enriquecido con datos del pedido y el cliente.
+ */
+export interface ActivityRecord extends OrderStatusHistory {
+  /** Código del pedido asociado */
+  order_number: string;
+  /** Nombre del cliente asociado al pedido */
+  client_name: string;
+}
+
+/**
  * Entidad de Cabecera de Pedido (Order Aggregate Root).
  * Agrega el cliente, los items comprados y la pista de auditoría.
  */

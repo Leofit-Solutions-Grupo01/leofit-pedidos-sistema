@@ -13,7 +13,8 @@ import {
   OrderItem,
   OrderStatus,
   OrderStatusHistory,
-  DashboardMetrics
+  DashboardMetrics,
+  ActivityRecord
 } from '../../domain/entities/models';
 import {
   IUserRepository,
@@ -644,5 +645,24 @@ export class MemoryOrderRepository implements IOrderRepository {
       recentOrders: orders.slice(-5).reverse(),
       topSellingProducts
     };
+  }
+
+  async getRecentActivity(limit: number = 20): Promise<ActivityRecord[]> {
+    const history = InMemoryDataStore.orderStatusHistory || [];
+    const sorted = [...history].sort((a, b) => new Date(b.changed_at).getTime() - new Date(a.changed_at).getTime());
+    const limited = sorted.slice(0, limit);
+
+    return limited.map(h => {
+      const order = InMemoryDataStore.orders.find(o => o.id === h.order_id);
+      const client = order ? InMemoryDataStore.clients.find(c => c.id === order.client_id) : null;
+      const user = h.user_id ? InMemoryDataStore.users.find(u => u.id === h.user_id) : null;
+
+      return {
+        ...h,
+        order_number: order ? order.order_number : 'UNKNOWN',
+        client_name: client ? client.full_name : 'Unknown',
+        user_name: user ? user.name : (h.user_name || 'System')
+      };
+    });
   }
 }

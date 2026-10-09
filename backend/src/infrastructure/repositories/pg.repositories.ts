@@ -14,7 +14,8 @@ import {
   Order,
   OrderItem,
   OrderStatus,
-  DashboardMetrics
+  DashboardMetrics,
+  ActivityRecord
 } from '../../domain/entities/models';
 import {
   IUserRepository,
@@ -687,5 +688,29 @@ export class PgOrderRepository implements IOrderRepository {
       recentOrders: recentOrders.slice(0, 5),
       topSellingProducts: topProdRes.rows
     };
+  }
+
+  async getRecentActivity(limit: number = 20): Promise<ActivityRecord[]> {
+    const res = await this.pool.query(`
+      SELECT 
+        osh.id,
+        osh.order_id,
+        osh.user_id,
+        osh.previous_status,
+        osh.new_status,
+        osh.changed_at,
+        osh.comments,
+        o.order_number,
+        c.full_name as client_name,
+        u.name as user_name
+      FROM order_status_history osh
+      JOIN orders o ON osh.order_id = o.id
+      JOIN clients c ON o.client_id = c.id
+      LEFT JOIN users u ON osh.user_id = u.id
+      ORDER BY osh.changed_at DESC
+      LIMIT $1
+    `, [limit]);
+
+    return res.rows;
   }
 }

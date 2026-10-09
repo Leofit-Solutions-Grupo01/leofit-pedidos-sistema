@@ -20,7 +20,8 @@ import {
   Client,
   Order,
   OrderStatus,
-  DashboardMetrics
+  DashboardMetrics,
+  ActivityRecord
 } from '../entities/models';
 
 /**
@@ -159,4 +160,8 @@ export interface IOrderRepository {
    * Calcula y consolida las métricas agregadas de negocio para el Dashboard.
    */
   getMetrics(): Promise<DashboardMetrics>;
+  /**
+   * Obtiene la actividad reciente (cambios de estado de pedidos) enriquecida.
+   */
+  getRecentActivity(limit?: number): Promise<ActivityRecord[]>;
 }
