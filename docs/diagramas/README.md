@@ -32,12 +32,9 @@ Lista única de todos los GAPs marcados en los 7 diagramas:
   Razón: 10 archivos de runtime importan tipos/utilidades de
   mockData.ts. Marcarlo test-only sin refactor previo rompe
   esos imports.
-- [DEUDA] Crear sección de "Actividad Reciente" (Timeline) en el Dashboard
-  (owner: Full-Stack / Frontend, prioridad alta)
-  Razón: La base de datos ya cuenta con la tabla order_status_history,
-  pero el frontend no la consume para brindar una experiencia de auditoría o
-  timeline visual por días a los operadores. Se debe crear el endpoint GET
-  y el componente React correspondiente.
+- ~~[DEUDA] Crear sección de "Actividad Reciente" (Timeline) en el Dashboard~~ **(COMPLETADO ✔️)**
+  Implementado en el último sprint con Endpoint `/api/dashboard/activity` y
+  el componente `RecentActivity.tsx` en el frontend.
 
 ## Cómo regenerar todos los SVG
 
