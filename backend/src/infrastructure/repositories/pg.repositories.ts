@@ -417,6 +417,22 @@ export class PgOrderRepository implements IOrderRepository {
 
     const res = await this.pool.query(dataQuery, dataParams);
 
+    const itemsByOrder = new Map<number, any[]>();
+    if (res.rows.length > 0) {
+      const orderIds = res.rows.map(r => r.id);
+      const itemsRes = await this.pool.query(
+        `${ORDER_ITEM_SELECT} WHERE oi.order_id = ANY($1::int[]) ORDER BY oi.id ASC`,
+        [orderIds]
+      );
+      for (const row of itemsRes.rows) {
+        const orderId = row.order_id;
+        if (!itemsByOrder.has(orderId)) {
+          itemsByOrder.set(orderId, []);
+        }
+        itemsByOrder.get(orderId)!.push(mapOrderItem(row));
+      }
+    }
+
     const orders: Order[] = res.rows.map(row => ({
       id: row.id,
       order_number: row.order_number,
