@@ -1,6 +1,6 @@
-**UNIVERSIDAD TECNOLÓGICA DEL PERÚ**  
-**FACULTAD DE INGENIERÍA DE SISTEMAS E INFORMÁTICA**  
-**CURSO INTEGRADOR II: SOFTWARE (100000S12F) - CICLO 2026A**
+## UNIVERSIDAD TECNOLÓGICA DEL PERÚ
+### FACULTAD DE INGENIERÍA DE SISTEMAS E INFORMÁTICA
+### CURSO INTEGRADOR II: SOFTWARE (100000S12F) - CICLO 2026A
 
 ---
 
@@ -227,8 +227,8 @@ El sistema ha sido estructurado para operar en entornos cloud reales bajo esquem
 ---
 
 ## REFERENCIAS BIBLIOGRÁFICAS
-* [1] ISO/IEC, *Systems and software Quality Requirements and Evaluation (SQuaRE) — Product quality model*, ISO/IEC 25010:2023, International Organization for Standardization, Geneva, 2023.
-* [2] OWASP Foundation, *OWASP Top 10 Web Application Security Risks*, OWASP.org, 2021.
-* [3] R. C. Martin, *Clean Architecture: A Craftsman's Guide to Software Structure and Design*, Boston: Prentice Hall, 2017.
-* [4] J. Brooke, *SUS: A 'Quick and Dirty' Usability Scale*, London: Taylor & Francis, 1996.
-* [5] PostgreSQL Global Development Group, *PostgreSQL 16 Documentation - High Availability and Replication*, postgresql.org, 2024.
+* Brooke, J. (1996). *SUS: A 'Quick and Dirty' Usability Scale*. Taylor & Francis.
+* ISO/IEC. (2023). *Systems and software Quality Requirements and Evaluation (SQuaRE) — Product quality model* (ISO/IEC 25010:2023). International Organization for Standardization.
+* Martin, R. C. (2017). *Clean Architecture: A Craftsman's Guide to Software Structure and Design*. Prentice Hall.
+* OWASP Foundation. (2021). *OWASP Top 10 Web Application Security Risks*. OWASP.org.
+* PostgreSQL Global Development Group. (2024). *PostgreSQL 16 Documentation - High Availability and Replication*. postgresql.org.

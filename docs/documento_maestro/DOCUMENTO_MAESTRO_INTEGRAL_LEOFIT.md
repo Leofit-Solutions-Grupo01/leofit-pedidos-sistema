@@ -1,5 +1,5 @@
-# UNIVERSIDAD TECNOLÓGICA DEL PERÚ
-## FACULTAD DE INGENIERÍA DE SISTEMAS E INFORMÁTICA
+## UNIVERSIDAD TECNOLÓGICA DEL PERÚ
+### FACULTAD DE INGENIERÍA DE SISTEMAS E INFORMÁTICA
 ### CURSO INTEGRADOR II: SOFTWARE (100000S12F)
 
 ---
@@ -104,7 +104,7 @@
 13. **CAPÍTULO 13: CONCLUSIONES Y LECCIONES APRENDIDAS**
     - 13.1 Conclusiones Técnicas y de Negocio
     - 13.2 Lecciones Aprendidas en Gestión Ágil y Calidad de Software
-14. **REFERENCIAS BIBLIOGRÁFICAS (NORMAS IEEE Y APA 7ma EDICIÓN)**
+14. **REFERENCIAS BIBLIOGRÁFICAS (APA 7ma EDICIÓN)**
 
 ---
 
@@ -1482,16 +1482,16 @@ A continuación se detallan las 15 preguntas de mayor complejidad técnica y met
 
 ---
 
-# REFERENCIAS BIBLIOGRÁFICAS (NORMAS IEEE Y APA 7ma EDICIÓN)
+# REFERENCIAS BIBLIOGRÁFICAS (APA 7ma EDICIÓN)
 
-1. **[IEEE Std 830-1998]**, *IEEE Recommended Practice for Software Requirements Specifications*, IEEE Computer Society, Piscataway, NJ, USA, 1998.
-2. **[Pressman, 2021]**, R. S. Pressman y B. R. Maxim, *Ingeniería del Software: Un enfoque práctico*, 9na ed., México: McGraw-Hill Interamericana, 2021.
-3. **[Martin, 2018]**, R. C. Martin, *Clean Architecture: A Craftsman's Guide to Software Structure and Design*, Boston, MA, USA: Prentice Hall, 2018.
-4. **[OWASP Foundation, 2021]**, *OWASP Top 10:2021 - The Ten Most Critical Web Application Security Risks*, Open Web Application Security Project. Disponible en: `https://owasp.org/Top10/`.
-5. **[Schwaber y Sutherland, 2020]**, K. Schwaber y J. Sutherland, *La Guía de Scrum: Las Reglas del Juego*, Scrum.org, 2020.
-6. **[W3C, 2018]**, World Wide Web Consortium, *Web Content Accessibility Guidelines (WCAG) 2.1*, W3C Recommendation. Disponible en: `https://www.w3.org/TR/WCAG21/`.
-7. **[Nielsen, 1994]**, J. Nielsen, *10 Usability Heuristics for User Interface Design*, Nielsen Norman Group, Fremont, CA, USA, 1994.
-8. **[PostgreSQL Global Development Group, 2024]**, *PostgreSQL 16 Documentation*, PostgreSQL.org. Disponible en: `https://www.postgresql.org/docs/16/`.
+* IEEE Computer Society. (1998). *IEEE Recommended Practice for Software Requirements Specifications* (IEEE Std 830-1998). IEEE.
+* Martin, R. C. (2018). *Clean Architecture: A Craftsman's Guide to Software Structure and Design*. Prentice Hall.
+* Nielsen, J. (1994). *10 Usability Heuristics for User Interface Design*. Nielsen Norman Group.
+* OWASP Foundation. (2021). *OWASP Top 10:2021 — The Ten Most Critical Web Application Security Risks*. https://owasp.org/Top10/
+* PostgreSQL Global Development Group. (2024). *PostgreSQL 16 Documentation*. https://www.postgresql.org/docs/16/
+* Pressman, R. S., & Maxim, B. R. (2021). *Ingeniería del Software: Un enfoque práctico* (9.ª ed.). McGraw-Hill Interamericana.
+* Schwaber, K., & Sutherland, J. (2020). *La Guía de Scrum: Las Reglas del Juego*. Scrum.org.
+* World Wide Web Consortium [W3C]. (2018). *Web Content Accessibility Guidelines (WCAG) 2.1*. https://www.w3.org/TR/WCAG21/
 
 ---
 *Fin del Documento Maestro Integral — LeoFit Solutions (Grupo 01 - UTP 2026).*
