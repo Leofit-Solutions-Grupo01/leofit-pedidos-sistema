@@ -6,8 +6,9 @@
  * @copyright (c) 2026 Grupo 01 - UTP. All rights reserved.
  */
 
-import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { createContext, useContext, useState, useEffect, useCallback, useRef, ReactNode } from "react";
 import { Pedido, Producto, EstadoPedido, pedidosIniciales, productosIniciales } from "../data/mockData";
+import { api, ApiError, ProductoRef, getToken, setToken, clearToken } from "../services/api";
 
 type Pagina = "login" | "dashboard" | "pedidos" | "nuevo-pedido" | "productos" | "rastreo" | "analytics";
 
@@ -30,14 +31,20 @@ interface AppContextType {
   agregarPedido: (pedido: Pedido) => void;
   crearPedido: (datos: Pedido) => Promise<{ ok: true; pedido: Pedido } | { ok: false; error: string; code?: string }>;
   actualizarEstadoPedido: (id: string, estado: EstadoPedido) => void;
-  agregarProducto: (producto: Producto) => void;
-  editarProducto: (producto: Producto) => void;
-  eliminarProducto: (id: string) => void;
+  agregarProducto: (producto: Producto) => Promise<void>;
+  editarProducto: (producto: Producto) => Promise<void>;
+  eliminarProducto: (id: string) => Promise<void>;
+  /** true mientras se descargan pedidos y productos del servidor */
+  cargando: boolean;
+  /** Último error de comunicación con la API (null si no hay) */
+  errorApi: string | null;
+  limpiarError: () => void;
 }
 
 const AppContext = createContext<AppContextType | null>(null);
 
-const SESSION_KEY = "leofit_session";
+/** Modo demostración sin backend (datos locales). En producción debe ser false. */
+const USE_MOCK = import.meta.env.VITE_USE_MOCK_AUTH === "true";
 const ACCESIBLE_KEY = "leofit_modo_accesible";
 const INACTIVIDAD_MS = 30 * 60 * 1000; // 30 minutos
 
@@ -141,7 +148,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       clearTimeout(timer);
       eventos.forEach((e) => window.removeEventListener(e, reiniciar));
     };
-  }, [autenticado]);
+  }, [autenticado, cerrarSesion]);
 
   const iniciarSesion = async (email: string, password: string): Promise<boolean> => {
     try {
@@ -192,18 +199,30 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setPaginaActual(pagina);
   };
 
-  const agregarPedido = (pedido: Pedido) => {
-    setPedidos((prev) => [pedido, ...prev]);
-    // Descontar inventario automáticamente
+  const descontarStockLocal = (pedido: Pedido, signo: 1 | -1) =>
     setProductos((prev) =>
       prev.map((prod) => {
-        const itemComprado = pedido.items.find((it) => it.productoId === prod.id);
-        if (itemComprado) {
-          return { ...prod, stock: Math.max(0, prod.stock - itemComprado.cantidad) };
-        }
-        return prod;
+        const item = pedido.items.find((it) => it.productoId === prod.id);
+        if (!item) return prod;
+        return { ...prod, stock: Math.max(0, prod.stock + signo * item.cantidad) };
       })
     );
+
+  const agregarPedido = async (pedido: Pedido): Promise<Pedido> => {
+    if (USE_MOCK) {
+      setPedidos((prev) => [pedido, ...prev]);
+      descontarStockLocal(pedido, -1);
+      return pedido;
+    }
+    try {
+      const creado = await api.crearPedido(pedido); // el servidor descuenta stock (trigger en PostgreSQL)
+      setPedidos((prev) => [creado, ...prev]);
+      await recargarProductos().catch(() => undefined);
+      return creado;
+    } catch (e) {
+      if (e instanceof ApiError && e.status === 401) cerrarSesion();
+      throw e; // el formulario muestra el motivo (stock insuficiente, datos inválidos, etc.)
+    }
   };
 
   const crearPedido = async (datos: Pedido): Promise<{ ok: true; pedido: Pedido } | { ok: false; error: string; code?: string }> => {
@@ -277,9 +296,57 @@ export function AppProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const agregarProducto = (producto: Producto) => setProductos((prev) => [...prev, producto]);
-  const editarProducto = (producto: Producto) => setProductos((prev) => prev.map((p) => (p.id === producto.id ? producto : p)));
-  const eliminarProducto = (id: string) => setProductos((prev) => prev.filter((p) => p.id !== id));
+  const agregarProducto = async (producto: Producto): Promise<void> => {
+    if (USE_MOCK) {
+      setProductos((prev) => [...prev, producto]);
+      return;
+    }
+    try {
+      const mismaCategoria = Array.from(refs.current.entries()).find(([id]) => productos.find((p) => p.id === id)?.categoria === producto.categoria);
+      await api.crearProducto(producto, mismaCategoria?.[1].categoryId);
+      await recargarProductos();
+    } catch (e) {
+      manejarError(e, "No se pudo crear el producto");
+    }
+  };
+
+  const editarProducto = async (producto: Producto): Promise<void> => {
+    if (USE_MOCK) {
+      setProductos((prev) => prev.map((p) => (p.id === producto.id ? producto : p)));
+      return;
+    }
+    const ref = refs.current.get(producto.id);
+    const original = productos.find((p) => p.id === producto.id);
+    if (!ref || !original) {
+      setErrorApi("No se pudo editar: el producto no existe en el servidor.");
+      return;
+    }
+    try {
+      const categoryId = original.categoria === producto.categoria ? ref.categoryId : api.categoriaId(producto.categoria);
+      await api.editarProducto(producto, ref, original.stock, categoryId);
+      await recargarProductos();
+    } catch (e) {
+      manejarError(e, "No se pudo editar el producto");
+    }
+  };
+
+  const eliminarProducto = async (id: string): Promise<void> => {
+    if (USE_MOCK) {
+      setProductos((prev) => prev.filter((p) => p.id !== id));
+      return;
+    }
+    const ref = refs.current.get(id);
+    if (!ref) {
+      setErrorApi("No se pudo eliminar: el producto no existe en el servidor.");
+      return;
+    }
+    try {
+      await api.eliminarProducto(ref);
+      await recargarProductos();
+    } catch (e) {
+      manejarError(e, "No se pudo eliminar el producto");
+    }
+  };
 
   return (
     <AppContext.Provider
@@ -289,6 +356,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         iniciarSesion, cerrarSesion, navegarA, navegarAConFiltro,
         agregarPedido, crearPedido, actualizarEstadoPedido,
         agregarProducto, editarProducto, eliminarProducto,
+        cargando, errorApi, limpiarError,
       }}
     >
       {children}

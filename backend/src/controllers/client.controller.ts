@@ -13,6 +13,15 @@
 import { Request, Response, NextFunction } from 'express';
 import { RepositoryFactory } from '../infrastructure/repositories/factory';
 
+/** Traduce el cuerpo validado (camelCase) al modelo de dominio (snake_case). */
+const toClientDomain = (b: any): any => ({
+  ...(b.fullName !== undefined && { full_name: b.fullName }),
+  ...(b.phone !== undefined && { phone: b.phone }),
+  ...(b.address !== undefined && { address: b.address }),
+  ...(b.district !== undefined && { district: b.district }),
+  ...(b.reference !== undefined && { reference: b.reference })
+});
+
 export class ClientController {
   /**
    * @route GET /api/clients
@@ -74,7 +83,7 @@ export class ClientController {
   public static async createClient(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const clientRepo = RepositoryFactory.getClientRepository();
-      const client = await clientRepo.create(req.body);
+      const client = await clientRepo.create(toClientDomain(req.body));
 
       res.status(201).json({
         success: true,
@@ -96,7 +105,7 @@ export class ClientController {
     try {
       const id = parseInt(req.params.id, 10);
       const clientRepo = RepositoryFactory.getClientRepository();
-      const updated = await clientRepo.update(id, req.body);
+      const updated = await clientRepo.update(id, toClientDomain(req.body));
 
       if (!updated) {
         res.status(404).json({

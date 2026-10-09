@@ -18,7 +18,7 @@ import RastreoPublico from "./pages/RastreoPublico";
 import Analytics from "./pages/Analytics";
 
 function AppContent() {
-  const { autenticado, paginaActual } = useApp();
+  const { autenticado, paginaActual, errorApi, limpiarError, cargando } = useApp();
 
   if (!autenticado) return <Login />;
 
