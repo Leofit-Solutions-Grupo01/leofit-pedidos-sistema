@@ -53,6 +53,7 @@ describe('Módulo de Autenticación & Seguridad RBAC (/api/auth)', () => {
   it('Debe prevenir la enumeración de usuarios en el registro (400) si el correo ya existe', async () => {
     const res = await request(app)
       .post('/api/auth/register')
+      .set('Authorization', `Bearer ${adminToken}`)
       .send({
         name: 'Otro Usuario',
         email: 'scrum.master@leofit.pe',
