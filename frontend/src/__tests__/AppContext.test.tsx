@@ -236,7 +236,7 @@ describe('AppContext: crearPedido', () => {
 
   it('T3: crearPedido con backend 400 devuelve { ok: false, code: VALIDATION_ERROR }', async () => {
     vi.mocked(apiFetch).mockImplementation(async (url) => {
-      if (url === '/api/orders') throw new ApiError('VALIDATION_ERROR', 'Falta campo', 400);
+      if (url === '/api/orders') throw new ApiError('VALIDATION_ERROR', 'Falta campo');
       return [];
     });
     

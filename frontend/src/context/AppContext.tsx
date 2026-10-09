@@ -8,7 +8,7 @@
 
 import { createContext, useContext, useState, useEffect, useCallback, useRef, ReactNode } from "react";
 import { Pedido, Producto, EstadoPedido, pedidosIniciales, productosIniciales } from "../data/mockData";
-import { api, ApiError, ProductoRef, getToken, setToken, clearToken } from "../services/api";
+import { ApiError } from "../services/api";
 
 type Pagina = "login" | "dashboard" | "pedidos" | "nuevo-pedido" | "productos" | "rastreo" | "analytics";
 
@@ -45,6 +45,7 @@ const AppContext = createContext<AppContextType | null>(null);
 
 /** Modo demostración sin backend (datos locales). En producción debe ser false. */
 const USE_MOCK = import.meta.env.VITE_USE_MOCK_AUTH === "true";
+const SESSION_KEY = "leofit_session";
 const ACCESIBLE_KEY = "leofit_modo_accesible";
 const INACTIVIDAD_MS = 30 * 60 * 1000; // 30 minutos
 
@@ -77,6 +78,12 @@ export function AppProvider({ children }: { children: ReactNode }) {
       return nuevo;
     });
   };
+
+  const cerrarSesion = useCallback(() => {
+    setAutenticado(false);
+    setPaginaActual("login");
+    sessionStorage.removeItem(SESSION_KEY);
+  }, []);
 
   // Restaurar sesión al montar
   useEffect(() => {
@@ -183,12 +190,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const cerrarSesion = () => {
-    setAutenticado(false);
-    setPaginaActual("login");
-    sessionStorage.removeItem(SESSION_KEY);
-  };
-
   const navegarA = (pagina: Pagina) => {
     setFiltroInicial("Todos");
     setPaginaActual(pagina);
@@ -208,21 +209,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
       })
     );
 
-  const agregarPedido = async (pedido: Pedido): Promise<Pedido> => {
-    if (USE_MOCK) {
-      setPedidos((prev) => [pedido, ...prev]);
-      descontarStockLocal(pedido, -1);
-      return pedido;
-    }
-    try {
-      const creado = await api.crearPedido(pedido); // el servidor descuenta stock (trigger en PostgreSQL)
-      setPedidos((prev) => [creado, ...prev]);
-      await recargarProductos().catch(() => undefined);
-      return creado;
-    } catch (e) {
-      if (e instanceof ApiError && e.status === 401) cerrarSesion();
-      throw e; // el formulario muestra el motivo (stock insuficiente, datos inválidos, etc.)
-    }
+  const agregarPedido = (pedido: Pedido) => {
+    setPedidos((prev) => [pedido, ...prev]);
+    descontarStockLocal(pedido, -1);
   };
 
   const crearPedido = async (datos: Pedido): Promise<{ ok: true; pedido: Pedido } | { ok: false; error: string; code?: string }> => {
@@ -297,56 +286,20 @@ export function AppProvider({ children }: { children: ReactNode }) {
   };
 
   const agregarProducto = async (producto: Producto): Promise<void> => {
-    if (USE_MOCK) {
-      setProductos((prev) => [...prev, producto]);
-      return;
-    }
-    try {
-      const mismaCategoria = Array.from(refs.current.entries()).find(([id]) => productos.find((p) => p.id === id)?.categoria === producto.categoria);
-      await api.crearProducto(producto, mismaCategoria?.[1].categoryId);
-      await recargarProductos();
-    } catch (e) {
-      manejarError(e, "No se pudo crear el producto");
-    }
+    setProductos((prev) => [...prev, producto]);
   };
 
   const editarProducto = async (producto: Producto): Promise<void> => {
-    if (USE_MOCK) {
-      setProductos((prev) => prev.map((p) => (p.id === producto.id ? producto : p)));
-      return;
-    }
-    const ref = refs.current.get(producto.id);
-    const original = productos.find((p) => p.id === producto.id);
-    if (!ref || !original) {
-      setErrorApi("No se pudo editar: el producto no existe en el servidor.");
-      return;
-    }
-    try {
-      const categoryId = original.categoria === producto.categoria ? ref.categoryId : api.categoriaId(producto.categoria);
-      await api.editarProducto(producto, ref, original.stock, categoryId);
-      await recargarProductos();
-    } catch (e) {
-      manejarError(e, "No se pudo editar el producto");
-    }
+    setProductos((prev) => prev.map((p) => (p.id === producto.id ? producto : p)));
   };
 
   const eliminarProducto = async (id: string): Promise<void> => {
-    if (USE_MOCK) {
-      setProductos((prev) => prev.filter((p) => p.id !== id));
-      return;
-    }
-    const ref = refs.current.get(id);
-    if (!ref) {
-      setErrorApi("No se pudo eliminar: el producto no existe en el servidor.");
-      return;
-    }
-    try {
-      await api.eliminarProducto(ref);
-      await recargarProductos();
-    } catch (e) {
-      manejarError(e, "No se pudo eliminar el producto");
-    }
+    setProductos((prev) => prev.filter((p) => p.id !== id));
   };
+
+  const cargando = cargandoProductos;
+  const errorApi = errorProductos;
+  const limpiarError = () => setErrorProductos(null);
 
   return (
     <AppContext.Provider
