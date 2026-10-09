@@ -4,12 +4,16 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, waitFor, cleanup } from '@testing-library/react';
 import { AppProvider, useApp } from '../context/AppContext';
-import { apiFetch } from '../services/api';
+import { apiFetch, ApiError } from '../services/api';
 import React from 'react';
 
-vi.mock('../services/api', () => ({
-  apiFetch: vi.fn(),
-}));
+vi.mock('../services/api', async (importOriginal) => {
+  const actual = await importOriginal<any>();
+  return {
+    ...actual,
+    apiFetch: vi.fn(),
+  };
+});
 
 const TestComponent = () => {
   const { productos, cargandoProductos, errorProductos } = useApp() as any;
@@ -232,7 +236,7 @@ describe('AppContext: crearPedido', () => {
 
   it('T3: crearPedido con backend 400 devuelve { ok: false, code: VALIDATION_ERROR }', async () => {
     vi.mocked(apiFetch).mockImplementation(async (url) => {
-      if (url === '/api/orders') throw { code: 'VALIDATION_ERROR', message: 'Falta campo' };
+      if (url === '/api/orders') throw new ApiError('VALIDATION_ERROR', 'Falta campo', 400);
       return [];
     });
     
