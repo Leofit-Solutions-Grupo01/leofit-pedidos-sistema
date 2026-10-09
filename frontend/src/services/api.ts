@@ -20,7 +20,7 @@ export async function apiFetch<T>(
     headers['Authorization'] = `Bearer ${token}`;
   }
 
-  const baseUrl = import.meta.env?.VITE_API_URL;
+  const baseUrl = import.meta.env.VITE_API_URL;
   if (!baseUrl) {
     throw new Error('VITE_API_URL no está definido');
   }
