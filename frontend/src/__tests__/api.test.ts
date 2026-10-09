@@ -8,6 +8,7 @@ describe('apiFetch', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     sessionStorage.clear();
+    vi.stubEnv('VITE_API_URL', 'http://localhost:3000');
   });
 
   it('T1: Añade Authorization si hay token en sessionStorage', async () => {

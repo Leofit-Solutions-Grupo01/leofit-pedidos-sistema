@@ -20,10 +20,19 @@ export async function apiFetch<T>(
     headers['Authorization'] = `Bearer ${token}`;
   }
 
-  const baseUrl = import.meta.env?.VITE_API_URL || '';
+  const baseUrl = import.meta.env?.VITE_API_URL;
+  if (!baseUrl) {
+    throw new Error('VITE_API_URL no está definido');
+  }
+  
   const url = endpoint.startsWith('http') ? endpoint : `${baseUrl}${endpoint}`;
 
-  const res = await fetch(url, { ...options, headers });
+  let res: Response;
+  try {
+    res = await fetch(url, { ...options, headers });
+  } catch (error: any) {
+    throw new ApiError('NETWORK_ERROR', error.message || 'Error de red');
+  }
 
   if (!res.ok) {
     let errCode = 'UNKNOWN_ERROR';
@@ -40,7 +49,7 @@ export async function apiFetch<T>(
     }
 
     if (res.status === 401) {
-      if (cerrarSesionFn) cerrarSesionFn();
+      cerrarSesionFn?.();
       throw new ApiError('UNAUTHORIZED', errMessage);
     }
     
