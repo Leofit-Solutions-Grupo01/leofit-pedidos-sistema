@@ -83,6 +83,19 @@ classDiagram
         +Array topSellingProducts
     }
 
+    class ActivityRecord {
+        +number id
+        +number order_id
+        +number? user_id
+        +OrderStatus? previous_status
+        +OrderStatus new_status
+        +Date changed_at
+        +string? comments
+        +string order_number
+        +string client_name
+        +string user_name
+    }
+
     CreateOrderDTO --> Order : Genera >
     Order "1" *-- "1..*" OrderItem : Contiene
     Order "1" --> "1" Client : Pertenece a

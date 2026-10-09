@@ -31,6 +31,7 @@
 | `/api/external/identity/lookup` | `POST` | No | `{ type: DNI|RUC, number }` | `{ success, data: Identity }` | `200`, `400`, `500` |
 | `/api/external/payments/webhook` | `POST` | HMAC | `PaymentWebhookPayload` | `{ success, data: Reconciled }` | `200`, `400`, `401`, `500` |
 | `/api/dashboard/stats` | `GET` | Sí | (Ninguno) | `{ success, data: DashboardMetrics }` | `200`, `401` |
+| `/api/dashboard/activity` | `GET` | Sí | `?limit` | `{ success, data: ActivityRecord[] }` | `200`, `401` |
 | `/api/health` | `GET` | No | (Ninguno) | `{ status: "ok", timestamp }` | `200` |
 
 ## Fuentes por endpoint
