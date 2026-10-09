@@ -217,7 +217,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       const { toCreateOrderDTO } = await import('../services/mappers');
       const dto = toCreateOrderDTO(datos);
       const { apiFetch } = await import('../services/api');
-      const data = await apiFetch<any>('/api/orders', {
+      const data = await apiFetch<{ id: number | string }>('/api/orders', {
         method: 'POST',
         body: JSON.stringify(dto)
       });
