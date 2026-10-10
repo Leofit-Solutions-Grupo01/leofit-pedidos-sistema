@@ -124,7 +124,14 @@ Como consecuencia directa, las empresas enfrentan problemas críticos de pérdid
 | **7** | Administrador | Empaqueta prendas y coordina con motorizado. | Llamada / Libreta | Falta de control del estado de avance del empaque. | Módulo de estados con cambio de estado en un clic. |
 | **8** | Cliente | Pregunta reiteradamente por el estado de su envío. | WhatsApp | Sobrecarga de mensajes preguntando "¿Ya salió mi pedido?". | Trazabilidad del pedido y consulta de estado en línea. |
 
-* **Diagrama Formal Integrado:** El diagrama BPMN 2.0 correspondiente se encuentra formalmente documentado en [`../../diagramas/01_BPMN_AS-IS.png`](../../diagramas/01_BPMN_AS-IS.png).
+* **Diagrama Formal Integrado:** El diagrama BPMN 2.0 correspondiente se muestra a continuación:
+
+**Figura 1**
+*Mapa de Procesos Actual (AS-IS)*
+
+![Mapa AS-IS](../../diagramas/01_BPMN_AS-IS.png)
+
+*Nota.* Elaboración propia.
 
 ## 1.7. Oportunidades de Mejora y Modelo Propuesto (TO-BE)
 
@@ -358,14 +365,57 @@ npm run preview    # Previsualización local del bundle optimizado
 
 ## 4.2. Mockups de Alta Fidelidad y Sistema de Diseño
 
-Los mockups interactivos están implementados en el código de la PWA y archivados en [`../../../frontend/mockups/`](../../../frontend/mockups/):
-* `01_Login.png`: Acceso administrativo seguro con modo oscuro corporativo.
-* `02_Dashboard.png`: Tablero operativo ágil centrado en la acción con Menú de Usuario Dinámico.
-* `03_Listado_Pedidos.png`: Tabla interactiva con badges de estado y opciones de edición.
-* `04_Formulario_Pedido.png`: Formulario emergente (Modal Glassmorphism) de toma y confirmación de pedidos.
-* `05_Gestion_Productos.png`: Módulo de control de catálogo e inventario.
-* `06_Analytics.png`: Pantalla estratégica de analíticas con gráficos de área e inteligencia de negocio.
-* `08_Modo_Offline.png`: Alerta del Service Worker y fallback visual ante desconexión de red (estado de error/resiliencia).
+Los mockups interactivos están implementados en el código de la PWA:
+
+**Figura 2**
+*Mockup Interfaz de Login*
+
+![01 Login](../../../frontend/mockups/01_Login.png)
+
+*Nota.* Elaboración propia. Acceso administrativo seguro con modo oscuro corporativo.
+
+**Figura 3**
+*Mockup Tablero Operativo (Dashboard)*
+
+![02 Dashboard](../../../frontend/mockups/02_Dashboard.png)
+
+*Nota.* Elaboración propia. Tablero operativo ágil centrado en la acción.
+
+**Figura 4**
+*Mockup Listado de Pedidos*
+
+![03 Listado Pedidos](../../../frontend/mockups/03_Listado_Pedidos.png)
+
+*Nota.* Elaboración propia. Tabla interactiva con badges de estado y opciones de edición.
+
+**Figura 5**
+*Mockup Formulario de Pedido*
+
+![04 Formulario Pedido](../../../frontend/mockups/04_Formulario_Pedido.png)
+
+*Nota.* Elaboración propia. Formulario emergente de toma y confirmación de pedidos.
+
+**Figura 6**
+*Mockup Gestión de Productos*
+
+![05 Gestion Productos](../../../frontend/mockups/05_Gestion_Productos.png)
+
+*Nota.* Elaboración propia. Módulo de control de catálogo e inventario.
+
+**Figura 7**
+*Mockup Analíticas*
+
+![06 Analytics](../../../frontend/mockups/06_Analytics.png)
+
+*Nota.* Elaboración propia. Pantalla estratégica de analíticas con gráficos de área.
+
+**Figura 8**
+*Mockup Modo Offline*
+
+![08 Modo Offline](../../../frontend/mockups/08_Modo_Offline.png)
+
+*Nota.* Elaboración propia. Alerta visual ante desconexión de red.
+
 * **Funciones de Inclusión Integradas:** Modo "A+ Vista" que aplica clases de accesibilidad (WCAG) en todo el DOM, persistiendo la preferencia en `localStorage`.
 
 ### Especificación del Sistema de Diseño (Design System):
