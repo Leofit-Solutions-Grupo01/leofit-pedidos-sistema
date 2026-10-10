@@ -28,7 +28,13 @@ export default function Navbar() {
     togglePrivacidad,
     modoAccesible,
     toggleAccesible,
+    usuarioActual,
   } = useApp();
+
+  const esOperador = usuarioActual?.role === "OPERATOR";
+  const nombreMostrar = usuarioActual?.name || (esOperador ? "Operador Logístico" : "Lady Loayza");
+  const inicial = esOperador ? "O" : (usuarioActual ? usuarioActual.name.charAt(0) : "L");
+  const rolTexto = esOperador ? "Operador Logístico" : "Administrador";
 
   const [menuUsuarioAbierto, setMenuUsuarioAbierto] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -123,10 +129,15 @@ export default function Navbar() {
                 aria-expanded={menuUsuarioAbierto}
                 aria-label="Menú de usuario"
               >
-                <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-lg sm:rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold text-xs shadow-inner shrink-0">
-                  L
+                <div className={`w-6 h-6 sm:w-7 sm:h-7 rounded-lg sm:rounded-xl ${esOperador ? 'bg-emerald-600' : 'bg-blue-600'} text-white flex items-center justify-center font-bold text-xs shadow-inner shrink-0 uppercase`}>
+                  {inicial}
                 </div>
-                <span className="text-xs font-semibold text-slate-200 hidden sm:inline">Lady Loayza</span>
+                <div className="text-left hidden sm:block">
+                  <span className="text-xs font-semibold text-slate-200 block leading-tight">{nombreMostrar}</span>
+                  <span className={`text-[10px] font-bold block ${esOperador ? 'text-emerald-400' : 'text-amber-400'}`}>
+                    {rolTexto}
+                  </span>
+                </div>
                 <span className="material-icons text-slate-400" style={{ fontSize: "15px" }}>
                   {menuUsuarioAbierto ? "expand_less" : "expand_more"}
                 </span>
@@ -134,15 +145,17 @@ export default function Navbar() {
 
               {/* Desplegable de Usuario */}
               {menuUsuarioAbierto && (
-                <div className="absolute right-0 mt-2 w-56 bg-[#0F223D] border border-slate-700 rounded-2xl shadow-2xl p-2.5 z-50 text-slate-200 animate-in fade-in slide-in-from-top-2">
+                <div className="absolute right-0 mt-2 w-60 bg-[#0F223D] border border-slate-700 rounded-2xl shadow-2xl p-2.5 z-50 text-slate-200 animate-in fade-in slide-in-from-top-2">
                   <div className="px-3 py-2 border-b border-slate-700/60 mb-1 bg-slate-900/50 rounded-xl">
-                    <p className="text-xs font-bold text-white">Lady Luz Loayza Rodriguez</p>
-                    <p className="text-[10px] font-medium text-emerald-400">@LadyyLuz · Scrum Master</p>
-                    <p className="text-[10px] font-normal text-slate-400 truncate">168585420+luzylay@users.noreply.github.com</p>
-                  </div>
-
-                  <div className="px-3 py-1 text-[11px] text-slate-400">
-                    Operador: <strong className="text-slate-200">Víctor Raúl Cárdenas</strong>
+                    <p className="text-xs font-bold text-white truncate">{nombreMostrar}</p>
+                    <span className={`inline-block mt-0.5 text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full ${
+                      esOperador ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' : 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
+                    }`}>
+                      Rol: {usuarioActual?.role || "ADMIN"}
+                    </span>
+                    <p className="text-[10px] font-normal text-slate-400 truncate mt-1">
+                      {usuarioActual?.email || (esOperador ? "operador@leofit.pe" : "admin@leofit.pe")}
+                    </p>
                   </div>
 
                   <button

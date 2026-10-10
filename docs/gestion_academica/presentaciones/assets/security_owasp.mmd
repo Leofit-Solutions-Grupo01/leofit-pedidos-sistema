@@ -1,0 +1,9 @@
+graph TD
+    Client([Cliente PWA / HTTPS]) --> Helmet[Helmet Security Headers & HSTS]
+    Helmet --> RateLimit[Rate Limiter: 20 req / 15 min]
+    RateLimit --> Auth{Auth / Login}
+    Auth -->|Bcrypt $2b$ 10 Salt| DB[(PostgreSQL 18)]
+    Auth -->|JWT HMAC-SHA256 64-char| Session[Token Bearer 24h]
+    Session --> RBAC{RBAC Middleware}
+    RBAC -->|Admin Only| Endpoints[Mutaciones Stock & Precios]
+    RBAC -->|Parameterized Queries $1,$2| DB

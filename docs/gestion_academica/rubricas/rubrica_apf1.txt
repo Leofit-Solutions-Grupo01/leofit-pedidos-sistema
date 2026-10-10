@@ -1,0 +1,879 @@
+=== PAGE 1 ===
+ 
+ 
+Consigna para AVANCE DE PROYECTO FINAL 1 
+ 
+1. Logro a evaluar:  
+Al finalizar la unidad, el estudiante planifica el proyecto de software, integrando el 
+análisis de negocio y la elaboración del Front-End como parte de la solución a un 
+problema empresarial. 
+ 
+2. Indicación general: 
+Deberán trabajar en el desarrollo de un proyecto de software durante todo el 
+ciclo. Para tal fin, seleccionarán una empresa debidamente constituida y con una 
+problemática real o retadora a solucionar. En el primer avance del proyecto, 
+abordarán el análisis del negocio, la planificación y la elaboración del Front-End. 
+ 
+3. Indicaciones específicas: 
+La evaluación es grupal. Los estudiantes entregarán un informe escrito (en 
+formato MS Word) y sustentarán su proyecto de manera oral y con apoyo de 
+diapositivas. La entrega es a través de la plataforma virtual de aprendizaje y debe 
+incluir: 
+• Informe de avance en formato MS Word. 
+• Presentación de su exposición en formato PPT u otro formato de 
+presentación de diapositivas. 
+• Revisar el Anexo 1 donde encontrarás la estructura del informe escrito.  
+ 
+El informe escrito deberá contener los siguientes artefactos: 
+Item Artefacto Descripción 
+1 Documento de Análisis 
+de Negocio (Lean 
+Canvas) 
+Se describirá el problema empresarial y 
+modelará una idea de negocio innovadora 
+utilizando como herramienta un Lean 
+Canvas. 
+
+
+=== PAGE 2 ===
+2 Mapa de Procesos (AS-
+IS) + Identificación de 
+oportunidades de mejora 
+(TO-BE) 
+Se elaborarán diagramas de procesos 
+actuales de la empresa (BPMN o 
+diagramas de flujo) y puntos críticos donde 
+el sistema aportaría valor. 
+3 Acta de Constitución del 
+Proyecto (Project 
+Charter) versión ágil  
+Se elaborará un Project Charter versión ágil  
+ 
+ 
+4 Product Backlog + 
+Historias de Usuario 
+ 
+Se documentarán historias de usuario 
+claras, criterios de aceptación y priorización 
+inicial. Incluirá épicas y tareas. 
+5 Cronograma del Proyecto 
+(Gantt + Sprint Planning) 
+Se elaborará el plan del proyecto 
+combinando vista tradicional (diagrama 
+Gantt) y plan ágil de iteraciones (sprints, 
+duración, entregables por sprint). 
+6 Definición de Roles y 
+Artefactos Scrum + 
+Tablero Kanban/Scrum 
+Se documentará la asignación de roles 
+(PO, Scrum Master, equipo) y cuadro/board 
+visual con tareas en estados (To Do / Doing 
+/ Done). 
+7 Documento de selección 
+de herramientas (a 
+criterio del docente) 
+Se documentará qué herramientas usarán 
+para el proyecto, por qué se eligieron y 
+cómo se alinean con los objetivos del 
+sistema. Incluye: IDE Java elegido, Sistema 
+de control de versiones. Plataforma de 
+despliegue. Herramienta de gestión (Trello, 
+Jira, etc.). Breve comparativa entre 
+alternativas. Justificación técnica 
+8 Evidencia de 
+configuración de 
+herramientas 
+Se incluirán capturas o enlaces de video 
+para verificar la instalación y uso real de las 
+herramientas elegidas 
+9 Repositorio GitHub + 
+README 
+Se incluirá el link del repositorio público o 
+privado compartido con el docente, 
+mostrando la base del proyecto y 
+documentación inicial. 
+
+=== PAGE 3 ===
+ 
+10 Wireframes de baja 
+fidelidad 
+Se elaborarán bocetos iniciales que 
+muestran la estructura de las pantallas 
+principales del sistema. Los bocetos 
+iniciales deberán estar diseñados con 
+Balsamiq o Pencil o Figma u otra 
+herramienta a criterio del docente 
+11 Mockups de Alta 
+Fidelidad (Prototipo 
+interactivo) 
+Se incluirá el diseño visual detallado de las 
+pantallas con estilo, colores, iconografía y 
+componentes. Los Mockups deberán estar 
+elaborados con Balsamiq o Pencil o Figma 
+y otra herramienta a criterio del docente. 
+12 Mapa de riesgos (Matriz 
+de Probabilidad–Impacto 
++ Heatmap) 
+Se elaborará la matriz visual donde los 
+estudiantes posicionan los riesgos según 
+probabilidad e impacto, indicando prioridad. 
+13 Plan de gestión de 
+riesgos 
+Documentarán donde se definen las 
+estrategias (evitar, transferir, mitigar o 
+aceptar), acciones preventivas y 
+correctivas, lista de riesgos críticos y su 
+plan de respuesta, así como los 
+mecanismos para manejar los riesgos del 
+proyecto. 
+14 KPIs y métricas del 
+sistema 
+Se definirán las métricas clave para evaluar 
+el sistema. Las métricas deben tener 
+congruencia con las indicadas en el Lean 
+Canvas propuesto.  
+15 SLA/SLO documentado Se documentará formalmente la definición 
+de compromisos medibles del sistema. 
+16 Plan de Medición y 
+Monitoreo 
+Se elaborará un documento o tablero 
+donde se define cómo se recolectarán y 
+visualizarán las métricas. 
+17 Código Optimizado y 
+Evidencia Técnica 
+Versión del proyecto front-end con 
+optimizaciones implementadas, 
+demostrando aplicación de buenas 
+prácticas WPO (por ejemplo: minificación 
+
+=== PAGE 4 ===
+CSS/JSS, compresión, lazy loading, uso de 
+caché, otros indicados por el docente). 
+18 Reporte Técnico de 
+Estrategias WPO 
+Aplicadas 
+Se incluirá un documento explicativo donde 
+se detalle qué optimizaciones se aplicaron, 
+por qué, y cómo contribuyen al rendimiento. 
+Debe incluir: Estrategias WPO aplicadas, 
+justificación, efecto esperado sobre las 
+métricas, herramientas o librerías usadas, 
+impacto conseguido 
+ 
+La sustentación oral se realizará en el ambiente asignado a las clases del curso. 
+Para su ejecución se deberá tener en cuenta los siguientes aspectos: 
+• Todos los integrantes deberán participar en la sustentación 
+• La calificación es individual 
+• Cada integrante deberá exponer sus principales aportes al proyecto 
+• Ningún integrante deberá repetir la exposición de otro integrante 
+• Se expondrá el proyecto, siguiendo un orden lógico y demostrando 
+capacidad de síntesis 
+• Se demostrará el dominio del tema, argumentando y sustentando el 
+proyecto. 
+• Se evidenciará la aplicación de patrones UI profesionales al front-end 
+implementado 
+ 
+4. Recomendaciones 
+● Coordinarás con tu docente la viabilidad de tu proyecto antes de 
+empezarlo a desarrollar 
+● Asistirás a todas las sesiones y presentarás todas las actividades previas a 
+la entrega del informe para obtener retroalimentación 
+● Tomarás nota de toda la retroalimentación y realizarás las correcciones 
+necesarias indicadas por el docente 
+● Revisarás el material de la clase y tus anotaciones antes de elaborar el 
+informe. 
+● Consultarás el material complementario del curso. 
+ 
+
+=== PAGE 5 ===
+ 
+ 
+5. Criterios de evaluación 
+A continuación, podrás encontrar la rúbrica de evaluación con la que será 
+evaluada la actividad. Recuerda que también puedes encontrarla en la plataforma 
+virtual de aprendizaje. Asegúrate de leerla antes de realizar la actividad. 
+ 
+A tomar en cuenta en caso de plagio:  
+ 
+“Todo acto de copiar, intentarlo o dejar copiar, durante una prueba, examen, 
+práctica, trabajo o cualquier asignación académica, usando tanto el medio físico 
+como el electrónico, se encuentra normado en el Reglamento de Estudios y el 
+Reglamento de Disciplina del Estudiante vigentes en el Portal de Transparencia 
+y/o en el Portal del Estudiante”. 
+
+=== PAGE 6 ===
+RÚBRICA DE AVANCE DE PROYECTO FINAL 1 
+ 
+Criterio 
+ 
+Definición del 
+criterio 
+ 
+Estándar esperado 
+ 
+En proceso 2 
+ 
+En proceso 1 
+ 
+Inicial 
+ 
+Análisis 
+Empresarial y 
+Planificación 
+Se espera que el 
+estudiante analice 
+el entorno 
+empresarial para 
+realizar una 
+propuesta de valor 
+y planifique el 
+desarrollo de una 
+solución 
+tecnológica 
+pertinente del 
+proyecto 
+considerando la 
+elaboración de 
+seis artefactos. 
+Analiza el entorno 
+empresarial para realizar 
+una propuesta de valor y 
+planifique el desarrollo de 
+una solución tecnológica 
+pertinente del proyecto 
+considerando la 
+elaboración de los 
+siguientes artefactos:    1) 
+Documento de Análisis de 
+Negocio (Lean Canvas).  
+2) Mapa de Procesos (AS-
+IS) + Identificación de 
+oportunidades de mejora 
+(TO-BE).  
+3) Product Backlog + 
+Historias de Usuario 
+4) Acta de Constitución del 
+Proyecto (Project Charter) 
+versión ágil 
+5) Cronograma del 
+Proyecto (Gantt + Sprint 
+Planning) 
+6) Definición de Roles y 
+Artefactos Scrum + 
+Tablero Kanban/Scrum 
+Analiza el entorno 
+empresarial para realizar 
+una propuesta de valor y 
+planifique el desarrollo de 
+una solución tecnológica 
+pertinente del proyecto 
+considerando 5 de 6 de los 
+siguientes artefactos:  
+1) Documento de Análisis 
+de Negocio (Lean Canvas).  
+2) Mapa de Procesos (AS-
+IS) + Identificación de 
+oportunidades de mejora 
+(TO-BE).  
+3) Product Backlog + 
+Historias de Usuario 
+4) Acta de Constitución del 
+Proyecto (Project Charter) 
+versión ágil 
+5) Cronograma del 
+Proyecto (Gantt + Sprint 
+Planning) 
+6) Definición de Roles y 
+Artefactos Scrum + Tablero 
+Kanban/Scrum 
+Analiza el entorno 
+empresarial para realizar 
+una propuesta de valor y 
+planifique el desarrollo 
+de una solución 
+tecnológica pertinente 
+del proyecto 
+considerando 3 o 4 de 6 
+de los siguientes 
+artefactos:                     
+1) Documento de 
+Análisis de Negocio 
+(Lean Canvas).  
+2) Mapa de Procesos 
+(AS-IS) + Identificación 
+de oportunidades de 
+mejora (TO-BE).  
+3) Product Backlog + 
+Historias de Usuario 
+4) Acta de Constitución 
+del Proyecto (Project 
+Charter) versión ágil 
+5) Cronograma del 
+Proyecto (Gantt + Sprint 
+Planning) 
+Analiza el entorno 
+empresarial para realizar 
+una propuesta de valor y 
+planifique el desarrollo 
+de una solución 
+tecnológica pertinente 
+del proyecto 
+considerando 1 o 2 de 6 
+de los siguientes 
+artefactos:                     
+1) Documento de 
+Análisis de Negocio 
+(Lean Canvas).  
+2) Mapa de Procesos 
+(AS-IS) + Identificación 
+de oportunidades de 
+mejora (TO-BE).  
+3) Product Backlog + 
+Historias de Usuario 
+4) Acta de Constitución 
+del Proyecto (Project 
+Charter) versión ágil 
+5) Cronograma del 
+Proyecto (Gantt + Sprint 
+Planning) 
+
+=== PAGE 7 ===
+ 
+Criterio 
+ 
+Definición del 
+criterio 
+ 
+Estándar esperado 
+ 
+En proceso 2 
+ 
+En proceso 1 
+ 
+Inicial 
+ 
+6) Definición de Roles y 
+Artefactos Scrum + 
+Tablero Kanban/Scrum 
+6) Definición de Roles y 
+Artefactos Scrum + 
+Tablero Kanban/Scrum 
+4  3  2  1  
+Gestión del 
+Proyecto 
+Se espera que el 
+estudiante 
+identifique 
+actividades a 
+realizar para el 
+desarrollo del 
+proyecto 
+considerando un 
+análisis de riesgo y 
+un plan de 
+medición y 
+monitoreo teniendo 
+en cuenta cinco 
+artefactos. 
+Identifica actividades a 
+realizar para el desarrollo 
+del proyecto considerando 
+un análisis de riesgo y un 
+plan de medición y 
+monitoreo teniendo en 
+cuenta los siguientes:                         
+1) Mapa de riesgos (Matriz 
+de Probabilidad–Impacto + 
+Heatmap) 
+2) Plan de gestión de 
+riesgos 
+3) KPIs y métricas del 
+sistema 
+4) SLA/SLO documentado 
+5) Plan de Medición y 
+Monitoreo 
+ 
+Identifica actividades a 
+realizar para el desarrollo 
+del proyecto considerando 
+un análisis de riesgo y un 
+plan de medición y 
+monitoreo teniendo en 
+cuenta los siguientes:                         
+1) Mapa de riesgos (Matriz 
+de Probabilidad–Impacto + 
+Heatmap) 
+2) Plan de gestión de 
+riesgos 
+3) KPIs y métricas del 
+sistema 
+4) SLA/SLO documentado 
+5) Plan de Medición y 
+Monitoreo 
+ 
+Identifica actividades a 
+realizar para el desarrollo 
+del proyecto considerando 
+un análisis de riesgo y un 
+plan de medición y 
+monitoreo elaborando 3 
+de los 5 artefactos:                         
+1) Mapa de riesgos 
+(Matriz de Probabilidad–
+Impacto + Heatmap) 
+2) Plan de gestión de 
+riesgos 
+3) KPIs y métricas del 
+sistema 
+4) SLA/SLO documentado 
+5) Plan de Medición y 
+Monitoreo 
+ 
+ 
+Identifica actividades a 
+realizar para el desarrollo 
+del proyecto considerando 
+un análisis de riesgo y un 
+plan de medición y 
+monitoreo elaborando 1 o 
+2 de los 5 artefactos:                       
+1) Mapa de riesgos 
+(Matriz de Probabilidad–
+Impacto + Heatmap) 
+2) Plan de gestión de 
+riesgos 
+3) KPIs y métricas del 
+sistema 
+4) SLA/SLO 
+documentado 
+5) Plan de Medición y 
+Monitoreo 
+4  3 2  1  
+Configuración 
+del entorno y 
+diseño inicial 
+Se espera que el 
+estudiante 
+configure las 
+Configura las herramientas 
+a utilizar las herramientas 
+del proyecto y aborde el 
+Configura las herramientas 
+a utilizar las herramientas 
+del proyecto y aborde el 
+Configura las 
+herramientas a utilizar 
+las herramientas del 
+Configura las 
+herramientas a utilizar 
+las herramientas del 
+
+=== PAGE 8 ===
+Criterio 
+ 
+Definición del 
+criterio 
+ 
+Estándar esperado 
+ 
+En proceso 2 
+ 
+En proceso 1 
+ 
+Inicial 
+ 
+para el 
+desarrollo del 
+proyecto 
+herramientas a 
+utilizar las 
+herramientas del 
+proyecto y aborde 
+el diseño inicial de 
+la solución del 
+proyecto 
+considerando 
+cinco artefactos. 
+  
+diseño inicial de la solución 
+del proyecto elaborando 
+los siguientes artefactos: 
+1) Wireframes de baja 
+fidelidad 
+2) Mockups de Alta 
+Fidelidad (Prototipo 
+interactivo) 
+3) Documento de 
+selección de 
+herramientas (a criterio 
+del docente) 
+4) Evidencia de 
+configuración de las 
+herramientas 
+5) Repositorio GitHub + 
+README 
+diseño inicial de la solución 
+del proyecto elaborando 4 
+de 5 de los siguientes 
+artefactos: 
+1) Wireframes de baja 
+fidelidad 
+2) Mockups de Alta 
+Fidelidad (Prototipo 
+interactivo) 
+3) Documento de 
+selección de 
+herramientas (a criterio 
+del docente) 
+4) Evidencia de 
+configuración de las 
+herramientas 
+5) Repositorio GitHub + 
+README 
+proyecto y aborde el 
+diseño inicial de la 
+solución del proyecto 
+elaborando 3 de 5 de los 
+siguientes artefactos: 
+1) Wireframes de baja 
+fidelidad 
+2) Mockups de Alta 
+Fidelidad (Prototipo 
+interactivo) 
+3) Documento de 
+selección de 
+herramientas (a 
+criterio del docente) 
+4) Evidencia de 
+configuración de las 
+herramientas 
+5) Repositorio GitHub + 
+README 
+proyecto y aborde el 
+diseño inicial de la 
+solución del proyecto 
+elaborando 1 o 2 de 5 de 
+los siguientes artefactos: 
+1) Wireframes de baja 
+fidelidad 
+2) Mockups de Alta 
+Fidelidad (Prototipo 
+interactivo) 
+3) Documento de 
+selección de 
+herramientas (a 
+criterio del docente) 
+4) Evidencia de 
+configuración de las 
+herramientas 
+5) Repositorio GitHub + 
+README 
+4  3 2  1  
+
+=== PAGE 9 ===
+ 
+Criterio 
+ 
+Definición del 
+criterio 
+ 
+Estándar esperado 
+ 
+En proceso 2 
+ 
+En proceso 1 
+ 
+Inicial 
+ 
+Desarrollo 
+Front-End 
+Se espera que el 
+estudiante 
+implemente el 
+Front-End 
+aplicando patrones 
+UI profesionales y 
+documentando las 
+buenas prácticas 
+WPO que 
+consideran cinco 
+elementos. 
+ 
+Implementa el Front-End 
+aplicando patrones UI 
+profesionales y 
+documentando las buenas 
+prácticas WPO que 
+consideran los siguientes 
+elementos: 
+1) Estrategias WPO 
+aplicadas 
+2) Justificación 
+3) Efecto esperado sobre 
+las métricas 
+4) Herramientas o librerías 
+usadas 
+5) Impacto conseguido 
+Implementa el Front-End 
+aplicando patrones UI 
+profesionales y 
+documentando las buenas 
+prácticas WPO que 
+consideran 4 de 5 de los 
+siguientes elementos: 
+1) Estrategias WPO 
+aplicadas 
+2) Justificación 
+3) Efecto esperado sobre las 
+métricas 
+4) Herramientas o librerías 
+usadas  
+5) Impacto conseguido 
+Implementa el Front-End 
+aplicando patrones UI 
+profesionales y 
+documentando las buenas 
+prácticas WPO que 
+consideran 3 de 5 items 
+de los siguientes 
+elementos: 
+1) Estrategias WPO 
+aplicadas 
+2) Justificación 
+3) Efecto esperado sobre 
+las métricas 
+4) Herramientas o 
+librerías usadas 
+5) Impacto conseguido 
+Implementa el Front-End 
+aplicando patrones UI 
+profesionales y 
+documentando las buenas 
+prácticas WPO que 
+consideran 1 o 2 de los 
+siguientes elementos: 
+1) Estrategias WPO 
+aplicadas 
+2) Justificación 
+3) Efecto esperado sobre 
+las métricas 
+4) Herramientas o 
+librerías usadas  
+5) Impacto conseguido 
+4 3 2  1  
+Innovación del 
+Front End 
+Se espera que el 
+estudiante elabore 
+un diseño Front 
+End innovador, 
+aplicando ideas de 
+manera creativa y 
+original. 
+Elabora un diseño Front 
+End que evidencia un nivel 
+destacado de innovación en 
+la combinación de 
+componentes y patrones UI 
+evidenciando fluidez, 
+consistencia y facilidad de 
+uso, aplicando ideas de 
+manera creativa y original 
+para lograr un diseño único. 
+Elabora un diseño Front End 
+que presenta un enfoque 
+innovador en la combinación 
+de componentes y patrones 
+UI evidenciando fluidez y 
+facilidad de uso, aplicando 
+ideas de manera creativa y 
+original. 
+Elabora un diseño Front 
+End demostrando una 
+exploración general de 
+conceptos innovadores en 
+la combinación de 
+componentes y patrones 
+UI evidenciando facilidad 
+de uso. 
+Elabora un diseño Front 
+End demostrando una 
+exploración general de 
+conceptos innovadores en 
+la combinación de 
+componentes utilizados 
+en su diseño. 
+2 1.5 1 0.5 
+
+=== PAGE 10 ===
+Criterio 
+ 
+Definición del 
+criterio 
+ 
+Estándar esperado 
+ 
+En proceso 2 
+ 
+En proceso 1 
+ 
+Inicial 
+ 
+Sustentación 
+Se califica que el 
+estudiante 
+argumente el 
+proyecto con 
+claridad, 
+coherencia técnica 
+y dominio 
+conceptual, 
+explicando las 
+decisiones 
+tomadas en cada 
+fase del desarrollo. 
+ 
+Argumenta el proyecto con 
+claridad, coherencia técnica 
+y dominio conceptual, 
+explicando las decisiones 
+tomadas en cada fase del 
+desarrollo cumpliendo los 
+siguientes puntos: 
+1) Se expone los 
+principales aportes al 
+proyecto 
+2) Se sigue un orden lógico, 
+coherente y con capacidad 
+de síntesis 
+3) Se demuestra dominio 
+del tema, argumentando y 
+sustentando los artefactos 
+elaborados 
+4) Se muestra el 
+funcionamiento del Front-
+End 
+Argumenta el proyecto con 
+claridad, coherencia técnica 
+y dominio conceptual, 
+explicando las decisiones 
+tomadas en cada fase del 
+desarrollo cumpliendo 3 de 
+los siguientes puntos: 
+1) Se expone los principales 
+aportes al proyecto 
+2) Se sigue un orden lógico, 
+coherente y con capacidad 
+de síntesis 
+3) Se demuestra dominio del 
+tema, argumentando y 
+sustentando los artefactos 
+elaborados 
+4) Se muestra el 
+funcionamiento del Front-
+End 
+Argumenta el proyecto 
+con claridad, coherencia 
+técnica y dominio 
+conceptual, explicando las 
+decisiones tomadas en 
+cada fase del desarrollo 
+cumpliendo 2 de los 
+siguientes puntos: 
+1) Se expone los 
+principales aportes al 
+proyecto 
+2) Se sigue un orden 
+lógico, coherente y con 
+capacidad de síntesis 
+3) Se demuestra dominio 
+del tema, argumentando y 
+sustentando los artefactos 
+elaborados 
+4) Se muestra el 
+funcionamiento del Front-
+End 
+Argumenta el proyecto 
+con claridad, coherencia 
+técnica y dominio 
+conceptual, explicando las 
+decisiones tomadas en 
+cada fase del desarrollo 
+cumpliendo 1 de los 
+siguientes puntos:                   
+1) Se expone los 
+principales aportes al 
+proyecto 
+2) Se sigue un orden 
+lógico, coherente y con 
+capacidad de síntesis 
+3) Se demuestra dominio 
+del tema, argumentando y 
+sustentando los artefactos 
+elaborados 
+4) Se muestra el 
+funcionamiento del Front-
+End 
+2 1.5 1 0.5 
+ 
+ 
+ 
+ 
+ 
+
+=== PAGE 11 ===
+ 
+Anexo. Estructura del informe 
+ 
+ 
+1. Análisis Empresarial 
+a. Introducción 
+b. Descripción de la empresa 
+c. Visión 
+d. Misión 
+e. Análisis de Negocio (Lean Canvas) 
+f. Mapa de Procesos (AS-IS) 
+g. Oportunidades de mejora y modelo propuesto (TO-BE) 
+2. Planificación y Gestión del Proyecto 
+a. Project Charter 
+b. Alcance y objetivos del proyecto 
+c. Cronograma del proyecto (Diagrama de Gantt) 
+d. Planificación ágil – Sprint Planning 
+e. Roles y artefactos Scrum 
+f. Tablero Kanban/Scrum 
+g. Product Backlog 
+h. Historias de usuario 
+3. Selección y Configuración de Herramientas de desarrollo 
+a. Selección de herramientas 
+b. Evidencias de configuración de herramientas 
+c. Repositorio GitHub 
+i. Estructura del repositorio 
+ii. Archivo README.md 
+4. Prototipos 
+a. Wireframes de baja fidelidad 
+b. Mockups de alta fidelidad 
+c. Principios y buenas prácticas UX/UI aplicadas 
+d. Navegación y flujo de interacción del usuario 
+5. Gestión de riesgos del proyecto 
+a. Identificación de riesgos 
+b. Mapa de riesgos (Matriz de Probabilidad–Impacto + Heatmap) 
+c. Plan de gestión de riesgos 
+i. Estrategias de mitigación y respuesta 
+
+=== PAGE 12 ===
+ii. Seguimiento y control de riesgos 
+6. Definición de Métricas y Niveles de Servicio 
+a. Identificación de KPIs y métricas del sistema 
+b. Definición de SLA (Service Level Agreement) y SLO (Service Level Objective) 
+c. Plan de Medición y Monitoreo 
+i. Herramientas de monitoreo utilizadas 
+ii. Métricas recolectadas 
+7. Desarrollo e Implementación Técnica 
+a. Arquitectura general del sistema 
+b. Estructura del código fuente 
+c. Código optimizado y evidencia técnica 
+d. Estrategias WPO 
+i. Métricas antes y después de la optimización 
+ii. Estrategias implementadas 
+  Referencias Bibliográficas 
+

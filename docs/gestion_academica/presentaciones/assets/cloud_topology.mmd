@@ -1,0 +1,6 @@
+graph TD
+    User([Cliente / Dispositivo Movil]) -->|HTTPS / Edge CDN| GHP[GitHub Pages - PWA Frontend]
+    GHP -->|REST API HTTPS / CORS| RND[Render.com - Node.js Express API]
+    RND -->|Pool SSL Port 5432| PG[(PostgreSQL 18 Managed DB)]
+    RND -->|CORS Origin Restringido| GHP
+    Admin([Operador Administrativo]) -->|Auth JWT Bearer| GHP

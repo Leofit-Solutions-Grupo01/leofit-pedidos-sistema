@@ -1,0 +1,6 @@
+graph TD
+    Push([git push origin main]) --> Checkout[Checkout Repo v4]
+    Checkout --> Setup[Setup Node.js 22]
+    Setup --> Build[npm ci & npm run build]
+    Build --> SPA[Prep SPA 404.html & .nojekyll]
+    SPA --> Deploy([Deploy to gh-pages branch])

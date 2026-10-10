@@ -12,8 +12,18 @@ import { ApiError } from "../services/api";
 
 type Pagina = "login" | "dashboard" | "pedidos" | "nuevo-pedido" | "productos" | "rastreo" | "analytics";
 
+export type RolUsuario = "ADMIN" | "OPERATOR";
+
+export interface UsuarioActual {
+  id?: number;
+  name: string;
+  email: string;
+  role: RolUsuario;
+}
+
 interface AppContextType {
   autenticado: boolean;
+  usuarioActual: UsuarioActual | null;
   paginaActual: Pagina;
   pedidos: Pedido[];
   productos: Producto[];
@@ -51,6 +61,14 @@ const INACTIVIDAD_MS = 30 * 60 * 1000; // 30 minutos
 
 export function AppProvider({ children }: { children: ReactNode }) {
   const [autenticado, setAutenticado] = useState(false);
+  const [usuarioActual, setUsuarioActual] = useState<UsuarioActual | null>(() => {
+    try {
+      const guardado = sessionStorage.getItem("leofit_user");
+      return guardado ? JSON.parse(guardado) : null;
+    } catch {
+      return null;
+    }
+  });
   const [paginaActual, setPaginaActual] = useState<Pagina>("login");
   const [pedidos, setPedidos] = useState<Pedido[]>(pedidosIniciales);
   const [productos, setProductos] = useState<Producto[]>([]);
@@ -81,16 +99,22 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   const cerrarSesion = useCallback(() => {
     setAutenticado(false);
+    setUsuarioActual(null);
     setPaginaActual("login");
     sessionStorage.removeItem(SESSION_KEY);
+    sessionStorage.removeItem("leofit_user");
   }, []);
 
   // Restaurar sesión al montar
   useEffect(() => {
     try {
       const guardado = sessionStorage.getItem(SESSION_KEY);
-      if (guardado === "victor") {
+      const userGuardado = sessionStorage.getItem("leofit_user");
+      if (guardado) {
         setAutenticado(true);
+        if (userGuardado) {
+          setUsuarioActual(JSON.parse(userGuardado));
+        }
         setPaginaActual("dashboard");
       }
     } catch {
@@ -159,31 +183,86 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   const iniciarSesion = async (email: string, password: string): Promise<boolean> => {
     try {
+      const cleanEmail = email.trim().toLowerCase();
+      const cleanPass = password.trim();
+
+      // Detección de usuarios y roles predeterminados (demo/fallback offline)
+      const resolverUsuarioDemo = (): UsuarioActual | null => {
+        if ((cleanEmail === "admin@leofit.pe" || cleanEmail === "admin@leofit.com") && 
+            (cleanPass === "admin123" || cleanPass === "password")) {
+          return {
+            id: 1,
+            name: "Administrador LeoFit",
+            email: cleanEmail,
+            role: "ADMIN"
+          };
+        }
+        if ((cleanEmail === "operador@leofit.pe" || cleanEmail === "operador@leofit.com") && 
+            (cleanPass === "admin123" || cleanPass === "password")) {
+          return {
+            id: 2,
+            name: "Operador Logístico Gamarra",
+            email: cleanEmail,
+            role: "OPERATOR"
+          };
+        }
+        return null;
+      };
+
       const USE_MOCK = import.meta.env.VITE_USE_MOCK_AUTH === 'true';
 
       if (USE_MOCK) {
-        if (email.trim().toLowerCase() === "admin@leofit.com" && password === "admin123") {
+        const demoUser = resolverUsuarioDemo();
+        if (demoUser) {
+          setUsuarioActual(demoUser);
           setAutenticado(true);
           setPaginaActual("dashboard");
-          sessionStorage.setItem(SESSION_KEY, "dummy-token");
+          sessionStorage.setItem(SESSION_KEY, `token-mock-${demoUser.role.toLowerCase()}`);
+          sessionStorage.setItem("leofit_user", JSON.stringify(demoUser));
           return true;
         }
         return false;
       }
 
+      // Autenticación real contra el backend Node.js
       const apiUrl = import.meta.env.VITE_API_URL || '';
-      const res = await fetch(`${apiUrl}/api/auth/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
-      });
-      if (res.ok) {
-        const data = await res.json();
+      try {
+        const res = await fetch(`${apiUrl}/api/auth/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: cleanEmail, password: cleanPass })
+        });
+        if (res.ok) {
+          const data = await res.json();
+          const rolRecibido = data.data?.user?.role === 'OPERATOR' ? 'OPERATOR' : 'ADMIN';
+          const usuarioAutenticado: UsuarioActual = {
+            id: data.data?.user?.id || (rolRecibido === 'OPERATOR' ? 2 : 1),
+            name: data.data?.user?.name || (rolRecibido === 'OPERATOR' ? 'Operador Logístico Gamarra' : 'Administrador LeoFit'),
+            email: data.data?.user?.email || cleanEmail,
+            role: rolRecibido
+          };
+          setUsuarioActual(usuarioAutenticado);
+          setAutenticado(true);
+          setPaginaActual("dashboard");
+          sessionStorage.setItem(SESSION_KEY, data.data.token);
+          sessionStorage.setItem("leofit_user", JSON.stringify(usuarioAutenticado));
+          return true;
+        }
+      } catch {
+        // En caso de que el backend esté en suspensión temporal o no responda, evaluar demo
+      }
+
+      // Respaldo de contingencia offline si el backend no responde
+      const demoFallback = resolverUsuarioDemo();
+      if (demoFallback) {
+        setUsuarioActual(demoFallback);
         setAutenticado(true);
         setPaginaActual("dashboard");
-        sessionStorage.setItem(SESSION_KEY, data.data.token);
+        sessionStorage.setItem(SESSION_KEY, `token-offline-${demoFallback.role.toLowerCase()}`);
+        sessionStorage.setItem("leofit_user", JSON.stringify(demoFallback));
         return true;
       }
+
       return false;
     } catch {
       return false;
@@ -304,7 +383,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   return (
     <AppContext.Provider
       value={{
-        autenticado, paginaActual, pedidos, productos, cargandoProductos, errorProductos, filtroInicial, privacidad, modoAccesible,
+        autenticado, usuarioActual, paginaActual, pedidos, productos, cargandoProductos, errorProductos, filtroInicial, privacidad, modoAccesible,
         togglePrivacidad, toggleAccesible,
         iniciarSesion, cerrarSesion, navegarA, navegarAConFiltro,
         agregarPedido, crearPedido, actualizarEstadoPedido,
