@@ -187,9 +187,9 @@ footer: "Grupo 01 | Curso Integrador II: Software (100000S12F) | UTP 2026"
 # LEOFIT: SISTEMA WEB PWA DE GESTIÓN DE PEDIDOS
 ## Entrega APF3: Calidad Funcional, Interoperabilidad, Usabilidad ISO 25010 y Cloud V2
 
-**Curso:** Curso Integrador II: Software (100000S12F) — Ciclo 2026-II  
+**Curso:** Curso Integrador II: Software (100000S12F) — Ciclo 2026-I  
 **Institución:** Universidad Tecnológica del Perú (UTP)  
-**Organización Beneficiaria:** LeoFit Indumentaria & Nutrición Deportiva E.I.R.L.  
+**Organización Beneficiaria:** LeoFit Confecciones y Diseños Deportivos S.A.C.  
 
 **Equipo de Ingeniería (Grupo 01):**
 * **Lady Luz Loayza Rodriguez** — Scrum Master / Lead Dev
