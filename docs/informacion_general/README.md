@@ -20,7 +20,7 @@ docs/
 │   │   ├── INFORME_FINAL_APF2_LEOFIT.docx  # Documento Editable APF2
 │   │   └── INFORME_FINAL_APF2_LEOFIT.md    # Versión Markdown APF2
 │   ├── presentaciones/
-│   │   ├── APF3_LEOFIT_Presentacion.pdf    # Presentación unificada de sustentación final (28 láminas)
+│   │   ├── APF3_LEOFIT_Presentacion.pdf    # Presentación unificada definitiva de sustentación final (Blindada con Slides de Respaldo Técnico)
 │   │   ├── APF3_LEOFIT_Presentacion.pptx   # Versión PowerPoint
 │   │   ├── APF3_LEOFIT_Presentacion.html   # Versión web interactiva (Marp)
 │   │   ├── APF3_LEOFIT_Presentacion.md     # Fuente Marp con guion y tiempos por expositor
