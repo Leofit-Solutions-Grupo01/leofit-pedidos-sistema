@@ -209,8 +209,10 @@ draw_flow_arrow(161, 72, 167, 72, label="Ver Estado")
 draw_flow_arrow(178, 56, 178, 25.2, label="Entrega Exitosa")
 
 # Guardar figura
-output_path = 'diagrams/10_User_Flow_Navegacion.png'
+import os
+output_path = os.path.join('docs', 'diagramas', '10_User_Flow_Navegacion.png')
+os.makedirs(os.path.dirname(output_path), exist_ok=True)
 plt.tight_layout()
 plt.savefig(output_path, format='png', dpi=300, bbox_inches='tight', pad_inches=0.15)
 plt.close()
-print("User Flow de Alta Legibilidad generado en:", output_path)
+print("User Flow generado exitosamente en:", output_path)

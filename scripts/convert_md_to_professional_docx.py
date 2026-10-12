@@ -342,12 +342,26 @@ def convert_md_to_docx(md_filepath, docx_filepath):
     print(f"[DOCX OK] Guardado exitosamente: {docx_filepath}")
 
 def convert_all_md_to_docx():
-    print("=== INICIANDO CONVERSIÓN RIGUROSA DE MD A DOCX ===")
-    md_files = sorted(glob.glob("docs/*.md"))
+    import sys
+    if len(sys.argv) > 1:
+        md_path = sys.argv[1]
+        out_path = sys.argv[2] if len(sys.argv) > 2 else md_path.replace(".md", ".docx")
+        if os.path.exists(md_path):
+            convert_md_to_docx(md_path, out_path)
+        else:
+            print(f"[ERROR] Archivo Markdown no encontrado: {md_path}")
+            sys.exit(1)
+        return
+
+    print("=== INICIANDO CONVERSIÓN DE MD A DOCX ===")
+    md_files = sorted(glob.glob("docs/gestion_academica/entregas/*.md"))
+    if not md_files:
+        md_files = sorted(glob.glob("docs/**/*.md", recursive=True))
     for md in md_files:
         docx_out = md.replace(".md", ".docx")
         convert_md_to_docx(md, docx_out)
-    print(f"=== {len(md_files)} DOCUMENTOS DOCX GENERADOS EXITOSAMENTE ===")
+    print(f"=== {len(md_files)} DOCUMENTOS PROCESADOS EXITOSAMENTE ===")
 
 if __name__ == '__main__':
     convert_all_md_to_docx()
+

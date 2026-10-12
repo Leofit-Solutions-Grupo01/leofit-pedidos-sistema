@@ -284,8 +284,10 @@ ax.plot([174, 180], [3.6, 3.6], color=C_FLOW_DATA, linewidth=1.5, linestyle='--'
 ax.text(182, 3.6, "WebSocket / API", fontsize=7.8, color=C_TEXT_SUB, va='center')
 
 # Guardar figura
-output_path = 'diagrams/01_BPMN_TO-BE.png'
+import os
+output_path = os.path.join('docs', 'diagramas', '01_BPMN_TO-BE.png')
+os.makedirs(os.path.dirname(output_path), exist_ok=True)
 plt.tight_layout()
 plt.savefig(output_path, format='png', dpi=300, bbox_inches='tight', pad_inches=0.15)
 plt.close()
-print("Diagrama TO-BE de Alta Legibilidad generado exitosamente en:", output_path)
+print("Diagrama TO-BE generado exitosamente en:", output_path)

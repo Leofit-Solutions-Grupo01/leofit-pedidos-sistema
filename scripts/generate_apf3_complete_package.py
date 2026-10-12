@@ -25,7 +25,6 @@ ROOT = os.path.abspath(".")
 ENTREGAS_DIR = os.path.join(ROOT, "docs", "gestion_academica", "entregas")
 OUTPUT_DOCX = os.path.join(ENTREGAS_DIR, "INFORME_FINAL_APF3_LEOFIT.docx")
 OUTPUT_PDF = os.path.join(ENTREGAS_DIR, "INFORME_FINAL_APF3_LEOFIT.pdf")
-COMPAT_DOCX = os.path.join(ROOT, "docs", "INFORME_FINAL_APF3_LEOFIT.docx")
 
 os.makedirs(ENTREGAS_DIR, exist_ok=True)
 
@@ -1391,11 +1390,7 @@ def main():
     docx_size_mb = os.path.getsize(OUTPUT_DOCX) / (1024 * 1024)
     print(f"[DOCX OK] Guardado exitosamente ({docx_size_mb:.2f} MB).")
 
-    # Copia de compatibilidad en docs/INFORME_FINAL_APF3_LEOFIT.docx
-    shutil.copy2(OUTPUT_DOCX, COMPAT_DOCX)
-    print(f"[COPIA OK] Sincronizado en: {COMPAT_DOCX}")
-
-    # Exportación con Word COM
+    # Exportación con Word COM (genera docs/gestion_academica/entregas/INFORME_FINAL_APF3_LEOFIT.pdf)
     export_word_com(OUTPUT_DOCX, OUTPUT_PDF)
 
     print("\n================================================================================")
