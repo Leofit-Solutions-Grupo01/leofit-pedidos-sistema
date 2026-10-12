@@ -19,7 +19,7 @@ def export_all_docx_to_pdf():
     word = win32com.client.DispatchEx("Word.Application")
     word.Visible = False
     
-    docx_files = sorted(glob.glob("docs/*.docx"))
+    docx_files = sorted(glob.glob("docs/gestion_academica/entregas/INFORME_FINAL_APF*.docx"))
     
     for docx_file in docx_files:
         pdf_file = docx_file.replace(".docx", ".pdf")
@@ -29,6 +29,15 @@ def export_all_docx_to_pdf():
         print(f"Exportando a PDF: {docx_file} -> {pdf_file}...")
         try:
             wb = word.Documents.Open(abs_docx)
+            try:
+                wb.Fields.Update()
+                for toc in wb.TablesOfContents:
+                    toc.Update()
+                for tof in wb.TablesOfFigures:
+                    tof.Update()
+                wb.Save()
+            except Exception as fe:
+                print(f"[AVISO CAMPOS] {fe}")
             wb.SaveAs(abs_pdf, FileFormat=17) # 17 = wdFormatPDF
             wb.Close()
             file_size_kb = os.path.getsize(pdf_file) / 1024

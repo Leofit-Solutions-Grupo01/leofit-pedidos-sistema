@@ -382,7 +382,6 @@ export class PgOrderRepository implements IOrderRepository {
       JOIN districts d ON c.district_id = d.id
       JOIN payment_methods pm ON o.payment_method_id = pm.id
       LEFT JOIN users u ON o.user_id = u.id
-      JOIN payment_methods pm ON o.payment_method_id = pm.id
       WHERE 1=1
     `;
     const params: any[] = [];
@@ -401,7 +400,7 @@ export class PgOrderRepository implements IOrderRepository {
     const total = parseInt(countRes.rows[0].total, 10);
 
     let dataQuery = `
-      SELECT o.*, c.full_name as client_name, c.phone as client_phone, c.address as client_address, c.district as client_district,
+      SELECT o.*, c.full_name as client_name, c.phone as client_phone, c.address as client_address, d.name as client_district,
              u.name as user_name, pm.code as payment_method
       ${whereQuery}
       ORDER BY o.id DESC
@@ -467,14 +466,13 @@ export class PgOrderRepository implements IOrderRepository {
 
   async findById(id: number): Promise<Order | null> {
     const res = await this.pool.query(
-      `SELECT o.*, c.full_name as client_name, c.phone as client_phone, c.address as client_address, c.district as client_district, c.reference as client_reference,
+      `SELECT o.*, c.full_name as client_name, c.phone as client_phone, c.address as client_address, d.name as client_district, c.reference as client_reference,
               u.name as user_name, pm.code as payment_method
        FROM orders o
        JOIN clients c ON o.client_id = c.id
        JOIN districts d ON c.district_id = d.id
        JOIN payment_methods pm ON o.payment_method_id = pm.id
        LEFT JOIN users u ON o.user_id = u.id
-       JOIN payment_methods pm ON o.payment_method_id = pm.id
        WHERE o.id = $1`,
       [id]
     );
@@ -552,10 +550,11 @@ export class PgOrderRepository implements IOrderRepository {
           if (checkClient.rows.length > 0) {
             clientId = checkClient.rows[0].id;
           } else {
+            const districtId = await upsertDistrict(client, dto.clientData.district);
             const newClientRes = await client.query(
-              `INSERT INTO clients (full_name, phone, address, district, reference)
+              `INSERT INTO clients (full_name, phone, address, district_id, reference)
                VALUES ($1, $2, $3, $4, $5) RETURNING id`,
-              [dto.clientData.fullName, dto.clientData.phone, dto.clientData.address, dto.clientData.district, dto.clientData.reference || null]
+              [dto.clientData.fullName, dto.clientData.phone, dto.clientData.address, districtId, dto.clientData.reference || null]
             );
             clientId = newClientRes.rows[0].id;
           }
@@ -576,8 +575,7 @@ export class PgOrderRepository implements IOrderRepository {
           if (stock < item.quantity) {
             throw new Error(`Stock insuficiente para SKU ${vRes.rows[0].sku}. Disponible: ${stock}, pedido: ${item.quantity}`);
           }
-
-          await client.query('UPDATE product_variants SET stock = stock - $1, updated_at = CURRENT_TIMESTAMP WHERE id = $2', [item.quantity, item.variantId]);
+          // El descuento de stock lo ejecuta atómicamente el trigger trg_decrement_stock_on_order en PostgreSQL al insertar en order_items
           subtotal += item.unitPrice * item.quantity;
         }
 

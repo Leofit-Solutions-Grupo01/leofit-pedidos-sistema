@@ -171,3 +171,17 @@ interfaces.txt
 *.bak
 *.old
 *.orig
+
+# Presentaciones locales y temporales
+docs/gestion_academica/presentaciones/EXPOSICION_VALIDACION_CLOUD.md
+
+# Temporary scratch and render caches
+scratch/
+docs/bw_cache/
+diagrams/
+test_apa.docx
+
+# Redundant root docs outputs (official deliverables are in docs/gestion_academica/entregas/)
+docs/INFORME_FINAL_*.docx
+docs/INFORME_FINAL_*.pdf
+
