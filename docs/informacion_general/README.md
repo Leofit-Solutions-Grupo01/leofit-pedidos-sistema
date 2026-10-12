@@ -20,13 +20,12 @@ docs/
 │   │   ├── INFORME_FINAL_APF2_LEOFIT.docx  # Documento Editable APF2
 │   │   └── INFORME_FINAL_APF2_LEOFIT.md    # Versión Markdown APF2
 │   ├── presentaciones/
-│   │   ├── APF3_LEOFIT_Presentacion.pdf    # Diapositivas oficiales de sustentación final APF3
-│   │   ├── APF3_LEOFIT_Presentacion.pptx   # Diapositivas editables en PowerPoint (APF3)
-│   │   ├── APF3_LEOFIT_Presentacion.html   # Presentación Web interactiva (Marp Engine)
-│   │   ├── APF3_LEOFIT_Presentacion.md     # Código fuente Marp Markdown
-│   │   ├── APF2_LEOFIT_Presentacion.pdf    # Diapositivas de sustentación APF2 (En revisión docente)
-│   │   ├── APF2_LEOFIT_Presentacion.pptx   # Diapositivas PowerPoint APF2
-│   │   └── assets/                         # Diagramas técnicos y capturas de soporte
+│   │   ├── APF3_LEOFIT_Presentacion.pdf    # Presentación unificada de sustentación final (28 láminas)
+│   │   ├── APF3_LEOFIT_Presentacion.pptx   # Versión PowerPoint
+│   │   ├── APF3_LEOFIT_Presentacion.html   # Versión web interactiva (Marp)
+│   │   ├── APF3_LEOFIT_Presentacion.md     # Fuente Marp con guion y tiempos por expositor
+│   │   ├── GRUP01-Curso_Integrador_II_Software.pptx  # Presentación entregada en el APF2 (respaldo histórico)
+│   │   └── assets/                         # Diagramas y capturas de soporte
 │   ├── rubricas/                           # Rúbricas e indicaciones oficiales de evaluación UTP
 │   └── recursos/                           # Sílabo oficial y fichas institucionales
 │
