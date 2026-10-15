@@ -16,10 +16,23 @@ export default function Login() {
   const [mostrarPass, setMostrarPass] = useState(false);
   const [error, setError] = useState("");
   const [cargando, setCargando] = useState(false);
+  const [mensajeExpiracion, setMensajeExpiracion] = useState<string | null>(() => {
+    try {
+      const msg = sessionStorage.getItem("leofit_auth_message");
+      if (msg) {
+        sessionStorage.removeItem("leofit_auth_message");
+        return msg;
+      }
+    } catch {
+      // Ignora restricciones
+    }
+    return null;
+  });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+    setMensajeExpiracion(null);
     if (!email || !password) {
       setError("Completa todos los campos para continuar.");
       return;
@@ -49,6 +62,13 @@ export default function Login() {
 
         <div className="bg-white rounded-3xl shadow-2xl p-7 border border-slate-200">
           <h1 className="text-xl font-bold text-slate-900 mb-6">Iniciar Sesión</h1>
+
+          {mensajeExpiracion && (
+            <div className="flex items-start gap-2.5 bg-amber-50 border-2 border-amber-300 rounded-2xl px-4 py-3 mb-4">
+              <span className="material-icons text-amber-600 mt-0.5" style={{ fontSize: "18px" }}>schedule</span>
+              <p className="text-xs text-amber-900 font-semibold leading-relaxed">{mensajeExpiracion}</p>
+            </div>
+          )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>

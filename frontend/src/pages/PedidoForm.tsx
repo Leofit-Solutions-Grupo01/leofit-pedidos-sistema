@@ -6,7 +6,7 @@
  * @copyright (c) 2026 Grupo 01 - UTP. All rights reserved.
  */
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useApp } from "../context/AppContext";
 import ReciboModal from "../components/common/ReciboModal";
 import { Pedido, TipoEnvio, AgenciaEncomienda, MetodoPago, CUPONES_VALIDOS } from "../data/mockData";
@@ -29,7 +29,7 @@ interface ItemTemp {
 }
 
 export default function PedidoForm() {
-  const { productos, pedidos, crearPedido, navegarA, modoAccesible } = useApp();
+  const { productos, pedidos, crearPedido, navegarA, modoAccesible, cargarCatalogoLocal, cargandoProductos } = useApp();
   const [nombre, setNombre] = useState("");
   const [telefono, setTelefono] = useState("");
   const [dniRuc, setDniRuc] = useState("");
@@ -52,6 +52,13 @@ export default function PedidoForm() {
 
   const [productoSeleccionado, setProductoSeleccionado] = useState(productos[0]?.id || "");
   const [cantidad, setCantidad] = useState(1);
+
+  // Sincronizar productoSeleccionado cuando el catálogo se descargue o actualice
+  useEffect(() => {
+    if ((!productoSeleccionado || !productos.some((p) => p.id === productoSeleccionado)) && productos.length > 0) {
+      setProductoSeleccionado(productos[0].id);
+    }
+  }, [productos, productoSeleccionado]);
   const [items, setItems] = useState<ItemTemp[]>([]);
   const [pedidoCreado, setPedidoCreado] = useState<Pedido | null>(null);
   const [mostrarRecibo, setMostrarRecibo] = useState(false);
@@ -87,21 +94,27 @@ export default function PedidoForm() {
    * no sobrepase el stock disponible en almacén para evitar sobreventas.
    */
   const agregarItem = () => {
-    const prod = productos.find((p) => p.id === productoSeleccionado);
-    if (!prod) return;
+    const prodIdABuscar = productoSeleccionado || (productos.length > 0 ? productos[0].id : "");
+    const prod = productos.find((p) => p.id === prodIdABuscar) || (productos.length > 0 ? productos[0] : null);
+    if (!prod) {
+      alert("Por favor selecciona una prenda válida del catálogo.");
+      return;
+    }
+    const stockDisponible = typeof prod.stock === "number" ? prod.stock : 0;
+    const precioUnitario = typeof prod.precio === "number" ? prod.precio : 0;
     const existente = items.find((i) => i.productoId === prod.id);
     const cantExistente = existente ? existente.cantidad : 0;
     const cantNueva = cantExistente + cantidad;
 
-    if (cantNueva > prod.stock) {
-      alert(`Stock insuficiente. Solo quedan ${prod.stock} unidades de "${prod.nombre}".`);
+    if (cantNueva > stockDisponible) {
+      alert(`Stock insuficiente. Solo quedan ${stockDisponible} unidades de "${prod.nombre}".`);
       return;
     }
 
     if (existente) {
       setItems(items.map((i) => (i.productoId === prod.id ? { ...i, cantidad: cantNueva } : i)));
     } else {
-      setItems([...items, { productoId: prod.id, nombre: `${prod.nombre} (${prod.talla})`, cantidad, precio: prod.precio }]);
+      setItems([...items, { productoId: prod.id, nombre: prod.nombre, cantidad, precio: precioUnitario }]);
     }
     setCantidad(1);
   };
@@ -552,35 +565,58 @@ export default function PedidoForm() {
             </span>
             <span>3. Selección de Prendas</span>
           </h2>
-          <div className="flex flex-col sm:flex-row gap-2.5 mb-4 max-w-full">
-            <select
-              value={productoSeleccionado}
-              onChange={(e) => setProductoSeleccionado(e.target.value)}
-              className="w-full sm:flex-1 min-w-0 max-w-full text-[11px] sm:text-base border-2 border-slate-300 rounded-2xl px-2 sm:px-4 py-2.5 sm:py-3 focus:outline-none focus:border-[#0F223D] bg-slate-50 font-semibold text-slate-900 truncate"
-            >
-              {productos.map((p) => (
-                <option key={p.id} value={p.id}>
-                  {p.nombre} - S/{p.precio.toFixed(2)} (Stock: {p.stock})
-                </option>
-              ))}
-            </select>
-            <div className="flex flex-row gap-2 w-full sm:w-auto">
-              <input
-                type="number"
-                min="1"
-                value={cantidad}
-                onChange={(e) => setCantidad(Math.max(1, parseInt(e.target.value) || 1))}
-                className="w-16 sm:w-20 shrink-0 text-sm sm:text-base border-2 border-slate-300 rounded-2xl px-1 sm:px-3 py-2.5 sm:py-3 text-center focus:outline-none focus:border-[#0F223D] font-bold font-mono text-slate-900 bg-slate-50"
-              />
+          {productos.length === 0 ? (
+            <div className="p-4 bg-amber-50 border-2 border-amber-200 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-3 text-amber-950 mb-3">
+              <div className="flex items-center gap-2">
+                <span className="material-icons text-amber-600">info</span>
+                <span className="text-xs sm:text-sm font-semibold">
+                  {cargandoProductos ? "Cargando catálogo en línea de LeoFit..." : "Catálogo en línea vacío o temporalmente no disponible."}
+                </span>
+              </div>
               <button
-                onClick={agregarItem}
-                className="flex-1 min-w-0 px-2 sm:px-5 py-2.5 sm:py-3 bg-[#0F223D] hover:bg-[#1D3557] text-white rounded-2xl font-bold transition-all flex items-center justify-center gap-1 shadow-md text-xs sm:text-sm truncate"
+                type="button"
+                onClick={cargarCatalogoLocal}
+                className="px-3.5 py-2 bg-[#0F223D] hover:bg-slate-800 text-white text-xs font-bold rounded-xl transition-all shadow-sm active:scale-95 whitespace-nowrap"
               >
-                <span className="material-icons shrink-0" style={{ fontSize: "16px" }}>add</span>
-                <span className="truncate">Agregar</span>
+                Cargar Catálogo Local de Respaldo
               </button>
             </div>
-          </div>
+          ) : (
+            <div className="flex flex-col sm:flex-row gap-2.5 mb-4 max-w-full">
+              <select
+                value={productoSeleccionado}
+                onChange={(e) => setProductoSeleccionado(e.target.value)}
+                className="w-full sm:flex-1 min-w-0 max-w-full text-[11px] sm:text-base border-2 border-slate-300 rounded-2xl px-2 sm:px-4 py-2.5 sm:py-3 focus:outline-none focus:border-[#0F223D] bg-slate-50 font-semibold text-slate-900 truncate"
+              >
+                {productos.map((p) => {
+                  const precioStr = (p.precio ?? 0).toFixed(2);
+                  const stockStr = p.stock ?? 0;
+                  return (
+                    <option key={p.id} value={p.id}>
+                      {p.nombre} - S/{precioStr} (Stock: {stockStr})
+                    </option>
+                  );
+                })}
+              </select>
+              <div className="flex flex-row gap-2 w-full sm:w-auto">
+                <input
+                  type="number"
+                  min="1"
+                  value={cantidad}
+                  onChange={(e) => setCantidad(Math.max(1, parseInt(e.target.value) || 1))}
+                  className="w-16 sm:w-20 shrink-0 text-sm sm:text-base border-2 border-slate-300 rounded-2xl px-1 sm:px-3 py-2.5 sm:py-3 text-center focus:outline-none focus:border-[#0F223D] font-bold font-mono text-slate-900 bg-slate-50"
+                />
+                <button
+                  type="button"
+                  onClick={agregarItem}
+                  className="flex-1 min-w-0 px-2 sm:px-5 py-2.5 sm:py-3 bg-[#0F223D] hover:bg-[#1D3557] text-white rounded-2xl font-bold transition-all flex items-center justify-center gap-1 shadow-md text-xs sm:text-sm truncate active:scale-95"
+                >
+                  <span className="material-icons shrink-0" style={{ fontSize: "16px" }}>add</span>
+                  <span className="truncate">Agregar</span>
+                </button>
+              </div>
+            </div>
+          )}
 
           {items.length > 0 ? (
             <div className="border-2 border-slate-200 rounded-2xl overflow-x-auto shadow-inner mb-4">

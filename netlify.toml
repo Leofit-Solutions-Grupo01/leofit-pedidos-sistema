@@ -1,0 +1,29 @@
+# =============================================================================
+# Netlify Production & Preview Configuration - LeoFit PWA
+# =============================================================================
+
+[build]
+  base = "frontend"
+  publish = "dist"
+  command = "npm run build"
+
+[build.environment]
+  NODE_VERSION = "20.18.0"
+  NPM_FLAGS = "--legacy-peer-deps"
+  VITE_API_URL = "https://leofit-backend-api.onrender.com"
+  VITE_APP_ENV = "production"
+
+# SPA Single Page Application Redirects
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Security Headers (OWASP & Best Practices)
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"

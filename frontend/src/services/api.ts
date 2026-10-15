@@ -1,3 +1,5 @@
+import { triggerSessionExpired, validateAndDecodeJwt } from './authGuard';
+
 export class ApiError extends Error {
   constructor(public code: string, message: string) {
     super(message);
@@ -17,6 +19,12 @@ export async function apiFetch<T>(
   };
 
   if (token) {
+    const tokenCheck = validateAndDecodeJwt(token);
+    if (tokenCheck.expired) {
+      triggerSessionExpired('Tu sesión ha expirado. Por favor ingresa nuevamente.');
+      cerrarSesionFn?.();
+      throw new ApiError('UNAUTHORIZED', 'Tu sesión ha expirado');
+    }
     headers['Authorization'] = `Bearer ${token}`;
   }
 
@@ -49,6 +57,7 @@ export async function apiFetch<T>(
     }
 
     if (res.status === 401) {
+      triggerSessionExpired(errMessage || 'Sesión no autorizada o expirada');
       cerrarSesionFn?.();
       throw new ApiError('UNAUTHORIZED', errMessage);
     }

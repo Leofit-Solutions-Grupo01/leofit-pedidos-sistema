@@ -8,7 +8,9 @@
 
 import { createContext, useContext, useState, useEffect, useCallback, useRef, ReactNode } from "react";
 import { Pedido, Producto, EstadoPedido, pedidosIniciales, productosIniciales } from "../data/mockData";
-import { ApiError } from "../services/api";
+import { apiFetch, ApiError } from "../services/api";
+import { validateAndDecodeJwt, triggerSessionExpired, LEOFIT_AUTH_EXPIRED_EVENT } from "../services/authGuard";
+import { toCreateOrderDTO, normalizeProductCatalog } from "../services/mappers";
 
 type Pagina = "login" | "dashboard" | "pedidos" | "nuevo-pedido" | "productos" | "rastreo" | "analytics";
 
@@ -44,6 +46,7 @@ interface AppContextType {
   agregarProducto: (producto: Producto) => Promise<void>;
   editarProducto: (producto: Producto) => Promise<void>;
   eliminarProducto: (id: string) => Promise<void>;
+  cargarCatalogoLocal: () => void;
   /** true mientras se descargan pedidos y productos del servidor */
   cargando: boolean;
   /** Último error de comunicación con la API (null si no hay) */
@@ -105,12 +108,18 @@ export function AppProvider({ children }: { children: ReactNode }) {
     sessionStorage.removeItem("leofit_user");
   }, []);
 
-  // Restaurar sesión al montar
+  // Restaurar sesión al montar con guardrail de expiración de token
   useEffect(() => {
     try {
       const guardado = sessionStorage.getItem(SESSION_KEY);
       const userGuardado = sessionStorage.getItem("leofit_user");
       if (guardado) {
+        const check = validateAndDecodeJwt(guardado);
+        if (check.expired) {
+          triggerSessionExpired("Tu sesión anterior ha expirado. Por favor ingresa nuevamente.");
+          cerrarSesion();
+          return;
+        }
         setAutenticado(true);
         if (userGuardado) {
           setUsuarioActual(JSON.parse(userGuardado));
@@ -120,7 +129,32 @@ export function AppProvider({ children }: { children: ReactNode }) {
     } catch {
       // Ignora restricciones
     }
-  }, []);
+  }, [cerrarSesion]);
+
+  // Escuchar evento global de expiración de sesión (despachado por apiFetch o temporizadores)
+  useEffect(() => {
+    const onAuthExpired = () => {
+      cerrarSesion();
+    };
+    window.addEventListener(LEOFIT_AUTH_EXPIRED_EVENT, onAuthExpired);
+    return () => window.removeEventListener(LEOFIT_AUTH_EXPIRED_EVENT, onAuthExpired);
+  }, [cerrarSesion]);
+
+  // Monitoreo proactivo periódico (cada 30s) de caducidad de token
+  useEffect(() => {
+    if (!autenticado) return;
+    const interval = setInterval(() => {
+      const token = sessionStorage.getItem(SESSION_KEY);
+      if (token) {
+        const check = validateAndDecodeJwt(token);
+        if (check.expired) {
+          triggerSessionExpired("Tu sesión ha expirado por límite de tiempo de seguridad.");
+          cerrarSesion();
+        }
+      }
+    }, 30000);
+    return () => clearInterval(interval);
+  }, [autenticado, cerrarSesion]);
 
   // Cargar productos
   useEffect(() => {
@@ -150,19 +184,20 @@ export function AppProvider({ children }: { children: ReactNode }) {
       setCargandoProductos(true);
       setErrorProductos(null);
       try {
-        const { apiFetch } = await import('../services/api');
-        const data = await apiFetch<Producto[]>('/api/products');
-        setProductos(data);
-        sessionStorage.setItem(CACHE_KEY, JSON.stringify({ timestamp: Date.now(), data }));
+        const data = await apiFetch<any>('/api/products');
+        const normalized = normalizeProductCatalog(data);
+        setProductos(normalized);
+        sessionStorage.setItem(CACHE_KEY, JSON.stringify({ timestamp: Date.now(), data: normalized }));
       } catch (err: any) {
         setErrorProductos(err.message || 'Error al cargar productos');
+        setProductos([]);
       } finally {
         setCargandoProductos(false);
       }
     };
     
     loadProducts();
-  }, []);
+  }, [cerrarSesion]);
 
   // Auto-logout por inactividad (30 min)
   useEffect(() => {
@@ -301,9 +336,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     }
 
     try {
-      const { toCreateOrderDTO } = await import('../services/mappers');
       const dto = toCreateOrderDTO(datos);
-      const { apiFetch } = await import('../services/api');
       const data = await apiFetch<{ id: number | string }>('/api/orders', {
         method: 'POST',
         body: JSON.stringify(dto)
@@ -376,6 +409,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setProductos((prev) => prev.filter((p) => p.id !== id));
   };
 
+  const cargarCatalogoLocal = () => {
+    setProductos(productosIniciales);
+    setErrorProductos(null);
+  };
+
   const cargando = cargandoProductos;
   const errorApi = errorProductos;
   const limpiarError = () => setErrorProductos(null);
@@ -388,6 +426,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         iniciarSesion, cerrarSesion, navegarA, navegarAConFiltro,
         agregarPedido, crearPedido, actualizarEstadoPedido,
         agregarProducto, editarProducto, eliminarProducto,
+        cargarCatalogoLocal,
         cargando, errorApi, limpiarError,
       }}
     >

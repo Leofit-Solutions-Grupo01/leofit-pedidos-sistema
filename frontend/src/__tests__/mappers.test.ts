@@ -79,3 +79,53 @@ describe('mappers: toCreateOrderDTO', () => {
     expect(() => toCreateOrderDTO(sinDir)).toThrowError('La dirección de entrega es obligatoria.');
   });
 });
+
+describe('mappers: normalizeProductCatalog', () => {
+  it('T9: Normaliza productos del backend relacional con variantes a prendas planas', async () => {
+    const { normalizeProductCatalog } = await import('../services/mappers');
+    const backendData = [
+      {
+        id: 1,
+        name: "Camiseta Dry-Fit",
+        base_price: "60.00",
+        category_name: "Camisetas",
+        variants: [
+          { id: 101, size: "M", color: "Negro", stock: 15 },
+          { id: 102, size: "L", color: "Azul", stock: 8 }
+        ]
+      }
+    ];
+
+    const productos = normalizeProductCatalog(backendData);
+    expect(productos.length).toBe(2);
+    expect(productos[0].id).toBe("101");
+    expect(productos[0].nombre).toContain("Camiseta Dry-Fit - Negro (M)");
+    expect(productos[0].precio).toBe(60);
+    expect(productos[0].stock).toBe(15);
+    expect(productos[0].categoria).toBe("Deportiva");
+
+    expect(productos[1].id).toBe("102");
+    expect(productos[1].stock).toBe(8);
+  });
+
+  it('T10: Maneja productos planos de catálogo local o mockData', async () => {
+    const { normalizeProductCatalog } = await import('../services/mappers');
+    const mock = [
+      { id: "p1", nombre: "Gorra Pro", categoria: "Accesorios", talla: "Único", color: "Negro", precio: 30, stock: 5 }
+    ];
+
+    const productos = normalizeProductCatalog(mock);
+    expect(productos.length).toBe(1);
+    expect(productos[0].id).toBe("p1");
+    expect(productos[0].precio).toBe(30);
+    expect(productos[0].categoria).toBe("Accesorios");
+  });
+
+  it('T11: Devuelve array vacío de forma segura si la entrada no es un array', async () => {
+    const { normalizeProductCatalog } = await import('../services/mappers');
+    expect(normalizeProductCatalog(null)).toEqual([]);
+    expect(normalizeProductCatalog(undefined)).toEqual([]);
+    expect(normalizeProductCatalog("invalido")).toEqual([]);
+  });
+});
+
