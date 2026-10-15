@@ -23,15 +23,38 @@ export function createApp(): Express {
     crossOriginResourcePolicy: { policy: 'cross-origin' }
   }));
 
-  // CORS Policy
+  // CORS Policy (Permite GitHub Pages, Netlify y Desarrollo Local)
   if (process.env.NODE_ENV === 'production' && !process.env.CORS_ORIGIN) {
     throw new Error('FATAL ERROR: CORS_ORIGIN must be defined in production environment.');
   }
   const corsOrigin = process.env.CORS_ORIGIN || 'http://localhost:5173';
+  const allowedList = corsOrigin.split(',').map((o) => o.trim()).filter(Boolean);
+
   app.use(cors({
-    origin: corsOrigin.split(','),
+    origin: (origin, callback) => {
+      // Peticiones sin origen (ej. curl, salud, mobile, postman)
+      if (!origin) return callback(null, true);
+
+      // Coincidencia exacta con lista configurada
+      if (allowedList.includes(origin) || allowedList.includes('*')) {
+        return callback(null, true);
+      }
+
+      // Soporte dinámico para Netlify, GitHub Pages y Localhost
+      if (
+        origin.endsWith('.netlify.app') ||
+        origin.endsWith('.github.io') ||
+        origin.endsWith('.vercel.app') ||
+        /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)
+      ) {
+        return callback(null, true);
+      }
+
+      return callback(new Error(`CORS bloqueado para el origen: ${origin}`));
+    },
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
   }));
 
   // Request Rate Limiting

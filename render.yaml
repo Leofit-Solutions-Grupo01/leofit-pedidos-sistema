@@ -23,7 +23,7 @@ services:
       - key: WEBHOOK_SECRET
         sync: false
       - key: CORS_ORIGIN
-        value: "https://leofit-solutions-grupo01.github.io"
+        value: "https://leofit-solutions-grupo01.github.io,https://leofit-pedidos-sistema.netlify.app"
 
 databases:
   # 2. PostgreSQL 16 Managed Database
