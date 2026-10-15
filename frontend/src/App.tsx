@@ -18,45 +18,23 @@ import Analytics from "./pages/Analytics";
 import ErrorBoundary from "./components/common/ErrorBoundary";
 
 function AppContent() {
-  const { autenticado, paginaActual, navegarA } = useApp();
+  const { autenticado, paginaActual } = useApp();
 
   if (!autenticado) return <Login />;
 
   return (
     <div className="min-h-screen bg-[#F1FAEE]">
       <Navbar />
-      {(paginaActual === "dashboard" || paginaActual === "nuevo-pedido") && <Dashboard />}
+      {paginaActual === "dashboard" && <Dashboard />}
+      {paginaActual === "nuevo-pedido" && (
+        <div className="pt-16 pb-32 sm:pb-28 min-h-screen bg-[#F1FAEE]">
+          <PedidoForm />
+        </div>
+      )}
       {paginaActual === "analytics" && <Analytics />}
       {paginaActual === "pedidos" && <PedidosLista />}
       {paginaActual === "productos" && <ProductosGestion />}
       {paginaActual === "rastreo" && <RastreoPublico />}
-      
-      {/* Modal Nuevo Pedido con cierre accesible por backdrop y botón */}
-      {paginaActual === "nuevo-pedido" && (
-        <div
-          onClick={() => navegarA("dashboard")}
-          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-900/60 backdrop-blur-sm animate-in fade-in"
-          role="dialog"
-          aria-modal="true"
-          aria-label="Formulario de Nuevo Pedido"
-        >
-          <div
-            onClick={(e) => e.stopPropagation()}
-            className="bg-white w-full max-w-4xl max-h-[95vh] overflow-y-auto rounded-3xl shadow-2xl relative border border-slate-200"
-          >
-            {/* Botón flotante para cerrar modal */}
-            <button
-              onClick={() => navegarA("dashboard")}
-              className="absolute top-4 right-4 z-20 w-9 h-9 bg-slate-100 hover:bg-red-50 text-slate-500 hover:text-red-600 rounded-full flex items-center justify-center transition-colors shadow-sm"
-              aria-label="Cerrar modal"
-              title="Cerrar modal y volver al panel principal"
-            >
-              <span className="material-icons" style={{ fontSize: "20px" }}>close</span>
-            </button>
-            <PedidoForm />
-          </div>
-        </div>
-      )}
     </div>
   );
 }

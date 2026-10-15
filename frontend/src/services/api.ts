@@ -56,8 +56,18 @@ export async function apiFetch<T>(
       // Ignore if not json
     }
 
-    if (res.status === 401) {
-      triggerSessionExpired(errMessage || 'Sesión no autorizada o expirada');
+    const isTokenExpiredOrInvalid =
+      res.status === 401 ||
+      (res.status === 403 && (
+        errCode === 'FORBIDDEN' ||
+        errMessage.toLowerCase().includes('token') ||
+        errMessage.toLowerCase().includes('expirado') ||
+        errMessage.toLowerCase().includes('inválido') ||
+        errMessage.toLowerCase().includes('sesión')
+      ));
+
+    if (isTokenExpiredOrInvalid) {
+      triggerSessionExpired(errMessage || 'Token de sesión inválido o expirado. Inicie sesión nuevamente.');
       cerrarSesionFn?.();
       throw new ApiError('UNAUTHORIZED', errMessage);
     }

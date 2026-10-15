@@ -57,9 +57,26 @@ export default function RecentActivity() {
   }
 
   if (error) {
+    const esErrorAuth =
+      error.toLowerCase().includes("token") ||
+      error.toLowerCase().includes("sesión") ||
+      error.toLowerCase().includes("expirado") ||
+      error.toLowerCase().includes("unauthorized");
+
     return (
-      <div className="bg-red-50 rounded-3xl p-5 shadow-sm border border-red-200 text-red-800 text-sm">
-        <span className="font-bold">Error: </span> {error}
+      <div className="bg-amber-50/90 rounded-3xl p-4 sm:p-5 shadow-sm border border-amber-200 text-amber-950 text-xs sm:text-sm flex flex-wrap items-center justify-between gap-3">
+        <div className="flex items-center gap-2.5">
+          <span className="material-icons text-amber-600 text-lg">info</span>
+          <span>{esErrorAuth ? "Sesión expirada o no autorizada. Por favor renueva tu acceso." : `Aviso: ${error}`}</span>
+        </div>
+        {esErrorAuth && (
+          <button
+            onClick={() => window.location.reload()}
+            className="px-3.5 py-1.5 bg-[#0F223D] hover:bg-slate-800 text-white font-bold rounded-xl text-xs transition-all shadow-sm active:scale-95 shrink-0"
+          >
+            Iniciar Sesión
+          </button>
+        )}
       </div>
     );
   }

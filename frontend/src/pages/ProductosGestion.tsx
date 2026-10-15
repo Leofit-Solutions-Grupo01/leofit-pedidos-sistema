@@ -96,7 +96,7 @@ export default function ProductosGestion() {
             className="flex items-center gap-1.5 sm:gap-2 bg-[#E63946] hover:bg-[#C62828] active:scale-95 text-white px-4 sm:px-5 py-2.5 sm:py-3 rounded-2xl text-sm sm:text-base font-bold transition-all shadow-lg shadow-red-500/30 ring-2 ring-white"
           >
             <span className="material-icons" style={{ fontSize: "18px" }}>add</span>
-            <span>+ Nueva Prenda</span>
+            <span>Nueva Prenda</span>
           </button>
         </div>
 
