@@ -204,16 +204,19 @@ export default function PedidoForm() {
 
     // Garantizar que la clave de idempotencia se mantenga idéntica entre reintentos manuales por error de red
     if (!borradorPedidoRef.current) {
+      const uuid = typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : `order-${Date.now()}`;
       borradorPedidoRef.current = {
         id: `o${Date.now()}`,
-        numero: siguienteNumero()
+        numero: siguienteNumero(),
+        idempotencyKey: uuid
       };
     }
-    const { id: draftId, numero: draftNumero } = borradorPedidoRef.current;
+    const { id: draftId, numero: draftNumero, idempotencyKey: draftKey } = borradorPedidoRef.current as any;
 
-    const nuevoPedido: Pedido = {
+    const nuevoPedido: Pedido & { idempotencyKey?: string } = {
       id: draftId,
       numero: draftNumero,
+      idempotencyKey: draftKey,
       canal,
       cliente: {
         nombre: nombre.trim(),

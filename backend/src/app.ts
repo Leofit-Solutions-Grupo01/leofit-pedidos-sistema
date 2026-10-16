@@ -26,11 +26,11 @@ export function createApp(isDrainingSupplier?: () => boolean): Express {
     referrerPolicy: { policy: 'strict-origin-when-cross-origin' }
   }));
 
-  // Draining & Graceful Disconnect Middleware (quitar de /ready antes de apagar)
+  // Draining & Graceful Disconnect Middleware (quitar la instancia de cualquier sonda de Render/AWS/Cloudflare)
   app.use((req, res, next) => {
     if (isDrainingSupplier && isDrainingSupplier()) {
       res.setHeader('Connection', 'close');
-      if (req.path === '/api/health/ready') {
+      if (req.path.includes('/health')) {
         res.setHeader('Retry-After', '5');
         res.status(503).json({
           status: 'DRAINING',

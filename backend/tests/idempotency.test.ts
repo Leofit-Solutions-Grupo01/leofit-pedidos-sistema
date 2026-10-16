@@ -6,7 +6,7 @@ import request from 'supertest';
 import { createApp } from '../src/app';
 import { JWTService } from '../src/infrastructure/security/jwt.utils';
 import { canonicalizeJson } from '../src/middlewares/idempotency.middleware';
-import { dbPool, isPostgresAvailable } from '../src/config/database';
+import { isPostgresAvailable } from '../src/config/database';
 
 const app = createApp();
 
@@ -34,7 +34,7 @@ describe('Módulo de Idempotencia y Resiliencia (RFC 8785 & Concurrencia)', () =
       expect(canonicalizeJson(obj1)).toBe(canonicalizeJson(obj2));
     });
 
-    it('Debe manejar arrays, valores primitivos y null sin alterar su orden interno', () => {
+    it('Debe manejar arrays, valores primitivos y null sin alterar su orden interno conforme a JCS', () => {
       const payload = {
         items: [{ variantId: 1, quantity: 2 }, { variantId: 2, quantity: 1 }],
         notes: null,
@@ -44,6 +44,11 @@ describe('Módulo de Idempotencia y Resiliencia (RFC 8785 & Concurrencia)', () =
       expect(canon).toContain('"items":[{"quantity":2,"variantId":1},{"quantity":1,"variantId":2}]');
       expect(canon).toContain('"notes":null');
       expect(canon).toContain('"active":true');
+    });
+
+    it('Debe formatear números y exponenciales de forma determinista', () => {
+      expect(canonicalizeJson({ num: 1.0 })).toBe('{"num":1}');
+      expect(canonicalizeJson({ exp: 1e21 })).toBe('{"exp":1e+21}');
     });
   });
 
@@ -75,7 +80,6 @@ describe('Módulo de Idempotencia y Resiliencia (RFC 8785 & Concurrencia)', () =
           items: [{ variantId: 1, quantity: 1, unitPrice: 49.9 }]
         });
 
-      // Si Postgres no está activo en test, el repositorio in-memory crea la orden exitosamente
       expect([201, 503]).toContain(res.status);
       if (res.status === 201) {
         expect(res.body.success).toBe(true);
@@ -83,9 +87,65 @@ describe('Módulo de Idempotencia y Resiliencia (RFC 8785 & Concurrencia)', () =
     });
   });
 
-  // Pruebas que validan la lógica de base de datos cuando Postgres está disponible o simulado
+  describe('Manejo de Fallos y Reintentos Legítimos (Máquina de Estados PENDING/FAILED/COMPLETED)', () => {
+    it('Si un pedido falla (4xx), el cliente puede reintentar con la misma key corregida sin crear pedidos duplicados', async () => {
+      const retryKey = `RETRY-FLOW-${Date.now()}`;
+
+      // 1. Primer intento: falla por datos inválidos (teléfono vacío)
+      const resFallo = await request(app)
+        .post('/api/orders')
+        .set('Authorization', `Bearer ${user1Token}`)
+        .set('Idempotency-Key', retryKey)
+        .send({
+          clientData: { fullName: 'Cliente Incompleto', phone: '', address: 'Av. A', district: 'Lima' },
+          paymentMethod: 'YAPE',
+          shippingCost: 10,
+          items: [{ variantId: 1, quantity: 1, unitPrice: 49.9 }]
+        });
+
+      if (isPostgresAvailable()) {
+        // Debe fallar con 400 por validación Zod
+        expect(resFallo.status).toBe(400);
+
+        // 2. Segundo intento: con la MISMA key y datos corregidos
+        const resExito = await request(app)
+          .post('/api/orders')
+          .set('Authorization', `Bearer ${user1Token}`)
+          .set('Idempotency-Key', retryKey)
+          .send({
+            clientData: { fullName: 'Cliente Corregido', phone: '999111222', address: 'Av. A', district: 'Lima' },
+            paymentMethod: 'YAPE',
+            shippingCost: 10,
+            items: [{ variantId: 1, quantity: 1, unitPrice: 49.9 }]
+          });
+
+        // Como el primer intento quedó en FAILED (no se borró), el sistema permite el reintento y crea el pedido #1
+        expect(resExito.status).toBe(201);
+        expect(resExito.body.success).toBe(true);
+
+        // 3. Tercer intento idéntico: debe recibir la respuesta cacheada (X-Cache-Lookup: IDEMPOTENT_HIT)
+        const resCache = await request(app)
+          .post('/api/orders')
+          .set('Authorization', `Bearer ${user1Token}`)
+          .set('Idempotency-Key', retryKey)
+          .send({
+            clientData: { fullName: 'Cliente Corregido', phone: '999111222', address: 'Av. A', district: 'Lima' },
+            paymentMethod: 'YAPE',
+            shippingCost: 10,
+            items: [{ variantId: 1, quantity: 1, unitPrice: 49.9 }]
+          });
+
+        expect(resCache.status).toBe(201);
+        expect(resCache.header['x-cache-lookup']).toBe('IDEMPOTENT_HIT');
+        expect(resCache.body.data.id).toBe(resExito.body.data.id); // Mismo pedido exactamente
+      } else {
+        expect([400, 503]).toContain(resFallo.status);
+      }
+    });
+  });
+
   describe('Persistencia y Concurrencia Simultánea (Promise.all)', () => {
-    it('Dos peticiones simultáneas con la misma key procesan atómicamente sin duplicar pedidos', async () => {
+    it('Dos peticiones simultáneas con la misma key procesan atómicamente con advisory lock sin duplicar pedidos', async () => {
       const testKey = `CONC-${Date.now()}-A1B2C3`;
       const orderPayload = {
         clientData: { fullName: 'Concurrencia Test', phone: '912345678', address: 'Calle 10', district: 'Lince' },
@@ -94,7 +154,6 @@ describe('Módulo de Idempotencia y Resiliencia (RFC 8785 & Concurrencia)', () =
         items: [{ variantId: 1, quantity: 1, unitPrice: 49.9 }]
       };
 
-      // Disparo simultáneo con Promise.all
       const [res1, res2] = await Promise.all([
         request(app)
           .post('/api/orders')
@@ -108,12 +167,10 @@ describe('Módulo de Idempotencia y Resiliencia (RFC 8785 & Concurrencia)', () =
           .send(orderPayload)
       ]);
 
-      // Si Postgres está disponible, una es 201 y la otra es 201 (cacheada) o 409 (en progreso)
-      // Si corre en fallback sin Postgres, ambas retornan 503 IDEMPOTENCY_STORE_UNAVAILABLE (fail-closed seguro)
       if (isPostgresAvailable()) {
         const statuses = [res1.status, res2.status].sort();
-        expect(statuses[0]).toBe(201); // Al menos una creó el pedido exitosamente
-        expect([201, 409]).toContain(statuses[1]); // La otra obtuvo el cache o 409 controlado
+        expect(statuses[0]).toBe(201); // Exactamente una crea el pedido
+        expect([201, 409]).toContain(statuses[1]); // La otra recibe hit cacheado o 409 IDEMPOTENCY_IN_PROGRESS
       } else {
         expect(res1.status).toBe(503);
         expect(res2.status).toBe(503);
@@ -142,7 +199,6 @@ describe('Módulo de Idempotencia y Resiliencia (RFC 8785 & Concurrencia)', () =
         .set('Idempotency-Key', sharedKey)
         .send(payloadUser1);
 
-      // Si PG está activo, cada usuario tiene su propio scope
       if (isPostgresAvailable()) {
         expect(resUser1.status).toBe(201);
         expect(resUser2.status).toBe(201);

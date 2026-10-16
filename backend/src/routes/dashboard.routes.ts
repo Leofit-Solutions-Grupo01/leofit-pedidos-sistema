@@ -20,14 +20,26 @@ healthRouter.get('/ready', readyHealthRateLimiter, HealthController.readiness);
 
 /**
  * Endpoint de mantenimiento invocado por cron jobs externos (Render Cron / GitHub Actions / cron-job.org).
- * Protegido por secreto administrativo (ADMIN_CLEANUP_SECRET) o Bearer token de admin.
+ * Protegido estrictamente por cabeceras (Authorization: Bearer <CRON_SECRET> o X-Admin-Secret).
+ * Nunca admite secretos en query parameters (?secret=...) para evitar filtraciones en logs y proxys.
  */
 healthRouter.post('/cleanup-idempotency', async (req, res) => {
   const secret = process.env.ADMIN_CLEANUP_SECRET || 'leofit_internal_cleanup_secret';
-  const provided = req.headers['x-admin-secret'] || req.query.secret;
+  
+  const authHeader = req.headers.authorization;
+  const bearerToken = authHeader && authHeader.startsWith('Bearer ') ? authHeader.split(' ')[1] : null;
+  const adminSecretHeader = req.headers['x-admin-secret'];
 
-  if (provided !== secret) {
-    res.status(403).json({ success: false, error: 'Acceso no autorizado al endpoint de mantenimiento.' });
+  const providedSecret = bearerToken || adminSecretHeader;
+
+  if (!providedSecret || providedSecret !== secret) {
+    res.status(401).json({
+      success: false,
+      error: {
+        code: 'UNAUTHORIZED_MAINTENANCE',
+        message: 'Acceso no autorizado. Se requiere cabecera Authorization: Bearer <CRON_SECRET> o X-Admin-Secret.'
+      }
+    });
     return;
   }
 
