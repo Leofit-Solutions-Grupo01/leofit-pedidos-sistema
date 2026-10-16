@@ -238,8 +238,9 @@ export class OrderController {
         return;
       }
 
-      const estado = ((order as any).estado || order.status || '').toUpperCase();
-      if (estado !== 'PENDIENTE' && estado !== 'RECIBIDO') {
+      let estado = ((order as any).estado || (order as any).status || '').toUpperCase();
+      if (estado === 'RECIBIDO') estado = 'PENDIENTE';
+      if (estado !== 'PENDIENTE') {
         res.status(409).json({
           success: false,
           error: { code: 'ORDER_NOT_PAYABLE', message: `El pedido está en estado ${estado} y no puede pagarse.`, estado }
@@ -247,12 +248,31 @@ export class OrderController {
         return;
       }
 
-      const totalCents = Math.round(Number(order.total_amount) * 100);
+      // Revalidación de defensa en profundidad: recomputar suma de ítems + envío vs total
+      const orderTotalCents = Math.round(Number(order.total_amount) * 100);
+      if (order.items && order.items.length > 0) {
+        const itemsSum = order.items.reduce(
+          (acc: number, item: any) => acc + Number(item.quantity) * Number(item.unit_price || item.unitPrice || 0),
+          0
+        );
+        const expectedTotalCents = Math.round((itemsSum + Number(order.shipping_cost || 0)) * 100);
+        if (Math.abs(expectedTotalCents - orderTotalCents) > 1) {
+          res.status(500).json({
+            success: false,
+            error: {
+              code: 'ORDER_TOTAL_MISMATCH',
+              message: 'Inconsistencia detectada entre el cálculo de ítems y el total del pedido.'
+            }
+          });
+          return;
+        }
+      }
+
       const email = order.client?.phone ? `${order.client.phone}@cliente.leofit.pe` : 'cliente@leofit.pe';
 
       const checkout = await createCulqiCheckout({
         id: order.id,
-        totalCents,
+        totalCents: orderTotalCents,
         email
       });
 

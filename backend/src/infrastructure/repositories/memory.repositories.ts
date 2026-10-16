@@ -551,6 +551,9 @@ export class MemoryOrderRepository implements IOrderRepository {
       created_at: new Date(),
       updated_at: new Date()
     };
+    (newOrder as any).estado = 'PENDIENTE';
+    (newOrder as any).total_cents = Math.round(totalAmount * 100);
+    (newOrder as any).currency = 'PEN';
 
     InMemoryDataStore.orders.push(newOrder);
 
@@ -574,6 +577,7 @@ export class MemoryOrderRepository implements IOrderRepository {
 
     const prev = InMemoryDataStore.orders[idx].status;
     InMemoryDataStore.orders[idx].status = newStatus;
+    (InMemoryDataStore.orders[idx] as any).estado = newStatus;
     InMemoryDataStore.orders[idx].updated_at = new Date();
 
     InMemoryDataStore.orderStatusHistory.push({

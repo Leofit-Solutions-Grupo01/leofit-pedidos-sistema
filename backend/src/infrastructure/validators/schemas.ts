@@ -56,7 +56,7 @@ export const CreateClientSchema = z.object({
 export const CreateOrderSchema = z.object({
   clientId: z.number().int().positive().optional(),
   clientData: CreateClientSchema.optional(),
-  paymentMethod: z.enum(['YAPE', 'PLIN', 'TRANSFERENCIA', 'CONTRAENTREGA', 'EFECTIVO']),
+  paymentMethod: z.enum(['YAPE', 'PLIN', 'TRANSFERENCIA', 'CONTRAENTREGA', 'EFECTIVO', 'CULQI', 'NIUBIZ', 'TARJETA']),
   shippingCost: z.number().min(0).default(0),
   shippingType: z.enum(['LIMA', 'PROVINCIA']).optional(),
   destinationCity: z.string().min(2).max(100).optional(),

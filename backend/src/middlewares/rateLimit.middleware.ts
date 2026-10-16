@@ -106,3 +106,25 @@ export const refreshLimiter = rateLimit({
   }
 });
 
+/**
+ * Limitador estricto para generación de links de pago (/api/orders/:id/payment-link).
+ * Permite un máximo de 5 peticiones por minuto por usuario para evitar saturar Culqi.
+ */
+export const paymentLinkLimiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minuto
+  max: 5,
+  keyGenerator: (req) => `u:${(req as any).user?.userId ?? (req as any).user?.id ?? req.ip}`,
+  standardHeaders: true,
+  legacyHeaders: false,
+  handler: (req: Request, res: Response) => {
+    res.setHeader('Retry-After', '60');
+    res.status(429).json({
+      success: false,
+      error: {
+        code: 'TOO_MANY_PAYMENT_LINKS',
+        message: 'Ha superado el límite de generación de links de pago (máximo 5 por minuto).'
+      }
+    });
+  }
+});
+
