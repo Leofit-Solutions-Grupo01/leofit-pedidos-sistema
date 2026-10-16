@@ -8,6 +8,7 @@ import { authenticateToken } from '../middlewares/auth.middleware';
 import { requireRole } from '../middlewares/role.middleware';
 import { validateBody } from '../middlewares/validate.middleware';
 import { CreateProductSchema, UpdateProductSchema, StockUpdateSchema } from '../infrastructure/validators/schemas';
+import { audit } from '../middlewares/audit.middleware';
 
 const router = Router();
 
@@ -25,9 +26,9 @@ router.get('/:id', (req, res, next) => {
 }, ProductController.getProductById);
 
 // Protected inventory management (ADMIN / OPERATOR)
-router.post('/', authenticateToken, requireRole('ADMIN'), validateBody(CreateProductSchema), ProductController.createProduct);
-router.put('/:id', authenticateToken, requireRole('ADMIN'), validateBody(UpdateProductSchema), ProductController.updateProduct);
-router.patch('/variant/:variantId/stock', authenticateToken, validateBody(StockUpdateSchema), ProductController.updateStock);
-router.delete('/:id', authenticateToken, requireRole('ADMIN'), ProductController.deleteProduct);
+router.post('/', authenticateToken, requireRole('ADMIN'), validateBody(CreateProductSchema), audit('CREATE', 'product'), ProductController.createProduct);
+router.put('/:id', authenticateToken, requireRole('ADMIN'), validateBody(UpdateProductSchema), audit('UPDATE', 'product'), ProductController.updateProduct);
+router.patch('/variant/:variantId/stock', authenticateToken, validateBody(StockUpdateSchema), audit('UPDATE_STOCK', 'product_variant'), ProductController.updateStock);
+router.delete('/:id', authenticateToken, requireRole('ADMIN'), audit('DELETE', 'product'), ProductController.deleteProduct);
 
 export default router;

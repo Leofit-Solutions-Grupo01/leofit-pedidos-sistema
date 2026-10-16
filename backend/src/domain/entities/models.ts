@@ -105,6 +105,8 @@ export interface Product {
   image_url?: string | null;
   /** Bandera de visibilidad (borrado lógico) */
   is_active: boolean;
+  /** Marca temporal de soft delete (410 GONE) */
+  deleted_at?: Date | string | null;
   /** Colección de variantes de inventario asociadas al producto */
   variants?: ProductVariant[];
   /** Marca temporal de creación */
@@ -246,6 +248,8 @@ export interface Order {
   trackingNumber?: string;
   /** Notas e instrucciones especiales para el empaque o delivery */
   notes?: string | null;
+  /** Marca temporal de soft delete */
+  deleted_at?: Date | string | null;
   /** Líneas de productos asociadas al pedido */
   items?: OrderItem[];
   /** Historial cronológico de cambios de estado */

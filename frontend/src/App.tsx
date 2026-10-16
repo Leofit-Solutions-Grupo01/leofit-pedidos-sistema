@@ -16,6 +16,7 @@ import ProductosGestion from "./pages/ProductosGestion";
 import RastreoPublico from "./pages/RastreoPublico";
 import Analytics from "./pages/Analytics";
 import ErrorBoundary from "./components/common/ErrorBoundary";
+import { SessionExpiredModal } from "./components/common/SessionExpiredModal";
 
 function AppContent() {
   const { autenticado, paginaActual } = useApp();
@@ -35,6 +36,7 @@ function AppContent() {
       {paginaActual === "pedidos" && <PedidosLista />}
       {paginaActual === "productos" && <ProductosGestion />}
       {paginaActual === "rastreo" && <RastreoPublico />}
+      <SessionExpiredModal />
     </div>
   );
 }

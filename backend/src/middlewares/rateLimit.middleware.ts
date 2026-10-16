@@ -84,3 +84,25 @@ export const authRateLimiter = rateLimit({
     });
   }
 });
+
+/**
+ * Limitador para el endpoint de refresco de tokens `/api/auth/refresh`.
+ * Permite 30 peticiones por minuto por IP para rotación normal y previene fuerza bruta.
+ */
+export const refreshLimiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minuto
+  max: 30,
+  standardHeaders: true,
+  legacyHeaders: false,
+  handler: (req: Request, res: Response) => {
+    res.setHeader('Retry-After', '60');
+    res.status(429).json({
+      success: false,
+      error: {
+        code: 'TOO_MANY_REFRESH',
+        message: 'Límite de intentos de renovación de sesión excedido. Espere un momento.'
+      }
+    });
+  }
+});
+

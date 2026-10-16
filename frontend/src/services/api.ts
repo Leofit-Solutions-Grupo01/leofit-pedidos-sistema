@@ -22,27 +22,117 @@ export function getApiBaseUrl(): string {
   return baseUrl.replace(/\/+$/, '');
 }
 
+let inMemoryAccessToken: string | null = null;
+let refreshPromise: Promise<boolean> | null = null;
+const authListeners = new Set<(evt: 'logout' | 'refreshed') => void>();
+
+export function setAccessToken(token: string | null): void {
+  inMemoryAccessToken = token;
+  if (typeof sessionStorage !== 'undefined') {
+    if (token) {
+      sessionStorage.setItem('leofit_session', token);
+    } else {
+      sessionStorage.removeItem('leofit_session');
+    }
+  }
+}
+
+export function getAccessToken(): string | null {
+  if (inMemoryAccessToken) return inMemoryAccessToken;
+  if (typeof sessionStorage !== 'undefined') {
+    return sessionStorage.getItem('leofit_session');
+  }
+  return null;
+}
+
+export function onAuthEvent(fn: (evt: 'logout' | 'refreshed') => void): () => void {
+  authListeners.add(fn);
+  return () => {
+    authListeners.delete(fn);
+  };
+}
+
+function emitAuthEvent(evt: 'logout' | 'refreshed'): void {
+  authListeners.forEach((listener) => {
+    try {
+      listener(evt);
+    } catch {
+      // Ignorar errores de observadores
+    }
+  });
+}
+
+/**
+ * Ejecuta la renovación silenciosa del access token usando la cookie HttpOnly leofit_rt.
+ * Implementa Single-Flight para deduplicar peticiones concurrentes a /api/auth/refresh.
+ */
+export async function doRefresh(): Promise<boolean> {
+  if (!refreshPromise) {
+    refreshPromise = (async () => {
+      try {
+        const baseUrl = getApiBaseUrl();
+        const res = await fetch(`${baseUrl}/api/auth/refresh`, {
+          method: 'POST',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json' }
+        });
+
+        if (!res.ok) {
+          return false;
+        }
+
+        const data = await res.json();
+        const newAccessToken = data?.data?.accessToken || data?.data?.token;
+        if (newAccessToken) {
+          setAccessToken(newAccessToken);
+          emitAuthEvent('refreshed');
+          return true;
+        }
+        return false;
+      } catch {
+        return false;
+      } finally {
+        refreshPromise = null;
+      }
+    })();
+  }
+  return refreshPromise;
+}
+
+export async function apiBootstrap(): Promise<boolean> {
+  return doRefresh();
+}
+
+export async function apiLogout(): Promise<void> {
+  try {
+    const baseUrl = getApiBaseUrl();
+    await fetch(`${baseUrl}/api/auth/logout`, {
+      method: 'POST',
+      credentials: 'include'
+    });
+  } catch {
+    // Si la red falla, aseguramos la limpieza local
+  } finally {
+    setAccessToken(null);
+    emitAuthEvent('logout');
+  }
+}
+
 export async function apiFetch<T>(
   endpoint: string,
   options: RequestInit = {},
   cerrarSesionFn?: () => void
 ): Promise<T> {
-  const token = sessionStorage.getItem("leofit_session");
+  const currentToken = getAccessToken();
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
     ...(options.headers as Record<string, string>)
   };
 
-  if (token) {
-    const isSynthetic = token.startsWith('token-mock-') || token.startsWith('token-offline-');
+  if (currentToken) {
+    const isSynthetic = currentToken.startsWith('token-mock-') || currentToken.startsWith('token-offline-');
     if (!isSynthetic) {
-      const tokenCheck = validateAndDecodeJwt(token);
-      if (tokenCheck.expired && cerrarSesionFn) {
-        triggerSessionExpired('Tu sesión ha expirado. Por favor ingresa nuevamente.');
-        cerrarSesionFn();
-        throw new ApiError('UNAUTHORIZED', 'Tu sesión ha expirado');
-      }
-      headers['Authorization'] = `Bearer ${token}`;
+      headers['Authorization'] = `Bearer ${currentToken}`;
     }
   }
 
@@ -58,7 +148,7 @@ export async function apiFetch<T>(
 
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
     try {
-      res = await fetch(url, { ...options, headers });
+      res = await fetch(url, { ...options, headers, credentials: 'include' });
     } catch (error: any) {
       if (attempt < maxRetries && error.name !== 'AbortError') {
         const delayMs = Math.min(4000, 1000 * Math.pow(2, attempt) + Math.random() * 250);
@@ -92,6 +182,19 @@ export async function apiFetch<T>(
     throw new ApiError('NETWORK_ERROR', 'No se pudo obtener respuesta del servidor');
   }
 
+  // 401 Manejo con Refresh Silencioso (siempre que no estemos llamando a los endpoints de auth)
+  if (res.status === 401 && !endpoint.includes('/api/auth/')) {
+    const refreshed = await doRefresh();
+    if (refreshed) {
+      const newAuthToken = getAccessToken();
+      const retryHeaders = {
+        ...headers,
+        ...(newAuthToken ? { Authorization: `Bearer ${newAuthToken}` } : {})
+      };
+      res = await fetch(url, { ...options, headers: retryHeaders, credentials: 'include' });
+    }
+  }
+
   if (!res.ok) {
     let errCode = 'UNKNOWN_ERROR';
     let errMessage = `HTTP Error ${res.status}`;
@@ -117,6 +220,8 @@ export async function apiFetch<T>(
       ));
 
     if (isTokenExpiredOrInvalid) {
+      setAccessToken(null);
+      emitAuthEvent('logout');
       if (cerrarSesionFn) {
         triggerSessionExpired(errMessage || 'Token de sesión inválido o expirado. Inicie sesión nuevamente.');
         cerrarSesionFn();

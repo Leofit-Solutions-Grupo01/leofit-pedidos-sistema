@@ -8,7 +8,7 @@
 
 import { createContext, useContext, useState, useEffect, useCallback, useRef, ReactNode } from "react";
 import { Pedido, Producto, EstadoPedido, pedidosIniciales, productosIniciales } from "../data/mockData";
-import { apiFetch, ApiError, getApiBaseUrl } from "../services/api";
+import { apiFetch, ApiError, getApiBaseUrl, apiBootstrap } from "../services/api";
 import { validateAndDecodeJwt, triggerSessionExpired, LEOFIT_AUTH_EXPIRED_EVENT } from "../services/authGuard";
 import { toCreateOrderDTO, normalizeProductCatalog } from "../services/mappers";
 
@@ -108,27 +108,45 @@ export function AppProvider({ children }: { children: ReactNode }) {
     sessionStorage.removeItem("leofit_user");
   }, []);
 
-  // Restaurar sesión al montar con guardrail de expiración de token
+  // Restaurar sesión al montar con soporte de refresh token silencioso y cookie HttpOnly
   useEffect(() => {
-    try {
-      const guardado = sessionStorage.getItem(SESSION_KEY);
-      const userGuardado = sessionStorage.getItem("leofit_user");
-      if (guardado) {
-        const check = validateAndDecodeJwt(guardado);
-        if (check.expired) {
-          triggerSessionExpired("Tu sesión anterior ha expirado. Por favor ingresa nuevamente.");
-          cerrarSesion();
-          return;
+    let cancelled = false;
+    (async () => {
+      try {
+        const guardado = sessionStorage.getItem(SESSION_KEY);
+        const userGuardado = sessionStorage.getItem("leofit_user");
+        if (guardado) {
+          const check = validateAndDecodeJwt(guardado);
+          if (!check.expired) {
+            setAutenticado(true);
+            if (userGuardado) {
+              setUsuarioActual(JSON.parse(userGuardado));
+            }
+            setPaginaActual("dashboard");
+            return;
+          }
         }
-        setAutenticado(true);
-        if (userGuardado) {
-          setUsuarioActual(JSON.parse(userGuardado));
+
+        // Si no hay token o expiró, intentar recuperar la sesión silenciosamente mediante la cookie HttpOnly
+        const ok = await apiBootstrap();
+        if (ok && !cancelled) {
+          try {
+            const meRes = await apiFetch<any>('/api/auth/me');
+            if (meRes && !cancelled) {
+              setAutenticado(true);
+              setUsuarioActual(meRes);
+              sessionStorage.setItem("leofit_user", JSON.stringify(meRes));
+              setPaginaActual("dashboard");
+            }
+          } catch {
+            // Continuar como no autenticado si falla me
+          }
         }
-        setPaginaActual("dashboard");
+      } catch {
+        // Ignora restricciones
       }
-    } catch {
-      // Ignora restricciones
-    }
+    })();
+    return () => { cancelled = true; };
   }, [cerrarSesion]);
 
   // Escuchar evento global de expiración de sesión (despachado por apiFetch o temporizadores)
@@ -140,16 +158,19 @@ export function AppProvider({ children }: { children: ReactNode }) {
     return () => window.removeEventListener(LEOFIT_AUTH_EXPIRED_EVENT, onAuthExpired);
   }, [cerrarSesion]);
 
-  // Monitoreo proactivo periódico (cada 30s) de caducidad de token
+  // Monitoreo proactivo periódico (cada 30s) de caducidad de token con renovación silenciosa
   useEffect(() => {
     if (!autenticado) return;
-    const interval = setInterval(() => {
+    const interval = setInterval(async () => {
       const token = sessionStorage.getItem(SESSION_KEY);
       if (token) {
         const check = validateAndDecodeJwt(token);
         if (check.expired) {
-          triggerSessionExpired("Tu sesión ha expirado por límite de tiempo de seguridad.");
-          cerrarSesion();
+          const ok = await apiBootstrap();
+          if (!ok) {
+            triggerSessionExpired("Tu sesión ha expirado por límite de tiempo de seguridad.");
+            cerrarSesion();
+          }
         }
       }
     }, 30000);

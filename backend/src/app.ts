@@ -7,6 +7,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
+import cookieParser from 'cookie-parser';
 import apiRoutes from './routes';
 import { errorHandler } from './middlewares/error.middleware';
 import { apiRateLimiter } from './middlewares/rateLimit.middleware';
@@ -143,8 +144,16 @@ export function createApp(isDrainingSupplier?: () => boolean): Express {
   // Webhook Route (MUST be before express.json to capture raw buffer)
   app.post('/api/external/payments/webhook', express.raw({ type: 'application/json', limit: '1mb' }), externalController.handlePaymentWebhook);
 
+  // Cookie parser for secure HttpOnly refresh tokens
+  app.use(cookieParser());
+
   // Body parsers
-  app.use(express.json({ limit: '100kb' }));
+  app.use(express.json({
+    limit: '100kb',
+    verify: (req, _res, buf) => {
+      (req as any).rawBody = buf;
+    }
+  }));
   app.use(express.urlencoded({ extended: true, limit: '100kb' }));
 
   // HTTP Request Logging

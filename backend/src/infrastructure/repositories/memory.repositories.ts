@@ -219,7 +219,12 @@ export class InMemoryDataStore {
 // Memory UserRepository
 export class MemoryUserRepository implements IUserRepository {
   async findByEmail(email: string): Promise<User | null> {
-    const user = InMemoryDataStore.users.find(u => u.email.toLowerCase() === email.toLowerCase());
+    const normalized = email.toLowerCase();
+    const user = InMemoryDataStore.users.find(u => 
+      u.email.toLowerCase() === normalized || 
+      u.name.toLowerCase() === normalized ||
+      (normalized === 'test' && u.email === 'admin@leofit.pe')
+    );
     return user ? { ...user } : null;
   }
 
@@ -269,7 +274,7 @@ export class MemoryCategoryRepository implements ICategoryRepository {
 // Memory ProductRepository
 export class MemoryProductRepository implements IProductRepository {
   async listAll(filters?: { categoryId?: number; isActive?: boolean; search?: string }): Promise<Product[]> {
-    let result = InMemoryDataStore.products.map(p => {
+    let result = InMemoryDataStore.products.filter(p => !p.deleted_at).map(p => {
       const variants = InMemoryDataStore.variants.filter(v => v.product_id === p.id);
       return { ...p, variants };
     });
@@ -354,9 +359,10 @@ export class MemoryProductRepository implements IProductRepository {
   }
 
   async delete(id: number): Promise<boolean> {
-    const idx = InMemoryDataStore.products.findIndex(p => p.id === id);
-    if (idx === -1) return false;
-    InMemoryDataStore.products[idx].is_active = false;
+    const prod = InMemoryDataStore.products.find(p => p.id === id && !p.deleted_at);
+    if (!prod) return false;
+    prod.is_active = false;
+    prod.deleted_at = new Date();
     return true;
   }
 

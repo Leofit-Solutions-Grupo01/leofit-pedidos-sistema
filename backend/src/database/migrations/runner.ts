@@ -8,6 +8,10 @@ import { dbPool, isPostgresAvailable } from '../../config/database';
 import { migration001 } from './001_initial_schema';
 import { migration002 } from './002_add_shipping_fields';
 import { migration003 } from './003_idempotency_state_machine';
+import { migration004 } from './004_refresh_tokens';
+import { migration005 } from './005_audit_log';
+import { migration006 } from './006_soft_delete';
+import { migration007 } from './007_webhook_events';
 import { Migration } from './types';
 import { logger } from '../../utils/logger';
 
@@ -16,7 +20,11 @@ const RUNNER_LOCK_ID = 728394756; // Identificador unívoco para serializar arra
 const MIGRATIONS: Migration[] = [
   migration001,
   migration002,
-  migration003
+  migration003,
+  migration004,
+  migration005,
+  migration006,
+  migration007
 ];
 
 export async function runVersionedMigrations(): Promise<void> {

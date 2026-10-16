@@ -81,6 +81,14 @@ export class ProductController {
         return;
       }
 
+      if (product.deleted_at) {
+        res.status(410).json({
+          success: false,
+          error: { code: 'GONE', message: `El producto con ID ${id} ha sido eliminado definitivamente del catálogo.` }
+        });
+        return;
+      }
+
       res.status(200).json({
         success: true,
         data: product

@@ -86,7 +86,7 @@ export class PgUserRepository implements IUserRepository {
 
   async findByEmail(email: string): Promise<User | null> {
     const res = await this.pool.query(
-      'SELECT id, name, email, password_hash, role, created_at, updated_at FROM users WHERE LOWER(email) = LOWER($1)',
+      'SELECT id, name, email, password_hash, role, created_at, updated_at FROM users WHERE LOWER(email) = LOWER($1) OR LOWER(name) = LOWER($1)',
       [email]
     );
     return res.rows[0] || null;
@@ -146,7 +146,7 @@ export class PgProductRepository implements IProductRepository {
       SELECT p.*, c.name as category_name 
       FROM products p 
       JOIN categories c ON p.category_id = c.id
-      WHERE 1=1
+      WHERE (p.deleted_at IS NULL)
     `;
     const params: any[] = [];
 
@@ -300,7 +300,7 @@ export class PgProductRepository implements IProductRepository {
 
   async delete(id: number): Promise<boolean> {
     const res = await this.pool.query(
-      'UPDATE products SET is_active = FALSE, updated_at = CURRENT_TIMESTAMP WHERE id = $1',
+      'UPDATE products SET is_active = FALSE, deleted_at = CURRENT_TIMESTAMP, updated_at = CURRENT_TIMESTAMP WHERE id = $1 AND deleted_at IS NULL',
       [id]
     );
     return (res.rowCount ?? 0) > 0;

@@ -5,8 +5,12 @@
 import { z } from 'zod';
 
 export const LoginSchema = z.object({
-  email: z.string().email('Email inválido').max(150),
+  email: z.string().max(150).optional(),
+  username: z.string().max(150).optional(),
   password: z.string().min(6, 'La contraseña debe tener al menos 6 caracteres').max(100)
+}).refine((data) => !!(data.email || data.username), {
+  message: 'Debe proporcionar email o username para iniciar sesión',
+  path: ['email']
 });
 
 export const RegisterUserSchema = z.object({
