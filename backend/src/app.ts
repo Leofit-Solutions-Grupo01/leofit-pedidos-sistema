@@ -194,8 +194,9 @@ export function createApp(isDrainingSupplier?: () => boolean): Express {
     });
   });
 
-  // Direct root-level /health alias for Render, AWS & container orchestrators
+  // Direct root-level /health and /api/health alias for Render, AWS & container orchestrators
   app.use('/health', healthRouter);
+  app.use('/api/health', healthRouter);
 
   // API Routes
   app.use('/api', apiRoutes);

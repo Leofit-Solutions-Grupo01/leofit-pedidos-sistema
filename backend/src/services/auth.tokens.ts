@@ -44,9 +44,10 @@ export function refreshCookieOptions(): CookieOptions {
   return {
     httpOnly: true,
     secure: isProd,
-    sameSite: isProd ? 'none' : 'lax', // Permite envío cross-origin con credenciales desde Netlify si son dominios distintos
+    sameSite: isProd ? 'none' : 'lax', // Permite envío cross-origin con credenciales
     path: REFRESH_COOKIE_PATH,
-    maxAge: REFRESH_TTL_MS
+    maxAge: REFRESH_TTL_MS,
+    domain: process.env.COOKIE_DOMAIN || undefined
   };
 }
 
@@ -66,7 +67,8 @@ export function clearRefreshCookie(res: Response): void {
     path: REFRESH_COOKIE_PATH,
     httpOnly: true,
     secure: isProd,
-    sameSite: isProd ? 'none' : 'lax'
+    sameSite: isProd ? 'none' : 'lax',
+    domain: process.env.COOKIE_DOMAIN || undefined
   });
 }
 

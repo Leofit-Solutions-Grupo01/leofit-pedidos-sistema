@@ -197,7 +197,7 @@ export class NubefactService {
     }
 
     const nubefactUrl = process.env.NUBEFACT_URL;
-    const nubefactToken = process.env.NUBEFACT_TOKEN;
+    const nubefactToken = process.env.NUBEFACT_TOKEN || process.env.NUBEFACT_API_KEY;
 
     if (nubefactUrl && nubefactToken && nubefactToken.length > 20) {
       // Envío real a la API REST de Nubefact
@@ -337,7 +337,7 @@ export class NubefactService {
    */
   public static async sendDailySummary(payload: any): Promise<{ ticket: string }> {
     const nubefactUrl = process.env.NUBEFACT_URL;
-    const nubefactToken = process.env.NUBEFACT_TOKEN;
+    const nubefactToken = process.env.NUBEFACT_TOKEN || process.env.NUBEFACT_API_KEY;
 
     if (nubefactUrl && nubefactToken && nubefactToken.length > 20) {
       const response = await fetch(nubefactUrl, {

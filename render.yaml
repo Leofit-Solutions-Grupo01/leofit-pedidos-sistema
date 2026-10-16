@@ -36,6 +36,12 @@ services:
         sync: false
       - key: NUBEFACT_TOKEN
         sync: false
+      - key: NUBEFACT_API_KEY
+        sync: false
+      - key: NUBEFACT_RUC
+        sync: false
+      - key: COOKIE_DOMAIN
+        sync: false
       - key: SLACK_WEBHOOK_URL
         sync: false
       - key: ADMIN_CLEANUP_SECRET
