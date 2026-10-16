@@ -68,14 +68,17 @@ export async function apiFetch<T>(
       throw new ApiError('NETWORK_ERROR', error.message || 'Error de red');
     }
 
-    // Si el servidor está despertando o temporalmente saturado (502, 503, 504)
-    if (res && [502, 503, 504].includes(res.status) && attempt < maxRetries) {
+    // Si el servidor está procesando concurrentemente la misma Idempotency-Key (409) o en cold-start (502, 503, 504)
+    const isConcurrentIdempotency = (res.status === 409 || res.status === 425) && hasIdempotencyKey;
+    const isServerWakingOrDegraded = [502, 503, 504].includes(res.status);
+
+    if (res && (isServerWakingOrDegraded || isConcurrentIdempotency) && attempt < maxRetries) {
       const retryAfter = res.headers ? res.headers.get('Retry-After') : null;
       let delayMs = Math.min(4000, 1000 * Math.pow(2, attempt) + Math.random() * 250);
       if (retryAfter) {
         const seconds = parseInt(retryAfter, 10);
         if (!isNaN(seconds) && seconds > 0) {
-          delayMs = Math.min(seconds * 1000, 10000);
+          delayMs = Math.min(seconds * 1000, 6000);
         }
       }
       await new Promise((resolve) => setTimeout(resolve, delayMs));

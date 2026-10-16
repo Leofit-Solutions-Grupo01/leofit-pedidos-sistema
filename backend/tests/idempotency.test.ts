@@ -85,13 +85,50 @@ describe('Módulo de Idempotencia y Resiliencia (RFC 8785 & Concurrencia)', () =
         expect(res.body.success).toBe(true);
       }
     });
+
+    it('Misma key con payload diferente debe retornar HTTP 422 IDEMPOTENCY_PAYLOAD_MISMATCH', async () => {
+      const key = `MISMATCH-TEST-${Date.now()}`;
+      const payloadOriginal = {
+        clientData: { fullName: 'Cliente Original', phone: '999888777', address: 'Av. Brasil 100', district: 'Lima' },
+        paymentMethod: 'PLIN',
+        shippingCost: 8,
+        items: [{ variantId: 1, quantity: 1, unitPrice: 49.9 }]
+      };
+      const payloadDistinto = {
+        clientData: { fullName: 'Cliente Distinto', phone: '999000111', address: 'Av. Arequipa 500', district: 'Lince' },
+        paymentMethod: 'YAPE',
+        shippingCost: 10,
+        items: [{ variantId: 1, quantity: 2, unitPrice: 49.9 }]
+      };
+
+      const res1 = await request(app)
+        .post('/api/orders')
+        .set('Authorization', `Bearer ${user1Token}`)
+        .set('Idempotency-Key', key)
+        .send(payloadOriginal);
+
+      if (isPostgresAvailable()) {
+        expect(res1.status).toBe(201);
+
+        const res2 = await request(app)
+          .post('/api/orders')
+          .set('Authorization', `Bearer ${user1Token}`)
+          .set('Idempotency-Key', key)
+          .send(payloadDistinto);
+
+        expect(res2.status).toBe(422);
+        expect(res2.body.error.code).toBe('IDEMPOTENCY_PAYLOAD_MISMATCH');
+      } else {
+        expect(res1.status).toBe(503);
+      }
+    });
   });
 
   describe('Manejo de Fallos y Reintentos Legítimos (Máquina de Estados PENDING/FAILED/COMPLETED)', () => {
-    it('Si un pedido falla (4xx), el cliente puede reintentar con la misma key corregida sin crear pedidos duplicados', async () => {
-      const retryKey = `RETRY-FLOW-${Date.now()}`;
+    it('Si una key quedó en FAILED, un reintento con payload diferente es rechazado con 422 (Anti-Bypass)', async () => {
+      const retryKey = `FAIL-MISMATCH-${Date.now()}`;
 
-      // 1. Primer intento: falla por datos inválidos (teléfono vacío)
+      // Primer intento con fallo de validación
       const resFallo = await request(app)
         .post('/api/orders')
         .set('Authorization', `Bearer ${user1Token}`)
@@ -104,40 +141,22 @@ describe('Módulo de Idempotencia y Resiliencia (RFC 8785 & Concurrencia)', () =
         });
 
       if (isPostgresAvailable()) {
-        // Debe fallar con 400 por validación Zod
         expect(resFallo.status).toBe(400);
 
-        // 2. Segundo intento: con la MISMA key y datos corregidos
-        const resExito = await request(app)
+        // Segundo intento con payload distinto bajo la misma key
+        const resMismatch = await request(app)
           .post('/api/orders')
           .set('Authorization', `Bearer ${user1Token}`)
           .set('Idempotency-Key', retryKey)
           .send({
-            clientData: { fullName: 'Cliente Corregido', phone: '999111222', address: 'Av. A', district: 'Lima' },
-            paymentMethod: 'YAPE',
-            shippingCost: 10,
+            clientData: { fullName: 'Atacante Mutado', phone: '999111222', address: 'Av. B', district: 'Lima' },
+            paymentMethod: 'PLIN',
+            shippingCost: 15,
             items: [{ variantId: 1, quantity: 1, unitPrice: 49.9 }]
           });
 
-        // Como el primer intento quedó en FAILED (no se borró), el sistema permite el reintento y crea el pedido #1
-        expect(resExito.status).toBe(201);
-        expect(resExito.body.success).toBe(true);
-
-        // 3. Tercer intento idéntico: debe recibir la respuesta cacheada (X-Cache-Lookup: IDEMPOTENT_HIT)
-        const resCache = await request(app)
-          .post('/api/orders')
-          .set('Authorization', `Bearer ${user1Token}`)
-          .set('Idempotency-Key', retryKey)
-          .send({
-            clientData: { fullName: 'Cliente Corregido', phone: '999111222', address: 'Av. A', district: 'Lima' },
-            paymentMethod: 'YAPE',
-            shippingCost: 10,
-            items: [{ variantId: 1, quantity: 1, unitPrice: 49.9 }]
-          });
-
-        expect(resCache.status).toBe(201);
-        expect(resCache.header['x-cache-lookup']).toBe('IDEMPOTENT_HIT');
-        expect(resCache.body.data.id).toBe(resExito.body.data.id); // Mismo pedido exactamente
+        expect(resMismatch.status).toBe(422);
+        expect(resMismatch.body.error.code).toBe('IDEMPOTENCY_PAYLOAD_MISMATCH');
       } else {
         expect([400, 503]).toContain(resFallo.status);
       }
@@ -178,7 +197,7 @@ describe('Módulo de Idempotencia y Resiliencia (RFC 8785 & Concurrencia)', () =
       }
     });
 
-    it('Misma key enviada por dos usuarios distintos está debidamente aislada (Scoping)', async () => {
+    it('Misma key enviada por dos usuarios distintos está debidamente aislada (Scoping de 2 enteros)', async () => {
       const sharedKey = `USER-SCOPE-${Date.now()}`;
       const payloadUser1 = {
         clientData: { fullName: 'Cliente User 1', phone: '911111111', address: 'A', district: 'Lima' },
