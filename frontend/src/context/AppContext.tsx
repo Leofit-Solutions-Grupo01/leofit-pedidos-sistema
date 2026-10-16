@@ -285,6 +285,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
           setPaginaActual("dashboard");
           sessionStorage.setItem(SESSION_KEY, data.data.token);
           sessionStorage.setItem("leofit_user", JSON.stringify(usuarioAutenticado));
+          sessionStorage.removeItem("leofit_auth_message");
           return true;
         }
       } catch {
@@ -299,6 +300,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         setPaginaActual("dashboard");
         sessionStorage.setItem(SESSION_KEY, `token-offline-${demoFallback.role.toLowerCase()}`);
         sessionStorage.setItem("leofit_user", JSON.stringify(demoFallback));
+        sessionStorage.removeItem("leofit_auth_message");
         return true;
       }
 

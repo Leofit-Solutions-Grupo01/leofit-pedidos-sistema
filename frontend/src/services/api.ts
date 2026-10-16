@@ -19,13 +19,16 @@ export async function apiFetch<T>(
   };
 
   if (token) {
-    const tokenCheck = validateAndDecodeJwt(token);
-    if (tokenCheck.expired) {
-      triggerSessionExpired('Tu sesión ha expirado. Por favor ingresa nuevamente.');
-      cerrarSesionFn?.();
-      throw new ApiError('UNAUTHORIZED', 'Tu sesión ha expirado');
+    const isSynthetic = token.startsWith('token-mock-') || token.startsWith('token-offline-');
+    if (!isSynthetic) {
+      const tokenCheck = validateAndDecodeJwt(token);
+      if (tokenCheck.expired && cerrarSesionFn) {
+        triggerSessionExpired('Tu sesión ha expirado. Por favor ingresa nuevamente.');
+        cerrarSesionFn();
+        throw new ApiError('UNAUTHORIZED', 'Tu sesión ha expirado');
+      }
+      headers['Authorization'] = `Bearer ${token}`;
     }
-    headers['Authorization'] = `Bearer ${token}`;
   }
 
   const envApiUrl = import.meta.env.VITE_API_URL;
@@ -73,8 +76,10 @@ export async function apiFetch<T>(
       ));
 
     if (isTokenExpiredOrInvalid) {
-      triggerSessionExpired(errMessage || 'Token de sesión inválido o expirado. Inicie sesión nuevamente.');
-      cerrarSesionFn?.();
+      if (cerrarSesionFn) {
+        triggerSessionExpired(errMessage || 'Token de sesión inválido o expirado. Inicie sesión nuevamente.');
+        cerrarSesionFn();
+      }
       throw new ApiError('UNAUTHORIZED', errMessage);
     }
     

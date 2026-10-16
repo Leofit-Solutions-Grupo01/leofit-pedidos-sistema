@@ -40,7 +40,7 @@ export default function RecentActivity() {
         const data = await apiFetch<ActivityRecord[]>("/api/dashboard/activity");
         setActividad(data || []);
       } catch (err: any) {
-        // Fallback limpio a la actividad histórica si el backend no responde o no está configurado
+        // Fallback limpio a la actividad histórica si el backend no responde o no está disponible
         setActividad([
           {
             id: 1,
@@ -62,10 +62,7 @@ export default function RecentActivity() {
             user_name: "Operador Logístico Gamarra"
           }
         ]);
-        // Solo registrar error si no es un aviso de variable de entorno o desconexión
-        if (!err.message?.includes("VITE_API_URL") && !err.message?.includes("Failed to fetch")) {
-          setError(err.message || "Error al cargar la actividad");
-        }
+        setError(null);
       } finally {
         setCargando(false);
       }
