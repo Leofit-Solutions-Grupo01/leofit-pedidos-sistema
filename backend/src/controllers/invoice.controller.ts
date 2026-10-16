@@ -6,8 +6,9 @@
 
 import { Request, Response, NextFunction } from 'express';
 import { dbPool, isPostgresAvailable } from '../config/database';
-import { validateRuc, NubefactService } from '../services/sunat/nubefact.service';
+import { validateRuc, NubefactService, reserveInvoiceNumber } from '../services/sunat/nubefact.service';
 import { memoryInvoices } from '../jobs/emitInvoiceWorker';
+import { splitIgv } from '../utils/igv';
 import { logger } from '../utils/logger';
 
 export class InvoiceController {
@@ -196,13 +197,11 @@ export class InvoiceController {
       if (isPostgresAvailable()) {
         client = await dbPool.connect();
         await client.query('BEGIN');
-        const { reserveInvoiceNumber } = await import('../services/sunat/nubefact.service');
         numero = await reserveInvoiceNumber(client, '07', serie);
       }
 
       try {
         const totalAmountNum = Number(originalInvoice.monto_total || originalInvoice.montoTotal);
-        const { splitIgv } = await import('../utils/igv');
         const { subtotal, igv, total: totalAmount } = splitIgv(Math.round(totalAmountNum * 100));
 
         const ncResult = await NubefactService.emitCreditNote({
