@@ -20,10 +20,26 @@ services:
           property: connectionString
       - key: JWT_SECRET
         generateValue: true
+      - key: JWT_SECRET_V1
+        sync: false
+      - key: JWT_KID
+        value: v1
+      - key: CORS_ORIGIN
+        value: "https://leofit-frontend.onrender.com,https://leofit-solutions-grupo01.github.io,https://leofit-pedidos-sistema.netlify.app,https://leofit.pe,https://www.leofit.pe"
       - key: WEBHOOK_SECRET
         sync: false
-      - key: CORS_ORIGIN
-        value: "https://leofit-frontend.onrender.com,https://leofit-solutions-grupo01.github.io,https://leofit-pedidos-sistema.netlify.app"
+      - key: CULQI_SECRET_KEY
+        sync: false
+      - key: CULQI_WEBHOOK_SECRET
+        sync: false
+      - key: NUBEFACT_URL
+        sync: false
+      - key: NUBEFACT_TOKEN
+        sync: false
+      - key: SLACK_WEBHOOK_URL
+        sync: false
+      - key: ADMIN_CLEANUP_SECRET
+        sync: false
 
   # 2. LeoFit Frontend PWA Static Site
   - type: web
@@ -32,7 +48,20 @@ services:
     rootDir: frontend
     buildCommand: npm install && npm run build
     staticPublishPath: ./dist
+    headers:
+      - path: /index.html
+        name: Cache-Control
+        value: no-cache, must-revalidate
+      - path: /assets/*
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
     routes:
+      - type: rewrite
+        source: /sw.js
+        destination: /sw.js
+      - type: rewrite
+        source: /manifest.webmanifest
+        destination: /manifest.webmanifest
       - type: rewrite
         source: /*
         destination: /index.html

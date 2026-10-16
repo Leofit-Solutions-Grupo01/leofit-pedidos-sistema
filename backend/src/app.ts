@@ -55,12 +55,18 @@ export function createApp(isDrainingSupplier?: () => boolean): Express {
     next();
   });
 
-  // CORS Policy (Permite GitHub Pages, Netlify y Desarrollo Local)
-  if (process.env.NODE_ENV === 'production' && !process.env.CORS_ORIGIN) {
-    throw new Error('FATAL ERROR: CORS_ORIGIN must be defined in production environment.');
-  }
-  const corsOrigin = process.env.CORS_ORIGIN || 'http://localhost:5173';
-  const allowedList = corsOrigin.split(',').map((o) => o.trim()).filter(Boolean);
+  // CORS Policy (Permite Render Static Site, Netlify, GitHub Pages, dominio custom y Desarrollo Local)
+  const defaultAllowedOrigins = [
+    'https://leofit-frontend.onrender.com',
+    'https://leofit.pe',
+    'https://www.leofit.pe',
+    'https://leofit-pedidos-sistema.netlify.app',
+    'https://leofit.netlify.app',
+    'https://leofit-solutions-grupo01.github.io'
+  ];
+  const envCors = process.env.CORS_ORIGIN || '';
+  const parsedEnvList = envCors.split(',').map((o) => o.trim()).filter(Boolean);
+  const allowedList = Array.from(new Set([...defaultAllowedOrigins, ...parsedEnvList]));
 
   app.use(cors({
     origin: (origin, callback) => {
@@ -78,6 +84,7 @@ export function createApp(isDrainingSupplier?: () => boolean): Express {
         origin.endsWith('.github.io') ||
         origin.endsWith('.vercel.app') ||
         origin.endsWith('.onrender.com') ||
+        origin.endsWith('.leofit.pe') ||
         /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)
       ) {
         return callback(null, true);
