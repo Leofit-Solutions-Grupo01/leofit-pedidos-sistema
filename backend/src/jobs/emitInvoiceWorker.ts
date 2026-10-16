@@ -2,10 +2,16 @@
  * @file emitInvoiceWorker.ts
  * @description Worker asíncrono para procesamiento de la cola de emisión de comprobantes SUNAT / Nubefact.
  * @project LeoFit Solutions - Sistema de Gestión de Pedidos
+ * 
+ * Garantías Críticas:
+ * 1. Correlativos atómicos sin gaps mediante reserveInvoiceNumber(client, tipo, serie).
+ * 2. Desglose exacto de IGV con splitIgv(totalCents) (Decimal.js, sin drift).
+ * 3. Si el pedido fue cancelado antes de emitir, se marca como SKIPPED (evita boletas indebidas).
  */
 
 import { dbPool, isPostgresAvailable } from '../config/database';
-import { NubefactService, NubefactResponse } from '../services/sunat/nubefact.service';
+import { NubefactService, NubefactResponse, reserveInvoiceNumber } from '../services/sunat/nubefact.service';
+import { splitIgv } from '../utils/igv';
 import { logger } from '../utils/logger';
 import { alertSlack } from '../utils/alerts';
 import { InMemoryDataStore } from '../infrastructure/repositories/memory.repositories';
@@ -14,7 +20,7 @@ export interface MemoryInvoiceQueueItem {
   id: number;
   orderId: number;
   tipo: '01' | '03' | '07';
-  estado: 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'FAILED';
+  estado: 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'FAILED' | 'SKIPPED';
   attempts: number;
   maxAttempts: number;
   nextAttemptAt: Date;
@@ -87,7 +93,7 @@ export async function processInvoiceQueue(): Promise<number> {
   if (isPostgresAvailable()) {
     const { rows: jobs } = await dbPool.query(
       `SELECT q.id, q.order_id, q.tipo, q.attempts, q.max_attempts, q.payload,
-              o.cliente_nombre, o.cliente_email, o.total_amount,
+              o.cliente_nombre, o.cliente_email, o.total_amount, o.estado as order_estado,
               COALESCE(o.total_cents, ROUND(o.total_amount * 100)::bigint) as total_cents
          FROM invoice_queue q
          JOIN orders o ON o.id = q.order_id
@@ -98,6 +104,23 @@ export async function processInvoiceQueue(): Promise<number> {
     );
 
     for (const job of jobs) {
+      // 1. Si el pedido fue cancelado antes de la emisión, saltar (SKIPPED)
+      if (job.order_estado === 'CANCELADO') {
+        await dbPool.query(
+          `UPDATE invoice_queue
+              SET estado = 'SKIPPED',
+                  last_error = 'ORDER_CANCELLED_BEFORE_EMISSION',
+                  updated_at = NOW()
+            WHERE id = $1`,
+          [job.id]
+        );
+        logger.info('[Invoice Worker] Pedido cancelado antes de emitir comprobante. Tarea marcada como SKIPPED.', {
+          orderId: job.order_id,
+          queueId: job.id
+        });
+        continue;
+      }
+
       const attempts = job.attempts + 1;
       await dbPool.query(
         `UPDATE invoice_queue
@@ -108,9 +131,12 @@ export async function processInvoiceQueue(): Promise<number> {
         [attempts, job.id]
       );
 
+      const client = await dbPool.connect();
       try {
+        await client.query('BEGIN');
+
         // Consultar items del pedido
-        const { rows: items } = await dbPool.query(
+        const { rows: items } = await client.query(
           `SELECT oi.quantity, oi.unit_price, p.name
              FROM order_items oi
              JOIN product_variants pv ON pv.id = oi.variant_id
@@ -125,23 +151,26 @@ export async function processInvoiceQueue(): Promise<number> {
           unitPrice: Number(i.unit_price)
         }));
 
-        const total = Number(job.total_amount || job.total_cents / 100);
+        const totalCents = Number(job.total_cents || Math.round(Number(job.total_amount) * 100));
+        const { subtotal, igv, total } = splitIgv(totalCents);
 
-        // Llamar a Nubefact
+        const serie = job.tipo === '01' ? 'FFF1' : 'BBB1';
+        // Reserva atómica de correlativo sin gaps (SUNAT)
+        const numero = await reserveInvoiceNumber(client, job.tipo, serie);
+
+        // Llamar a Nubefact con el número reservado
         const cpeResult: NubefactResponse = await NubefactService.emitInvoice({
           orderId: job.order_id,
           tipoComprobante: job.tipo,
           clienteDenominacion: job.cliente_nombre || 'Cliente LeoFit',
           clienteEmail: job.cliente_email,
           totalAmount: total,
+          numero,
           items: invoiceItems.length > 0 ? invoiceItems : [{ name: 'Prendas Deportivas LeoFit', quantity: 1, unitPrice: total }]
         });
 
         // Registrar comprobante oficial en la tabla `invoices`
-        const subtotal = Math.round((total / 1.18) * 100) / 100;
-        const igv = Math.round((total - subtotal) * 100) / 100;
-
-        await dbPool.query(
+        await client.query(
           `INSERT INTO invoices
              (order_id, tipo, serie, numero, cliente_denominacion, cliente_email,
               monto_subtotal, monto_igv, monto_total, xml_url, pdf_url, cdr_url,
@@ -168,7 +197,7 @@ export async function processInvoiceQueue(): Promise<number> {
         );
 
         // Marcar tarea como COMPLETED
-        await dbPool.query(
+        await client.query(
           `UPDATE invoice_queue
               SET estado = 'COMPLETED',
                   last_error = NULL,
@@ -177,12 +206,15 @@ export async function processInvoiceQueue(): Promise<number> {
           [job.id]
         );
 
+        await client.query('COMMIT');
+
         logger.info('[Invoice Worker] Comprobante emitido con éxito:', {
           orderId: job.order_id,
           cpe: `${cpeResult.serie}-${cpeResult.numero}`
         });
         processedCount++;
       } catch (err: any) {
+        await client.query('ROLLBACK').catch(() => {});
         logger.error('[Invoice Worker Error] Falló emisión de comprobante:', {
           queueId: job.id,
           orderId: job.order_id,
@@ -214,6 +246,8 @@ export async function processInvoiceQueue(): Promise<number> {
             [err.message, job.id]
           );
         }
+      } finally {
+        client.release();
       }
     }
   } else {
@@ -222,9 +256,6 @@ export async function processInvoiceQueue(): Promise<number> {
       if (job.estado !== 'PENDING' && job.estado !== 'PROCESSING') continue;
       if (job.nextAttemptAt > new Date()) continue;
 
-      job.estado = 'PROCESSING';
-      job.attempts++;
-
       const order = InMemoryDataStore.orders.find((o) => o.id === job.orderId);
       if (!order) {
         job.estado = 'FAILED';
@@ -232,8 +263,20 @@ export async function processInvoiceQueue(): Promise<number> {
         continue;
       }
 
+      const orderEstado = ((order as any).estado || order.status || '').toUpperCase();
+      if (orderEstado === 'CANCELADO') {
+        job.estado = 'SKIPPED';
+        job.lastError = 'ORDER_CANCELLED_BEFORE_EMISSION';
+        continue;
+      }
+
+      job.estado = 'PROCESSING';
+      job.attempts++;
+
       try {
-        const total = Number(order.total_amount);
+        const totalCents = Math.round(Number(order.total_amount) * 100);
+        const { subtotal, igv, total } = splitIgv(totalCents);
+
         const invoiceItems = (order.items || []).map((i: any) => ({
           name: i.product_name || i.variant?.product?.name || 'Prenda LeoFit',
           quantity: i.quantity,
@@ -248,9 +291,6 @@ export async function processInvoiceQueue(): Promise<number> {
           totalAmount: total,
           items: invoiceItems.length > 0 ? invoiceItems : [{ name: 'Prenda Deportiva LeoFit', quantity: 1, unitPrice: total }]
         });
-
-        const subtotal = Math.round((total / 1.18) * 100) / 100;
-        const igv = Math.round((total - subtotal) * 100) / 100;
 
         memoryInvoices.push({
           id: memoryInvoices.length + 1,

@@ -6,12 +6,16 @@
  * Normativa SUNAT Perú:
  * - Facturas Electrónicas (Tipo 01 - Serie FFF1) para personas jurídicas / negocios con RUC.
  * - Boletas de Venta Electrónicas (Tipo 03 - Serie BBB1) para consumidores finales.
- * - Notas de Crédito Electrónicas (Tipo 07 - Series FC01 / BC01) para anulaciones o reembolsos.
- * - Cálculo de IGV: 18% (Base gravada = Total / 1.18, IGV = Total - Base gravada).
+ * - Notas de Crédito Electrónicas (Tipo 07 - Series FC01 / BC01) con Catálogo 09.
+ * - Resumen Diario de Boletas (RC) para envío consolidado legal a SUNAT.
+ * - Cálculo de IGV: 18% con Decimal.js (subtotal + igv === total con tolerancia cero).
+ * - Correlativo Atómico sin gaps con invoice_series (UPDATE ... RETURNING last_number).
  */
 
 import crypto from 'node:crypto';
+import type { PoolClient } from 'pg';
 import { logger } from '../../utils/logger';
+import { splitIgv } from '../../utils/igv';
 
 export interface RucValidationResult {
   valid: boolean;
@@ -39,7 +43,18 @@ export interface InvoiceEmissionParams {
   clienteEmail?: string;
   totalAmount: number;
   items: InvoiceItem[];
+  numero?: number; // Correlativo reservado atómicamente
 }
+
+export type MotivoNotaCredito = '01' | '02' | '06' | '07' | '13';
+
+export const MOTIVOS_NC: Record<MotivoNotaCredito, string> = {
+  '01': 'Anulación de la operación',
+  '02': 'Anulación por error en el RUC',
+  '06': 'Devolución total',
+  '07': 'Devolución por ítem',
+  '13': 'Ajustes - montos y/o fechas de pago'
+};
 
 export interface CreditNoteEmissionParams {
   orderId: number;
@@ -49,12 +64,13 @@ export interface CreditNoteEmissionParams {
     numero: number;
     totalAmount: number;
   };
-  reasonCode: '01' | '06'; // '01' Anulación de la operación, '06' Devolución total
-  reasonDescription: string;
+  reasonCode: MotivoNotaCredito | string;
+  reasonDescription?: string;
   clienteDenominacion: string;
   clienteDocTipo: string;
   clienteDocNumero: string;
   amountCents?: number;
+  numero?: number; // Correlativo reservado atómicamente
 }
 
 export interface NubefactResponse {
@@ -122,21 +138,49 @@ let boletaCounter = 1000;
 let facturaCounter = 500;
 let notaCreditoCounter = 100;
 
+/**
+ * Reserva atómicamente el siguiente correlativo para la serie en PostgreSQL.
+ * Evita huecos en la numeración (gaps) que originan multas tributarias en SUNAT.
+ */
+export async function reserveInvoiceNumber(
+  client: PoolClient | null,
+  tipo: string,
+  serie: string
+): Promise<number> {
+  if (client) {
+    const { rows } = await client.query(
+      `UPDATE invoice_series
+          SET last_number = last_number + 1
+        WHERE tipo = $1 AND serie = $2
+        RETURNING last_number`,
+      [tipo, serie]
+    );
+    if (!rows[0]) {
+      throw new Error(`SERIE_NOT_CONFIGURED:${tipo}/${serie}`);
+    }
+    return rows[0].last_number;
+  } else {
+    // Modo en memoria para tests / contingencia sin base de datos activa
+    if (tipo === '01') return ++facturaCounter;
+    if (tipo === '07') return ++notaCreditoCounter;
+    return ++boletaCounter;
+  }
+}
+
 export class NubefactService {
   /**
    * Genera el payload y emite el comprobante electrónico (Boleta o Factura)
    */
   public static async emitInvoice(params: InvoiceEmissionParams): Promise<NubefactResponse> {
-    const total = Number(params.totalAmount);
-    const subtotal = Math.round((total / 1.18) * 100) / 100;
-    const igv = Math.round((total - subtotal) * 100) / 100;
+    const totalCents = Math.round(Number(params.totalAmount) * 100);
+    const { subtotal, igv, total } = splitIgv(totalCents);
 
     // Determinación del tipo de comprobante:
     // Si tiene RUC válido y se solicita Factura -> '01', de lo contrario Boleta -> '03'
     const isFactura = params.tipoComprobante === '01' || params.clienteDocTipo === '6';
     const tipo = isFactura ? '01' : '03';
     const serie = isFactura ? 'FFF1' : 'BBB1';
-    const numero = isFactura ? ++facturaCounter : ++boletaCounter;
+    const numero = params.numero ?? (isFactura ? ++facturaCounter : ++boletaCounter);
 
     const clienteDocTipo = params.clienteDocTipo || (isFactura ? '6' : '0');
     const clienteDocNumero = params.clienteDocNumero || (clienteDocTipo === '6' ? '20601234567' : '00000000');
@@ -175,8 +219,8 @@ export class NubefactService {
         total_igv: igv,
         total,
         items: params.items.map((item) => {
-          const itemSubtotal = Math.round((item.unitPrice / 1.18) * 100) / 100;
-          const itemIgv = Math.round((item.unitPrice - itemSubtotal) * 100) / 100;
+          const itemCents = Math.round(Number(item.unitPrice) * 100);
+          const { subtotal: itemSubtotal, igv: itemIgv } = splitIgv(itemCents);
           return {
             unidad_de_medida: 'NIU',
             descripcion: item.name,
@@ -184,7 +228,7 @@ export class NubefactService {
             valor_unitario: itemSubtotal,
             precio_unitario: item.unitPrice,
             subtotal: itemSubtotal * item.quantity,
-            tipo_de_igv: 1, // Gravado - Operación Onerosa
+            tipo_de_igv: 1, // 10 = Gravado - Operación Onerosa
             igv: itemIgv * item.quantity,
             total: item.unitPrice * item.quantity
           };
@@ -257,13 +301,13 @@ export class NubefactService {
   }
 
   /**
-   * Emite una Nota de Crédito Electrónica vinculada al comprobante original por motivo de reembolso
+   * Emite una Nota de Crédito Electrónica vinculada al comprobante original por motivo de reembolso o anulación
    */
   public static async emitCreditNote(params: CreditNoteEmissionParams): Promise<NubefactResponse> {
     const isFactura = params.invoiceToModify.tipo === '01';
     const tipo = '07'; // Nota de Crédito
     const serie = isFactura ? 'FC01' : 'BC01';
-    const numero = ++notaCreditoCounter;
+    const numero = params.numero ?? ++notaCreditoCounter;
 
     const total = params.amountCents ? params.amountCents / 100 : params.invoiceToModify.totalAmount;
     const mockHash = crypto
@@ -271,6 +315,8 @@ export class NubefactService {
       .update(`NC-${serie}-${numero}-${total}`)
       .digest('hex')
       .slice(0, 28);
+
+    const descMotivo = params.reasonDescription || MOTIVOS_NC[params.reasonCode as MotivoNotaCredito] || 'Anulación de la operación';
 
     return {
       success: true,
@@ -282,7 +328,35 @@ export class NubefactService {
       enlace_del_cdr: `https://nubefact.com/cpe/cdr/R-${serie}-${numero}.zip`,
       codigo_hash: mockHash,
       aceptada_por_sunat: true,
-      sunat_description: `La Nota de Crédito ${serie}-${numero} que modifica al comprobante ${params.invoiceToModify.serie}-${params.invoiceToModify.numero} ha sido aceptada por SUNAT.`
+      sunat_description: `La Nota de Crédito ${serie}-${numero} que modifica al comprobante ${params.invoiceToModify.serie}-${params.invoiceToModify.numero} ha sido aceptada por SUNAT (${descMotivo}).`
     };
+  }
+
+  /**
+   * Envía el Resumen Diario de Boletas (RC) a Nubefact / SUNAT
+   */
+  public static async sendDailySummary(payload: any): Promise<{ ticket: string }> {
+    const nubefactUrl = process.env.NUBEFACT_URL;
+    const nubefactToken = process.env.NUBEFACT_TOKEN;
+
+    if (nubefactUrl && nubefactToken && nubefactToken.length > 20) {
+      const response = await fetch(nubefactUrl, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${nubefactToken}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+      const data = (await response.json()) as any;
+      if (!response.ok || !data.ticket) {
+        throw new Error(data.errors || 'Error enviando resumen diario a Nubefact');
+      }
+      return { ticket: data.ticket };
+    }
+
+    // Modo simulado para pruebas locales / staging
+    const mockTicket = `RC-TICKET-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+    return { ticket: mockTicket };
   }
 }

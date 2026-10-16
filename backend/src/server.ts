@@ -7,6 +7,7 @@ import { checkDatabaseConnection, isPostgresAvailable, dbPool } from './config/d
 import { runVersionedMigrations } from './database/migrations/runner';
 import { startReconciliationJob } from './jobs/reconcilePayments';
 import { startInvoiceWorker } from './jobs/emitInvoiceWorker';
+import { startDailySummaryWorker } from './jobs/dailySummaryWorker';
 import { logger } from './utils/logger';
 
 const PORT = parseInt(process.env.PORT || '4000', 10);
@@ -27,6 +28,9 @@ async function startServer() {
 
   // Arrancar worker asíncrono para emisión de comprobantes SUNAT / Nubefact
   startInvoiceWorker();
+
+  // Arrancar worker de Resumen Diario de Boletas (RC) a SUNAT
+  startDailySummaryWorker();
 
   let isDraining = false;
   const app = createApp(() => isDraining);

@@ -19,6 +19,7 @@ import { migration011 } from './011_payments_orphan_status';
 import { migration012 } from './012_order_notifications_and_refunds';
 import { migration013 } from './013_invoices';
 import { migration014 } from './014_invoice_queue';
+import { migration015 } from './015_invoice_series';
 import { Migration } from './types';
 import { logger } from '../../utils/logger';
 
@@ -38,7 +39,8 @@ const MIGRATIONS: Migration[] = [
   migration011,
   migration012,
   migration013,
-  migration014
+  migration014,
+  migration015
 ];
 
 export async function runVersionedMigrations(): Promise<void> {

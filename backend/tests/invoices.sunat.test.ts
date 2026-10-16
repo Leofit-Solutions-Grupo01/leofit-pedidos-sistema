@@ -1,18 +1,21 @@
 // =============================================================================
-// SUNAT & NUBEFACT INVOICING TESTS - ROUND 9
+// SUNAT & NUBEFACT INVOICING TESTS - ROUND 9 (CRITICAL HARDENING)
 // CPE: Boletas (03), Facturas (01), Notas de Crédito (07), RUC Módulo 11 & Cola
+// Correlativos sin gaps, Decimal.js IGV, Resumen Diario RC, Catálogo 09
 // =============================================================================
 
 import request from 'supertest';
 import { createApp } from '../src/app';
 import { JWTService } from '../src/infrastructure/security/jwt.utils';
-import { validateRuc, NubefactService } from '../src/services/sunat/nubefact.service';
+import { validateRuc, NubefactService, reserveInvoiceNumber } from '../src/services/sunat/nubefact.service';
 import {
   enqueueInvoice,
   processInvoiceQueue,
   memoryInvoiceQueue,
   memoryInvoices
 } from '../src/jobs/emitInvoiceWorker';
+import { sendDailySummary } from '../src/jobs/dailySummaryWorker';
+import { splitIgv } from '../src/utils/igv';
 import { transitionOrder } from '../src/services/orders/stateMachine';
 import { InMemoryDataStore } from '../src/infrastructure/repositories/memory.repositories';
 
@@ -86,9 +89,25 @@ describe('Ronda 9 — Facturación Electrónica SUNAT (PSE Nubefact)', () => {
   });
 
   // ───────────────────────────────────────────────────────────────────────────
-  // 2. Desglose Fiscal IGV 18% y Emisión de CPE
+  // 2. Desglose Fiscal IGV 18% con Decimal.js (Tolerancia Cero)
   // ───────────────────────────────────────────────────────────────────────────
-  describe('Servicio Nubefact — Emisión y Desglose Fiscal', () => {
+  describe('Cálculo de IGV con Decimal.js (Tolerancia Cero y Cuadre al Centavo)', () => {
+    it('Debe cuadrar exactamente subtotal + igv === total en 20 montos aleatorios', () => {
+      // 20 montos aleatorios entre S/ 5.00 y S/ 1500.00
+      const testCents = [
+        10000, 5990, 4999, 11800, 23600, 35400, 1500, 7555, 9999, 12345,
+        8765, 54321, 98765, 1000, 50, 99, 101, 1050, 45000, 150000
+      ];
+
+      for (const cents of testCents) {
+        const result = splitIgv(cents);
+        const sum = Math.round((result.subtotal + result.igv) * 100);
+        expect(sum).toBe(cents);
+        expect(result.subtotalCents + result.igvCents).toBe(cents);
+        expect(Number((result.subtotal + result.igv).toFixed(2))).toBe(result.total);
+      }
+    });
+
     it('Debe emitir una Boleta (tipo 03) con cálculo exacto de subtotal e IGV 18%', async () => {
       const cpe = await NubefactService.emitInvoice({
         orderId: 101,
@@ -127,24 +146,38 @@ describe('Ronda 9 — Facturación Electrónica SUNAT (PSE Nubefact)', () => {
   });
 
   // ───────────────────────────────────────────────────────────────────────────
-  // 3. Flujo Asíncrono: Transición a PAGADO -> Cola -> Worker
+  // 3. Correlativos y Resumen Diario de Boletas (RC)
+  // ───────────────────────────────────────────────────────────────────────────
+  describe('Correlativos sin gaps y Resumen Diario (RC)', () => {
+    it('reserveInvoiceNumber reserva correlativos secuenciales sin repeticiones', async () => {
+      const n1 = await reserveInvoiceNumber(null, '03', 'BBB1');
+      const n2 = await reserveInvoiceNumber(null, '03', 'BBB1');
+      expect(n2).toBe(n1 + 1);
+    });
+
+    it('sendDailySummary no arroja errores y maneja envíos consolidados', async () => {
+      const result = await sendDailySummary();
+      expect(result).toBeDefined();
+      expect(result.count).toBeGreaterThanOrEqual(0);
+    });
+  });
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // 4. Flujo Asíncrono: Transición a PAGADO -> Cola -> Worker
   // ───────────────────────────────────────────────────────────────────────────
   describe('Cola Asíncrona de Emisión (invoice_queue & Worker)', () => {
     it('Al transicionar una orden a PAGADO, se encola automáticamente un trabajo de facturación', async () => {
-      // Tomamos la primera orden de InMemoryDataStore
       const testOrder = InMemoryDataStore.orders[0];
       expect(testOrder).toBeDefined();
       testOrder.status = 'RECIBIDO' as any;
       (testOrder as any).estado = 'PENDIENTE';
 
-      // Transicionamos a PAGADO
       const transitionResult = await transitionOrder(null, testOrder.id, 'PAGADO', 'webhook:culqi', {
         tipoComprobante: '03'
       });
 
       expect(transitionResult.to).toBe('PAGADO');
 
-      // Verificar que se haya encolado en memoryInvoiceQueue
       const enqueued = memoryInvoiceQueue.find((q) => q.orderId === testOrder.id);
       expect(enqueued).toBeDefined();
       expect(enqueued?.estado).toBe('PENDING');
@@ -153,6 +186,9 @@ describe('Ronda 9 — Facturación Electrónica SUNAT (PSE Nubefact)', () => {
 
     it('El worker processInvoiceQueue() procesa la cola y emite el comprobante en memoria', async () => {
       const testOrder = InMemoryDataStore.orders[0];
+      testOrder.status = 'PAGADO' as any;
+      (testOrder as any).estado = 'PAGADO';
+
       await enqueueInvoice(testOrder.id, '03', { clienteNombre: 'Cliente Test' });
 
       expect(memoryInvoiceQueue.length).toBeGreaterThan(0);
@@ -160,11 +196,9 @@ describe('Ronda 9 — Facturación Electrónica SUNAT (PSE Nubefact)', () => {
       const processedCount = await processInvoiceQueue();
       expect(processedCount).toBeGreaterThanOrEqual(1);
 
-      // El trabajo en cola debe quedar COMPLETED
       const job = memoryInvoiceQueue.find((q) => q.orderId === testOrder.id);
       expect(job?.estado).toBe('COMPLETED');
 
-      // Debe existir en memoryInvoices
       const invoice = memoryInvoices.find((i) => i.orderId === testOrder.id);
       expect(invoice).toBeDefined();
       expect(invoice?.estado).toBe('ACEPTADO');
@@ -172,10 +206,27 @@ describe('Ronda 9 — Facturación Electrónica SUNAT (PSE Nubefact)', () => {
       expect(invoice?.pdfUrl).toBeDefined();
       expect(invoice?.hashSunat).toBeDefined();
     });
+
+    it('Si un pedido fue cancelado antes de emitir, la tarea en cola queda en SKIPPED y no emite', async () => {
+      const testOrder = InMemoryDataStore.orders[1] || InMemoryDataStore.orders[0];
+      (testOrder as any).estado = 'CANCELADO';
+      testOrder.status = 'CANCELADO' as any;
+
+      await enqueueInvoice(testOrder.id, '03');
+
+      const processedCount = await processInvoiceQueue();
+      const job = memoryInvoiceQueue.find((q) => q.orderId === testOrder.id);
+      expect(job?.estado).toBe('SKIPPED');
+      expect(job?.lastError).toBe('ORDER_CANCELLED_BEFORE_EMISSION');
+
+      // No debe haberse emitido en memoria
+      const invoice = memoryInvoices.find((i) => i.orderId === testOrder.id && i.estado === 'ACEPTADO');
+      expect(invoice).toBeUndefined();
+    });
   });
 
   // ───────────────────────────────────────────────────────────────────────────
-  // 4. Endpoints de Consulta, Descarga y Nota de Crédito
+  // 5. Endpoints de Consulta, Descarga y Nota de Crédito (Catálogo 09)
   // ───────────────────────────────────────────────────────────────────────────
   describe('Endpoints /api/invoices y /api/orders/:id/credit-note', () => {
     let emittedOrderId: number;
@@ -183,9 +234,10 @@ describe('Ronda 9 — Facturación Electrónica SUNAT (PSE Nubefact)', () => {
 
     beforeEach(async () => {
       const testOrder = InMemoryDataStore.orders[0];
+      (testOrder as any).estado = 'PAGADO';
+      testOrder.status = 'PAGADO' as any;
       emittedOrderId = testOrder.id;
 
-      // Encolar y procesar para tener un comprobante emitido en las pruebas
       await enqueueInvoice(emittedOrderId, '03');
       await processInvoiceQueue();
 
@@ -236,7 +288,21 @@ describe('Ronda 9 — Facturación Electrónica SUNAT (PSE Nubefact)', () => {
       expect(res.status).toBe(403);
     });
 
-    it('POST /api/orders/:id/credit-note emite Nota de Crédito (tipo 07) si el usuario es ADMIN', async () => {
+    it('POST /api/orders/:id/credit-note rechaza motivos inválidos fuera del Catálogo 09 de SUNAT (400)', async () => {
+      const res = await request(app)
+        .post(`/api/orders/${emittedOrderId}/credit-note`)
+        .set('Authorization', `Bearer ${adminToken}`)
+        .send({
+          reasonCode: '99', // Código inválido
+          reasonDescription: 'Motivo inventado'
+        });
+
+      expect(res.status).toBe(400);
+      expect(res.body.success).toBe(false);
+      expect(res.body.error.code).toBe('INVALID_MOTIVO');
+    });
+
+    it('POST /api/orders/:id/credit-note emite Nota de Crédito (tipo 07) si el motivo es válido (Catálogo 09)', async () => {
       const res = await request(app)
         .post(`/api/orders/${emittedOrderId}/credit-note`)
         .set('Authorization', `Bearer ${adminToken}`)
@@ -251,7 +317,6 @@ describe('Ronda 9 — Facturación Electrónica SUNAT (PSE Nubefact)', () => {
       expect(res.body.data.serie).toBe('BC01'); // Nota de crédito para boleta BBB1
       expect(res.body.data.aceptada_por_sunat).toBe(true);
 
-      // Debe haberse registrado en la lista de facturas
       const nc = memoryInvoices.find((i) => i.orderId === emittedOrderId && i.tipo === '07');
       expect(nc).toBeDefined();
       expect(nc?.estado).toBe('ACEPTADO');

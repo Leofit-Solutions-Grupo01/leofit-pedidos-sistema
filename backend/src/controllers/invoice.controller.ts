@@ -141,10 +141,27 @@ export class InvoiceController {
    * @route POST /api/orders/:id/credit-note
    * @desc Emite una Nota de Crédito Electrónica vinculada al comprobante original por motivo de reembolso
    */
+  /**
+   * @route POST /api/orders/:id/credit-note
+   * @desc Emite una Nota de Crédito Electrónica vinculada al comprobante original por motivo de reembolso (Catálogo 09 SUNAT)
+   */
   public static async emitCreditNote(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const orderId = Number(req.params.id);
-      const { reasonCode = '01', reasonDescription = 'Anulación de la operación' } = req.body || {};
+      const rawMotivo = req.body?.reasonCode || req.body?.motivo || '01';
+      const reasonDescription = req.body?.reasonDescription || req.body?.descripcion || 'Anulación de la operación';
+
+      const ALLOWED_MOTIVOS = ['01', '02', '06', '07', '13'];
+      if (!ALLOWED_MOTIVOS.includes(rawMotivo)) {
+        res.status(400).json({
+          success: false,
+          error: {
+            code: 'INVALID_MOTIVO',
+            message: `El motivo de la nota de crédito '${rawMotivo}' no es válido conforme al Catálogo 09 de SUNAT. Permitidos: ${ALLOWED_MOTIVOS.join(', ')}`
+          }
+        });
+        return;
+      }
 
       let originalInvoice: any = null;
 
@@ -174,84 +191,107 @@ export class InvoiceController {
         return;
       }
 
-      const ncResult = await NubefactService.emitCreditNote({
-        orderId,
-        invoiceToModify: {
-          tipo: (originalInvoice.tipo as any) || '03',
-          serie: originalInvoice.serie,
-          numero: originalInvoice.numero,
-          totalAmount: Number(originalInvoice.monto_total || originalInvoice.montoTotal)
-        },
-        reasonCode,
-        reasonDescription,
-        clienteDenominacion: originalInvoice.cliente_denominacion || originalInvoice.clienteDenominacion,
-        clienteDocTipo: originalInvoice.cliente_tipo_documento || originalInvoice.clienteTipoDocumento || '0',
-        clienteDocNumero: originalInvoice.cliente_numero_documento || originalInvoice.clienteNumeroDocumento || '00000000'
-      });
+      const isFactura = originalInvoice.tipo === '01';
+      const serie = isFactura ? 'FC01' : 'BC01';
 
-      // Registrar nota de crédito en base de datos
-      const totalAmount = Number(originalInvoice.monto_total || originalInvoice.montoTotal);
-      const subtotal = Math.round((totalAmount / 1.18) * 100) / 100;
-      const igv = Math.round((totalAmount - subtotal) * 100) / 100;
+      let numero: number | undefined;
+      let client: any = null;
 
       if (isPostgresAvailable()) {
-        await dbPool.query(
-          `INSERT INTO invoices
-             (order_id, tipo, serie, numero, cliente_denominacion,
-              monto_subtotal, monto_igv, monto_total, xml_url, pdf_url, cdr_url,
-              hash_sunat, estado, referencia_tipo, referencia_serie, referencia_numero, referencia_motivo)
-           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, 'ACEPTADO', $13, $14, $15, $16)`,
-          [
-            orderId,
-            ncResult.tipo,
-            ncResult.serie,
-            ncResult.numero,
-            originalInvoice.cliente_denominacion,
-            subtotal,
-            igv,
-            totalAmount,
-            ncResult.enlace_del_xml,
-            ncResult.enlace_del_pdf,
-            ncResult.enlace_del_cdr,
-            ncResult.codigo_hash,
-            originalInvoice.tipo,
-            originalInvoice.serie,
-            originalInvoice.numero,
-            reasonDescription
-          ]
-        );
-      } else {
-        memoryInvoices.push({
-          id: memoryInvoices.length + 1,
-          orderId,
-          tipo: ncResult.tipo,
-          serie: ncResult.serie,
-          numero: ncResult.numero,
-          clienteTipoDocumento: originalInvoice.clienteTipoDocumento || '0',
-          clienteNumeroDocumento: originalInvoice.clienteNumeroDocumento || '00000000',
-          clienteDenominacion: originalInvoice.clienteDenominacion,
-          montoSubtotal: subtotal,
-          montoIgv: igv,
-          montoTotal: totalAmount,
-          moneda: 'PEN',
-          xmlUrl: ncResult.enlace_del_xml,
-          pdfUrl: ncResult.enlace_del_pdf,
-          cdrUrl: ncResult.enlace_del_cdr,
-          hashSunat: ncResult.codigo_hash,
-          estado: 'ACEPTADO',
-          createdAt: new Date()
-        });
+        client = await dbPool.connect();
+        await client.query('BEGIN');
+        const { reserveInvoiceNumber } = await import('../services/sunat/nubefact.service');
+        numero = await reserveInvoiceNumber(client, '07', serie);
       }
 
-      logger.info('[SUNAT] Nota de crédito emitida:', {
-        orderId,
-        nc: `${ncResult.serie}-${ncResult.numero}`
-      });
+      try {
+        const totalAmountNum = Number(originalInvoice.monto_total || originalInvoice.montoTotal);
+        const { splitIgv } = await import('../utils/igv');
+        const { subtotal, igv, total: totalAmount } = splitIgv(Math.round(totalAmountNum * 100));
 
-      res.status(200).json({
-        success: true,
-        data: ncResult
-      });
+        const ncResult = await NubefactService.emitCreditNote({
+          orderId,
+          invoiceToModify: {
+            tipo: (originalInvoice.tipo as any) || '03',
+            serie: originalInvoice.serie,
+            numero: originalInvoice.numero,
+            totalAmount
+          },
+          reasonCode: rawMotivo,
+          reasonDescription,
+          numero,
+          clienteDenominacion: originalInvoice.cliente_denominacion || originalInvoice.clienteDenominacion,
+          clienteDocTipo: originalInvoice.cliente_tipo_documento || originalInvoice.clienteTipoDocumento || '0',
+          clienteDocNumero: originalInvoice.cliente_numero_documento || originalInvoice.clienteNumeroDocumento || '00000000'
+        });
+
+        if (client) {
+          await client.query(
+            `INSERT INTO invoices
+               (order_id, tipo, serie, numero, cliente_denominacion,
+                monto_subtotal, monto_igv, monto_total, xml_url, pdf_url, cdr_url,
+                hash_sunat, estado, referencia_tipo, referencia_serie, referencia_numero, referencia_motivo,
+                ref_tipo, ref_serie, ref_numero, motivo_nc)
+             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, 'ACEPTADO', $13, $14, $15, $16, $13, $14, $15, $17)`,
+            [
+              orderId,
+              ncResult.tipo,
+              ncResult.serie,
+              ncResult.numero,
+              originalInvoice.cliente_denominacion,
+              subtotal,
+              igv,
+              totalAmount,
+              ncResult.enlace_del_xml,
+              ncResult.enlace_del_pdf,
+              ncResult.enlace_del_cdr,
+              ncResult.codigo_hash,
+              originalInvoice.tipo,
+              originalInvoice.serie,
+              originalInvoice.numero,
+              reasonDescription,
+              rawMotivo
+            ]
+          );
+          await client.query('COMMIT');
+        } else {
+          memoryInvoices.push({
+            id: memoryInvoices.length + 1,
+            orderId,
+            tipo: ncResult.tipo,
+            serie: ncResult.serie,
+            numero: ncResult.numero,
+            clienteTipoDocumento: originalInvoice.clienteTipoDocumento || '0',
+            clienteNumeroDocumento: originalInvoice.clienteNumeroDocumento || '00000000',
+            clienteDenominacion: originalInvoice.clienteDenominacion,
+            montoSubtotal: subtotal,
+            montoIgv: igv,
+            montoTotal: totalAmount,
+            moneda: 'PEN',
+            xmlUrl: ncResult.enlace_del_xml,
+            pdfUrl: ncResult.enlace_del_pdf,
+            cdrUrl: ncResult.enlace_del_cdr,
+            hashSunat: ncResult.codigo_hash,
+            estado: 'ACEPTADO',
+            createdAt: new Date()
+          });
+        }
+
+        logger.info('[SUNAT] Nota de crédito emitida:', {
+          orderId,
+          nc: `${ncResult.serie}-${ncResult.numero}`
+        });
+
+        res.status(200).json({
+          success: true,
+          data: ncResult
+        });
+      } catch (innerErr) {
+        if (client) await client.query('ROLLBACK').catch(() => {});
+        throw innerErr;
+      } finally {
+        if (client) client.release();
+      }
     } catch (err) {
       next(err);
     }
