@@ -28,7 +28,13 @@ export async function apiFetch<T>(
     headers['Authorization'] = `Bearer ${token}`;
   }
 
-  const baseUrl = import.meta.env.VITE_API_URL;
+  const envApiUrl = import.meta.env.VITE_API_URL;
+  const baseUrl = envApiUrl !== undefined
+    ? envApiUrl
+    : (typeof window !== 'undefined' && window.location.hostname === 'localhost'
+        ? 'http://localhost:4000'
+        : 'https://leofit-backend-api.onrender.com');
+
   if (!baseUrl) {
     throw new Error('VITE_API_URL no está definido');
   }

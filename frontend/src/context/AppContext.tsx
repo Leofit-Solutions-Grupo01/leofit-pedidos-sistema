@@ -259,14 +259,18 @@ export function AppProvider({ children }: { children: ReactNode }) {
         return false;
       }
 
-      // Autenticación real contra el backend Node.js
+      // Autenticación real contra el backend Node.js con timeout defensivo
       const apiUrl = import.meta.env.VITE_API_URL || '';
       try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 3500);
         const res = await fetch(`${apiUrl}/api/auth/login`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email: cleanEmail, password: cleanPass })
+          body: JSON.stringify({ email: cleanEmail, password: cleanPass }),
+          signal: controller.signal
         });
+        clearTimeout(timeoutId);
         if (res.ok) {
           const data = await res.json();
           const rolRecibido = data.data?.user?.role === 'OPERATOR' ? 'OPERATOR' : 'ADMIN';
