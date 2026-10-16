@@ -5,8 +5,11 @@
 import { createApp } from './app';
 import { checkDatabaseConnection, isPostgresAvailable, dbPool } from './config/database';
 import { runAutoMigrations } from './database/autoMigrate';
+import { logger } from './utils/logger';
 
 const PORT = parseInt(process.env.PORT || '4000', 10);
+// Ventana de draining: 20s en producción para permitir que Render/LB actualicen health checks (10-15s interval)
+const DRAIN_TIMEOUT_MS = parseInt(process.env.DRAIN_TIMEOUT_MS || (process.env.NODE_ENV === 'test' ? '100' : '20000'), 10);
 
 async function startServer() {
   console.log('🚀 Iniciando Leofit Backend Server...');
@@ -33,9 +36,12 @@ async function startServer() {
   const gracefulShutdown = (signal: string) => {
     if (isDraining) return;
     isDraining = true;
-    console.log(`\n🛑 [${signal}] Marcando instancia como DRAINING (readiness = 503, Connection: close)...`);
+    logger.warn(`[${signal}] Iniciando ciclo de apagado seguro. Instancia en modo DRAINING.`);
+    console.log(`\n🛑 [${signal}] Instancia en modo DRAINING (/health/ready responde 503, Connection: close).`);
+    console.log(`⏳ Manteniendo sockets activos durante ${DRAIN_TIMEOUT_MS / 1000}s para retiro limpio del Load Balancer...`);
 
-    // Margen de 1.5s para que los balanceadores de carga (Render/Cloudflare) redirijan el tráfico
+    // Durante DRAIN_TIMEOUT_MS el servidor sigue respondiendo a peticiones en vuelo,
+    // pero devuelve 503 en /health/ready y Connection: close para desviar tráfico nuevo.
     setTimeout(() => {
       server.close(async () => {
         console.log('🔒 Servidor HTTP cerrado. Drenaje de solicitudes completado.');
@@ -43,18 +49,18 @@ async function startServer() {
           await dbPool.end();
           console.log('✅ Pool de conexiones PostgreSQL liberado exitosamente.');
           process.exit(0);
-        } catch (err) {
+        } catch (err: any) {
           console.error('❌ Error liberando pool de base de datos:', err);
           process.exit(1);
         }
       });
-    }, 1500);
+    }, DRAIN_TIMEOUT_MS);
 
-    // Timeout de seguridad amplio (25s) para permitir requests en vuelo pesados antes de terminar
+    // Timeout de seguridad final (35s)
     setTimeout(() => {
-      console.warn('⏰ Timeout de apagado seguro alcanzado (25s). Forzando cierre del proceso.');
+      console.warn('⏰ Timeout de apagado forzado alcanzado (35s). Saliendo del proceso.');
       process.exit(1);
-    }, 25000).unref();
+    }, DRAIN_TIMEOUT_MS + 15000).unref();
   };
 
   process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));

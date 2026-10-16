@@ -58,18 +58,22 @@ export async function runAutoMigrations(): Promise<void> {
       // Ignorar si la secuencia tiene otro nombre
     }
 
-    // 6. Tabla de llaves de idempotencia con TTL y hash de payload (RFC 9457 & Idempotency Draft)
+    // 6. Tabla de llaves de idempotencia con scope de usuario, TTL y hash canónico (RFC 9457 & Idempotency Draft)
     await client.query(`
       CREATE TABLE IF NOT EXISTS idempotency_keys (
-        key VARCHAR(128) PRIMARY KEY,
+        id SERIAL PRIMARY KEY,
+        user_id INT NOT NULL DEFAULT 0,
+        key VARCHAR(128) NOT NULL,
         request_hash VARCHAR(64) DEFAULT NULL,
         status_code INT NOT NULL,
         response_body JSONB NOT NULL,
         created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
         expires_at TIMESTAMPTZ DEFAULT (CURRENT_TIMESTAMP + INTERVAL '48 hours')
       );
+      ALTER TABLE idempotency_keys ADD COLUMN IF NOT EXISTS user_id INT NOT NULL DEFAULT 0;
       ALTER TABLE idempotency_keys ADD COLUMN IF NOT EXISTS request_hash VARCHAR(64) DEFAULT NULL;
       ALTER TABLE idempotency_keys ADD COLUMN IF NOT EXISTS expires_at TIMESTAMPTZ DEFAULT (CURRENT_TIMESTAMP + INTERVAL '48 hours');
+      CREATE UNIQUE INDEX IF NOT EXISTS idx_user_idempotency_key ON idempotency_keys(user_id, key);
       CREATE INDEX IF NOT EXISTS idx_idempotency_expires_at ON idempotency_keys(expires_at);
       
       -- Limpieza inicial de registros expirados

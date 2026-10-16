@@ -11,6 +11,7 @@ import apiRoutes from './routes';
 import { errorHandler } from './middlewares/error.middleware';
 import { apiRateLimiter } from './middlewares/rateLimit.middleware';
 import { externalController } from './controllers/external.controller';
+import { logger, asyncLocalStorage } from './utils/logger';
 
 dotenv.config();
 
@@ -76,16 +77,34 @@ export function createApp(isDrainingSupplier?: () => boolean): Express {
     credentials: true
   }));
 
-  // Correlation ID con Sanitización Estricta (Anti Log-Injection & Collisions)
+  // Correlation ID con Sanitización Estricta y Propagación vía AsyncLocalStorage
   app.use((req, res, next) => {
     const rawCorrId = req.headers['x-correlation-id'] || req.headers['x-request-id'];
-    const isValidCid = typeof rawCorrId === 'string' && /^[a-zA-Z0-9_\-]{8,64}$/.test(rawCorrId.trim());
-    const correlationId = isValidCid
-      ? (rawCorrId as string).trim()
-      : (crypto.randomUUID ? crypto.randomUUID() : `req-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`);
+    let correlationId: string;
+
+    if (typeof rawCorrId === 'string') {
+      const trimmed = rawCorrId.trim();
+      if (/^[a-zA-Z0-9_\-]{8,64}$/.test(trimmed)) {
+        correlationId = trimmed;
+      } else {
+        // Log de auditoría por posible intento de log injection o header malformado
+        logger.audit('Alerta de Seguridad: X-Correlation-ID rechazado por formato inválido', {
+          rejectedCid: rawCorrId,
+          ip: req.ip,
+          path: req.path
+        });
+        correlationId = crypto.randomUUID ? crypto.randomUUID() : `req-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+      }
+    } else {
+      correlationId = crypto.randomUUID ? crypto.randomUUID() : `req-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+    }
+
     req.headers['x-correlation-id'] = correlationId;
     res.setHeader('X-Correlation-ID', correlationId);
-    next();
+
+    asyncLocalStorage.run({ correlationId }, () => {
+      next();
+    });
   });
 
   // Content-Type Guard (HTTP 415 Unsupported Media Type para mutaciones)

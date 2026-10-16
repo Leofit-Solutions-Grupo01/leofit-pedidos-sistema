@@ -9,6 +9,7 @@
  * - SLA (Service Level Agreement): Disponibilidad del 99.9% mensual.
  * - SLO (Service Level Objective): Tiempo de respuesta medio < 200ms.
  * - Estado de la capa de persistencia y consumo de memoria del proceso Node.js.
+ * - Protección contra saturación de Connection Pool mediante Micro-Cache (3000ms).
  */
 
 import { Request, Response } from 'express';
@@ -18,11 +19,16 @@ const startTime = Date.now();
 let consecutiveDbFailures = 0;
 const FAILURE_THRESHOLD_READINESS = 3;
 
+// Micro-cache para el ping a la base de datos (mitigación de DoS al connection pool)
+const DB_CACHE_TTL_MS = 3000;
+let lastDbCheckTimestamp = 0;
+let lastDbCheckHealthy = false;
+let lastDbCheckError: string | null = null;
+
 export class HealthController {
   /**
    * @route GET /api/health
-   * @desc Endpoint de liveness y readiness para sondas de orquestadores (Docker / Kubernetes / Uptime Monitors).
-   * @access Público
+   * @desc Endpoint de métricas de servicio para orquestadores y dashboards de observabilidad.
    */
   public static check(req: Request, res: Response): void {
     const uptimeSeconds = Math.floor((Date.now() - startTime) / 1000);
@@ -52,7 +58,7 @@ export class HealthController {
 
   /**
    * @route GET /api/health/live
-   * @desc Sonda Liveness: confirma que el proceso de Node.js está activo y recibiendo tráfico.
+   * @desc Sonda Liveness: 100% in-memory. Confirma que el bucle de eventos de Node.js no está bloqueado.
    */
   public static liveness(req: Request, res: Response): void {
     res.status(200).json({
@@ -63,8 +69,7 @@ export class HealthController {
 
   /**
    * @route GET /api/health/ready
-   * @desc Sonda Readiness: verifica que la base de datos esté lista para aceptar transacciones.
-   *       Usa umbral de 3 fallos consecutivos para evitar que el orquestador mate la app por un cold-start o latencia transitoria.
+   * @desc Sonda Readiness con micro-cache de 3000ms y umbral de tolerancia a fallos transitorios.
    */
   public static async readiness(req: Request, res: Response): Promise<void> {
     if (!isPostgresAvailable()) {
@@ -76,6 +81,39 @@ export class HealthController {
       return;
     }
 
+    const now = Date.now();
+    // Si la última comprobación se realizó hace menos de 3000ms, reutilizar el resultado cacheado
+    if (now - lastDbCheckTimestamp < DB_CACHE_TTL_MS) {
+      if (lastDbCheckHealthy) {
+        res.status(200).json({
+          status: 'READY',
+          database: 'HEALTHY',
+          cached: true,
+          timestamp: new Date().toISOString()
+        });
+        return;
+      } else if (consecutiveDbFailures < FAILURE_THRESHOLD_READINESS) {
+        res.status(200).json({
+          status: 'READY_DEGRADED',
+          warning: 'Latencia transitoria o ping lento en base de datos',
+          cached: true,
+          consecutiveFailures: consecutiveDbFailures,
+          timestamp: new Date().toISOString()
+        });
+        return;
+      } else {
+        res.setHeader('Retry-After', '5');
+        res.status(503).json({
+          status: 'NOT_READY',
+          error: lastDbCheckError || 'Database unavailable',
+          cached: true,
+          consecutiveFailures: consecutiveDbFailures,
+          retryAfter: '5'
+        });
+        return;
+      }
+    }
+
     try {
       const client = await Promise.race([
         dbPool.connect(),
@@ -85,6 +123,10 @@ export class HealthController {
       client.release();
 
       consecutiveDbFailures = 0;
+      lastDbCheckTimestamp = now;
+      lastDbCheckHealthy = true;
+      lastDbCheckError = null;
+
       res.status(200).json({
         status: 'READY',
         database: 'HEALTHY',
@@ -92,9 +134,13 @@ export class HealthController {
       });
     } catch (error: any) {
       consecutiveDbFailures++;
+      lastDbCheckTimestamp = now;
+      lastDbCheckHealthy = false;
+      lastDbCheckError = error.message;
+
       console.warn(`⚠️ [Readiness Probe Alert] Fallo ${consecutiveDbFailures}/${FAILURE_THRESHOLD_READINESS}: ${error.message}`);
 
-      // Si no ha superado el umbral, reportar DEGRADED (200) para evitar que Render mate el pod
+      // Si no ha superado el umbral, reportar DEGRADED (200) para evitar reinicio intempestivo en Render
       if (consecutiveDbFailures < FAILURE_THRESHOLD_READINESS) {
         res.status(200).json({
           status: 'READY_DEGRADED',
@@ -105,7 +151,7 @@ export class HealthController {
         return;
       }
 
-      // Umbral superado: marcar 503 para desviar tráfico real
+      // Umbral superado: marcar 503 para que el load balancer desvíe el tráfico
       res.setHeader('Retry-After', '5');
       res.status(503).json({
         status: 'NOT_READY',

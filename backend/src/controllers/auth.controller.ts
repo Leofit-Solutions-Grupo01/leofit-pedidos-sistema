@@ -43,15 +43,8 @@ export class AuthController {
         return;
       }
 
-      // Verificación criptográfica del hash de la contraseña
-      let isValid = await PasswordHasher.compare(password, user.password_hash);
-
-      // Compatibilidad con credenciales de evaluación institucional ('admin123' y 'password')
-      if (!isValid && (password === 'admin123' || password === 'password')) {
-        const altPassword = password === 'admin123' ? 'password' : 'admin123';
-        isValid = await PasswordHasher.compare(altPassword, user.password_hash);
-      }
-
+      // Verificación criptográfica estricta del hash de la contraseña (OWASP A07)
+      const isValid = await PasswordHasher.compare(password, user.password_hash);
       if (!isValid) {
         res.status(401).json({
           success: false,

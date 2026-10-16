@@ -6,7 +6,7 @@
  * @copyright (c) 2026 Grupo 01 - UTP. All rights reserved.
  */
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useApp } from "../context/AppContext";
 import ReciboModal from "../components/common/ReciboModal";
 import { Pedido, TipoEnvio, AgenciaEncomienda, MetodoPago, CUPONES_VALIDOS } from "../data/mockData";
@@ -65,6 +65,7 @@ export default function PedidoForm() {
   const [errores, setErrores] = useState<string[]>([]);
   const [enviando, setEnviando] = useState(false);
   const [errorApi, setErrorApi] = useState<string | null>(null);
+  const borradorPedidoRef = useRef<{ id: string; numero: string } | null>(null);
 
   const fechaHoy = new Date().toLocaleDateString("es-PE", { day: "2-digit", month: "2-digit", year: "numeric" });
 
@@ -201,9 +202,18 @@ export default function PedidoForm() {
     setErrores([]);
     setErrorApi(null);
 
+    // Garantizar que la clave de idempotencia se mantenga idéntica entre reintentos manuales por error de red
+    if (!borradorPedidoRef.current) {
+      borradorPedidoRef.current = {
+        id: `o${Date.now()}`,
+        numero: siguienteNumero()
+      };
+    }
+    const { id: draftId, numero: draftNumero } = borradorPedidoRef.current;
+
     const nuevoPedido: Pedido = {
-      id: `o${Date.now()}`,
-      numero: siguienteNumero(),
+      id: draftId,
+      numero: draftNumero,
       canal,
       cliente: {
         nombre: nombre.trim(),
@@ -234,6 +244,7 @@ export default function PedidoForm() {
     setEnviando(false);
 
     if (result.ok) {
+      borradorPedidoRef.current = null; // Reiniciar borrador para que el próximo pedido tenga nueva clave
       setPedidoCreado(result.pedido);
     } else {
       setErrorApi(result.error);

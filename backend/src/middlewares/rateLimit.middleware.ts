@@ -8,6 +8,7 @@
  * Controles de Seguridad:
  * - Mitigación contra ataques de Denegación de Servicio (DoS / DDoS).
  * - Protección contra ataques de fuerza bruta en el formulario de inicio de sesión (OWASP A07).
+ * - Protección contra DoS en sondas de base de datos (/health/ready).
  * - Emisión garantizada de cabeceras RFC: RateLimit-Limit, X-RateLimit-*, Retry-After.
  */
 
@@ -19,14 +20,15 @@ const maxRequests = parseInt(process.env.RATE_LIMIT_MAX_REQUESTS || '200', 10);
 
 /**
  * Limitador global para todas las rutas transaccionales de la API REST.
- * Excluye explícitamente sondas de orquestador (/health).
+ * Excluye EXCLUSIVAMENTE la sonda in-memory de liveness (/health/live) y la raíz.
+ * La sonda de readiness (/health/ready) NO se excluye aquí para evitar vectores de DoS a Postgres.
  */
 export const apiRateLimiter = rateLimit({
   windowMs,
   max: maxRequests,
   standardHeaders: true,
   legacyHeaders: true,
-  skip: (req) => req.path.startsWith('/health') || req.path === '/',
+  skip: (req) => req.path === '/health/live' || req.path === '/' || req.path === '/health/ready',
   handler: (req: Request, res: Response, _next, options) => {
     const retryAfter = res.getHeader('Retry-After') || Math.ceil(windowMs / 1000);
     res.setHeader('Retry-After', String(retryAfter));
@@ -37,6 +39,25 @@ export const apiRateLimiter = rateLimit({
         message: 'Demasiadas solicitudes enviadas desde esta dirección IP. Por favor intente más tarde.',
         retryAfter: Number(retryAfter)
       }
+    });
+  }
+});
+
+/**
+ * Limitador específico y controlado para la sonda de base de datos `/api/health/ready`.
+ * Permite monitoreo frecuente de orquestadores (Render/Kubernetes) hasta 120 peticiones/minuto por IP,
+ * bloqueando intentos maliciosos de saturar el pool de conexiones de Postgres.
+ */
+export const readyHealthRateLimiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minuto
+  max: 120, // 2 peticiones por segundo máximo
+  standardHeaders: true,
+  legacyHeaders: true,
+  handler: (req: Request, res: Response) => {
+    res.setHeader('Retry-After', '60');
+    res.status(429).json({
+      status: 'TOO_MANY_REQUESTS',
+      message: 'Límite de comprobaciones de salud excedido para esta IP.'
     });
   }
 });

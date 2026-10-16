@@ -11,16 +11,16 @@ import { CreateProductSchema, UpdateProductSchema, StockUpdateSchema } from '../
 
 const router = Router();
 
-// Public catalog retrieval con validación condicional ETag (Cero discrepancias de precio/stock)
+// Public catalog retrieval con directiva Edge-CDN balanceada (ahorra CPU en Render con stale-while-revalidate y ETag)
 router.get('/', (req, res, next) => {
-  res.setHeader('Cache-Control', 'no-cache, must-revalidate');
+  res.setHeader('Cache-Control', 'public, max-age=30, s-maxage=60, stale-while-revalidate=30');
   next();
 }, ProductController.listProducts);
 
 router.get('/alerts/low-stock', authenticateToken, ProductController.getLowStockAlerts);
 
 router.get('/:id', (req, res, next) => {
-  res.setHeader('Cache-Control', 'no-cache, must-revalidate');
+  res.setHeader('Cache-Control', 'public, max-age=30, s-maxage=60, stale-while-revalidate=30');
   next();
 }, ProductController.getProductById);
 

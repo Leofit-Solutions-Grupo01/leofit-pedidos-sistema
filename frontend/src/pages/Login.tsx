@@ -155,7 +155,7 @@ export default function Login() {
                 type="button"
                 onClick={() => {
                   setEmail("admin@leofit.pe");
-                  setPassword("admin123");
+                  setPassword("password");
                   setError("");
                 }}
                 className="py-2.5 px-3 bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded-xl text-left transition-all active:scale-95 group"
@@ -172,7 +172,7 @@ export default function Login() {
                 type="button"
                 onClick={() => {
                   setEmail("operador@leofit.pe");
-                  setPassword("admin123");
+                  setPassword("password");
                   setError("");
                 }}
                 className="py-2.5 px-3 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 rounded-xl text-left transition-all active:scale-95 group"
