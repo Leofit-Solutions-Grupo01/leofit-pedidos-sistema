@@ -139,10 +139,6 @@ export class InvoiceController {
 
   /**
    * @route POST /api/orders/:id/credit-note
-   * @desc Emite una Nota de Crédito Electrónica vinculada al comprobante original por motivo de reembolso
-   */
-  /**
-   * @route POST /api/orders/:id/credit-note
    * @desc Emite una Nota de Crédito Electrónica vinculada al comprobante original por motivo de reembolso (Catálogo 09 SUNAT)
    */
   public static async emitCreditNote(req: Request, res: Response, next: NextFunction): Promise<void> {
