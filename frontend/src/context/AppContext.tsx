@@ -8,7 +8,7 @@
 
 import { createContext, useContext, useState, useEffect, useCallback, useRef, ReactNode } from "react";
 import { Pedido, Producto, EstadoPedido, pedidosIniciales, productosIniciales } from "../data/mockData";
-import { apiFetch, ApiError } from "../services/api";
+import { apiFetch, ApiError, getApiBaseUrl } from "../services/api";
 import { validateAndDecodeJwt, triggerSessionExpired, LEOFIT_AUTH_EXPIRED_EVENT } from "../services/authGuard";
 import { toCreateOrderDTO, normalizeProductCatalog } from "../services/mappers";
 
@@ -259,11 +259,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
         return false;
       }
 
-      // Autenticación real contra el backend Node.js con timeout defensivo
-      const apiUrl = import.meta.env.VITE_API_URL || '';
+      // Autenticación real contra el backend Node.js con timeout defensivo (soporta cold start)
+      const apiUrl = getApiBaseUrl();
       try {
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 3500);
+        const timeoutId = setTimeout(() => controller.abort(), 15000);
         const res = await fetch(`${apiUrl}/api/auth/login`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },

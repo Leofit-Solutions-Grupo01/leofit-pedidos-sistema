@@ -58,12 +58,13 @@ const ORDER_ITEM_SELECT = `
 const round2 = (n: number): number => Math.round((n + Number.EPSILON) * 100) / 100;
 
 /** Devuelve el id del distrito, creándolo si aún no existe en el catálogo. */
-async function upsertDistrict(db: Pool | PoolClient, name: string): Promise<number> {
+async function upsertDistrict(db: Pool | PoolClient, name?: string | null): Promise<number> {
+  const safeName = (name && name.trim()) ? name.trim() : 'Lima';
   const res = await db.query(
     `INSERT INTO districts (name) VALUES ($1)
      ON CONFLICT (name) DO UPDATE SET name = EXCLUDED.name
      RETURNING id`,
-    [name.trim()]
+    [safeName]
   );
   return res.rows[0].id;
 }

@@ -42,10 +42,10 @@ export const CreateProductSchema = z.object({
 export const UpdateProductSchema = CreateProductSchema.partial();
 
 export const CreateClientSchema = z.object({
-  fullName: z.string().min(3).max(120),
-  phone: z.string().min(7).max(20),
-  address: z.string().min(5).max(255),
-  district: z.string().min(2).max(80),
+  fullName: z.string().min(2).max(120),
+  phone: z.string().min(6).max(20),
+  address: z.string().min(3).max(255),
+  district: z.string().max(80).optional().default('Lima'),
   reference: z.string().max(255).optional()
 });
 

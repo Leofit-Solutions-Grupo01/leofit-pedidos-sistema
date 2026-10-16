@@ -6,6 +6,8 @@
   base = "frontend"
   publish = "dist"
   command = "npm run build"
+  # Ahorro de minutos de compilación en Netlify: solo compilar si hay cambios en frontend o netlify.toml
+  ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF . ../netlify.toml"
 
 [build.environment]
   NODE_VERSION = "20.18.0"

@@ -3,13 +3,18 @@
 // =============================================================================
 
 import { createApp } from './app';
-import { checkDatabaseConnection } from './config/database';
+import { checkDatabaseConnection, isPostgresAvailable } from './config/database';
+import { runAutoMigrations } from './database/autoMigrate';
 
 const PORT = parseInt(process.env.PORT || '4000', 10);
 
 async function startServer() {
   console.log('🚀 Iniciando Leofit Backend Server...');
   await checkDatabaseConnection();
+
+  if (isPostgresAvailable()) {
+    await runAutoMigrations();
+  }
 
   const app = createApp();
 

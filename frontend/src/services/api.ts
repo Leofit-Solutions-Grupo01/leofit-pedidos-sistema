@@ -7,6 +7,21 @@ export class ApiError extends Error {
   }
 }
 
+export function getApiBaseUrl(): string {
+  const envApiUrl = import.meta.env.VITE_API_URL;
+  const baseUrl = envApiUrl !== undefined
+    ? envApiUrl
+    : (typeof window !== 'undefined' && window.location.hostname === 'localhost'
+        ? 'http://localhost:4000'
+        : 'https://leofit-backend-api.onrender.com');
+
+  if (!baseUrl) {
+    throw new Error('VITE_API_URL no está definido');
+  }
+
+  return baseUrl.replace(/\/+$/, '');
+}
+
 export async function apiFetch<T>(
   endpoint: string,
   options: RequestInit = {},
@@ -31,17 +46,7 @@ export async function apiFetch<T>(
     }
   }
 
-  const envApiUrl = import.meta.env.VITE_API_URL;
-  const baseUrl = envApiUrl !== undefined
-    ? envApiUrl
-    : (typeof window !== 'undefined' && window.location.hostname === 'localhost'
-        ? 'http://localhost:4000'
-        : 'https://leofit-backend-api.onrender.com');
-
-  if (!baseUrl) {
-    throw new Error('VITE_API_URL no está definido');
-  }
-  
+  const baseUrl = getApiBaseUrl();
   const url = endpoint.startsWith('http') ? endpoint : `${baseUrl}${endpoint}`;
 
   let res: Response;

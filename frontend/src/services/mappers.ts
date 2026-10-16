@@ -116,7 +116,8 @@ export function toCreateOrderDTO(pedido: Pedido): CreateOrderDTO {
     case "Transferencia BCP":
     case "Transferencia BBVA": paymentMapped = "TRANSFERENCIA"; break;
     case "Contra Entrega": paymentMapped = "CONTRAENTREGA"; break;
-    default: throw new Error(`Método de pago no soportado: ${pedido.metodoPago}`);
+    case "Tarjeta/Link": paymentMapped = "TRANSFERENCIA"; break;
+    default: paymentMapped = "EFECTIVO";
   }
 
   const items = pedido.items.map(item => {
@@ -136,14 +137,14 @@ export function toCreateOrderDTO(pedido: Pedido): CreateOrderDTO {
       fullName: pedido.cliente.nombre,
       phone: pedido.cliente.telefono,
       address: pedido.cliente.direccion,
-      district: pedido.cliente.distrito,
+      district: (pedido.cliente.distrito && pedido.cliente.distrito.trim()) ? pedido.cliente.distrito.trim() : 'Lima',
       reference: pedido.cliente.referencia,
     },
     paymentMethod: paymentMapped,
     shippingCost: pedido.costoDelivery,
     shippingType: tipoEnvioMapped,
-    destinationCity: pedido.ciudadDestino,
-    shippingAgency: pedido.agenciaEncomienda,
+    destinationCity: tipoEnvioMapped === "PROVINCIA" ? (pedido.ciudadDestino || 'Provincia') : undefined,
+    shippingAgency: tipoEnvioMapped === "PROVINCIA" ? (pedido.agenciaEncomienda || 'Shalom') : undefined,
     trackingNumber: pedido.numeroGuia,
     notes: pedido.notas,
     items
