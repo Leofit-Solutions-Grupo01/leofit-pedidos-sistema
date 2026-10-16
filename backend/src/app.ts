@@ -72,11 +72,12 @@ export function createApp(isDrainingSupplier?: () => boolean): Express {
         return callback(null, true);
       }
 
-      // Soporte dinámico para Netlify, GitHub Pages y Localhost
+      // Soporte dinámico para Netlify, GitHub Pages, Vercel, Render y Localhost
       if (
         origin.endsWith('.netlify.app') ||
         origin.endsWith('.github.io') ||
         origin.endsWith('.vercel.app') ||
+        origin.endsWith('.onrender.com') ||
         /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)
       ) {
         return callback(null, true);

@@ -23,7 +23,26 @@ services:
       - key: WEBHOOK_SECRET
         sync: false
       - key: CORS_ORIGIN
-        value: "https://leofit-solutions-grupo01.github.io,https://leofit-pedidos-sistema.netlify.app"
+        value: "https://leofit-frontend.onrender.com,https://leofit-solutions-grupo01.github.io,https://leofit-pedidos-sistema.netlify.app"
+
+  # 3. LeoFit Frontend PWA Static Site
+  - type: static
+    name: leofit-frontend
+    plan: free
+    region: oregon
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_API_URL
+        value: https://leofit-backend-api.onrender.com
+      - key: VITE_APP_ENV
+        value: production
+
 
 databases:
   # 2. PostgreSQL 16 Managed Database
