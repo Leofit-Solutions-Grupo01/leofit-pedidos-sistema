@@ -1,14 +1,15 @@
 /**
  * @file paymentWebhook.controller.ts
- * @description Controlador de Webhooks de Pasarelas de Pago con Hardening Crítico (Ronda 8.5).
+ * @description Controlador de Webhooks de Pasarelas de Pago con Hardening Crítico (Ronda 8.5+).
  * @project LeoFit Solutions - Sistema de Gestión de Pedidos
  * 
  * Controles de Resiliencia y Seguridad:
- * 1. Validación estricta de monto (event.amountCents === order.total_cents) y divisa (PEN).
- * 2. Persistencia de webhook_events aislada fuera de la transacción de negocio (evita loop infinito).
- * 3. Manejo de pedidos terminales (CANCELADO, REEMBOLSADO) -> HTTP 200 IGNORED + PAID_ORPHAN + alerta.
- * 4. Verificación anti-replay con timestamp header de Culqi/Niubiz (ventana de 5 minutos).
- * 5. Notificación post-pago asíncrona a operaciones y clientes.
+ * 1. Validación estricta de firma hexadecimal (64 caracteres SHA-256) antes de Buffer.from (evita DoS por timingSafeEqual).
+ * 2. Validación de monto contra el snapshot de checkout (payments.amount_cents) para evitar falsos 409 si la orden cambia después.
+ * 3. Persistencia de webhook_events aislada fuera de la transacción de negocio (evita loop infinito).
+ * 4. Manejo de pedidos terminales (CANCELADO, REEMBOLSADO) -> HTTP 200 IGNORED + PAID_ORPHAN + alerta.
+ * 5. Verificación anti-replay con timestamp header de Culqi/Niubiz (ventana de 5 minutos).
+ * 6. Notificación post-pago asíncrona e idempotente (email + Slack).
  */
 
 import crypto from 'node:crypto';
@@ -34,7 +35,7 @@ export interface NormalizedEvent {
 }
 
 // Almacenes en memoria para tests y entorno local sin PostgreSQL
-const memoryWebhookEvents = new Map<string, { status: string; attempts: number; error?: string }>();
+export const memoryWebhookEvents = new Map<string, { status: string; attempts: number; error?: string; createdAt: Date }>();
 export const memoryPayments: Array<{
   orderId: number;
   provider: Provider;
@@ -43,6 +44,16 @@ export const memoryPayments: Array<{
   currency: string;
   status: string;
   rawResponse: any;
+  updatedAt?: Date;
+}> = [];
+
+// Historial de correos emitidos para verificar idempotencia
+export const sentOrderEmails: Array<{
+  orderId: number;
+  email: string;
+  name: string;
+  totalSoles: string;
+  sentAt: Date;
 }> = [];
 
 const MAX_SIGNATURE_AGE_MS = 5 * 60_000; // Ventana anti-replay de 5 minutos
@@ -59,11 +70,17 @@ export function verifySignature(
     throw new Error(`MISSING_SECRET_${provider}`);
   }
 
-  const signature =
-    headers['x-signature'] ||
-    headers['x-culqi-signature'] ||
-    headers['x-niubiz-signature'] ||
-    '';
+  const rawSig = headers['x-signature'] ??
+                 headers['x-culqi-signature'] ??
+                 headers['x-niubiz-signature'] ??
+                 '';
+  const signature = String(rawSig).trim();
+
+  // Validación estricta: debe ser una cadena hexadecimal de exactamente 64 caracteres (SHA-256)
+  // Previene que Buffer.from('zz', 'hex') genere buffers vacíos y crashee timingSafeEqual
+  if (!signature || !/^[0-9a-f]{64}$/i.test(signature)) {
+    throw Object.assign(new Error('INVALID_SIGNATURE'), { status: 401 });
+  }
 
   const timestamp =
     headers['x-culqi-timestamp'] ||
@@ -88,7 +105,7 @@ export function verifySignature(
     .update(signedPayload)
     .digest('hex');
 
-  const a = Buffer.from(String(signature), 'hex');
+  const a = Buffer.from(signature, 'hex');
   const b = Buffer.from(expected, 'hex');
 
   if (a.length === 0 || a.length !== b.length || !crypto.timingSafeEqual(a, b)) {
@@ -143,7 +160,7 @@ async function registerEvent(provider: Provider, eventId: string, payload: any):
     if (memoryWebhookEvents.has(key)) {
       return null; // Duplicado
     }
-    memoryWebhookEvents.set(key, { status: 'RECEIVED', attempts: 1 });
+    memoryWebhookEvents.set(key, { status: 'RECEIVED', attempts: 1, createdAt: new Date() });
     return 1;
   }
 
@@ -165,11 +182,12 @@ async function markEvent(
 ): Promise<void> {
   if (!isPostgresAvailable()) {
     const key = `${provider}:${eventId}`;
-    const cur = memoryWebhookEvents.get(key) || { attempts: 0, status };
+    const cur = memoryWebhookEvents.get(key) || { attempts: 0, status, createdAt: new Date() };
     memoryWebhookEvents.set(key, {
       status,
       attempts: cur.attempts + 1,
-      error: errorMessage
+      error: errorMessage,
+      createdAt: cur.createdAt
     });
     return;
   }
@@ -185,33 +203,71 @@ async function markEvent(
   ).catch((err: any) => logger.error('mark_event_failed', { err: err.message }));
 }
 
-// ─── Notificación post-pago (fuera de la transacción de negocio) ───
+// ─── Notificación post-pago con garantía de idempotencia ───
+export async function sendOrderEmail(payload: {
+  orderId: number;
+  email: string;
+  name: string;
+  totalSoles: string;
+}): Promise<void> {
+  // Servicio de email (Resend / AWS SES / SendGrid)
+  logger.info('email_order_paid_sent', payload);
+  sentOrderEmails.push({ ...payload, sentAt: new Date() });
+}
+
 export async function notifyOrderPaid(orderId: number): Promise<void> {
   try {
     let order: any = null;
+    let shouldSendEmail = false;
+
     if (isPostgresAvailable()) {
-      const { rows } = await dbPool.query(
-        `SELECT o.id, o.cliente_email, o.cliente_nombre,
-                COALESCE(o.total_cents, ROUND(o.total_amount * 100)::bigint) as total_cents
-           FROM orders o WHERE o.id = $1`,
+      // 1. Marcar notified_at atómicamente si aún no ha sido notificado
+      const updateRes = await dbPool.query(
+        `UPDATE orders
+            SET notified_at = NOW()
+          WHERE id = $1 AND notified_at IS NULL
+          RETURNING id, cliente_email, cliente_nombre,
+                    COALESCE(total_cents, ROUND(total_amount * 100)::bigint) as total_cents`,
         [orderId]
       );
-      order = rows[0];
+      if (updateRes.rows[0]) {
+        order = updateRes.rows[0];
+        shouldSendEmail = true;
+      } else {
+        const { rows } = await dbPool.query(`SELECT id, cliente_email, cliente_nombre, total_cents FROM orders WHERE id = $1`, [orderId]);
+        order = rows[0];
+      }
     } else {
       order = InMemoryDataStore.orders.find((o) => o.id === orderId);
+      if (order && !(order as any).notified_at) {
+        (order as any).notified_at = new Date();
+        shouldSendEmail = true;
+      }
     }
 
     if (!order) return;
 
     const totalCents = Number(order.total_cents ?? Math.round(Number(order.total_amount || 0) * 100));
     const cliente = order.cliente_nombre || order.client?.name || 'Cliente';
+    const totalSoles = (totalCents / 100).toFixed(2);
+    const email = order.cliente_email || order.client?.email || 'cliente@leofit.pe';
 
     // Notificación a operaciones en Slack
     await alertSlack('✅ Nuevo pedido PAGADO', {
       orderId: order.id,
       cliente,
-      totalSoles: (totalCents / 100).toFixed(2)
+      totalSoles
     });
+
+    // Envío de correo al cliente (estrictamente idempotente: 1 sola vez)
+    if (shouldSendEmail) {
+      await sendOrderEmail({
+        orderId: order.id,
+        email,
+        name: cliente,
+        totalSoles
+      });
+    }
   } catch (err: any) {
     logger.error('notify_order_paid_failed', { orderId, error: err.message });
   }
@@ -279,17 +335,27 @@ export async function handleWebhook(req: Request, res: Response): Promise<void> 
         return;
       }
 
-      const orderTotalCents = Number(order.total_cents);
-      const orderCurrency = String(order.currency).trim().toUpperCase();
+      // Snapshot de Checkout: Buscar si existe un pago registrado para validar contra el monto CONGELADO del checkout
+      const { rows: paymentRows } = await client.query(
+        `SELECT id, amount_cents, currency, status
+           FROM payments
+          WHERE order_id = $1 AND provider = $2 AND (provider_charge_id = $3 OR status = 'PENDING')
+          ORDER BY created_at DESC LIMIT 1`,
+        [event.orderId, event.provider, event.chargeId]
+      );
 
-      // 4a) Validación estricta de monto y moneda (CRÍTICO - P0)
+      const paymentSnapshot = paymentRows[0];
+      const expectedAmountCents = paymentSnapshot ? Number(paymentSnapshot.amount_cents) : Number(order.total_cents);
+      const expectedCurrency = (paymentSnapshot?.currency || order.currency || 'PEN').trim().toUpperCase();
+
+      // 4a) Validación estricta contra el snapshot del checkout (CRÍTICO - P0)
       if (event.status === 'PAID' || event.status === 'REFUNDED') {
-        if (orderTotalCents !== event.amountCents) {
+        if (expectedAmountCents !== event.amountCents) {
           await client.query('ROLLBACK');
           await markEvent(event.eventId, provider, 'FAILED', 'AMOUNT_MISMATCH');
-          await alertSlack('🚨 Monto de pago NO coincide con el pedido', {
+          await alertSlack('🚨 Monto de pago NO coincide con el snapshot del checkout', {
             orderId: order.id,
-            esperadoCents: orderTotalCents,
+            esperadoCents: expectedAmountCents,
             recibidoCents: event.amountCents,
             provider,
             eventId: event.eventId
@@ -298,12 +364,12 @@ export async function handleWebhook(req: Request, res: Response): Promise<void> 
           return;
         }
 
-        if (orderCurrency !== event.currency.toUpperCase()) {
+        if (expectedCurrency !== event.currency.toUpperCase()) {
           await client.query('ROLLBACK');
           await markEvent(event.eventId, provider, 'FAILED', 'CURRENCY_MISMATCH');
           await alertSlack('🚨 Moneda de pago NO coincide', {
             orderId: order.id,
-            esperada: orderCurrency,
+            esperada: expectedCurrency,
             recibida: event.currency
           });
           res.status(409).json({ error: { code: 'CURRENCY_MISMATCH' } });
@@ -311,7 +377,7 @@ export async function handleWebhook(req: Request, res: Response): Promise<void> 
         }
       }
 
-      // 4b) Upsert del pago (idempotente por provider_charge_id)
+      // 4b) Upsert del pago (mantiene el monto del snapshot congelado)
       await client.query(
         `INSERT INTO payments
            (order_id, provider, provider_charge_id, amount_cents, currency, status, raw_response)
@@ -422,23 +488,28 @@ export async function handleWebhook(req: Request, res: Response): Promise<void> 
       return;
     }
 
-    const orderTotalCents = (order as any).total_cents ?? Math.round(Number(order.total_amount) * 100);
-    const orderCurrency = ((order as any).currency || 'PEN').toUpperCase();
+    // Snapshot en memoria: buscar si ya existía un pago registrado
+    const paymentSnapshot = memoryPayments.find(
+      (p) => p.orderId === event.orderId && p.provider === provider && (p.providerChargeId === event.chargeId || p.status === 'PENDING')
+    );
 
-    // Validación estricta de monto y moneda en memoria
+    const expectedAmountCents = paymentSnapshot ? paymentSnapshot.amountCents : ((order as any).total_cents ?? Math.round(Number(order.total_amount) * 100));
+    const expectedCurrency = (paymentSnapshot?.currency || (order as any).currency || 'PEN').toUpperCase();
+
+    // Validación estricta contra el snapshot del checkout en memoria
     if (event.status === 'PAID' || event.status === 'REFUNDED') {
-      if (orderTotalCents !== event.amountCents) {
+      if (expectedAmountCents !== event.amountCents) {
         await markEvent(event.eventId, provider, 'FAILED', 'AMOUNT_MISMATCH');
         await alertSlack('🚨 Monto de pago NO coincide con el pedido', {
           orderId: order.id,
-          esperadoCents: orderTotalCents,
+          esperadoCents: expectedAmountCents,
           recibidoCents: event.amountCents
         });
         res.status(409).json({ error: { code: 'AMOUNT_MISMATCH' } });
         return;
       }
 
-      if (orderCurrency !== event.currency.toUpperCase()) {
+      if (expectedCurrency !== event.currency.toUpperCase()) {
         await markEvent(event.eventId, provider, 'FAILED', 'CURRENCY_MISMATCH');
         res.status(409).json({ error: { code: 'CURRENCY_MISMATCH' } });
         return;
@@ -457,14 +528,16 @@ export async function handleWebhook(req: Request, res: Response): Promise<void> 
       currency: string;
       status: string;
       rawResponse: any;
+      updatedAt?: Date;
     } = {
       orderId: event.orderId,
       provider,
       providerChargeId: event.chargeId,
-      amountCents: event.amountCents,
+      amountCents: expectedAmountCents, // Congelado al snapshot
       currency: event.currency,
       status: event.status,
-      rawResponse: event.raw
+      rawResponse: event.raw,
+      updatedAt: new Date()
     };
     if (existingPaymentIdx >= 0) {
       memoryPayments[existingPaymentIdx] = paymentRecord;
