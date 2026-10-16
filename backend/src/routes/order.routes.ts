@@ -20,5 +20,6 @@ router.get('/:id', authenticateToken, OrderController.getOrderById);
 router.post('/', authenticateToken, idempotencyMiddleware, validateBody(CreateOrderSchema), OrderController.createOrder);
 router.patch('/:id/status', authenticateToken, validateBody(UpdateOrderStatusSchema), OrderController.updateOrderStatus);
 router.post('/:id/cancel', authenticateToken, OrderController.cancelOrder);
+router.post('/:id/payment-link', authenticateToken, OrderController.getPaymentLink);
 
 export default router;

@@ -9,6 +9,7 @@ import morgan from 'morgan';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import apiRoutes from './routes';
+import webhookRoutes from './routes/webhook.routes';
 import { errorHandler } from './middlewares/error.middleware';
 import { apiRateLimiter } from './middlewares/rateLimit.middleware';
 import { externalController } from './controllers/external.controller';
@@ -138,10 +139,22 @@ export function createApp(isDrainingSupplier?: () => boolean): Express {
     next();
   });
 
+  // 1) Webhooks de pasarelas de pago con raw body preservado para HMAC (sin rate limiter global restrictivo)
+  app.use(
+    '/api/webhooks',
+    express.json({
+      limit: '256kb',
+      verify: (req, _res, buf) => {
+        (req as any).rawBody = buf;
+      }
+    }),
+    webhookRoutes
+  );
+
   // Request Rate Limiting (excluye /health para no quemar cuotas de orquestadores)
   app.use('/api/', apiRateLimiter);
 
-  // Webhook Route (MUST be before express.json to capture raw buffer)
+  // Webhook Route legacy (external controller)
   app.post('/api/external/payments/webhook', express.raw({ type: 'application/json', limit: '1mb' }), externalController.handlePaymentWebhook);
 
   // Cookie parser for secure HttpOnly refresh tokens

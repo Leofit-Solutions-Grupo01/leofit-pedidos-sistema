@@ -16,6 +16,7 @@ import { Request, Response, NextFunction } from 'express';
 import { RepositoryFactory } from '../infrastructure/repositories/factory';
 import { AuthenticatedRequest } from '../middlewares/auth.middleware';
 import { OrderStatus } from '../domain/entities/models';
+import { createCulqiCheckout } from '../services/payments/culqi';
 import { z } from 'zod';
 
 export class OrderController {
@@ -212,6 +213,52 @@ export class OrderController {
         success: true,
         message: 'Pedido cancelado satisfactoriamente y existencias reincorporadas al inventario.',
         data: cancelled
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * @route POST /api/orders/:id/payment-link
+   * @desc Genera o retorna el enlace de pago de la pasarela para una orden pendiente.
+   * @access Protegido (ADMIN / OPERATOR)
+   */
+  public static async getPaymentLink(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const id = parseInt(req.params.id, 10);
+      const orderRepo = RepositoryFactory.getOrderRepository();
+      const order = await orderRepo.findById(id);
+
+      if (!order) {
+        res.status(404).json({
+          success: false,
+          error: { code: 'ORDER_NOT_FOUND', message: `Pedido con ID ${id} no encontrado.` }
+        });
+        return;
+      }
+
+      const estado = ((order as any).estado || order.status || '').toUpperCase();
+      if (estado !== 'PENDIENTE' && estado !== 'RECIBIDO') {
+        res.status(409).json({
+          success: false,
+          error: { code: 'ORDER_NOT_PAYABLE', message: `El pedido está en estado ${estado} y no puede pagarse.`, estado }
+        });
+        return;
+      }
+
+      const totalCents = Math.round(Number(order.total_amount) * 100);
+      const email = order.client?.phone ? `${order.client.phone}@cliente.leofit.pe` : 'cliente@leofit.pe';
+
+      const checkout = await createCulqiCheckout({
+        id: order.id,
+        totalCents,
+        email
+      });
+
+      res.status(200).json({
+        success: true,
+        data: checkout
       });
     } catch (error) {
       next(error);
