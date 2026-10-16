@@ -16,6 +16,7 @@
  */
 
 import { Request, Response, NextFunction } from 'express';
+import { alertSlack } from '../utils/alerts';
 
 export function errorHandler(err: any, req: Request, res: Response, next: NextFunction): void {
   const correlationId = (req.headers['x-correlation-id'] as string) || 'unknown';
@@ -41,6 +42,17 @@ export function errorHandler(err: any, req: Request, res: Response, next: NextFu
   const errorMessage = process.env.NODE_ENV === 'production' && statusCode === 500
     ? 'Ha ocurrido un error interno en el servidor.'
     : (err.message || 'Ha ocurrido un error inesperado en el servidor.');
+
+  if (statusCode >= 500) {
+    alertSlack('Incidente Crítico 5xx en LeoFit Backend', {
+      correlationId,
+      method: req.method,
+      path: req.originalUrl || req.path,
+      statusCode,
+      errorCode,
+      errorMsg: err.message
+    }).catch(() => {});
+  }
 
   res.status(statusCode).json({
     success: false,

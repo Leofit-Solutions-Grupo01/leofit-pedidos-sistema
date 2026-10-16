@@ -22,7 +22,8 @@ import {
   IProductRepository,
   IClientRepository,
   IOrderRepository,
-  CreateOrderDTO
+  CreateOrderDTO,
+  IsolationLevel
 } from '../../domain/repositories/interfaces';
 import { PasswordHasher } from '../security/password.utils';
 
@@ -462,7 +463,7 @@ export class MemoryOrderRepository implements IOrderRepository {
     return this.findById(o.id);
   }
 
-  async create(dto: CreateOrderDTO): Promise<Order> {
+  async create(dto: CreateOrderDTO, _isolation?: IsolationLevel, _client?: any): Promise<Order> {
     // 1. Resolver o registrar cliente
     let client: Client | null = null;
     if (dto.clientId) {

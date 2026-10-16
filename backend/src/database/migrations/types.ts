@@ -8,6 +8,7 @@ import { PoolClient } from 'pg';
 export interface Migration {
   version: string;
   name: string;
-  up(client: PoolClient): Promise<void>;
-  down?(client: PoolClient): Promise<void>;
+  up: (client: PoolClient) => Promise<void>;
+  down?: (client: PoolClient) => Promise<void>;
+  noTransaction?: boolean; // Permite migraciones que requieran CREATE INDEX CONCURRENTLY
 }

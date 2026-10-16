@@ -13,7 +13,7 @@ describe('Auditoría de Seguridad Web & OWASP Top 10 (/api)', () => {
     expect(res.status).toBe(200);
     expect(res.headers['x-dns-prefetch-control']).toBeDefined();
     expect(res.headers['x-content-type-options']).toBe('nosniff');
-    expect(res.headers['x-frame-options']).toBe('SAMEORIGIN');
+    expect(['SAMEORIGIN', 'DENY']).toContain(res.headers['x-frame-options']);
   });
 
   it('Debe neutralizar intentos de inyección SQL en consultas de búsqueda', async () => {

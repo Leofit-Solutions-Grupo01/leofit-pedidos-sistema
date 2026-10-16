@@ -528,8 +528,9 @@ export class PgOrderRepository implements IOrderRepository {
     return this.findById(res.rows[0].id);
   }
 
-  async create(dto: CreateOrderDTO, isolationLevel: IsolationLevel = 'READ COMMITTED'): Promise<Order> {
-    const MAX_RETRIES = 10;
+  async create(dto: CreateOrderDTO, isolationLevel: IsolationLevel = 'READ COMMITTED', existingClient?: any): Promise<Order> {
+    const isExternalClient = !!existingClient;
+    const MAX_RETRIES = isExternalClient ? 1 : 10;
     const BASE_BACKOFF_MS = 2;
     const MAX_BACKOFF_MS = 100;
 
@@ -540,9 +541,11 @@ export class PgOrderRepository implements IOrderRepository {
     };
 
     for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
-      const client = await this.pool.connect();
+      const client = isExternalClient ? existingClient : await this.pool.connect();
       try {
-        await client.query(`BEGIN ISOLATION LEVEL ${isolationSql[isolationLevel]}`);
+        if (!isExternalClient) {
+          await client.query(`BEGIN ISOLATION LEVEL ${isolationSql[isolationLevel]}`);
+        }
 
         // 1. Resolve client
         let clientId = dto.clientId;
@@ -624,18 +627,22 @@ export class PgOrderRepository implements IOrderRepository {
           [orderId, dto.userId || null]
         );
 
-        await client.query('COMMIT');
+        if (!isExternalClient) {
+          await client.query('COMMIT');
+        }
         
-        // No liberar el client aqui todavia para evitar fugas si findById falla
-        // El cliente se liberara en el finally block global de la iteracion.
-        return await this.findById(orderId) as Order;
+        // Retornar la orden construida sin cerrar la transacción externa
+        const createdOrder = await this.findById(orderId);
+        return createdOrder as Order;
       } catch (e: any) {
-        try { await client.query('ROLLBACK'); } catch { /* no-op si no hay tx activa */ }
+        if (!isExternalClient) {
+          try { await client.query('ROLLBACK'); } catch { /* no-op si no hay tx activa */ }
+        }
         
         const isSerializationError = e.code === '40001';
         const isDeadlockError = e.code === '40P01';
 
-        if ((isSerializationError || isDeadlockError) && attempt < MAX_RETRIES) {
+        if (!isExternalClient && (isSerializationError || isDeadlockError) && attempt < MAX_RETRIES) {
           // Exponential backoff con 20% jitter
           const backoff = Math.min(MAX_BACKOFF_MS, BASE_BACKOFF_MS * Math.pow(2, attempt - 1));
           const jitter = backoff * 0.2;
@@ -646,7 +653,9 @@ export class PgOrderRepository implements IOrderRepository {
 
         throw e;
       } finally {
-        client.release(); // Safe release UNA SOLA VEZ garantizado por iteración
+        if (!isExternalClient) {
+          client.release(); // Safe release garantizado
+        }
       }
     }
     

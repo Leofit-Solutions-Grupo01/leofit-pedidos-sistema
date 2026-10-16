@@ -14,6 +14,8 @@
 
 import { Request, Response } from 'express';
 import { isPostgresAvailable, dbPool } from '../config/database';
+import { dbBreaker } from '../utils/circuitBreaker';
+import { alertSlack } from '../utils/alerts';
 
 const startTime = Date.now();
 let consecutiveDbFailures = 0;
@@ -77,18 +79,21 @@ export class HealthController {
     }
 
     try {
-      const client = await Promise.race([
-        dbPool.connect(),
-        new Promise<never>((_, reject) => setTimeout(() => reject(new Error('Database ping timeout (2500ms)')), 2500))
-      ]);
-      await client.query('SELECT 1');
-      client.release();
+      await dbBreaker.execute(async () => {
+        const client = await Promise.race([
+          dbPool.connect(),
+          new Promise<never>((_, reject) => setTimeout(() => reject(new Error('Database ping timeout (2500ms)')), 2500))
+        ]);
+        await client.query('SELECT 1');
+        client.release();
+      });
 
       consecutiveDbFailures = 0;
 
       res.status(200).json({
         status: 'READY',
         database: 'HEALTHY',
+        circuitBreaker: dbBreaker.getState(),
         timestamp: new Date().toISOString()
       });
     } catch (error: any) {
@@ -100,17 +105,26 @@ export class HealthController {
         res.status(200).json({
           status: 'READY_DEGRADED',
           warning: 'Latencia transitoria o ping lento en base de datos',
+          circuitBreaker: dbBreaker.getState(),
           consecutiveFailures: consecutiveDbFailures,
           timestamp: new Date().toISOString()
         });
         return;
       }
 
+      // Umbral superado: disparar alerta a Slack y devolver 503
+      alertSlack('Alerta de Infraestructura: Sonda /health/ready en 503', {
+        consecutiveFailures: consecutiveDbFailures,
+        circuitBreaker: dbBreaker.getState(),
+        error: error.message
+      }).catch(() => {});
+
       // Umbral superado: marcar 503 para que el balanceador desvíe el tráfico inmediatamente
       res.setHeader('Retry-After', '5');
       res.status(503).json({
         status: 'NOT_READY',
         error: error.message || 'Database connection failure',
+        circuitBreaker: dbBreaker.getState(),
         consecutiveFailures: consecutiveDbFailures,
         retryAfter: '5'
       });

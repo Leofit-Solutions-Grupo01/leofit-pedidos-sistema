@@ -127,11 +127,12 @@ export class OrderController {
     try {
       const orderRepo = RepositoryFactory.getOrderRepository();
 
-      // Ejecución de la transacción ACID a través de la capa de persistencia
+      // Ejecución de la transacción ACID a través de la capa de persistencia (usando res.locals.dbClient si proviene de idempotencia)
+      const dbClient = res.locals.dbClient;
       const order = await orderRepo.create({
         ...req.body,
         userId: req.user?.userId
-      }, 'READ COMMITTED');
+      }, 'READ COMMITTED', dbClient);
 
       res.status(201).json({
         success: true,

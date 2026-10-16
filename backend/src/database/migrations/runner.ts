@@ -1,6 +1,7 @@
 /**
  * @file runner.ts
- * @description Ejecutor transaccional de migraciones versionadas (ACID).
+ * @description Ejecutor transaccional de migraciones versionadas (ACID) con Advisory Lock global.
+ * @project LeoFit Solutions - Sistema de Gestión de Pedidos
  */
 
 import { dbPool, isPostgresAvailable } from '../../config/database';
@@ -9,6 +10,8 @@ import { migration002 } from './002_add_shipping_fields';
 import { migration003 } from './003_idempotency_state_machine';
 import { Migration } from './types';
 import { logger } from '../../utils/logger';
+
+const RUNNER_LOCK_ID = 728394756; // Identificador unívoco para serializar arranques multi-instancia en Render
 
 const MIGRATIONS: Migration[] = [
   migration001,
@@ -26,7 +29,10 @@ export async function runVersionedMigrations(): Promise<void> {
   try {
     client = await dbPool.connect();
 
-    // 1. Crear tabla de control de versiones de esquema si no existe
+    // 1. Serializar ejecuciones concurrentes entre réplicas con advisory lock global
+    await client.query('SELECT pg_advisory_lock($1)', [RUNNER_LOCK_ID]);
+
+    // 2. Crear tabla de control de versiones de esquema si no existe
     await client.query(`
       CREATE TABLE IF NOT EXISTS schema_migrations (
         version VARCHAR(64) PRIMARY KEY,
@@ -35,26 +41,29 @@ export async function runVersionedMigrations(): Promise<void> {
       );
     `);
 
-    // 2. Obtener lista de migraciones ya aplicadas
+    // 3. Obtener lista de migraciones ya aplicadas
     const { rows } = await client.query('SELECT version FROM schema_migrations');
     const appliedVersions = new Set(rows.map((r: any) => r.version));
 
-    // 3. Aplicar migraciones pendientes en orden secuencial estricto
-    for (const migration of MIGRATIONS) {
+    // 4. Aplicar migraciones pendientes ordenadas por versión
+    const sorted = [...MIGRATIONS].sort((a, b) => a.version.localeCompare(b.version));
+    for (const migration of sorted) {
       if (!appliedVersions.has(migration.version)) {
-        logger.info(`[Migration Runner] Aplicando migración versionada: ${migration.version} - ${migration.name}...`);
+        logger.info(`[Migration Runner] Aplicando migración: ${migration.version} - ${migration.name}...`);
         
-        await client.query('BEGIN');
+        const needsNoTx = migration.noTransaction === true;
+        if (!needsNoTx) await client.query('BEGIN');
+
         try {
           await migration.up(client);
           await client.query(
             'INSERT INTO schema_migrations (version, name) VALUES ($1, $2)',
             [migration.version, migration.name]
           );
-          await client.query('COMMIT');
+          if (!needsNoTx) await client.query('COMMIT');
           logger.info(`[Migration Runner] ✅ Migración ${migration.version} aplicada exitosamente.`);
         } catch (err: any) {
-          await client.query('ROLLBACK');
+          if (!needsNoTx) await client.query('ROLLBACK').catch(() => {});
           logger.error(`[Migration Runner] ❌ Falló la migración ${migration.version}. Rollback ejecutado.`, { error: err.message });
           throw err;
         }
@@ -66,6 +75,7 @@ export async function runVersionedMigrations(): Promise<void> {
     logger.error('[Migration Runner Error] No se pudieron completar las migraciones versionadas:', { error: error.message });
   } finally {
     if (client) {
+      await client.query('SELECT pg_advisory_unlock($1)', [RUNNER_LOCK_ID]).catch(() => {});
       client.release();
     }
   }

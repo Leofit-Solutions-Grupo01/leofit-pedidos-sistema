@@ -18,9 +18,19 @@ dotenv.config();
 export function createApp(isDrainingSupplier?: () => boolean): Express {
   const app = express();
 
-  // Security Headers (Helmet con OWASP Best Practices)
+  // Security Headers (Helmet con OWASP Best Practices y HSTS estricto)
   app.use(helmet({
-    contentSecurityPolicy: false,
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'"],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+        imgSrc: ["'self'", 'data:', 'https:'],
+        connectSrc: ["'self'", 'https://leofit.netlify.app', 'https://*.onrender.com'],
+      },
+    },
+    hsts: { maxAge: 31536000, includeSubDomains: true, preload: true },
+    frameguard: { action: 'deny' },
     crossOriginResourcePolicy: { policy: 'cross-origin' },
     xContentTypeOptions: true,
     referrerPolicy: { policy: 'strict-origin-when-cross-origin' }
