@@ -10,6 +10,7 @@ import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import apiRoutes from './routes';
 import webhookRoutes from './routes/webhook.routes';
+import { healthRouter } from './routes/dashboard.routes';
 import { errorHandler } from './middlewares/error.middleware';
 import { apiRateLimiter } from './middlewares/rateLimit.middleware';
 import { externalController } from './controllers/external.controller';
@@ -184,6 +185,9 @@ export function createApp(isDrainingSupplier?: () => boolean): Express {
       timestamp: new Date().toISOString()
     });
   });
+
+  // Direct root-level /health alias for Render, AWS & container orchestrators
+  app.use('/health', healthRouter);
 
   // API Routes
   app.use('/api', apiRoutes);

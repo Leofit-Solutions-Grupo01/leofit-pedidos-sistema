@@ -28,7 +28,22 @@ export const apiRateLimiter = rateLimit({
   max: maxRequests,
   standardHeaders: true,
   legacyHeaders: true,
-  skip: (req) => req.path === '/health/live' || req.path === '/' || req.path === '/health/ready',
+  skip: (req) => {
+    const p = (req.path || '').toLowerCase();
+    const orig = (req.originalUrl || '').toLowerCase();
+    const ua = (req.headers['user-agent'] || '').toLowerCase();
+
+    // Excluir todas las variantes de health checks (/api/health, /health, /health/live, /health/ready, /)
+    if (p === '/' || p.startsWith('/health') || p.includes('health')) return true;
+    if (orig === '/' || orig.includes('/health')) return true;
+
+    // Excluir agentes de sondeo de orquestadores de Render, AWS o Uptime
+    if (ua.includes('render') || ua.includes('healthcheck') || ua.includes('uptime') || ua.includes('consul')) {
+      return true;
+    }
+
+    return false;
+  },
   handler: (req: Request, res: Response, _next, options) => {
     const retryAfter = res.getHeader('Retry-After') || Math.ceil(windowMs / 1000);
     res.setHeader('Retry-After', String(retryAfter));
@@ -45,14 +60,18 @@ export const apiRateLimiter = rateLimit({
 
 /**
  * Limitador específico y controlado para la sonda de base de datos `/api/health/ready`.
- * Permite monitoreo frecuente de orquestadores (Render/Kubernetes) hasta 120 peticiones/minuto por IP,
+ * Permite monitoreo frecuente de orquestadores (Render/Kubernetes) hasta 600 peticiones/minuto por IP,
  * bloqueando intentos maliciosos de saturar el pool de conexiones de Postgres.
  */
 export const readyHealthRateLimiter = rateLimit({
   windowMs: 60 * 1000, // 1 minuto
-  max: 120, // 2 peticiones por segundo máximo
+  max: 600, // 10 peticiones por segundo máximo
   standardHeaders: true,
-  legacyHeaders: true,
+  legacyHeaders: false,
+  skip: (req) => {
+    const ua = (req.headers['user-agent'] || '').toLowerCase();
+    return ua.includes('render') || ua.includes('healthcheck') || ua.includes('uptime') || ua.includes('consul');
+  },
   handler: (req: Request, res: Response) => {
     res.setHeader('Retry-After', '60');
     res.status(429).json({
