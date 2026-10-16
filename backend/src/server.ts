@@ -16,7 +16,8 @@ async function startServer() {
     await runAutoMigrations();
   }
 
-  const app = createApp();
+  let isDraining = false;
+  const app = createApp(() => isDraining);
 
   const server = app.listen(PORT, () => {
     console.log(`\n=============================================================`);
@@ -28,26 +29,32 @@ async function startServer() {
     console.log(`=============================================================\n`);
   });
 
-  // Graceful Shutdown para despliegues en la nube sin cortar peticiones en vuelo
+  // Graceful Shutdown & Connection Draining (cero 502/503 en despliegues)
   const gracefulShutdown = (signal: string) => {
-    console.log(`\n🛑 [${signal}] Recibida señal de terminación. Drenando conexiones activas...`);
-    server.close(async () => {
-      console.log('🔒 Servidor HTTP cerrado para nuevas solicitudes.');
-      try {
-        await dbPool.end();
-        console.log('✅ Pool de conexiones PostgreSQL liberado exitosamente.');
-        process.exit(0);
-      } catch (err) {
-        console.error('❌ Error liberando pool de base de datos:', err);
-        process.exit(1);
-      }
-    });
+    if (isDraining) return;
+    isDraining = true;
+    console.log(`\n🛑 [${signal}] Marcando instancia como DRAINING (readiness = 503, Connection: close)...`);
 
-    // Forzar terminación si las conexiones no drenan en 10s
+    // Margen de 1.5s para que los balanceadores de carga (Render/Cloudflare) redirijan el tráfico
     setTimeout(() => {
-      console.error('⏰ Timeout de apagado seguro superado (10s). Forzando cierre del proceso.');
+      server.close(async () => {
+        console.log('🔒 Servidor HTTP cerrado. Drenaje de solicitudes completado.');
+        try {
+          await dbPool.end();
+          console.log('✅ Pool de conexiones PostgreSQL liberado exitosamente.');
+          process.exit(0);
+        } catch (err) {
+          console.error('❌ Error liberando pool de base de datos:', err);
+          process.exit(1);
+        }
+      });
+    }, 1500);
+
+    // Timeout de seguridad amplio (25s) para permitir requests en vuelo pesados antes de terminar
+    setTimeout(() => {
+      console.warn('⏰ Timeout de apagado seguro alcanzado (25s). Forzando cierre del proceso.');
       process.exit(1);
-    }, 10000).unref();
+    }, 25000).unref();
   };
 
   process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));

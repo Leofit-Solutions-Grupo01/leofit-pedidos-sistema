@@ -14,14 +14,32 @@ import { externalController } from './controllers/external.controller';
 
 dotenv.config();
 
-export function createApp(): Express {
+export function createApp(isDrainingSupplier?: () => boolean): Express {
   const app = express();
 
-  // Security Headers (Helmet)
+  // Security Headers (Helmet con OWASP Best Practices)
   app.use(helmet({
     contentSecurityPolicy: false,
-    crossOriginResourcePolicy: { policy: 'cross-origin' }
+    crossOriginResourcePolicy: { policy: 'cross-origin' },
+    xContentTypeOptions: true,
+    referrerPolicy: { policy: 'strict-origin-when-cross-origin' }
   }));
+
+  // Draining & Graceful Disconnect Middleware (quitar de /ready antes de apagar)
+  app.use((req, res, next) => {
+    if (isDrainingSupplier && isDrainingSupplier()) {
+      res.setHeader('Connection', 'close');
+      if (req.path === '/api/health/ready') {
+        res.setHeader('Retry-After', '5');
+        res.status(503).json({
+          status: 'DRAINING',
+          message: 'Instancia en proceso de apagado seguro. Tráfico redirigido.'
+        });
+        return;
+      }
+    }
+    next();
+  });
 
   // CORS Policy (Permite GitHub Pages, Netlify y Desarrollo Local)
   if (process.env.NODE_ENV === 'production' && !process.env.CORS_ORIGIN) {
@@ -54,22 +72,43 @@ export function createApp(): Express {
     },
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'Idempotency-Key', 'X-Idempotency-Key', 'X-Correlation-ID'],
-    exposedHeaders: ['X-Total-Count', 'X-Correlation-ID', 'Idempotency-Key', 'Retry-After', 'X-Cache-Lookup'],
+    exposedHeaders: ['X-Total-Count', 'X-Correlation-ID', 'Idempotency-Key', 'Retry-After', 'X-Cache-Lookup', 'RateLimit-Limit', 'RateLimit-Remaining', 'RateLimit-Reset', 'X-RateLimit-Limit', 'X-RateLimit-Remaining', 'X-RateLimit-Reset'],
     credentials: true
   }));
 
-  // Correlation ID & Request Tracking (Trazabilidad E2E en logs y errores)
+  // Correlation ID con Sanitización Estricta (Anti Log-Injection & Collisions)
   app.use((req, res, next) => {
     const rawCorrId = req.headers['x-correlation-id'] || req.headers['x-request-id'];
-    const correlationId = (typeof rawCorrId === 'string' && rawCorrId.trim())
-      ? rawCorrId.trim()
+    const isValidCid = typeof rawCorrId === 'string' && /^[a-zA-Z0-9_\-]{8,64}$/.test(rawCorrId.trim());
+    const correlationId = isValidCid
+      ? (rawCorrId as string).trim()
       : (crypto.randomUUID ? crypto.randomUUID() : `req-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`);
     req.headers['x-correlation-id'] = correlationId;
     res.setHeader('X-Correlation-ID', correlationId);
     next();
   });
 
-  // Request Rate Limiting
+  // Content-Type Guard (HTTP 415 Unsupported Media Type para mutaciones)
+  app.use((req, res, next) => {
+    if (['POST', 'PUT', 'PATCH'].includes(req.method)) {
+      if (req.path.includes('/webhook')) return next();
+      const contentType = req.headers['content-type'];
+      const contentLength = parseInt(req.headers['content-length'] || '0', 10);
+      if (contentLength > 0 && contentType && !contentType.includes('application/json') && !contentType.includes('application/x-www-form-urlencoded')) {
+        res.status(415).json({
+          success: false,
+          error: {
+            code: 'UNSUPPORTED_MEDIA_TYPE',
+            message: 'El tipo de contenido no es compatible. Envíe application/json'
+          }
+        });
+        return;
+      }
+    }
+    next();
+  });
+
+  // Request Rate Limiting (excluye /health para no quemar cuotas de orquestadores)
   app.use('/api/', apiRateLimiter);
 
   // Webhook Route (MUST be before express.json to capture raw buffer)

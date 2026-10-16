@@ -15,6 +15,8 @@ import { Request, Response } from 'express';
 import { isPostgresAvailable, dbPool } from '../config/database';
 
 const startTime = Date.now();
+let consecutiveDbFailures = 0;
+const FAILURE_THRESHOLD_READINESS = 3;
 
 export class HealthController {
   /**
@@ -62,7 +64,7 @@ export class HealthController {
   /**
    * @route GET /api/health/ready
    * @desc Sonda Readiness: verifica que la base de datos esté lista para aceptar transacciones.
-   *       Retorna 503 si la base de datos está inaccesible o saturada.
+   *       Usa umbral de 3 fallos consecutivos para evitar que el orquestador mate la app por un cold-start o latencia transitoria.
    */
   public static async readiness(req: Request, res: Response): Promise<void> {
     if (!isPostgresAvailable()) {
@@ -77,20 +79,38 @@ export class HealthController {
     try {
       const client = await Promise.race([
         dbPool.connect(),
-        new Promise<never>((_, reject) => setTimeout(() => reject(new Error('Database ping timeout')), 2500))
+        new Promise<never>((_, reject) => setTimeout(() => reject(new Error('Database ping timeout')), 3000))
       ]);
       await client.query('SELECT 1');
       client.release();
 
+      consecutiveDbFailures = 0;
       res.status(200).json({
         status: 'READY',
         database: 'HEALTHY',
         timestamp: new Date().toISOString()
       });
     } catch (error: any) {
+      consecutiveDbFailures++;
+      console.warn(`⚠️ [Readiness Probe Alert] Fallo ${consecutiveDbFailures}/${FAILURE_THRESHOLD_READINESS}: ${error.message}`);
+
+      // Si no ha superado el umbral, reportar DEGRADED (200) para evitar que Render mate el pod
+      if (consecutiveDbFailures < FAILURE_THRESHOLD_READINESS) {
+        res.status(200).json({
+          status: 'READY_DEGRADED',
+          warning: 'Latencia transitoria o ping lento en base de datos',
+          consecutiveFailures: consecutiveDbFailures,
+          timestamp: new Date().toISOString()
+        });
+        return;
+      }
+
+      // Umbral superado: marcar 503 para desviar tráfico real
+      res.setHeader('Retry-After', '5');
       res.status(503).json({
         status: 'NOT_READY',
-        error: error.message || 'Database ping failed',
+        error: error.message || 'Database unavailable',
+        consecutiveFailures: consecutiveDbFailures,
         retryAfter: '5'
       });
     }

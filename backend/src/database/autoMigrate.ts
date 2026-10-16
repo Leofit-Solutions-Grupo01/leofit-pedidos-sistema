@@ -58,15 +58,22 @@ export async function runAutoMigrations(): Promise<void> {
       // Ignorar si la secuencia tiene otro nombre
     }
 
-    // 6. Tabla de llaves de idempotencia para prevenir órdenes duplicadas por timeout / reintentos
+    // 6. Tabla de llaves de idempotencia con TTL y hash de payload (RFC 9457 & Idempotency Draft)
     await client.query(`
       CREATE TABLE IF NOT EXISTS idempotency_keys (
         key VARCHAR(128) PRIMARY KEY,
+        request_hash VARCHAR(64) DEFAULT NULL,
         status_code INT NOT NULL,
         response_body JSONB NOT NULL,
-        created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+        created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+        expires_at TIMESTAMPTZ DEFAULT (CURRENT_TIMESTAMP + INTERVAL '48 hours')
       );
-      CREATE INDEX IF NOT EXISTS idx_idempotency_created_at ON idempotency_keys(created_at);
+      ALTER TABLE idempotency_keys ADD COLUMN IF NOT EXISTS request_hash VARCHAR(64) DEFAULT NULL;
+      ALTER TABLE idempotency_keys ADD COLUMN IF NOT EXISTS expires_at TIMESTAMPTZ DEFAULT (CURRENT_TIMESTAMP + INTERVAL '48 hours');
+      CREATE INDEX IF NOT EXISTS idx_idempotency_expires_at ON idempotency_keys(expires_at);
+      
+      -- Limpieza inicial de registros expirados
+      DELETE FROM idempotency_keys WHERE expires_at < CURRENT_TIMESTAMP;
     `);
 
     console.log('✅ [AutoMigrate] Esquema verificado y sincronizado correctamente sin inconsistencias.');
