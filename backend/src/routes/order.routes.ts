@@ -11,6 +11,7 @@ import { validateBody } from '../middlewares/validate.middleware';
 import { paymentLinkLimiter } from '../middlewares/rateLimit.middleware';
 import { requireRole } from '../middlewares/role.middleware';
 import { audit } from '../middlewares/audit.middleware';
+import { InvoiceController } from '../controllers/invoice.controller';
 import { CreateOrderSchema, UpdateOrderStatusSchema } from '../infrastructure/validators/schemas';
 
 const router = Router();
@@ -26,6 +27,7 @@ router.patch('/:id/status', authenticateToken, validateBody(UpdateOrderStatusSch
 router.post('/:id/cancel', authenticateToken, OrderController.cancelOrder);
 router.post('/:id/payment-link', authenticateToken, paymentLinkLimiter, OrderController.getPaymentLink);
 router.post('/:id/refund', authenticateToken, requireRole('ADMIN'), audit('REFUND', 'order'), refundOrder);
+router.post('/:id/credit-note', authenticateToken, requireRole('ADMIN'), audit('CREDIT_NOTE', 'order'), InvoiceController.emitCreditNote);
 
 export default router;
 

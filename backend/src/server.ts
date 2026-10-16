@@ -6,6 +6,7 @@ import { createApp } from './app';
 import { checkDatabaseConnection, isPostgresAvailable, dbPool } from './config/database';
 import { runVersionedMigrations } from './database/migrations/runner';
 import { startReconciliationJob } from './jobs/reconcilePayments';
+import { startInvoiceWorker } from './jobs/emitInvoiceWorker';
 import { logger } from './utils/logger';
 
 const PORT = parseInt(process.env.PORT || '4000', 10);
@@ -23,6 +24,9 @@ async function startServer() {
 
   // Arrancar job de reconciliación periódica de pagos pendientes
   startReconciliationJob();
+
+  // Arrancar worker asíncrono para emisión de comprobantes SUNAT / Nubefact
+  startInvoiceWorker();
 
   let isDraining = false;
   const app = createApp(() => isDraining);

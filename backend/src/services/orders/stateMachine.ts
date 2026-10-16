@@ -6,6 +6,7 @@
 
 import type { PoolClient } from 'pg';
 import { InMemoryDataStore } from '../../infrastructure/repositories/memory.repositories';
+import { enqueueInvoice } from '../../jobs/emitInvoiceWorker';
 
 export type OrderState =
   | 'PENDIENTE'
@@ -91,6 +92,10 @@ export async function transitionOrder(
       [orderId, from, to, actor, JSON.stringify(metadata)]
     );
 
+    if (to === 'PAGADO') {
+      enqueueInvoice(orderId, (metadata?.tipoComprobante as any) || '03', metadata || {}).catch(() => {});
+    }
+
     return { from, to, noop: false };
   } else {
     // Modo memoria (pruebas unitarias sin conexión a Postgres)
@@ -124,6 +129,10 @@ export async function transitionOrder(
     if (to === 'EN_CAMINO') (order as any).shipped_at = new Date();
     if (to === 'ENTREGADO') (order as any).delivered_at = new Date();
     if (to === 'CANCELADO') (order as any).cancelled_at = new Date();
+
+    if (to === 'PAGADO') {
+      enqueueInvoice(orderId, (metadata?.tipoComprobante as any) || '03', metadata || {}).catch(() => {});
+    }
 
     return { from, to, noop: false };
   }
