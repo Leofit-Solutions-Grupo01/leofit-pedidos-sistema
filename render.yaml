@@ -2,7 +2,7 @@ services:
   # 1. LeoFit Backend API REST Service
   - type: web
     name: leofit-backend-api
-    env: node
+    runtime: node
     plan: free
     region: oregon
     rootDir: backend
@@ -25,14 +25,13 @@ services:
       - key: CORS_ORIGIN
         value: "https://leofit-frontend.onrender.com,https://leofit-solutions-grupo01.github.io,https://leofit-pedidos-sistema.netlify.app"
 
-  # 3. LeoFit Frontend PWA Static Site
-  - type: static
+  # 2. LeoFit Frontend PWA Static Site
+  - type: web
     name: leofit-frontend
-    plan: free
-    region: oregon
+    runtime: static
     rootDir: frontend
     buildCommand: npm install && npm run build
-    staticPublishPath: dist
+    staticPublishPath: ./dist
     routes:
       - type: rewrite
         source: /*
@@ -43,9 +42,8 @@ services:
       - key: VITE_APP_ENV
         value: production
 
-
 databases:
-  # 2. PostgreSQL 16 Managed Database
+  # 3. PostgreSQL 16 Managed Database
   - name: leofit-postgres
     plan: free
     region: oregon
