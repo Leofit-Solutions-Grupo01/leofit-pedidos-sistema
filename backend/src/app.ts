@@ -53,9 +53,21 @@ export function createApp(): Express {
       return callback(new Error(`CORS bloqueado para el origen: ${origin}`));
     },
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Idempotency-Key', 'X-Idempotency-Key', 'X-Correlation-ID'],
+    exposedHeaders: ['X-Total-Count', 'X-Correlation-ID', 'Idempotency-Key', 'Retry-After', 'X-Cache-Lookup'],
     credentials: true
   }));
+
+  // Correlation ID & Request Tracking (Trazabilidad E2E en logs y errores)
+  app.use((req, res, next) => {
+    const rawCorrId = req.headers['x-correlation-id'] || req.headers['x-request-id'];
+    const correlationId = (typeof rawCorrId === 'string' && rawCorrId.trim())
+      ? rawCorrId.trim()
+      : (crypto.randomUUID ? crypto.randomUUID() : `req-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`);
+    req.headers['x-correlation-id'] = correlationId;
+    res.setHeader('X-Correlation-ID', correlationId);
+    next();
+  });
 
   // Request Rate Limiting
   app.use('/api/', apiRateLimiter);

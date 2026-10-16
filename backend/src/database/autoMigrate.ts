@@ -58,6 +58,17 @@ export async function runAutoMigrations(): Promise<void> {
       // Ignorar si la secuencia tiene otro nombre
     }
 
+    // 6. Tabla de llaves de idempotencia para prevenir órdenes duplicadas por timeout / reintentos
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS idempotency_keys (
+        key VARCHAR(128) PRIMARY KEY,
+        status_code INT NOT NULL,
+        response_body JSONB NOT NULL,
+        created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+      );
+      CREATE INDEX IF NOT EXISTS idx_idempotency_created_at ON idempotency_keys(created_at);
+    `);
+
     console.log('✅ [AutoMigrate] Esquema verificado y sincronizado correctamente sin inconsistencias.');
   } catch (error) {
     console.error('⚠️ [AutoMigrate Warning] No se pudieron aplicar todas las migraciones automáticas:', error);

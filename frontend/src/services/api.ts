@@ -49,11 +49,44 @@ export async function apiFetch<T>(
   const baseUrl = getApiBaseUrl();
   const url = endpoint.startsWith('http') ? endpoint : `${baseUrl}${endpoint}`;
 
-  let res: Response;
-  try {
-    res = await fetch(url, { ...options, headers });
-  } catch (error: any) {
-    throw new ApiError('NETWORK_ERROR', error.message || 'Error de red');
+  const method = (options.method || 'GET').toUpperCase();
+  const hasIdempotencyKey = !!(headers['Idempotency-Key'] || headers['idempotency-key'] || headers['X-Idempotency-Key']);
+  const isRetryable = method === 'GET' || hasIdempotencyKey;
+  const maxRetries = isRetryable ? 2 : 0;
+
+  let res: Response | null = null;
+
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    try {
+      res = await fetch(url, { ...options, headers });
+    } catch (error: any) {
+      if (attempt < maxRetries && error.name !== 'AbortError') {
+        const delayMs = Math.min(4000, 1000 * Math.pow(2, attempt) + Math.random() * 250);
+        await new Promise((resolve) => setTimeout(resolve, delayMs));
+        continue;
+      }
+      throw new ApiError('NETWORK_ERROR', error.message || 'Error de red');
+    }
+
+    // Si el servidor está despertando o temporalmente saturado (502, 503, 504)
+    if (res && [502, 503, 504].includes(res.status) && attempt < maxRetries) {
+      const retryAfter = res.headers ? res.headers.get('Retry-After') : null;
+      let delayMs = Math.min(4000, 1000 * Math.pow(2, attempt) + Math.random() * 250);
+      if (retryAfter) {
+        const seconds = parseInt(retryAfter, 10);
+        if (!isNaN(seconds) && seconds > 0) {
+          delayMs = Math.min(seconds * 1000, 10000);
+        }
+      }
+      await new Promise((resolve) => setTimeout(resolve, delayMs));
+      continue;
+    }
+
+    break;
+  }
+
+  if (!res) {
+    throw new ApiError('NETWORK_ERROR', 'No se pudo obtener respuesta del servidor');
   }
 
   if (!res.ok) {

@@ -13,3 +13,5 @@ dashboardRouter.get('/activity', authenticateToken, DashboardController.getRecen
 
 export const healthRouter = Router();
 healthRouter.get('/', HealthController.check);
+healthRouter.get('/live', HealthController.liveness);
+healthRouter.get('/ready', HealthController.readiness);

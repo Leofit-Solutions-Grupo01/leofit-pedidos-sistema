@@ -12,7 +12,7 @@
  */
 
 import { Request, Response } from 'express';
-import { isPostgresAvailable } from '../config/database';
+import { isPostgresAvailable, dbPool } from '../config/database';
 
 const startTime = Date.now();
 
@@ -46,5 +46,53 @@ export class HealthController {
         targetLatencyMs: '< 200ms'
       }
     });
+  }
+
+  /**
+   * @route GET /api/health/live
+   * @desc Sonda Liveness: confirma que el proceso de Node.js está activo y recibiendo tráfico.
+   */
+  public static liveness(req: Request, res: Response): void {
+    res.status(200).json({
+      status: 'ALIVE',
+      timestamp: new Date().toISOString()
+    });
+  }
+
+  /**
+   * @route GET /api/health/ready
+   * @desc Sonda Readiness: verifica que la base de datos esté lista para aceptar transacciones.
+   *       Retorna 503 si la base de datos está inaccesible o saturada.
+   */
+  public static async readiness(req: Request, res: Response): Promise<void> {
+    if (!isPostgresAvailable()) {
+      res.status(200).json({
+        status: 'READY_DEGRADED',
+        mode: 'IN_MEMORY_FALLBACK',
+        timestamp: new Date().toISOString()
+      });
+      return;
+    }
+
+    try {
+      const client = await Promise.race([
+        dbPool.connect(),
+        new Promise<never>((_, reject) => setTimeout(() => reject(new Error('Database ping timeout')), 2500))
+      ]);
+      await client.query('SELECT 1');
+      client.release();
+
+      res.status(200).json({
+        status: 'READY',
+        database: 'HEALTHY',
+        timestamp: new Date().toISOString()
+      });
+    } catch (error: any) {
+      res.status(503).json({
+        status: 'NOT_READY',
+        error: error.message || 'Database ping failed',
+        retryAfter: '5'
+      });
+    }
   }
 }

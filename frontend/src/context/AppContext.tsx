@@ -343,8 +343,12 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
     try {
       const dto = toCreateOrderDTO(datos);
+      const idempotencyKey = datos.numero || `order-${datos.id || Date.now()}`;
       const data = await apiFetch<{ id: number | string }>('/api/orders', {
         method: 'POST',
+        headers: {
+          'Idempotency-Key': idempotencyKey
+        },
         body: JSON.stringify(dto)
       });
       

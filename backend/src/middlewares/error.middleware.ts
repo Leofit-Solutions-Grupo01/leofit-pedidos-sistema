@@ -18,13 +18,20 @@
 import { Request, Response, NextFunction } from 'express';
 
 export function errorHandler(err: any, req: Request, res: Response, next: NextFunction): void {
-  // Registro en log para observabilidad del servidor
-  console.error('❌ [Unhandled Server Error]:', err);
+  const correlationId = (req.headers['x-correlation-id'] as string) || 'unknown';
+
+  // Registro en log para observabilidad del servidor con correlationId
+  console.error(`❌ [Server Error] [CID: ${correlationId}]:`, err);
 
   if (err && err.name === 'ZodError') {
     res.status(400).json({
       success: false,
-      error: err.errors || err.message
+      error: {
+        code: 'VALIDATION_ERROR',
+        message: 'Los datos proporcionados no cumplen con el esquema de validación',
+        details: err.errors || err.message,
+        correlationId
+      }
     });
     return;
   }
@@ -40,6 +47,7 @@ export function errorHandler(err: any, req: Request, res: Response, next: NextFu
     error: {
       code: errorCode,
       message: errorMessage,
+      correlationId,
       ...(process.env.NODE_ENV !== 'production' && { stack: err.stack })
     }
   });

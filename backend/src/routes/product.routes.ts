@@ -11,10 +11,18 @@ import { CreateProductSchema, UpdateProductSchema, StockUpdateSchema } from '../
 
 const router = Router();
 
-// Public catalog retrieval
-router.get('/', ProductController.listProducts);
+// Public catalog retrieval con Cache-Control explícito (Edge & Browser Caching)
+router.get('/', (req, res, next) => {
+  res.setHeader('Cache-Control', 'public, max-age=60, stale-while-revalidate=120');
+  next();
+}, ProductController.listProducts);
+
 router.get('/alerts/low-stock', authenticateToken, ProductController.getLowStockAlerts);
-router.get('/:id', ProductController.getProductById);
+
+router.get('/:id', (req, res, next) => {
+  res.setHeader('Cache-Control', 'public, max-age=60, stale-while-revalidate=120');
+  next();
+}, ProductController.getProductById);
 
 // Protected inventory management (ADMIN / OPERATOR)
 router.post('/', authenticateToken, requireRole('ADMIN'), validateBody(CreateProductSchema), ProductController.createProduct);
