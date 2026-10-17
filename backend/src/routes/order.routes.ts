@@ -24,7 +24,7 @@ router.get('/', authenticateToken, OrderController.listOrders);
 router.get('/:id', authenticateToken, OrderController.getOrderById);
 router.post('/', authenticateToken, idempotencyMiddleware, validateBody(CreateOrderSchema), OrderController.createOrder);
 router.patch('/:id/status', authenticateToken, validateBody(UpdateOrderStatusSchema), OrderController.updateOrderStatus);
-router.post('/:id/cancel', authenticateToken, OrderController.cancelOrder);
+router.post('/:id/cancel', authenticateToken, requireRole('ADMIN'), audit('CANCEL', 'order'), OrderController.cancelOrder);
 router.post('/:id/payment-link', authenticateToken, paymentLinkLimiter, OrderController.getPaymentLink);
 router.post('/:id/refund', authenticateToken, requireRole('ADMIN'), audit('REFUND', 'order'), refundOrder);
 router.post('/:id/credit-note', authenticateToken, requireRole('ADMIN'), audit('CREDIT_NOTE', 'order'), InvoiceController.emitCreditNote);

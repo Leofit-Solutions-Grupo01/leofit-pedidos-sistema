@@ -151,10 +151,14 @@ export default function Navbar() {
                     <span className={`inline-block mt-0.5 text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full ${
                       esOperador ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' : 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
                     }`}>
-                      Rol: {usuarioActual?.role || "ADMIN"}
+                      Rol: {usuarioActual?.role || "ADMIN"} ({rolTexto})
                     </span>
                     <p className="text-[10px] font-normal text-slate-400 truncate mt-1">
                       {usuarioActual?.email || (esOperador ? "operador@leofit.pe" : "admin@leofit.pe")}
+                    </p>
+                    <p className="text-[9px] text-slate-400 mt-1 flex items-center gap-1">
+                      <span className="material-icons text-slate-400" style={{ fontSize: "12px" }}>shield</span>
+                      {esOperador ? "Permisos: Pedidos y Consulta Stock" : "Permisos: Control Total Administrativo"}
                     </p>
                   </div>
 

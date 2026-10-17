@@ -729,7 +729,7 @@ def build_parte_3(b):
         ["Consulta de Catálogo y Stock", "Permitido (Lectura)", "Permitido (Lectura y Escritura)", "Público / Endpoint autenticado"],
         ["Registro de Nuevo Pedido", "Permitido", "Permitido", "`verifyJWT` middleware"],
         ["Avance de Estado de Orden", "Permitido", "Permitido", "`verifyJWT` middleware"],
-        ["Cancelación de Orden", "Permitido", "Permitido", "`verifyJWT` middleware"],
+        ["Cancelación de Orden", "Bloqueado (403 Forbidden)", "Permitido", "`requireRole('ADMIN')` middleware"],
         ["Creación de Nuevos Productos", "Bloqueado (403 Forbidden)", "Permitido", "`requireRole('ADMIN')` middleware"],
         ["Modificación de Precios / Stock Base", "Bloqueado (403 Forbidden)", "Permitido", "`requireRole('ADMIN')` middleware"],
         ["Eliminación de Productos", "Bloqueado (403 Forbidden)", "Permitido", "`requireRole('ADMIN')` middleware"],
@@ -799,7 +799,7 @@ def build_parte_4(b):
     be_headers = ["Suite de Pruebas (Jest)", "Casos", "Resultado", "Cobertura Funcional Validada"]
     be_rows = [
         ["`orders.test.ts`", "13", "13 PASSED", "Creación atómica, stock excedido, estados, paginación, filtros y fletes."],
-        ["`auth.test.ts`", "8", "8 PASSED", "Login, passwords erróneas, register RBAC, timing attack y perfil."],
+        ["`auth.test.ts`", "20", "20 PASSED", "Login, register RBAC, timing attack, perfil y matriz RBAC completa."],
         ["`integration_external.test.ts`", "7", "7 PASSED", "Contratos de WhatsApp, webhook Yape/Plin, DNI RENIEC y RUC SUNAT."],
         ["`webhook.test.ts`", "5", "5 PASSED", "HMAC fail-fast, firmas inválidas, longitud errónea y verificación exitosa."],
         ["`products.test.ts`", "3", "3 PASSED", "Catálogo público, filtrado por categorías y alertas de bajo stock."],

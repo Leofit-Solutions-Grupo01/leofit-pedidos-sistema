@@ -290,4 +290,48 @@ describe('AppContext: crearPedido', () => {
     expect(res.ok).toBe(false);
     expect(res.error).toContain('no devolvió id');
   });
+
+  it('T9: Operador logístico tiene prohibido mutar catálogo (RBAC lanza error)', async () => {
+    sessionStorage.setItem('leofit_user', JSON.stringify({
+      id: 2,
+      name: 'Operador Logístico Gamarra',
+      email: 'operador@leofit.pe',
+      role: 'OPERATOR'
+    }));
+
+    let contextVal: any;
+    const TestComp = () => {
+      contextVal = useApp();
+      return null;
+    };
+    render(<AppProvider><TestComp /></AppProvider>);
+
+    const nuevoProd = { id: 'p99', nombre: 'Polo Hack', categoria: 'Deportiva' as const, talla: 'M', color: 'Rojo', precio: 30, stock: 5 };
+
+    await expect(contextVal.agregarProducto(nuevoProd)).rejects.toThrow(/Acceso denegado/);
+    await expect(contextVal.editarProducto(nuevoProd)).rejects.toThrow(/Acceso denegado/);
+    await expect(contextVal.eliminarProducto('p99')).rejects.toThrow(/Acceso denegado/);
+  });
+
+  it('T10: Administrador sí puede mutar catálogo de productos (RBAC permitido)', async () => {
+    sessionStorage.setItem('leofit_user', JSON.stringify({
+      id: 1,
+      name: 'Administrador LeoFit',
+      email: 'admin@leofit.pe',
+      role: 'ADMIN'
+    }));
+
+    let contextVal: any;
+    const TestComp = () => {
+      contextVal = useApp();
+      return null;
+    };
+    render(<AppProvider><TestComp /></AppProvider>);
+
+    const nuevoProd = { id: 'p100', nombre: 'Legging Admin', categoria: 'Deportiva' as const, talla: 'S', color: 'Negro', precio: 45, stock: 12 };
+
+    await expect(contextVal.agregarProducto(nuevoProd)).resolves.not.toThrow();
+    await expect(contextVal.editarProducto({ ...nuevoProd, precio: 50 })).resolves.not.toThrow();
+    await expect(contextVal.eliminarProducto('p100')).resolves.not.toThrow();
+  });
 });

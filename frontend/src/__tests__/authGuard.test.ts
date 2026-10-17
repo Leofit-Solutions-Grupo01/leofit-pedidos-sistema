@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { validateAndDecodeJwt, triggerSessionExpired, LEOFIT_AUTH_EXPIRED_EVENT } from "../services/authGuard";
+import { validateAndDecodeJwt, triggerSessionExpired, LEOFIT_AUTH_EXPIRED_EVENT, hasRole, isAdmin, isOperator } from "../services/authGuard";
 
-describe("authGuard Guardrails", () => {
+describe("authGuard Guardrails & RBAC Utilities", () => {
   beforeEach(() => {
     sessionStorage.clear();
     vi.clearAllMocks();
@@ -64,5 +64,20 @@ describe("authGuard Guardrails", () => {
     expect(listener).toHaveBeenCalled();
 
     window.removeEventListener(LEOFIT_AUTH_EXPIRED_EVENT, listener);
+  });
+
+  it("T6: Funciones RBAC evalúan correctamente roles ADMIN y OPERATOR", () => {
+    expect(isAdmin("ADMIN")).toBe(true);
+    expect(isAdmin("OPERATOR")).toBe(false);
+    expect(isAdmin(null)).toBe(false);
+    expect(isAdmin(undefined)).toBe(false);
+
+    expect(isOperator("OPERATOR")).toBe(true);
+    expect(isOperator("ADMIN")).toBe(false);
+    expect(isOperator(null)).toBe(false);
+
+    expect(hasRole("ADMIN", "ADMIN")).toBe(true);
+    expect(hasRole("ADMIN", "OPERATOR")).toBe(false);
+    expect(hasRole("OPERATOR", "ADMIN", "OPERATOR")).toBe(true);
   });
 });

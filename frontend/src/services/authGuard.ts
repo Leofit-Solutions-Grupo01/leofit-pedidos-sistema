@@ -124,3 +124,20 @@ export function triggerSessionExpired(reason = "Tu sesión ha expirado por segur
     // Protección contra contextos restringidos
   }
 }
+
+/**
+ * Control de Acceso Basado en Roles (RBAC) - Utilidades de Frontend
+ */
+export function hasRole(role: string | null | undefined, ...allowedRoles: ("ADMIN" | "OPERATOR")[]): boolean {
+  if (!role) return false;
+  const upperRole = role.toUpperCase();
+  return allowedRoles.some((r) => r.toUpperCase() === upperRole);
+}
+
+export function isAdmin(role: string | null | undefined): boolean {
+  return hasRole(role, "ADMIN");
+}
+
+export function isOperator(role: string | null | undefined): boolean {
+  return hasRole(role, "OPERATOR");
+}

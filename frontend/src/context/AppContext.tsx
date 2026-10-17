@@ -385,6 +385,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
   };
 
   const actualizarEstadoPedido = (id: string, estado: EstadoPedido) => {
+    if (estado === "Cancelado" && usuarioActual && usuarioActual.role !== "ADMIN") {
+      alert("Acceso denegado (RBAC): Solo un Administrador puede cancelar pedidos.");
+      return;
+    }
+
     const pedidoActual = pedidos.find((p) => p.id === id);
     if (!pedidoActual) return;
     const estadoPrevio = pedidoActual.estado;
@@ -429,14 +434,23 @@ export function AppProvider({ children }: { children: ReactNode }) {
   };
 
   const agregarProducto = async (producto: Producto): Promise<void> => {
+    if (usuarioActual && usuarioActual.role !== "ADMIN") {
+      throw new Error("Acceso denegado (RBAC): Solo los administradores pueden registrar prendas en el catálogo.");
+    }
     setProductos((prev) => [...prev, producto]);
   };
 
   const editarProducto = async (producto: Producto): Promise<void> => {
+    if (usuarioActual && usuarioActual.role !== "ADMIN") {
+      throw new Error("Acceso denegado (RBAC): Solo los administradores pueden modificar prendas del catálogo.");
+    }
     setProductos((prev) => prev.map((p) => (p.id === producto.id ? producto : p)));
   };
 
   const eliminarProducto = async (id: string): Promise<void> => {
+    if (usuarioActual && usuarioActual.role !== "ADMIN") {
+      throw new Error("Acceso denegado (RBAC): Solo los administradores pueden eliminar prendas del catálogo.");
+    }
     setProductos((prev) => prev.filter((p) => p.id !== id));
   };
 

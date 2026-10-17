@@ -119,4 +119,130 @@ describe('Módulo de Autenticación & Seguridad RBAC (/api/auth)', () => {
     expect(res.body.success).toBe(false);
     expect(res.body.error.code).toBe('UNAUTHORIZED');
   });
+
+  describe('Matriz RBAC: Restricciones para rol OPERATOR (Principio de Mínimo Privilegio)', () => {
+    it('OPERATOR debe tener prohibido crear nuevos productos en catálogo (403)', async () => {
+      const res = await request(app)
+        .post('/api/products')
+        .set('Authorization', `Bearer ${operatorToken}`)
+        .send({
+          categoryId: 1,
+          name: 'Polo Hackeado',
+          basePrice: 10,
+          variants: [{ size: 'M', color: 'Negro', sku: 'HACK-01', stock: 10 }]
+        });
+      expect(res.status).toBe(403);
+      expect(res.body.error.code).toBe('INSUFFICIENT_PERMISSIONS');
+    });
+
+    it('OPERATOR debe tener prohibido modificar productos existentes (403)', async () => {
+      const res = await request(app)
+        .put('/api/products/1')
+        .set('Authorization', `Bearer ${operatorToken}`)
+        .send({ name: 'Nombre Modificado por Operador' });
+      expect(res.status).toBe(403);
+      expect(res.body.error.code).toBe('INSUFFICIENT_PERMISSIONS');
+    });
+
+    it('OPERATOR debe tener prohibido alterar stock base directamente (403)', async () => {
+      const res = await request(app)
+        .patch('/api/products/variant/1/stock')
+        .set('Authorization', `Bearer ${operatorToken}`)
+        .send({ stock: 50 });
+      expect(res.status).toBe(403);
+      expect(res.body.error.code).toBe('INSUFFICIENT_PERMISSIONS');
+    });
+
+    it('OPERATOR debe tener prohibido eliminar prendas del catálogo (403)', async () => {
+      const res = await request(app)
+        .delete('/api/products/1')
+        .set('Authorization', `Bearer ${operatorToken}`);
+      expect(res.status).toBe(403);
+      expect(res.body.error.code).toBe('INSUFFICIENT_PERMISSIONS');
+    });
+
+    it('OPERATOR debe tener prohibido cancelar pedidos mediante endpoint /cancel (403)', async () => {
+      const res = await request(app)
+        .post('/api/orders/1/cancel')
+        .set('Authorization', `Bearer ${operatorToken}`)
+        .send({ reason: 'Intento de anulación por operador' });
+      expect(res.status).toBe(403);
+      expect(res.body.error.code).toBe('INSUFFICIENT_PERMISSIONS');
+    });
+
+    it('OPERATOR debe tener prohibido cancelar pedidos mediante status CANCELADO (403)', async () => {
+      const res = await request(app)
+        .patch('/api/orders/1/status')
+        .set('Authorization', `Bearer ${operatorToken}`)
+        .send({ status: 'CANCELADO', comments: 'Operador cancelando orden' });
+      expect(res.status).toBe(403);
+      expect(res.body.error.code).toBe('INSUFFICIENT_PERMISSIONS');
+    });
+
+    it('OPERATOR debe tener prohibido emitir reembolsos (403)', async () => {
+      const res = await request(app)
+        .post('/api/orders/1/refund')
+        .set('Authorization', `Bearer ${operatorToken}`)
+        .send({ reason: 'Reembolso no autorizado' });
+      expect(res.status).toBe(403);
+      expect(res.body.error.code).toBe('INSUFFICIENT_PERMISSIONS');
+    });
+
+    it('OPERATOR debe tener prohibido emitir notas de crédito (403)', async () => {
+      const res = await request(app)
+        .post('/api/orders/1/credit-note')
+        .set('Authorization', `Bearer ${operatorToken}`)
+        .send({ motivoCodigo: '01' });
+      expect(res.status).toBe(403);
+      expect(res.body.error.code).toBe('INSUFFICIENT_PERMISSIONS');
+    });
+
+    it('OPERATOR SÍ puede consultar catálogo de productos (200)', async () => {
+      const res = await request(app)
+        .get('/api/products')
+        .set('Authorization', `Bearer ${operatorToken}`);
+      expect(res.status).toBe(200);
+      expect(res.body.success).toBe(true);
+    });
+
+    it('OPERATOR SÍ puede consultar pedidos y métricas de dashboard (200)', async () => {
+      const resOrders = await request(app)
+        .get('/api/orders')
+        .set('Authorization', `Bearer ${operatorToken}`);
+      expect(resOrders.status).toBe(200);
+
+      const resMetrics = await request(app)
+        .get('/api/dashboard/stats')
+        .set('Authorization', `Bearer ${operatorToken}`);
+      expect(resMetrics.status).toBe(200);
+    });
+
+    it('OPERATOR SÍ puede registrar nuevos pedidos (201)', async () => {
+      const res = await request(app)
+        .post('/api/orders')
+        .set('Authorization', `Bearer ${operatorToken}`)
+        .send({
+          clientData: {
+            fullName: 'Cliente de Operador',
+            phone: '999888777',
+            address: 'Av. Gamarra 500',
+            district: 'La Victoria'
+          },
+          paymentMethod: 'YAPE',
+          shippingCost: 8,
+          items: [{ variantId: 1, quantity: 1, unitPrice: 49.90 }]
+        });
+      expect(res.status).toBe(201);
+      expect(res.body.success).toBe(true);
+    });
+
+    it('OPERATOR SÍ puede actualizar estado operativo de pedidos (200)', async () => {
+      const res = await request(app)
+        .patch('/api/orders/1/status')
+        .set('Authorization', `Bearer ${operatorToken}`)
+        .send({ status: 'EN_CAMINO', comments: 'Operador despachó el pedido' });
+      expect(res.status).toBe(200);
+      expect(res.body.success).toBe(true);
+    });
+  });
 });

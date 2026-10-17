@@ -25,10 +25,10 @@ router.get('/:id', (req, res, next) => {
   next();
 }, ProductController.getProductById);
 
-// Protected inventory management (ADMIN / OPERATOR)
+// Protected inventory management (ADMIN only for mutations)
 router.post('/', authenticateToken, requireRole('ADMIN'), validateBody(CreateProductSchema), audit('CREATE', 'product'), ProductController.createProduct);
 router.put('/:id', authenticateToken, requireRole('ADMIN'), validateBody(UpdateProductSchema), audit('UPDATE', 'product'), ProductController.updateProduct);
-router.patch('/variant/:variantId/stock', authenticateToken, validateBody(StockUpdateSchema), audit('UPDATE_STOCK', 'product_variant'), ProductController.updateStock);
+router.patch('/variant/:variantId/stock', authenticateToken, requireRole('ADMIN'), validateBody(StockUpdateSchema), audit('UPDATE_STOCK', 'product_variant'), ProductController.updateStock);
 router.delete('/:id', authenticateToken, requireRole('ADMIN'), audit('DELETE', 'product'), ProductController.deleteProduct);
 
 export default router;

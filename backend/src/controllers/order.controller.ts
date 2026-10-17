@@ -164,6 +164,18 @@ export class OrderController {
     try {
       const id = parseInt(req.params.id, 10);
       const { status, comments } = req.body;
+
+      if (status === 'CANCELADO' && req.user?.role !== 'ADMIN') {
+        res.status(403).json({
+          success: false,
+          error: {
+            code: 'INSUFFICIENT_PERMISSIONS',
+            message: 'Acceso restringido. La cancelación de pedidos requiere privilegios de Administrador (ADMIN).'
+          }
+        });
+        return;
+      }
+
       const orderRepo = RepositoryFactory.getOrderRepository();
 
       const updated = status === 'CANCELADO'
