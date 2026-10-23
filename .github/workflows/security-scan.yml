@@ -19,36 +19,22 @@ jobs:
         with:
           node-version: 22
 
-      - name: Scan Frontend Dependencies
-        run: |
-          if [ -d "frontend" ] && [ -f "frontend/package.json" ]; then
-            cd frontend
-            npm audit --audit-level=high
-            cd ..
-          fi
-
-      - name: Run Frontend Unit Tests
+      - name: Scan Frontend Dependencies & Run Unit Tests
         run: |
           if [ -d "frontend" ] && [ -f "frontend/package.json" ]; then
             cd frontend
             npm ci
+            npm audit --audit-level=high
             npm test
             cd ..
           fi
 
-      - name: Scan Backend Dependencies
-        run: |
-          if [ -d "backend" ] && [ -f "backend/package.json" ]; then
-            cd backend
-            npm audit --audit-level=high
-            cd ..
-          fi
-
-      - name: Run Backend Unit Tests
+      - name: Scan Backend Dependencies & Run Unit Tests
         run: |
           if [ -d "backend" ] && [ -f "backend/package.json" ]; then
             cd backend
             npm ci
+            npm audit --audit-level=high
             npm test
             cd ..
           fi
