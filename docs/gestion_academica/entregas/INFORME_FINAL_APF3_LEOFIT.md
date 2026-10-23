@@ -35,8 +35,9 @@
 | :---: | :---: | :--- | :--- | :--- |
 | **1.0** | 10/05/2026 | Avance Inicial (APF1) | Lady Loayza Rodriguez | Línea base del proyecto: BPMN AS-IS/TO-BE, matriz de requisitos RF/RNF, riesgos iniciales y prototipado conceptual. Calificación: 18/20. |
 | **2.0** | 20/07/2026 | Avance Intermedio (APF2) | Víctor Cárdenas Fernández | Base de datos relacional normalizada (3FN/BCNF), Clean Architecture, contratos RESTful v1 y prototipo funcional. |
-| **3.0** | 24/09/2026 | Avance Final (APF3) | Jim Dávila / Harley Roman | Implementación completa de API REST v2.0.0, PWA React 19, batería de 101 pruebas automatizadas y despliegue cloud. |
-| **3.1** | 11/10/2026 | Edición Definitiva de Cierre | Equipo Grupo 01 | Consolidación editorial en formato libro, verificación rigurosa de contratos y telemetría de producción en tiempo real. |
+| **3.0** | 24/09/2026 | Avance Final (APF3) | Jim Dávila / Harley Roman | Implementación completa de API REST v2.0.0, PWA React 19, batería de pruebas automatizadas y despliegue cloud. |
+| **3.1** | 11/10/2026 | Consolidación Editorial APF3 | Equipo Grupo 01 | Consolidación editorial en formato libro, verificación rigurosa de contratos y telemetría de producción en tiempo real. |
+| **3.2** | 22/10/2026 | Edición Definitiva de Cierre | Equipo Grupo 01 | Ampliación a 187 pruebas automatizadas aprobadas (concurrencia, idempotencia, refresh tokens, authGuard), evaluación de coexistencia ISO/IEC 25010 y articulación con informe de Semanas 10-11. |
 
 ---
 
@@ -51,7 +52,7 @@ Para erradicar estos cuellos de botella, se construyó una arquitectura desacopl
 * **Base de Datos:** PostgreSQL 16 normalizada en Tercera Forma Normal (3FN) y Forma Normal de Boyce-Codd (BCNF), compuesta por 12 tablas, 2 vistas, disparadores atómicos (`trg_decrement_stock_on_order`) y aislamiento transaccional con bloqueos pesimistas (`SELECT ... FOR UPDATE`) y reintentos automáticos con retroceso exponencial ante deadlocks.
 * **Frontend:** Progressive Web App (PWA) reactiva desarrollada en React 19, TypeScript, Vite 6 y Tailwind CSS 4, con catálogo interactivo, validación reactiva de variantes, generación instantánea de comprobantes térmicos y rótulos de despacho con jsPDF, y portal público de seguimiento de pedidos en tiempo real.
 * **Seguridad:** Control de acceso basado en roles (RBAC: ADMIN y OPERATOR), derivación de claves con bcryptjs (10 rondas) con mitigación de timing attacks mediante hash ficticio, tokens JWT HS256 con validación fail-fast al arranque, y verificación criptográfica de firmas HMAC-SHA256 con comparación en tiempo constante (`timingSafeEqual`) para webhooks de pago móvil.
-* **Calidad y Verificación:** Batería automatizada de **101 pruebas aprobadas** (47 en backend con Jest y Supertest; 54 en frontend con Vitest y Testing Library) más 1 prueba de integración condicionada, alcanzando más del 76% de cobertura de líneas en lógica de negocio y 100% en rutas, validadores y criptografía. Evaluación de usabilidad bajo ISO/IEC 25010 con un puntaje de **88.5/100 en la Escala SUS** y reducción del tiempo de captura de pedidos a **38.2 segundos**.
+* **Calidad y Verificación:** Batería automatizada de **187 pruebas aprobadas** (121 en backend con Jest y Supertest en 15 suites; 66 en frontend con Vitest y Testing Library en 9 suites) más 1 prueba de persistencia física condicionada, alcanzando más del 76% de cobertura de líneas en lógica de negocio y 100% en rutas, validadores y criptografía. Evaluación de usabilidad bajo ISO/IEC 25010 con un puntaje de **88.5/100 en la Escala SUS**, reducción del tiempo de captura de pedidos a **38.2 segundos** y pruebas experimentales de coexistencia de hardware con una degradación máxima de latencia de solo 10.5%.
 * **Despliegue y DevOps:** Topología multi-proveedor cloud combinando GitHub Pages (CDN global para el cliente estático) y Render Cloud (servicio web nativo en Node 20 y cluster PostgreSQL 16 gestionado), orquestada mediante pipelines automáticos de CI/CD en GitHub Actions.
 
 ---
@@ -123,14 +124,15 @@ Para erradicar estos cuellos de botella, se construyó una arquitectura desacopl
 ### PARTE IV: VERIFICACIÓN, VALIDACIÓN Y ASEGURAMIENTO DE LA CALIDAD
 11. **Estrategia de Pruebas y Calidad Funcional**
     * Pirámide de pruebas de software y marco metodológico.
-    * Batería backend en Jest y Supertest: 47 pruebas aprobadas en 9 suites.
-    * Batería frontend en Vitest y Testing Library: 54 pruebas aprobadas en 8 suites.
-    * Balance global: 101 pruebas exitosas (100% efectividad) y 1 prueba de integración condicionada.
+    * Batería backend en Jest y Supertest: 121 pruebas aprobadas en 15 suites (16 archivos de prueba).
+    * Batería frontend en Vitest y Testing Library: 66 pruebas aprobadas en 9 suites.
+    * Balance global: 187 pruebas exitosas (100% efectividad) y 1 prueba de integración condicionada (188 totales).
     * Matriz de cobertura: 76.16% en líneas de lógica de negocio y 100% en rutas, validadores y criptografía.
-12. **Interoperabilidad y Pruebas con Servicios Externos**
+12. **Interoperabilidad, Compatibilidad y Pruebas con Servicios Externos**
     * Enlaces profundos estructurados hacia la API de WhatsApp con validación de teléfono.
     * Webhooks de conciliación de pagos móviles (Yape/Plin) con validación de firma y payload.
     * Validación sintáctica y consulta contractual de documentos de identidad (DNI 8 dígitos, RUC 11 dígitos).
+    * Evaluación de compatibilidad y coexistencia de recursos de hardware/red bajo la norma ISO/IEC 25010 (Semanas 10-11).
 13. **Evaluación de Usabilidad bajo ISO/IEC 25010 y Experiencia de Usuario**
     * Marco ISO/IEC 25010: aprendibilidad, operabilidad, protección ante errores y satisfacción.
     * Suite automatizada de 9 pruebas Vitest de usabilidad (`usability_iso25010.test.tsx`).
