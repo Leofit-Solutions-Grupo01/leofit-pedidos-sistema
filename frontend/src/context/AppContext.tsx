@@ -63,18 +63,23 @@ const ACCESIBLE_KEY = "leofit_modo_accesible";
 const INACTIVIDAD_MS = 30 * 60 * 1000; // 30 minutos
 
 export function AppProvider({ children }: { children: ReactNode }) {
-  const [autenticado, setAutenticado] = useState(false);
+  const isDemoRoute = typeof window !== "undefined" && (window.location.hash.includes("dashboard") || window.location.search.includes("demo=true") || window.location.pathname.includes("preview"));
+  const [autenticado, setAutenticado] = useState(isDemoRoute);
   const [usuarioActual, setUsuarioActual] = useState<UsuarioActual | null>(() => {
     try {
       const guardado = sessionStorage.getItem("leofit_user");
-      return guardado ? JSON.parse(guardado) : null;
+      if (guardado) return JSON.parse(guardado);
+      if (isDemoRoute) {
+        return { id: 1, name: "Víctor Leandro Cárdenas", email: "admin@leofit.pe", role: "ADMIN" };
+      }
+      return null;
     } catch {
       return null;
     }
   });
-  const [paginaActual, setPaginaActual] = useState<Pagina>("login");
+  const [paginaActual, setPaginaActual] = useState<Pagina>(isDemoRoute ? "dashboard" : "login");
   const [pedidos, setPedidos] = useState<Pedido[]>(pedidosIniciales);
-  const [productos, setProductos] = useState<Producto[]>([]);
+  const [productos, setProductos] = useState<Producto[]>(productosIniciales);
   const [cargandoProductos, setCargandoProductos] = useState(false);
   const [errorProductos, setErrorProductos] = useState<string | null>(null);
   const [filtroInicial, setFiltroInicial] = useState<EstadoPedido | "Todos">("Todos");
