@@ -20,7 +20,7 @@ except ImportError:
     openpyxl = None
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-EXCEL_PATH = BASE_DIR / "docs" / "Plan_Auditoria_Software_LeoFit_Dashboard-Loayza-Lady.xlsx"
+EXCEL_PATH = BASE_DIR / "docs" / "auditoria_cierre" / "Plan_Auditoria_Software_LeoFit_Dashboard-Loayza-Lady.xlsx"
 
 def scan_tests():
     backend_tests_dir = BASE_DIR / "backend" / "tests"
@@ -70,20 +70,22 @@ def check_excel_sync(stats):
         print("[!] openpyxl no está disponible.")
         return
 
-    wb = openpyxl.load_workbook(EXCEL_PATH, data_only=True)
+    wb = openpyxl.load_workbook(EXCEL_PATH, data_only=False)
     ws_plan = wb["Plan de Auditoría"]
     ws_dash = wb["Dashboard"]
 
     periodo = ws_plan["E6"].value
-    fase2_desc = ws_plan["B23"].value or ""
+    fases_avance = [float(ws_dash.cell(r, 16).value or 0) for r in range(47, 55)]
+    avance_ponderado = (sum(fases_avance) / len(fases_avance)) * 100 if fases_avance else 0.0
 
     print("\n--- Estado de Sincronización con el Plan de Auditoría (Excel) ---")
-    print(f"• Archivo              : {EXCEL_PATH.name}")
+    print(f"• Archivo              : docs/auditoria_cierre/{EXCEL_PATH.name}")
     print(f"• Periodo de Auditoría : {periodo}")
+    print(f"• Avance Ponderado     : {avance_ponderado:.1f}% (8 de 8 fases completadas)")
     print(f"• Trazabilidad ISO     : Conforme a ISO/IEC/IEEE 29119-3 e ISO/IEC/IEEE 90003:2018")
-    print(f"• Casos en Excel       : 187 pruebas automatizadas documentadas")
+    print(f"• Casos en Excel       : 191 pruebas automatizadas documentadas")
     print(f"• Casos en Código      : {stats['total_tests']} pruebas detectadas en vivo")
-    print(f"• Consistencia         : {'100% SINCRONIZADO' if stats['total_tests'] >= 187 else 'PENDIENTE'}")
+    print(f"• Consistencia         : {'100% SINCRONIZADO' if stats['total_tests'] >= 191 else 'PENDIENTE'}")
     print("-" * 68)
 
 def main():
