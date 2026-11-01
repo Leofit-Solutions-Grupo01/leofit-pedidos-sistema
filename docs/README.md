@@ -1,138 +1,102 @@
-# Directorio Maestro de Documentación — LeoFit Solutions
+# Directorio Maestro de Documentación — LeoFit Solutions (`v2.0.0`)
 ## Curso Integrador II: Software (100000S12F) — Ciclo 2026-I — UTP
-**Docente Asesor:** Ing. Enrique Lee Huamani Uriarte  
-**Grupo 01:** *LeoFit Pedidos Sistema*
+**Docente Asesor:** Ing. Enrique L. Huamani U.  
+**Equipo de Ingeniería (Grupo 01):**
+* **Loayza R., Lady L.** (`U22****89`) — Scrum Master & DevSecOps Lead
+* **Cárdenas F., Víctor L.** (`U19****14`) — Product Owner & DBA
+* **Roman D., Harley A.** (`U21****32`) — Frontend Lead & UI/UX
+* **Dávila M., Jim A.** (`U18****81`) — QA Engineer Lead & Backend
+* **Rojas S., Daniel E.** (`U21****27`) — Business Analyst & Cloud DevOps
 
 ---
 
-## Estructura Oficial de Documentación
+## Guía de Ubicación Rápida (Carpetas Numeradas por Prioridad)
 
-Toda la documentación técnica y académica del proyecto se encuentra organizada bajo estándares de ingeniería de software, arquitectura limpia y normas de redacción formal:
+Las carpetas dentro de `docs/` están numeradas del **`01` al `07`** para que al abrir el directorio encuentres de inmediato cada entregable:
+
+| # | Carpeta | ¿Qué encontrarás aquí? | Documento Principal |
+| :-: | :--- | :--- | :--- |
+| **01** | **[`01_entregable_final_apf3/`](./01_entregable_final_apf3/)** | **EL INFORME FINAL APF3 A ENTREGAR AL PROFESOR** + Diapositivas de Sustentación Final | [**`INFORME_FINAL_APF3_LEOFIT.docx`**](./01_entregable_final_apf3/INFORME_FINAL_APF3_LEOFIT.docx) <br> [**`INFORME_FINAL_APF3_LEOFIT.pdf`**](./01_entregable_final_apf3/INFORME_FINAL_APF3_LEOFIT.pdf) <br> [**`INFORME_FINAL_APF3_LEOFIT.md`**](./01_entregable_final_apf3/INFORME_FINAL_APF3_LEOFIT.md) <br> [**`presentacion_sustentacion/APF3_LEOFIT_Presentacion.pptx`**](./01_entregable_final_apf3/presentacion_sustentacion/APF3_LEOFIT_Presentacion.pptx) |
+| **02** | **[`02_calidad_iso25010_semanas_10_11/`](./02_calidad_iso25010_semanas_10_11/)** | **Informe ISO/IEC 25010 (Semanas 10-11)** + **2 Manuales de Calidad ISO 25000 (Auditoría y Ejecutivo)** + Benchmark de Coexistencia | [**`INFORME_ISO25010_SEMANAS_10_11_LEOFIT.docx`**](./02_calidad_iso25010_semanas_10_11/INFORME_ISO25010_SEMANAS_10_11_LEOFIT.docx) <br> [**`Manual_Calidad_ISO_25000_[Completo...].docx`**](./02_calidad_iso25010_semanas_10_11/Manual_Calidad_ISO_25000_Leofit_Pedidos_[Completo_Auditoria_y_ComiteTecnico].docx) <br> [**`Manual_Calidad_ISO_25000_[Ejecutivo...].docx`**](./02_calidad_iso25010_semanas_10_11/Manual_Calidad_ISO_25000_Leofit_Pedidos_[Ejecutivo_Gerencia_y_ProductOwner].docx) |
+| **03** | **[`03_auditoria_y_cierre_proyecto/`](./03_auditoria_y_cierre_proyecto/)** | **Dashboard Excel de Auditoría (ISO 29119/90003)**, Cierre de Issues, Análisis Teórico de Requisitos y Deuda Técnica Saldada | [**`Plan_Auditoria_Software_LeoFit_Dashboard-Loayza-Lady.xlsx`**](./03_auditoria_y_cierre_proyecto/Plan_Auditoria_Software_LeoFit_Dashboard-Loayza-Lady.xlsx) <br> [**`justificaciones_cierre_issues.docx`**](./03_auditoria_y_cierre_proyecto/justificaciones_cierre_issues.docx) <br> [**`DEUDA_TECNICA.md`**](./03_auditoria_y_cierre_proyecto/DEUDA_TECNICA.md) |
+| **04** | **[`04_diagramas_arquitectura_y_negocio/`](./04_diagramas_arquitectura_y_negocio/)** | **Todos los Diagramas del Proyecto (25 diagramas):** Arquitectura Lógica, C4, 3FN/BCNF, BPMN AS-IS/TO-BE, Secuencia ACID y 194 Pruebas | [**`Catálogo Visual de Diagramas (README.md)`**](./04_diagramas_arquitectura_y_negocio/README.md) |
+| **05** | **[`05_operaciones_respaldo_drp/`](./05_operaciones_respaldo_drp/)** | **Protocolo y Simulacro de Recuperación ante Desastres (Backup & Restore DRP)** | [**`BACKUP_RESTORE_DRILL.md`**](./05_operaciones_respaldo_drp/BACKUP_RESTORE_DRILL.md) |
+| **06** | **[`06_historial_entregas_anteriores_apf1_apf2/`](./06_historial_entregas_anteriores_apf1_apf2/)** | **Entregas Pasadas (APF1 y APF2):** Archivadas por separado para no confundirlas con el entregable final APF3 | [**`INFORME_FINAL_APF2_LEOFIT.docx`**](./06_historial_entregas_anteriores_apf1_apf2/INFORME_FINAL_APF2_LEOFIT.docx) |
+| **07** | **[`07_material_referencia_curso_utp/`](./07_material_referencia_curso_utp/)** | **Material Institucional de la UTP:** Clases Teóricas (Semanas 01 a 18), Rúbricas de Evaluación y Sílabo | [**`rubricas_evaluacion_utp/`**](./07_material_referencia_curso_utp/rubricas_evaluacion_utp/) |
+
+---
+
+## Árbol Completo de la Estructura Oficial (`0` carpetas vacías, `0` archivos vacíos)
 
 ```text
 docs/
-├── README.md                                 # Portal Maestro de Documentación (Visualización en GitHub)
+├── README.md                                                    # Este Portal Maestro de Navegación Rápida
 │
-├── auditoria_cierre/                         # Instrumentos de Auditoría, Cierre de Requisitos y Evidencias UI
-│   ├── Plan_Auditoria_Software_LeoFit_Dashboard-Loayza-Lady.xlsx # Plan y Dashboard Maestro de Auditoría (ISO 29119-3 / ISO 90003:2018)
-│   ├── analisis_teorico_requisitos.docx / .md # Análisis teórico de requisitos funcionales
-│   ├── justificaciones_cierre_issues.docx / .md # Justificación formal de cierre de issues GitHub
-│   ├── revision_tareas_pendientes.docx / .md   # Trazabilidad de backlog resuelto
-│   └── [fig_1 a fig_15, fig_analytics]       # Capturas de auditoría de módulos operativos en producción
+├── 01_entregable_final_apf3/                                    # ENTREGABLE FINAL AL PROFESOR (APF3)
+│   ├── INFORME_FINAL_APF3_LEOFIT.docx                           # Informe Final Editable Word (77 págs, 21 diagramas)
+│   ├── INFORME_FINAL_APF3_LEOFIT.pdf                            # Informe Final Oficial en PDF
+│   ├── INFORME_FINAL_APF3_LEOFIT.md                             # Resumen Ejecutivo y Galería de 16 Diagramas
+│   └── presentacion_sustentacion/                               # Diapositivas de Exposición Final del Equipo
+│       ├── APF3_LEOFIT_Presentacion.pptx                        # Presentación PowerPoint Editable
+│       ├── APF3_LEOFIT_Presentacion.pdf                         # Presentación Oficial en PDF (43 diapositivas)
+│       ├── APF3_LEOFIT_Presentacion.html                        # Presentación Interactiva Web
+│       ├── APF3_LEOFIT_Presentacion.md                          # Fuente con Guion y Tiempos por Expositor
+│       └── assets/                                              # Figuras y Evidencias de las Diapositivas
 │
-├── gestion_academica/                        # Gestión Institucional y Académica UTP
-│   ├── entregas/                             # Informes Finales Oficiales Compilados
-│   │   ├── INFORME_FINAL_APF3_LEOFIT.pdf     # Entregable Oficial Definitivo APF3 (Formato Libro, 77 páginas)
-│   │   ├── INFORME_FINAL_APF3_LEOFIT.docx    # Documento Maestro Editable en Microsoft Word (7.14 MB)
-│   │   ├── INFORME_FINAL_APF3_LEOFIT.md      # Versión Markdown completa y trazable
-│   │   ├── INFORME_ISO25010_SEMANAS_10_11_LEOFIT.pdf   # Informe Calidad ISO/IEC 25010 (24 páginas)
-│   │   ├── INFORME_ISO25010_SEMANAS_10_11_LEOFIT.docx  # Documento Editable ISO/IEC 25010 (68 KB)
-│   │   ├── INFORME_FINAL_APF2_LEOFIT.pdf     # Entregable Oficial Previo APF2 (Histórico)
-│   │   ├── INFORME_FINAL_APF2_LEOFIT.docx    # Documento Editable APF2
-│   │   ├── INFORME_FINAL_APF2_LEOFIT.html    # Versión Web HTML APF2
-│   │   ├── INFORME_FINAL_APF2_LEOFIT.md      # Versión Markdown APF2
-│   │   └── style.css                         # Hoja de estilos de exportación HTML
-│   ├── presentaciones/                       # Diapositivas de Sustentación Final
-│   │   ├── APF3_LEOFIT_Presentacion.pdf      # Presentación unificada definitiva de sustentación
-│   │   ├── APF3_LEOFIT_Presentacion.pptx     # Presentación PowerPoint editable
-│   │   ├── APF3_LEOFIT_Presentacion.html     # Versión web interactiva (Marp)
-│   │   ├── APF3_LEOFIT_Presentacion.md       # Fuente Marp con guion y tiempos por expositor
-│   │   ├── GRUP01-Curso_Integrador_II_Software.pptx  # Presentación entregada en APF2
-│   │   └── assets/                           # Diagramas vectoriales y capturas de soporte para diapositivas
-│   ├── evidencias/                           # Evidencias Experimentales y Manuales ISO/IEC 25000
-│   │   └── iso25010_s10_s11/                 # Evaluación de Idoneidad Funcional, Coexistencia e Interoperabilidad (Sem 10-11)
-│   │       ├── README.md                     # Guía de evidencias, accesibilidad WCAG y reproducibilidad
-│   │       ├── Manual_Calidad_ISO_25000_Leofit_Pedidos_[Completo_Auditoria_y_ComiteTecnico].docx # Manual Técnico SQuaRE
-│   │       ├── Manual_Calidad_ISO_25000_Leofit_Pedidos_[Ejecutivo_Gerencia_y_ProductOwner].docx  # Manual Ejecutivo SQuaRE
-│   │       ├── fig_coexistencia_latencias.png # Gráfico analítico de distribución de latencias (300 DPI)
-│   │       ├── fig_coexistencia_p95.png      # Curva de percentiles y P95 en coexistencia (300 DPI)
-│   │       └── coexistencia/                 # Métricas crudas (CSV, JSON, LOG) de benchmark reproducible
-│   ├── plantillas/                           # Plantillas oficiales UTP
-│   │   └── UTP_Plantilla_Informe_ISO25010_Semanas10_11.docx # Formato institucional base
-│   ├── diapositivas/                         # Diapositivas de clases teóricas (Semanas 01 a 18)
-│   ├── rubricas/                             # Rúbricas e indicaciones oficiales de evaluación UTP (APF1, APF2, APF3)
-│   ├── evaluaciones/                         # Retroalimentación docente y control de deuda técnica
-│   │   ├── Retroalimentacion_APF1_Calificacion.txt # Calificación y feedback docente APF1
-│   │   └── DEUDA_TECNICA.md                  # Backlog de mejora continua y mitigación a mediano plazo
-│   └── recursos/                             # Sílabo oficial del curso y fichas de mapeo de empresa
+├── 02_calidad_iso25010_semanas_10_11/                           # ENTREGABLES DE CALIDAD ISO 25010 / 25000 (SEM 10-11)
+│   ├── README.md                                                # Guía de Evidencias, Accesibilidad WCAG y Reproducibilidad
+│   ├── INFORME_ISO25010_SEMANAS_10_11_LEOFIT.docx               # Informe Oficial UTP Semanas 10 y 11 (Word)
+│   ├── INFORME_ISO25010_SEMANAS_10_11_LEOFIT.pdf                # Informe Oficial UTP Semanas 10 y 11 (PDF)
+│   ├── Manual_Calidad_ISO_25000_Leofit_Pedidos_[Completo_Auditoria_y_ComiteTecnico].docx # Manual Técnico (con 6 diagramas)
+│   ├── Manual_Calidad_ISO_25000_Leofit_Pedidos_[Ejecutivo_Gerencia_y_ProductOwner].docx  # Manual Ejecutivo (con 6 diagramas)
+│   ├── fig_arquitectura_calidad_iso25000.png                    # Mapa Arquitectónico ISO 25010 + Proceso ISO 25040
+│   ├── fig_coexistencia_latencias.png                           # Comparativa de Latencias en Coexistencia (300 DPI)
+│   ├── fig_coexistencia_p95.png                                 # Curva de Percentil P95 en Coexistencia (300 DPI)
+│   └── coexistencia/                                            # Logs, CSVs y JSON de pruebas reproducibles
 │
-├── diagramas/                                # Modelos Oficiales de Arquitectura, UML y Procesos
-│   ├── README.md                             # Catálogo formal de diagramas técnicos
-│   ├── apf3/                                 # Figuras técnicas de alta resolución para el Informe APF3
-│   │   ├── fig_arquitectura_logica.png       # Arquitectura en 3 capas
-│   │   ├── fig_repositorio_factory.png       # Patrón Repository y desacoplamiento
-│   │   ├── fig_secuencia_pedido.png          # Secuencia atómica transaccional
-│   │   ├── fig_estados_pedido.png            # Máquina de estados del pedido
-│   │   ├── fig_estrategia_pruebas.png        # Pirámide de pruebas automatizadas
-│   │   ├── fig_pruebas_por_suite.png         # Distribución de 187 pruebas por suite
-│   │   ├── fig_cobertura_modulos.png         # Métricas de cobertura de código
-│   │   ├── fig_despliegue.png                # Topología de nube (GitHub Pages + Render)
-│   │   └── fig_cicd.png                      # Pipeline CI/CD en GitHub Actions
-│   ├── 01_BPMN_AS-IS.png                     # Diagrama de Procesos Actual (BPMN AS-IS)
-│   ├── 01_BPMN_TO-BE.png                     # Diagrama de Procesos Propuesto (BPMN TO-BE)
-│   ├── 02_Mapa_Riesgos.png                   # Matriz 5x5 de Gestión de Riesgos PMI
-│   ├── 06_Lean_Canvas.png                    # Lienzo de Modelo de Negocio (Lean Canvas)
-│   ├── 07_Cronograma_Gantt.png               # Cronograma de ejecución del proyecto
-│   ├── 08_Tablero_Kanban.png                 # Tablero Kanban y Límites WIP
-│   ├── 09_Wireframes_Baja_Fidelidad.png      # Prototipado y Wireframes Mobile-First
-│   ├── 10_User_Flow_Navegacion.png           # Flujo de Navegación del Usuario
-│   ├── 11_Arquitectura_C4_Model.png          # Modelo de Contenedores C4 Nivel 2
-│   ├── 12_Modelo_Logico_BD.png               # DER Lógico Relacional (Crow's Foot)
-│   ├── 13_Modelo_Fisico_BD.png               # Diagrama Físico de Base de Datos (PostgreSQL 16)
-│   └── 14_Diagrama_DB.png                    # Esquema general de base de datos
+├── 03_auditoria_y_cierre_proyecto/                              # AUDITORÍA DE CIERRE, ISSUES Y DEUDA TÉCNICA
+│   ├── Plan_Auditoria_Software_LeoFit_Dashboard-Loayza-Lady.xlsx # Dashboard Maestro Excel (ISO 29119-3 / ISO 90003)
+│   ├── analisis_teorico_requisitos.docx / .md                   # Análisis Teórico de Requisitos Funcionales
+│   ├── justificaciones_cierre_issues.docx / .md                 # Evidencia Formal de Cierre de Issues en GitHub
+│   ├── revision_tareas_pendientes.docx / .md                    # Dictamen de 100% de Tareas Completadas (#3 al #20)
+│   ├── DEUDA_TECNICA.md                                         # Registro de 10/10 Ítems de Deuda Técnica Saldados
+│   ├── fig_evolucion_deuda_tecnica.png                          # Matriz Visual de Saneamiento de Deuda Técnica
+│   └── [fig_1 a fig_15, fig_analytics, fig_teorico_1..2]        # Capturas de Auditoría de Módulos en Producción
 │
-└── operaciones/                              # Procedimientos Operativos y Runbooks de Soporte
-    └── BACKUP_RESTORE_DRILL.md               # Protocolo de Simulacro de Respaldo y Recuperación (RPO/RTO)
+├── 04_diagramas_arquitectura_y_negocio/                         # CATÁLOGO DE 25 DIAGRAMAS TÉCNICOS Y DE NEGOCIO
+│   ├── README.md                                                # Galería Visual e Índice Maestro de Diagramas
+│   ├── apf3/                                                    # 9 Figuras de Ingeniería de Software (220 DPI)
+│   └── [01_BPMN_AS-IS.png a 14_Diagrama_DB.png, 01..04.mmd]     # Diagramas BPMN, C4, 3FN/BCNF, Kanban, Gantt y UX
+│
+├── 05_operaciones_respaldo_drp/                                 # CONTINUIDAD OPERATIVA Y RECUPERACIÓN (DRP)
+│   ├── BACKUP_RESTORE_DRILL.md                                  # Runbook y Simulacro de Backup & Restore (RTO 3.2s, RPO 0)
+│   └── fig_drp_backup_restore.png                               # Diagrama de Flujo del Protocolo DRP
+│
+├── 06_historial_entregas_anteriores_apf1_apf2/                  # ARCHIVO HISTÓRICO (APF1 Y APF2)
+│   ├── INFORME_FINAL_APF2_LEOFIT.docx / .pdf / .md / .html      # Informe del Hito Intermedio APF2
+│   ├── GRUP01-Curso_Integrador_II_Software.pptx                 # Presentación Histórica APF2
+│   └── Retroalimentacion_APF1_Calificacion.txt                  # Calificación (18/20) y Feedback Docente APF1
+│
+└── 07_material_referencia_curso_utp/                            # MATERIAL INSTITUCIONAL DEL CURSO UTP
+    ├── clases_teoricas_semanas_01_a_18/                         # PDFs de Clases Semanales del Docente (Semanas 01 a 18)
+    ├── rubricas_evaluacion_utp/                                 # Rúbricas e Indicaciones Oficiales (APF1, APF2, APF3)
+    └── silabo_y_plantillas_utp/                                 # Sílabo del Curso, Ficha de Empresa y Plantilla Word UTP
 ```
 
 ---
 
-## Entregables Principales del Proyecto
+## Panorama Arquitectónico y de Calidad (`v2.0.0`)
 
-| Hito / Documento | Estado | Formato PDF | Formato Word / Excel | Versión Markdown |
-| :--- | :---: | :---: | :---: | :---: |
-| **INFORME FINAL APF3 (Definitivo)** | **Aprobado / Entregable Final** | [`INFORME_FINAL_APF3_LEOFIT.pdf`](./gestion_academica/entregas/INFORME_FINAL_APF3_LEOFIT.pdf) (77 págs) | [`INFORME_FINAL_APF3_LEOFIT.docx`](./gestion_academica/entregas/INFORME_FINAL_APF3_LEOFIT.docx) | [`INFORME_FINAL_APF3_LEOFIT.md`](./gestion_academica/entregas/INFORME_FINAL_APF3_LEOFIT.md) |
-| **PLAN & DASHBOARD DE AUDITORÍA (ISO 29119-3 / 90003)** | **Completado / Complemento** | — | [`Plan_Auditoria_Software_LeoFit_Dashboard-Loayza-Lady.xlsx`](./auditoria_cierre/Plan_Auditoria_Software_LeoFit_Dashboard-Loayza-Lady.xlsx) | Sincronizado vía [`sync_audit_metrics.py`](../scripts/sync_audit_metrics.py) |
-| **INFORME ISO/IEC 25010 (Semanas 10-11)** | **Completado / Evaluado** | [`INFORME_ISO25010_SEMANAS_10_11_LEOFIT.pdf`](./gestion_academica/entregas/INFORME_ISO25010_SEMANAS_10_11_LEOFIT.pdf) (24 págs) | [`INFORME_ISO25010_SEMANAS_10_11_LEOFIT.docx`](./gestion_academica/entregas/INFORME_ISO25010_SEMANAS_10_11_LEOFIT.docx) | — |
-| **INFORME FINAL APF2** | **Histórico** | [`INFORME_FINAL_APF2_LEOFIT.pdf`](./gestion_academica/entregas/INFORME_FINAL_APF2_LEOFIT.pdf) | [`INFORME_FINAL_APF2_LEOFIT.docx`](./gestion_academica/entregas/INFORME_FINAL_APF2_LEOFIT.docx) | [`INFORME_FINAL_APF2_LEOFIT.md`](./gestion_academica/entregas/INFORME_FINAL_APF2_LEOFIT.md) |
-| **SUSTENTACIÓN APF3** | **Definitivo** | [`APF3_LEOFIT_Presentacion.pdf`](./gestion_academica/presentaciones/APF3_LEOFIT_Presentacion.pdf) | [`APF3_LEOFIT_Presentacion.pptx`](./gestion_academica/presentaciones/APF3_LEOFIT_Presentacion.pptx) | [`APF3_LEOFIT_Presentacion.md`](./gestion_academica/presentaciones/APF3_LEOFIT_Presentacion.md) |
+![Arquitectura Lógica de LeoFit](./04_diagramas_arquitectura_y_negocio/apf3/fig_arquitectura_logica.png)
+
+![Arquitectura de Calidad ISO/IEC 25000](./02_calidad_iso25010_semanas_10_11/fig_arquitectura_calidad_iso25000.png)
 
 ---
 
-## Instrumento de Auditoría y Aseguramiento de Calidad
+## Identidad Oscura de Marca y Accesibilidad Universal (WCAG 2.1 AA/AAA)
 
-Como instrumento complementario de gestión, gobernanza y calidad de software, el proyecto cuenta con el libro maestro:
-* [`docs/auditoria_cierre/Plan_Auditoria_Software_LeoFit_Dashboard-Loayza-Lady.xlsx`](./auditoria_cierre/Plan_Auditoria_Software_LeoFit_Dashboard-Loayza-Lady.xlsx)
-
-### Características del Instrumento de Auditoría:
-1. **Doble Marco Normativo Internacional:**
-   * **ISO/IEC/IEEE 29119-3:** Estructuración de especificaciones de pruebas, matrices de trazabilidad de requisitos vs pruebas y registros de evidencia técnica.
-   * **ISO/IEC/IEEE 90003:2018:** Guía para aplicar **ISO 9001:2015** al ciclo de vida del software, mapeando las Cláusulas 4 a 10 con un cálculo automatizado de cumplimiento ponderado (**100.0%** completado en las 8 fases).
-2. **Dashboard Interactivo con Gantt Reactivo:**
-   * Cronograma de 4 semanas (20 días laborables) sincronizado con el periodo oficial del `05/10/2026` al `30/10/2026`.
-   * Seguimiento de 8 fases críticas desde inicio y planificación hasta el plan de acciones correctivas y cierre de hallazgos.
-3. **Sincronización Automatizada con el Código:**
-   * El script [`scripts/sync_audit_metrics.py`](../scripts/sync_audit_metrics.py) escanea en vivo la totalidad de las suites de prueba: **191 casos de prueba automatizados** (122 backend en Jest/Supertest + 69 frontend en Vitest) y **605 aserciones de seguridad y contrato**, garantizando coherencia 100% auditable entre la documentación y el repositorio.
-
----
-
----
-
-## 🎨 Identidad de Marca y Accesibilidad Universal (WCAG 2.1 AA/AAA)
-
-Toda la documentación técnica y administrativa generada para LeoFit Solutions incorpora una política de diseño inclusivo para garantizar que ningún usuario —incluyendo personas con visión media o baja— experimente barreras de lectura:
-
-1. **Colores Oscuros de Marca:**
-   * **Azul Pizarra Oscuro (#0F172A):** Tono institucional dominante utilizado en títulos y cabeceras de tablas. Brinda una relación de contraste superior a **15.6:1** sobre fondo blanco (supera ampliamente el umbral exigido por WCAG AAA de 7.0:1).
-   * **Azul Corporativo / Navy (#1E3A8A / #1665D8):** Utilizado para subtítulos H2, enlaces y elementos interactivos con ratio de contraste de **8.5:1** (cumple WCAG AAA).
-2. **Adaptación de Alto Contraste para Visibilidad Media o Baja:**
-   * **Naranja Óxido Deportivo (#C2410C):** Reemplaza el naranja pálido convencional (#FF9900, contraste 2.1:1 insuficiente). Ofrece un ratio de contraste de **5.74:1** en fondo claro, cumpliendo con holgura WCAG 2.1 AA para texto normal y AAA para textos destacados.
-   * **Tipografía Aumentada:** Mínimo de **9.5pt a 10pt** en tablas de datos y **11pt** en cuerpo de párrafos con interlineado de 1.15, eliminando fuentes diminutas inaccesibles.
-   * **Bordes Tabulares Definidos (#CBD5E1):** Cada tabla posee cuadrículas continuas que delimitan claramente las celdas, permitiendo a personas con baja agudeza visual seguir filas y columnas sin extraviar la secuencia.
-   * **Filas Alternas Suaves (#F8FAFC):** Atenúan el resplandor visual manteniendo una lectura descansada y ergonómica.
-
-## Enlaces a Entornos de Producción y Código
-
-* **Repositorio GitHub:** [https://github.com/Leofit-Solutions-Grupo01/leofit-pedidos-sistema](https://github.com/Leofit-Solutions-Grupo01/leofit-pedidos-sistema)
-* **Frontend Web (PWA):** [https://leofit-solutions-grupo01.github.io/leofit-pedidos-sistema/](https://leofit-solutions-grupo01.github.io/leofit-pedidos-sistema/)
-* **Backend API REST (Health):** [https://leofit-backend-api.onrender.com/api/health](https://leofit-backend-api.onrender.com/api/health)
+Toda la documentación de LeoFit Solutions aplica una política de diseño inclusivo pensada para todo público, incluyendo personas con visibilidad media o baja:
+1. **Azul Pizarra Oscuro (`#0F172A`):** Cabeceras y títulos principales con contraste **17.8:1** sobre blanco (WCAG AAA).
+2. **Azul Corporativo (`#1E3A8A` / `#1665D8`):** Subtítulos y componentes con contraste **5.42:1 a 10.4:1** (WCAG AA/AAA).
+3. **Terracota Deportivo Accesible (`#C2410C`):** Sustituye el naranja claro convencional para garantizar un contraste de **5.74:1** (WCAG AA).
+4. **Tipografía y Bordes Legibles:** Fuente mínima de **9.5pt** en tablas, **10.5pt–11pt** en texto corrido y bordes visibles (`#CBD5E1`) en todas las celdas.

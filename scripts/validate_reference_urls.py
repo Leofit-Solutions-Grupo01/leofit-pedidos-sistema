@@ -36,7 +36,7 @@ def main():
 
     targets = [
         ('INFORME_FINAL_APF3 (Generador)', 'scripts/generate_apf3_complete_package.py'),
-        ('INFORME_ISO25010 (DOCX)', 'docs/gestion_academica/entregas/INFORME_ISO25010_SEMANAS_10_11_LEOFIT.docx'),
+        ('INFORME_ISO25010 (DOCX)', 'docs/02_calidad_iso25010_semanas_10_11/INFORME_ISO25010_SEMANAS_10_11_LEOFIT.docx'),
         ('Portal Documentación (docs/README.md)', 'docs/README.md'),
         ('Portal Principal (README.md)', 'README.md')
     ]
@@ -56,7 +56,7 @@ def main():
                 all_links.append(('APF3 - Referencias Bibliográficas APA 7ma', ref_text, [clean_url(u) for u in raw_urls]))
 
     # 2. ISO DOCX
-    iso_path = 'docs/gestion_academica/entregas/INFORME_ISO25010_SEMANAS_10_11_LEOFIT.docx'
+    iso_path = 'docs/02_calidad_iso25010_semanas_10_11/INFORME_ISO25010_SEMANAS_10_11_LEOFIT.docx'
     doc = docx.Document(iso_path)
     for p in doc.paragraphs:
         txt = p.text.strip()

@@ -153,7 +153,7 @@ def populate_report(docx_path, output_path):
         "interoperabilidad con WhatsApp Cloud API, pasarela de pagos móviles (Yape / Plin) con verificación HMAC-SHA256 "
         "y consulta de padrones de identidad SUNAT y RENIEC.\n"
         "Los resultados alcanzados demuestran una completitud funcional del 100.0% (10 de 10 RF críticos del alcance "
-        "implementados y evidenciados), una tasa de aprobación funcional del 99.47% (187 de 188 casos aprobados; "
+        "implementados y evidenciados), una tasa de aprobación funcional del 99.49% (194 de 195 casos aprobados; "
         "1 caso de persistencia física omitido por aislamiento de base de datos en CI), 100.0% de escenarios de "
         "interoperabilidad exitosos (5 de 5) y evaluación de coexistencia multiproceso en vCPU compartida con 0% de errores "
         "de servidor (0/520 transacciones fallidas) y consumo pico de RAM de 191.4 MB sobre un límite de 450 MB. Se documenta la "
@@ -180,7 +180,7 @@ def populate_report(docx_path, output_path):
     doc.paragraphs[37].text = (
         "El alcance de evaluación comprende los módulos centrales de LeoFit: Autenticación JWT y RBAC, Catálogo y Variantes de Inventario, "
         "Toma Atómica de Pedidos, Facturación Electrónica y Recibos Térmicos, y Rótulos de Despacho Logístico. La arquitectura de "
-        "la solución se encuentra modelada en C4 Nivel 2 (docs/diagramas/11_Arquitectura_C4_Model.png). La solución se organiza en tres capas:\n"
+        "la solución se encuentra modelada en C4 Nivel 2 (docs/04_diagramas_arquitectura_y_negocio/11_Arquitectura_C4_Model.png). La solución se organiza en tres capas:\n"
         "1. Capa de Presentación: SPA/PWA construida con React 18, TypeScript, Tailwind CSS y Vite, servida estáticamente vía CDN.\n"
         "2. Capa de Aplicación: API RESTful construida sobre Node.js 20 LTS y Express con arquitectura en capas (Controladores, Servicios y Repositorios), "
         "protegida con Helmet, CORS restrictivo, Rate Limiting y esquemas de validación Zod.\n"
@@ -221,7 +221,7 @@ def populate_report(docx_path, output_path):
     doc.paragraphs[99].text = (
         "El análisis integral de resultados corrobora la madurez técnica del sistema LeoFit Pedidos Sistema bajo ISO/IEC 25010:2023:\n"
         "1. Adecuación Funcional: Se alcanzó 100% de completitud en los 10 requisitos funcionales del alcance. La corrección funcional registró "
-        "un 99.47% de aprobación global (187 pruebas automatizadas exitosas de 188 definidas). La idoneidad funcional quedó demostrada cuantitativamente "
+        "un 99.49% de aprobación global (194 pruebas automatizadas exitosas de 195 definidas). La idoneidad funcional quedó demostrada cuantitativamente "
         "al reducir el tiempo de captura de pedidos de 45 minutos a 38.2 segundos promedio.\n"
         "2. Compatibilidad: La interoperabilidad demostró cumplimiento total del 100% (5 escenarios validados) con contratos estrictos Zod/JSON. "
         "La prueba de coexistencia empírica demostró que la API principal preserva una latencia ultrarrápida (4.42 ms en lectura y 3.44 ms en escritura) "
@@ -239,15 +239,15 @@ def populate_report(docx_path, output_path):
     # --- TABLE 0: Metadatos ---
     t0_data = [
         ("Proyecto / nombre comercial", "Sistema Web PWA de Gestión de Pedidos Multicanal y Control de Inventarios"),
-        ("Empresa o contexto", "LeoFit Confecciones y Diseños Deportivos S.A.C. (RUC 20608912345) — Emporio Comercial de Gamarra"),
+        ("Empresa o contexto", "LeoFit Confecciones y Diseños Deportivos S.A.C. (RUC 206089*****) — Emporio Comercial de Gamarra"),
         ("Integrantes / códigos", (
-            "1. Loayza Rodriguez, Lady Luz (U22221489) — Scrum Master / DevSecOps\n"
-            "2. Cárdenas Fernández, Víctor Leandro (U19217414) — Product Owner / DBA\n"
-            "3. Roman Delgado, Harley Anthony (U21313032) — Frontend Lead / PWA\n"
-            "4. Dávila Morales, Jim Alessandro (U18206081) — QA Lead / Backend Node\n"
-            "5. Rojas Sanchez, Daniel Enrique (U21214627) — Business Analyst / Cloud DevOps"
+            "1. Loayza R., Lady L. (U22****89) — Scrum Master / DevSecOps\n"
+            "2. Cárdenas F., Víctor L. (U19****14) — Product Owner / DBA\n"
+            "3. Roman D., Harley A. (U21****32) — Frontend Lead / PWA\n"
+            "4. Dávila M., Jim A. (U18****81) — QA Lead / Backend Node\n"
+            "5. Rojas S., Daniel E. (U21****27) — Business Analyst / Cloud DevOps"
         )),
-        ("Docente", "Ing. Enrique Lee Huamani Uriarte"),
+        ("Docente", "Ing. Enrique L. Huamani U."),
         ("Sección / turno", "Sección 35374 — Turno Noche / Ciclo 2026-I (Semanas 10–11)"),
         ("Versión del software", "v2.0.0 (Release candidato APF3, commit 89adda5)"),
         ("Entorno evaluado", "Localhost (Node 20.11 LTS, PostgreSQL 16.1, Vite 6 en http://localhost:5173 y API en puerto 4000)"),
@@ -300,7 +300,7 @@ def populate_report(docx_path, output_path):
         ("PI-02", "Campo faltante / proveedor no homologado", "Webhook con proveedor 'CRYPTO_UNSUPPORTED' o campos faltantes.", "HTTP 400 Bad Request, rechazo controlado sin modificar BD", "EV-08 / tests/integration_external.test.ts"),
         ("PI-03", "Firma HMAC inválida o alterada", "Webhook con x-signature manipulada con 1 byte alterado.", "HTTP 401 Unauthorized sin fuga de stacktrace interno", "EV-08 / tests/webhook.test.ts"),
         ("PI-04", "Evento duplicado (Idempotencia)", "Reenvío del mismo event_id recibido previamente.", "HTTP 200 OK con deduped: true sin duplicar efectos contables", "EV-08 / tests/paymentWebhook.test.ts"),
-        ("PI-05", "Padrón de Identidad SUNAT/RENIEC", "Consulta DNI '72345678' (RENIEC) y RUC '20601234567' (SUNAT).", "HTTP 200 OK con titular y condición HABIDO / ACTIVO", "EV-10 / tests/integration_external.test.ts")
+        ("PI-05", "Padrón de Identidad SUNAT/RENIEC", "Consulta DNI '7234****' (RENIEC) y RUC '206012*****' (SUNAT).", "HTTP 200 OK con titular y condición HABIDO / ACTIVO", "EV-10 / tests/integration_external.test.ts")
     ]
     for r_idx, vals in enumerate(t18_data, start=1):
         set_row_cells(doc.tables[18].rows[r_idx], vals)
@@ -317,12 +317,12 @@ def populate_report(docx_path, output_path):
 
     # --- TABLE 28: Registro controlado de evidencias ---
     t28_data = [
-        ("EV-01", "Captura de pantalla de la interfaz PWA de Creación de Pedido con cálculo dinámico de totales", "22/09/2026", "docs/auditoria_cierre/fig_10_crm.png", "PF-01"),
-        ("EV-02", "Captura de pantalla de alerta modal por rechazo ante stock insuficiente (Protección ante errores)", "22/09/2026", "docs/auditoria_cierre/fig_7_fallback.png", "PF-02"),
-        ("EV-03", "Captura de pantalla del Panel Operativo PWA en dispositivo móvil con indicadores en tiempo real", "22/09/2026", "docs/auditoria_cierre/fig_4_pwa.png", "PF-03"),
-        ("EV-04", "Captura de pantalla del Portal Público de Consulta y Trazabilidad de Pedidos para clientes finales", "22/09/2026", "docs/auditoria_cierre/fig_analytics.png", "PF-04"),
-        ("EV-05", "Gráfico analítico de Coexistencia - Comparativa de Latencia Media (Línea Base vs Simultáneo)", "22/10/2026", "docs/gestion_academica/evidencias/iso25010_s10_s11/fig_coexistencia_latencias.png", "PC-01 a PC-03"),
-        ("EV-06", "Gráfico analítico de Coexistencia - Percentil 95 (P95 Tail Latency) bajo Contención de vCPU", "22/10/2026", "docs/gestion_academica/evidencias/iso25010_s10_s11/fig_coexistencia_p95.png", "PC-04")
+        ("EV-01", "Captura de pantalla de la interfaz PWA de Creación de Pedido con cálculo dinámico de totales", "22/09/2026", "docs/03_auditoria_y_cierre_proyecto/fig_10_crm.png", "PF-01"),
+        ("EV-02", "Captura de pantalla de alerta modal por rechazo ante stock insuficiente (Protección ante errores)", "22/09/2026", "docs/03_auditoria_y_cierre_proyecto/fig_7_fallback.png", "PF-02"),
+        ("EV-03", "Captura de pantalla del Panel Operativo PWA en dispositivo móvil con indicadores en tiempo real", "22/09/2026", "docs/03_auditoria_y_cierre_proyecto/fig_4_pwa.png", "PF-03"),
+        ("EV-04", "Captura de pantalla del Portal Público de Consulta y Trazabilidad de Pedidos para clientes finales", "22/09/2026", "docs/03_auditoria_y_cierre_proyecto/fig_analytics.png", "PF-04"),
+        ("EV-05", "Gráfico analítico de Coexistencia - Comparativa de Latencia Media (Línea Base vs Simultáneo)", "22/10/2026", "docs/02_calidad_iso25010_semanas_10_11/fig_coexistencia_latencias.png", "PC-01 a PC-03"),
+        ("EV-06", "Gráfico analítico de Coexistencia - Percentil 95 (P95 Tail Latency) bajo Contención de vCPU", "22/10/2026", "docs/02_calidad_iso25010_semanas_10_11/fig_coexistencia_p95.png", "PC-04")
     ]
     for r_idx in range(1, len(t28_data) + 1):
         if r_idx < len(doc.tables[28].rows):
@@ -382,7 +382,7 @@ def populate_report(docx_path, output_path):
     t20 = doc.tables[20]
     chart1_path = os.path.join(os.path.dirname(output_path), '..', 'evidencias', 'iso25010_s10_s11', 'fig_coexistencia_latencias.png')
     if not os.path.exists(chart1_path):
-        chart1_path = os.path.abspath('docs/gestion_academica/evidencias/iso25010_s10_s11/fig_coexistencia_latencias.png')
+        chart1_path = os.path.abspath('docs/02_calidad_iso25010_semanas_10_11/fig_coexistencia_latencias.png')
     
     last_el = insert_image_block(t20._element, doc, chart1_path,
         caption_text="Figura 6.1: Evaluación de Coexistencia ISO/IEC 25010 — Comparativa de Latencia Media (Línea Base vs Carga Concurrente)",
@@ -405,8 +405,8 @@ def populate_report(docx_path, output_path):
         ("Resultado esperado / oráculo", "HTTP 201 Created; objeto de respuesta con { success: true, data: { orderNumber: 'LFT-089', status: 'RECIBIDO' } }; stock decrementado en BD."),
         ("Resultado observado", "HTTP 201 Created en 4.8 ms; orden generada #LFT-089 persistida exitosamente; stock actualizado atómicamente; hash idempotente registrado."),
         ("Veredicto", "Aprobada (PASSED)"),
-        ("Ejecutado por / fecha", "Jim Alessandro Dávila Morales (QA Lead) / 22/09/2026"),
-        ("Evidencias", "EV-01 (docs/auditoria_cierre/fig_10_crm.png y backend/tests/orders.test.ts)"),
+        ("Ejecutado por / fecha", "Jim A. Dávila M. (QA Lead) / 22/09/2026"),
+        ("Evidencias", "EV-01 (docs/03_auditoria_y_cierre_proyecto/fig_10_crm.png y backend/tests/orders.test.ts)"),
         ("Issue, corrección y re-ejecución", "Issue #1 / Commit 89adda5 / Aprobado sin observaciones.")
     ]
     for r_idx, (c0, c1) in enumerate(f1_data, start=1):
@@ -425,8 +425,8 @@ def populate_report(docx_path, output_path):
         ("Resultado esperado / oráculo", "HTTP 409 Conflict; código 'INSUFFICIENT_STOCK'; 0 registros huérfanos creados en base de datos."),
         ("Resultado observado", "HTTP 409 Conflict en 3.6 ms con mensaje 'Stock insuficiente para SKU POL-IRO-CRE-S'; rollback atómico ejecutado; modal de advertencia en UI."),
         ("Veredicto", "Aprobada (PASSED)"),
-        ("Ejecutado por / fecha", "Jim Alessandro Dávila Morales (QA Lead) / 22/09/2026"),
-        ("Evidencias", "EV-02 (docs/auditoria_cierre/fig_7_fallback.png y tests/orders.test.ts)"),
+        ("Ejecutado por / fecha", "Jim A. Dávila M. (QA Lead) / 22/09/2026"),
+        ("Evidencias", "EV-02 (docs/03_auditoria_y_cierre_proyecto/fig_7_fallback.png y tests/orders.test.ts)"),
         ("Issue, corrección y re-ejecución", "Issue #4 / Commit 89adda5 / Bloqueo pesimista FOR UPDATE y transaccionalidad verificada.")
     ]
     tbl_f2 = create_card_table(doc, f2_data, "Ficha PF-02: Bloqueo Transaccional por Stock Insuficiente (Funcional Inválido)")
@@ -438,13 +438,13 @@ def populate_report(docx_path, output_path):
         ("Subcaracterística ISO/IEC 25010", "Compatibilidad / Interoperabilidad (§4.2.3.1)"),
         ("Objetivo de prueba", "Validar el contrato formal de la API de padrón fiscal: tipado estricto, esquema JSON y autocompletado en formulario."),
         ("Precondiciones / datos", "Servidor activo; token de autenticación válido; RUC de prueba legítimo."),
-        ("Procedimiento paso a paso", "1. Ingresar RUC '20608912345' en el módulo de clientes. 2. Disparar consulta GET /api/sunat/ruc/:numero. 3. Verificar status 200 y tipado de campos. 4. Comprobar autocompletado en la UI."),
-        ("Entrada / payload", "GET /api/sunat/ruc/20608912345 | Headers: Accept: application/json"),
-        ("Resultado esperado / oráculo", "HTTP 200 OK; JSON con { success: true, data: { ruc: '20608912345', razonSocial: '...', condicion: 'HABIDO' } }."),
+        ("Procedimiento paso a paso", "1. Ingresar RUC '206089*****' en el módulo de clientes. 2. Disparar consulta GET /api/sunat/ruc/:numero. 3. Verificar status 200 y tipado de campos. 4. Comprobar autocompletado en la UI."),
+        ("Entrada / payload", "GET /api/sunat/ruc/206089***** | Headers: Accept: application/json"),
+        ("Resultado esperado / oráculo", "HTTP 200 OK; JSON con { success: true, data: { ruc: '206089*****', razonSocial: '...', condicion: 'HABIDO' } }."),
         ("Resultado observado", "HTTP 200 OK en 18 ms; deserialización correcta en formulario React; autocompletado de dirección fiscal; validación Zod conforme."),
         ("Veredicto", "Aprobada (PASSED)"),
-        ("Ejecutado por / fecha", "Harley Anthony Roman Delgado (Frontend Lead) / 22/09/2026"),
-        ("Evidencias", "EV-03 (backend/tests/invoices.sunat.test.ts y docs/auditoria_cierre/fig_13_interop.png)"),
+        ("Ejecutado por / fecha", "Harley A. Roman D. (Frontend Lead) / 22/09/2026"),
+        ("Evidencias", "EV-03 (backend/tests/invoices.sunat.test.ts y docs/03_auditoria_y_cierre_proyecto/fig_13_interop.png)"),
         ("Issue, corrección y re-ejecución", "Issue #7 / Commit 89adda5 / Sanitización regex /^[12][0-9]{10}$/ homologada.")
     ]
     tbl_f3 = create_card_table(doc, f3_data, "Ficha PI-01: Verificación de Contrato e Integración con Padrón SUNAT/RENIEC (Interoperabilidad)")
@@ -461,8 +461,8 @@ def populate_report(docx_path, output_path):
         ("Resultado esperado / oráculo", "Variación de latencia en A <= 15.0%, tasa de error <= 0.5%, memoria RAM < 450 MB."),
         ("Resultado observado", "Latencia A lectura: 4.92 ms -> 4.42 ms (-10.2%); escritura: 5.02 ms -> 3.44 ms (-31.5%); tasa de error 0.0% (0 fallos); RAM pico 191.4 MB; latencia en B varió a 39.30 ms por contención de vCPU."),
         ("Veredicto", "Aprobada en Servicio A (PASSED) / Alerta de Contención en Servicio B"),
-        ("Ejecutado por / fecha", "Lady Luz Loayza Rodriguez (Scrum Master / DevSecOps) / 22/10/2026"),
-        ("Evidencias", "EV-05 y EV-06 (docs/gestion_academica/evidencias/iso25010_s10_s11/coexistencia/ y fig_coexistencia_latencias.png)"),
+        ("Ejecutado por / fecha", "Lady L. Loayza R. (Scrum Master / DevSecOps) / 22/10/2026"),
+        ("Evidencias", "EV-05 y EV-06 (docs/02_calidad_iso25010_semanas_10_11/coexistencia/ y fig_coexistencia_latencias.png)"),
         ("Issue, corrección y re-ejecución", "Issue #11 / Aislamiento cgroups v2 en Render Cloud con 512 MB de memoria garantizada.")
     ]
     tbl_f4 = create_card_table(doc, f4_data, "Ficha PC-01: Monitoreo de Recursos y Degradación de Latencia en vCPU Compartida (Coexistencia)")
@@ -489,17 +489,17 @@ def populate_report(docx_path, output_path):
     curr_b_el = p_anexo_b_intro._element
 
     evidences_gallery = [
-        ("docs/auditoria_cierre/fig_10_crm.png",
+        ("docs/03_auditoria_y_cierre_proyecto/fig_10_crm.png",
          "Figura B.1: Interfaz PWA de Gestión y Creación Atómica de Pedidos con cálculo de totales y stock (EV-01)"),
-        ("docs/auditoria_cierre/fig_7_fallback.png",
+        ("docs/03_auditoria_y_cierre_proyecto/fig_7_fallback.png",
          "Figura B.2: Modal de Protección ante Errores y Rechazo por Stock Insuficiente en Almacén (EV-02)"),
-        ("docs/auditoria_cierre/fig_4_pwa.png",
+        ("docs/03_auditoria_y_cierre_proyecto/fig_4_pwa.png",
          "Figura B.3: Panel Operativo PWA en Dispositivo Móvil con Indicadores en Tiempo Real (EV-03)"),
-        ("docs/auditoria_cierre/fig_analytics.png",
+        ("docs/03_auditoria_y_cierre_proyecto/fig_analytics.png",
          "Figura B.4: Portal Público de Consulta y Trazabilidad de Pedidos para Clientes Finales (EV-04)"),
-        ("docs/gestion_academica/evidencias/iso25010_s10_s11/fig_coexistencia_latencias.png",
+        ("docs/02_calidad_iso25010_semanas_10_11/fig_coexistencia_latencias.png",
          "Figura B.5: Gráfico de Variación de Latencias en Coexistencia ISO/IEC 25010 (EV-05)"),
-        ("docs/gestion_academica/evidencias/iso25010_s10_s11/fig_coexistencia_p95.png",
+        ("docs/02_calidad_iso25010_semanas_10_11/fig_coexistencia_p95.png",
          "Figura B.6: Gráfico de Percentil 95 (P95 Tail Latency) bajo Estrés de Contención Multiproceso (EV-06)")
     ]
 
@@ -536,11 +536,11 @@ def populate_report(docx_path, output_path):
             tbl_firmas.rows[0].cells[c_idx].width = widths[c_idx]
 
         team_rows = [
-            ("1", "Loayza Rodriguez, Lady Luz", "U22221489", "Scrum Master / DevSecOps", "CONFORME (Digital)"),
-            ("2", "Cárdenas Fernández, Víctor Leandro", "U19217414", "Product Owner / DBA", "CONFORME (Digital)"),
-            ("3", "Roman Delgado, Harley Anthony", "U21313032", "Frontend Lead / UI-UX", "CONFORME (Digital)"),
-            ("4", "Dávila Morales, Jim Alessandro", "U18206081", "QA Lead / Backend Node", "CONFORME (Digital)"),
-            ("5", "Rojas Sanchez, Daniel Enrique", "U21214627", "Business Analyst / DevOps", "CONFORME (Digital)")
+            ("1", "Loayza R., Lady L.", "U22****89", "Scrum Master / DevSecOps", "CONFORME (Digital)"),
+            ("2", "Cárdenas F., Víctor L.", "U19****14", "Product Owner / DBA", "CONFORME (Digital)"),
+            ("3", "Roman D., Harley A.", "U21****32", "Frontend Lead / UI-UX", "CONFORME (Digital)"),
+            ("4", "Dávila M., Jim A.", "U18****81", "QA Lead / Backend Node", "CONFORME (Digital)"),
+            ("5", "Rojas S., Daniel E.", "U21****27", "Business Analyst / DevOps", "CONFORME (Digital)")
         ]
         for r_idx, row_vals in enumerate(team_rows, start=1):
             for c_idx, val in enumerate(row_vals):
@@ -560,9 +560,9 @@ def populate_report(docx_path, output_path):
     print("¡Informe ISO/IEC 25010 completado con éxito, 100% ilustrado y documentado!")
 
 if __name__ == '__main__':
-    template_path = os.path.abspath('docs/gestion_academica/plantillas/UTP_Plantilla_Informe_ISO25010_Semanas10_11.docx')
+    template_path = os.path.abspath('docs/07_material_referencia_curso_utp/silabo_y_plantillas_utp/UTP_Plantilla_Informe_ISO25010_Semanas10_11.docx')
     if not os.path.exists(template_path):
         template_path = os.path.abspath('docs/UTP_Plantilla_Informe_ISO25010_Semanas10_11.docx')
     
-    output_path = os.path.abspath('docs/gestion_academica/entregas/INFORME_ISO25010_SEMANAS_10_11_LEOFIT.docx')
+    output_path = os.path.abspath('docs/02_calidad_iso25010_semanas_10_11/INFORME_ISO25010_SEMANAS_10_11_LEOFIT.docx')
     populate_report(template_path, output_path)

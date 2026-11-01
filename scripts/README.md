@@ -9,17 +9,17 @@ Este directorio contiene las herramientas de automatización, generación docume
 
 | Script | Propósito y Función | Salida Generada |
 | :--- | :--- | :--- |
-| **`generate_apf3_complete_package.py`** | **Generador Maestro APF3**: Construye el informe final definitivo en formato libro (76 páginas) y ejecuta la exportación automatizada a PDF. | `docs/gestion_academica/entregas/INFORME_FINAL_APF3_LEOFIT.docx` y `.pdf` |
+| **`generate_apf3_complete_package.py`** | **Generador Maestro APF3**: Construye el informe final definitivo en formato libro (76 páginas) y ejecuta la exportación automatizada a PDF. | `docs/01_entregable_final_apf3/INFORME_FINAL_APF3_LEOFIT.docx` y `.pdf` |
 | **`apf3_book_engine.py`** | **Motor de Maquetación Editorial**: API de abstracción de `python-docx` para estilos formales tipo libro, índices de figuras/tablas (TOC/LOF/LOT), encabezados con `STYLEREF` y numeración diferenciada. | Módulo auxiliar importado por el generador maestro |
 | **`export_docx_to_pdf_word_com.py`** | **Compilador PDF Word COM**: Automatiza la exportación de documentos Word a PDF mediante la API COM de Microsoft Word en Windows, garantizando fidelidad tipográfica, campos actualizados y resolución gráfica. | `.pdf` de alta fidelidad |
-| **`generate_apf2_complete_package.py`** | **Generador Histórico APF2**: Genera el entregable oficial previo APF2 bajo formato APA 7ma Edición (mantenido para soporte de revisión docente). | `docs/gestion_academica/entregas/INFORME_FINAL_APF2_LEOFIT.docx` |
-| **`generate_apf3_presentation.py`** | **Generador de Presentación Maestra PF3**: Compila las diapositivas de sustentación en Markdown y sincroniza los formatos HTML, PDF y PPTX con notas de orador. | `docs/gestion_academica/presentaciones/APF3_LEOFIT_Presentacion.*` |
-| **`generate_apf3_figures.py`** | **Renderizador de Métricas APF3**: Genera las 9 figuras analíticas de cobertura de código, suites de prueba, arquitectura de despliegue, secuencias y máquinas de estados. | `docs/diagramas/apf3/*.png` |
-| **`generate_bpmn_tobe.py`** | **Diagramador BPMN 2.0 TO-BE**: Genera el diagrama de procesos optimizado en alta resolución (300 DPI). | `docs/diagramas/01_BPMN_TO-BE.png` |
-| **`generate_risk_map.py`** | **Matriz de Riesgos 5x5**: Genera el mapa de calor y catálogo de riesgos formal según estándares PMI. | `docs/diagramas/02_Mapa_Riesgos.png` |
-| **`generate_user_flow.py`** | **Diagrama de Flujo de Usuario**: Renderiza el User Flow UX de navegación e interacción multicanal. | `docs/diagramas/10_User_Flow_Navegacion.png` |
-| **`generate_c4_diagram.py`** | **Arquitectura C4 Nivel 2**: Renderiza el modelo de contenedores de software según IEEE 1471 / ISO 42010. | `docs/diagramas/11_Arquitectura_C4_Model.png` |
-| **`generate_leofit_db_models_bw.py`** | **Modelos de Base de Datos CAD**: Genera los esquemas Lógico (DER Crow's Foot) y Físico Relacional (DDL SQL) en alta resolución. | `docs/diagramas/12_Modelo_Logico_BD.png` y `13_Modelo_Fisico_BD.png` |
+| **`generate_apf2_complete_package.py`** | **Generador Histórico APF2**: Genera el entregable oficial previo APF2 bajo formato APA 7ma Edición (mantenido para soporte de revisión docente). | `docs/06_historial_entregas_anteriores_apf1_apf2/INFORME_FINAL_APF2_LEOFIT.docx` |
+| **`generate_apf3_presentation.py`** | **Generador de Presentación Maestra PF3**: Compila las diapositivas de sustentación en Markdown y sincroniza los formatos HTML, PDF y PPTX con notas de orador. | `docs/01_entregable_final_apf3/presentacion_sustentacion/APF3_LEOFIT_Presentacion.*` |
+| **`generate_apf3_figures.py`** | **Renderizador de Métricas APF3**: Genera las 9 figuras analíticas de cobertura de código, suites de prueba, arquitectura de despliegue, secuencias y máquinas de estados. | `docs/04_diagramas_arquitectura_y_negocio/apf3/*.png` |
+| **`generate_bpmn_tobe.py`** | **Diagramador BPMN 2.0 TO-BE**: Genera el diagrama de procesos optimizado en alta resolución (300 DPI). | `docs/04_diagramas_arquitectura_y_negocio/01_BPMN_TO-BE.png` |
+| **`generate_risk_map.py`** | **Matriz de Riesgos 5x5**: Genera el mapa de calor y catálogo de riesgos formal según estándares PMI. | `docs/04_diagramas_arquitectura_y_negocio/02_Mapa_Riesgos.png` |
+| **`generate_user_flow.py`** | **Diagrama de Flujo de Usuario**: Renderiza el User Flow UX de navegación e interacción multicanal. | `docs/04_diagramas_arquitectura_y_negocio/10_User_Flow_Navegacion.png` |
+| **`generate_c4_diagram.py`** | **Arquitectura C4 Nivel 2**: Renderiza el modelo de contenedores de software según IEEE 1471 / ISO 42010. | `docs/04_diagramas_arquitectura_y_negocio/11_Arquitectura_C4_Model.png` |
+| **`generate_leofit_db_models_bw.py`** | **Modelos de Base de Datos CAD**: Genera los esquemas Lógico (DER Crow's Foot) y Físico Relacional (DDL SQL) en alta resolución. | `docs/04_diagramas_arquitectura_y_negocio/12_Modelo_Logico_BD.png` y `13_Modelo_Fisico_BD.png` |
 | **`convert_md_to_professional_docx.py`** | **Conversor Utilitario Markdown a DOCX**: Herramienta CLI para transformar cualquier Markdown a Word con estilos tipográficos, tablas y formateo inline. | `[archivo].docx` |
 | **`k6_workload.js`** | **Suite de Pruebas de Estrés K6**: Carga concurrente (50 VUs, 6 min) para evaluar aislamiento de transacciones ACID y latencias p95 en PostgreSQL. | Métricas de rendimiento y stdout K6 |
 

@@ -4,7 +4,7 @@ from docx.shared import Inches, Pt, RGBColor
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 
 def harmonize_iso_references():
-    doc_path = 'docs/gestion_academica/entregas/INFORME_ISO25010_SEMANAS_10_11_LEOFIT.docx'
+    doc_path = 'docs/02_calidad_iso25010_semanas_10_11/INFORME_ISO25010_SEMANAS_10_11_LEOFIT.docx'
     doc = docx.Document(doc_path)
 
     # Buscar el encabezado de "Referencias y marco de consulta"

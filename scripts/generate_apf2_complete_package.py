@@ -12,7 +12,7 @@
              - Portada académica sobria institucional (UTP).
              - Todos los 11 Capítulos oficiales, Anexos A-F y los 3 índices exhaustivos.
 @project LeoFit Pedidos Sistema (UTP - Curso Integrador II - 100000S12F)
-@author Lady Luz Loayza Rodriguez (@LadyyLuz)
+@author Lady L. Loayza R. (@LadyyLuz)
 @copyright (c) 2026 Grupo 01 - UTP. All rights reserved.
 """
 
@@ -469,11 +469,11 @@ def build_apf2_master():
     r.font.color.rgb = COLOR_BLACK
     
     integrantes = [
-        "Loayza Rodriguez, Lady Luz — Código: U22221489 (Scrum Master / Lead Dev)",
-        "Cárdenas Fernández, Víctor Leandro — Código: U19217414 (Product Owner / Data Architect)",
-        "Roman Delgado, Harley Anthony — Código: U21313032 (Frontend Lead / PWA Specialist)",
-        "Dávila Morales, Jim Alessandro — Código: U18206081 (QA Engineer Lead / Backend)",
-        "Rojas Sanchez, Daniel Enrique — Código: U21214627 (Business Analyst / Cloud DevOps)"
+        "Loayza R., Lady L. — Código: U22****89 (Scrum Master / Lead Dev)",
+        "Cárdenas F., Víctor L. — Código: U19****14 (Product Owner / Data Architect)",
+        "Roman D., Harley A. — Código: U21****32 (Frontend Lead / PWA Specialist)",
+        "Dávila M., Jim A. — Código: U18****81 (QA Engineer Lead / Backend)",
+        "Rojas S., Daniel E. — Código: U21****27 (Business Analyst / Cloud DevOps)"
     ]
     for integ in integrantes:
         p_mem = doc.add_paragraph()
@@ -488,7 +488,7 @@ def build_apf2_master():
     p_doc.alignment = WD_ALIGN_PARAGRAPH.CENTER
     p_doc.paragraph_format.space_before = Pt(16)
     p_doc.paragraph_format.space_after = Pt(2)
-    r = p_doc.add_run("DOCENTE ASIGNADO: Ing. Enrique Lee Huamani Uriarte")
+    r = p_doc.add_run("DOCENTE ASIGNADO: Ing. Enrique L. Huamani U.")
     r.font.name = FONT_NAME
     r.font.size = Pt(10.5)
     r.font.bold = True
@@ -559,8 +559,8 @@ def build_apf2_master():
     format_apa_table(doc, "Tabla 0.1", "Ficha de Parámetros Institucionales y Control de Proyecto",
                      ["Parámetro Institucional", "Detalle Registrado"], [
         ["Nombre del Proyecto", "Sistema Web Progresivo (PWA) de Gestión de Pedidos y Control de Inventario Multicanal"],
-        ["Empresa Beneficiaria", "LeoFit Confecciones y Diseños Deportivos S.A.C. (RUC: 20608912345)"],
-        ["Ubicación y Entorno Operativo", "Jr. Gamarra 1230, Galería El Rey de Gamarra, La Victoria, Lima, Perú"],
+        ["Empresa Beneficiaria", "LeoFit Confecciones y Diseños Deportivos S.A.C. (RUC: 206089*****)"],
+        ["Ubicación y Entorno Operativo", "Emporio Comercial de Gamarra, La Victoria, Lima, Perú (Dirección exacta reservada)"],
         ["Ciclo Académico y Asignatura", "2026-I — Curso Integrador II: Software (100000S12F) — Grupo 01"],
         ["Versión y Alcance del Documento", "Versión 2.0.0 Oficial Acumulativa (Contiene APF1 íntegro + APF2 desarrollado)"]
     ], note_text="Información administrativa y corporativa registrada en el repositorio oficial de la UTP.")
@@ -749,9 +749,9 @@ def build_apf2_master():
     format_apa_table(doc, "Tabla 1.1", "Ficha de Identificación de la Organización LeoFit Solutions",
                      ["Atributo Empresarial", "Información Corporativa"], [
         ["Razón Social", "LeoFit Confecciones y Diseños Deportivos S.A.C."],
-        ["Número de R.U.C.", "20608912345 (Activo y Habido)"],
+        ["Número de R.U.C.", "206089***** (Activo y Habido)"],
         ["Giro de Negocio", "Fabricación y comercialización mayorista/minorista de indumentaria deportiva técnica."],
-        ["Sede Comercial", "Jr. Gamarra 1230, Galería El Rey de Gamarra, Stand 304, La Victoria, Lima."],
+        ["Sede Comercial", "Emporio Comercial de Gamarra, La Victoria, Lima (Dirección exacta reservada)."],
         ["Taller de Confección", "Av. Isabel La Católica 840, Piso 3, La Victoria, Lima."]
     ], note_text="Datos corporativos validados ante la Superintendencia Nacional de Aduanas y de Administración Tributaria (SUNAT).")
 
@@ -819,8 +819,8 @@ def build_apf2_master():
     format_apa_table(doc, "Tabla 2.1", "Acta de Constitución del Proyecto (Project Charter Ágil)",
                      ["Sección del Project Charter", "Definición Formal y Alcance"], [
         ["Título del Proyecto", "Sistema Web PWA de Gestión de Pedidos y Control de Inventario Multicanal — LeoFit"],
-        ["Patrocinador (Sponsor)", "Víctor Leandro Cárdenas Fernández (Gerente General de LeoFit)"],
-        ["Líder de Proyecto / Scrum Master", "Lady Luz Loayza Rodriguez (Estudiante UTP)"],
+        ["Patrocinador (Sponsor)", "Víctor L. Cárdenas F. (Gerente General de LeoFit)"],
+        ["Líder de Proyecto / Scrum Master", "Lady L. Loayza R. (Estudiante UTP)"],
         ["Propósito y Justificación", "Eliminar los errores y retrasos de la atención manual, garantizando la reserva atómica de stock textil."],
         ["Presupuesto Estimado", "Proyecto académico-empresarial con un costo de hosting cloud estimado en S/ 80 mensuales."],
         ["Supuestos y Restricciones", "Soporte estricto de intermitencia de red y entrega fijada en el calendario de 18 semanas de la UTP."]
@@ -1072,7 +1072,7 @@ def build_apf2_master():
     add_p("• **Capa de Infraestructura (Infrastructure Layer):** Implementación con el driver oficial `pg` de PostgreSQL 16 con transacciones ACID, y fábrica de repositorios (`RepositoryFactory`).")
     insert_apa_figure(doc, "diagrams/11_Arquitectura_C4_Model.png", "Figura 7.1", "Arquitectura de Software basada en Clean Architecture y Modelo C4",
                       note_text="Descomposición jerárquica de contenedores y componentes desacoplados del sistema LeoFit.")
-    insert_apa_figure(doc, "docs/diagramas/D1-end-to-end-http/diagram.png", "Figura 7.2", "Flujo de Comunicación End-to-End HTTP entre PWA, API REST y PostgreSQL",
+    insert_apa_figure(doc, "docs/04_diagramas_arquitectura_y_negocio/D1-end-to-end-http/diagram.png", "Figura 7.2", "Flujo de Comunicación End-to-End HTTP entre PWA, API REST y PostgreSQL",
                       note_text="Diagrama de secuencia del ciclo de petición-respuesta HTTP con validación JWT y pool de conexiones.", width_inches=6.0)
 
     add_h2("7.b. Estructura del Código Fuente")
@@ -1209,7 +1209,7 @@ def build_apf2_master():
     add_p("Implementación transaccional con bloqueo pesimista en `backend/src/infrastructure/repositories/pg.repositories.ts`:")
     add_code_block(doc, "// Creación de orden bajo transacción ACID en PgOrderRepository\nconst client = await this.pool.connect();\ntry {\n  await client.query(`BEGIN ISOLATION LEVEL ${isolationSql[isolationLevel]}`);\n  // 1. Validar y bloquear stock con SELECT FOR UPDATE\n  for (const item of dto.items) {\n    const vRes = await client.query(\n      'SELECT stock, sku FROM product_variants WHERE id = $1 FOR UPDATE', [item.variantId]);\n    if (vRes.rows[0].stock < item.quantity) throw new Error(`Stock insuficiente para SKU ${vRes.rows[0].sku}`);\n  }\n  // 2. Correlativo de orden y cabecera\n  const seqRes = await client.query(\"SELECT nextval('order_number_seq') AS seq\");\n  const orderNumber = `LEO-${dateStr}-${String(seqRes.rows[0].seq).padStart(6, '0')}`;\n  const orderRes = await client.query(\n    `INSERT INTO orders (order_number, client_id, user_id, status, subtotal, shipping_cost, total_amount, payment_method_id)\n     VALUES ($1, $2, $3, 'RECIBIDO', $4, $5, $6, $7) RETURNING id`,\n    [orderNumber, clientId, dto.userId || null, subtotal, dto.shippingCost, totalAmount, paymentMethodId]\n  );\n  // 3. Detalle de orden (el trigger trg_decrement_stock_on_order descuenta el stock atómicamente)\n  for (const item of dto.items) {\n    await client.query(\n      'INSERT INTO order_items (order_id, variant_id, quantity, unit_price, subtotal) VALUES ($1, $2, $3, $4, $5)',\n      [orderId, item.variantId, item.quantity, item.unitPrice, item.unitPrice * item.quantity]\n    );\n  }\n  await client.query('COMMIT');\n  return (await this.findById(orderId)) as Order;\n} catch (e) {\n  await client.query('ROLLBACK');\n  throw e;\n} finally {\n  client.release();\n}")
     
-    insert_apa_figure(doc, "docs/diagramas/tecnico_acid_concurrencia.png", "Figura 8.4", "Verificación de Transaccionalidad ACID y Aislamiento en Operaciones de Pedidos",
+    insert_apa_figure(doc, "docs/04_diagramas_arquitectura_y_negocio/tecnico_acid_concurrencia.png", "Figura 8.4", "Verificación de Transaccionalidad ACID y Aislamiento en Operaciones de Pedidos",
                       note_text="Mecanismo de aislamiento transaccional y bloqueo pesimista contra condiciones de carrera en inventario.")
 
     # =========================================================================
@@ -1247,7 +1247,7 @@ def build_apf2_master():
     add_p("3. **Gestión de Sesiones (JWT):** El servidor emite un token firmado con **HMAC-SHA256** conteniendo `userId`, `email`, `name` y `role`, con expiración de 1 hora. El secreto se inyecta por `JWT_SECRET` y el sistema arroja un error fatal si no existe.")
     add_p("4. **Control de Autorización (RBAC):** El middleware `requireRole(['ADMIN'])` restringe el registro de nuevos operadores y la gestión del catálogo. El rol `OPERATOR` tiene acceso a la toma y consulta de pedidos.")
     
-    insert_apa_figure(doc, "docs/diagramas/tecnico_seguridad_rbac.png", "Figura 9.1", "Modelo de Control de Acceso Basado en Roles (RBAC) y Ciclo de Vida de Tokens JWT",
+    insert_apa_figure(doc, "docs/04_diagramas_arquitectura_y_negocio/tecnico_seguridad_rbac.png", "Figura 9.1", "Modelo de Control de Acceso Basado en Roles (RBAC) y Ciclo de Vida de Tokens JWT",
                       note_text="Flujo de emisión, verificación y control de privilegios RBAC mediante tokens JWT.")
     
     add_callout_box(doc, "AUTENTICACIÓN Y ROLES",
@@ -1342,7 +1342,7 @@ def build_apf2_master():
         ["Consistencia Global", "Monorepo Backend", "47 pruebas ejecutadas", "✅ 47/47 PASSED (100%)"]
     ], note_text="Resultados consolidados de ejecución determinística en el runner Jest v29.")
 
-    insert_apa_figure(doc, "docs/diagramas/tecnico_iso25010_calidad.png", "Figura 10.1", "Modelo de Evaluación de Calidad de Software ISO/IEC 25010 para LeoFit Solutions",
+    insert_apa_figure(doc, "docs/04_diagramas_arquitectura_y_negocio/tecnico_iso25010_calidad.png", "Figura 10.1", "Modelo de Evaluación de Calidad de Software ISO/IEC 25010 para LeoFit Solutions",
                       note_text="Marco de evaluación de las características de calidad: funcionalidad, fiabilidad, rendimiento y mantenibilidad.")
     add_p("**Nota sobre Cobertura:** La cobertura global de líneas en pruebas unitarias es del **56.7%**, concentrándose la totalidad de pruebas transaccionales sobre la implementación en memoria para garantizar ejecuciones determinísticas en los pipelines CI.")
 
@@ -1357,7 +1357,7 @@ def build_apf2_master():
     add_p("2. **Backend API REST:** Desplegado como servicio Web Service nativo de Node.js en **Render Cloud** bajo el plan gratuito de la plataforma.")
     add_p("3. **Base de Datos PostgreSQL 16:** Instancia gestionada `leofit-postgres` aprovisionada en Render Cloud con almacenamiento NVMe y conexión cifrada obligatoria (`sslmode=require`).")
     
-    insert_apa_figure(doc, "docs/diagramas/D7-despliegue/diagram.png", "Figura 11.1", "Topología de Despliegue en la Nube y Conectividad Segura de LeoFit Solutions",
+    insert_apa_figure(doc, "docs/04_diagramas_arquitectura_y_negocio/D7-despliegue/diagram.png", "Figura 11.1", "Topología de Despliegue en la Nube y Conectividad Segura de LeoFit Solutions",
                       note_text="Infraestructura en producción que ilustra la comunicación segura entre GitHub Pages, Render y PostgreSQL gestionado.", width_inches=6.0)
     
     add_p("• **Variables de Entorno Requeridas en Producción:**")
@@ -1442,7 +1442,7 @@ def build_apf2_master():
 
     # Guardar documento Word en la ubicación académica oficial
     paths = [
-        "docs/gestion_academica/entregas/INFORME_FINAL_APF2_LEOFIT.docx"
+        "docs/06_historial_entregas_anteriores_apf1_apf2/INFORME_FINAL_APF2_LEOFIT.docx"
     ]
     for out_path in paths:
         os.makedirs(os.path.dirname(out_path), exist_ok=True)

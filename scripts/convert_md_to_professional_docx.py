@@ -3,7 +3,7 @@
 @file convert_md_to_professional_docx.py
 @description Convertidor profesional de Markdown a Microsoft Word (.docx) para LeoFit
 @project LeoFit Pedidos Sistema (UTP - Curso Integrador II)
-@author Lady Luz Loayza Rodriguez (@LadyyLuz) <168585420+luzylay@users.noreply.github.com>
+@author Lady L. Loayza R. (@LadyyLuz) <security@leofit.pe>
 @copyright (c) 2026 Grupo 01 - UTP. All rights reserved.
 Procesa la sintaxis inline (negritas **, cursivas *, codigo `, formulas $)
 y genera estilos nativos en python-docx sin dejar asteriscos literales.

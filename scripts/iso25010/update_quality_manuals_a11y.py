@@ -182,7 +182,7 @@ def update_manual_file(filepath):
     print(f"[OK] Documento actualizado y guardado: {filepath}")
 
 if __name__ == '__main__':
-    manual_dir = 'docs/gestion_academica/evidencias/iso25010_s10_s11'
+    manual_dir = 'docs/02_calidad_iso25010_semanas_10_11'
     files = [
         'Manual_Calidad_ISO_25000_Leofit_Pedidos_[Ejecutivo_Gerencia_y_ProductOwner].docx',
         'Manual_Calidad_ISO_25000_Leofit_Pedidos_[Completo_Auditoria_y_ComiteTecnico].docx'

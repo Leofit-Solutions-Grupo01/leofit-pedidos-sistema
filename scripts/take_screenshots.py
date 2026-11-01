@@ -3,7 +3,7 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 DIST_DIR = BASE_DIR / "frontend" / "dist"
-ARTIFACT_DIR = Path(r"C:\Users\Loayza\.gemini\antigravity\brain\9bdf6cf8-640a-4f22-9f23-f7cb29eb0e1d")
+ARTIFACT_DIR = BASE_DIR / "docs" / "auditoria_cierre"
 ARTIFACT_DIR.mkdir(parents=True, exist_ok=True)
 
 EDGE_EXE = r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
@@ -13,14 +13,14 @@ html_content = index_file.read_text(encoding="utf-8")
 # 1. Preview Dashboard (Vista Superior Hero y KPIs)
 inject_hero = """<script>
 sessionStorage.setItem('leofit_session', 'token-mock-admin');
-sessionStorage.setItem('leofit_user', JSON.stringify({ id: 1, name: 'Víctor Leandro Cárdenas', email: 'admin@leofit.pe', role: 'ADMIN' }));
+sessionStorage.setItem('leofit_user', JSON.stringify({ id: 1, name: 'Víctor L. Cárdenas F.', email: 'operador.demo@leofit.pe', role: 'ADMIN' }));
 </script>"""
 (DIST_DIR / "preview_hero.html").write_text(html_content.replace("<head>", f"<head>\n{inject_hero}"), encoding="utf-8")
 
 # 2. Preview Performance Charts (Ventas & Caja enfocado al centro)
 inject_charts = """<script>
 sessionStorage.setItem('leofit_session', 'token-mock-admin');
-sessionStorage.setItem('leofit_user', JSON.stringify({ id: 1, name: 'Víctor Leandro Cárdenas', email: 'admin@leofit.pe', role: 'ADMIN' }));
+sessionStorage.setItem('leofit_user', JSON.stringify({ id: 1, name: 'Víctor L. Cárdenas F.', email: 'operador.demo@leofit.pe', role: 'ADMIN' }));
 </script>
 <style>
 /* Ocultar el hero superior para enfocar de inmediato el panel de rendimiento en la captura */
@@ -33,7 +33,7 @@ sessionStorage.setItem('leofit_user', JSON.stringify({ id: 1, name: 'Víctor Lea
 # 3. Preview SLA & Stock (SLA enfocado)
 inject_sla = """<script>
 sessionStorage.setItem('leofit_session', 'token-mock-admin');
-sessionStorage.setItem('leofit_user', JSON.stringify({ id: 1, name: 'Víctor Leandro Cárdenas', email: 'admin@leofit.pe', role: 'ADMIN' }));
+sessionStorage.setItem('leofit_user', JSON.stringify({ id: 1, name: 'Víctor L. Cárdenas F.', email: 'operador.demo@leofit.pe', role: 'ADMIN' }));
 </script>
 <style>
 .space-y-4 > div:nth-child(2) { display: none !important; }

@@ -3,7 +3,7 @@
 @file export_docx_to_pdf_word_com.py
 @description Exportador oficial de DOCX a PDF mediante Microsoft Word COM para LeoFit
 @project LeoFit Pedidos Sistema (UTP - Curso Integrador II)
-@author Lady Luz Loayza Rodriguez (@LadyyLuz) <168585420+luzylay@users.noreply.github.com>
+@author Lady L. Loayza R. (@LadyyLuz) <security@leofit.pe>
 @copyright (c) 2026 Grupo 01 - UTP. All rights reserved.
 Garantiza fidelidad visual, maquetacion editorial, paginacion y renderizado de tablas.
 """

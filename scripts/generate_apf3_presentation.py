@@ -7,7 +7,7 @@ Proyecto LeoFit - Sistema Web PWA de Gestión de Pedidos Multicanal
 import os
 import subprocess
 
-TARGET_MD = os.path.abspath("docs/gestion_academica/presentaciones/APF3_LEOFIT_Presentacion.md")
+TARGET_MD = os.path.abspath("docs/01_entregable_final_apf3/presentacion_sustentacion/APF3_LEOFIT_Presentacion.md")
 
 HEADER_STYLE = """---
 marp: true
@@ -21,7 +21,7 @@ footer: "Grupo 01 | Curso Integrador II: Software (100000S12F) | UTP 2026"
   :root { 
     --primary: #1E3A8A; 
     --primary-dark: #0F172A;
-    --accent: #F59E0B; 
+    --accent: #C2410C; 
     --neutral: #F8FAFC;
     --text-dark: #1F2937;
     --border-color: #E2E8F0;
@@ -234,20 +234,20 @@ SLIDES = [
 
 **Curso:** Curso Integrador II: Software (100000S12F) — Sección 35374 — Ciclo 2026-I  
 **Institución:** Universidad Tecnológica del Perú (UTP)  
-**Organización Beneficiaria:** LeoFit Confecciones y Diseños Deportivos S.A.C. (RUC 20608912345)  
-**Docente Asesor:** Ing. Enrique Lee Huamani Uriarte  
+**Organización Beneficiaria:** LeoFit Confecciones y Diseños Deportivos S.A.C. (RUC 206089*****)  
+**Docente Asesor:** Ing. Enrique L. Huamani U.  
 
 **Equipo de Ingeniería de Software (Grupo 01):**
-* **Lady Luz Loayza Rodriguez** (U22221489) — Scrum Master / DevSecOps Engineer
-* **Víctor Leandro Cárdenas Fernández** (U19217414) — Product Owner / Database Administrator (DBA)
-* **Harley Anthony Roman Delgado** (U21313032) — Frontend Lead / PWA & UI-UX Engineer
-* **Jim Alessandro Dávila Morales** (U18206081) — QA Lead / Backend Node-TypeScript Engineer
-* **Daniel Enrique Rojas Sanchez** (U21214627) — Business Analyst / Cloud DevOps Engineer
+* **Lady L. Loayza R.** (U22****89) — Scrum Master / DevSecOps Engineer
+* **Víctor L. Cárdenas F.** (U19****14) — Product Owner / Database Administrator (DBA)
+* **Harley A. Roman D.** (U21****32) — Frontend Lead / PWA & UI-UX Engineer
+* **Jim A. Dávila M.** (U18****81) — QA Lead / Backend Node-TypeScript Engineer
+* **Daniel E. Rojas S.** (U21****27) — Business Analyst / Cloud DevOps Engineer
 
 <!--
-Expositor: Lady Luz Loayza Rodriguez (Scrum Master)
+Expositor: Lady L. Loayza R. (Scrum Master)
 Tiempo: 45 seg
-Guion: Estimado docente asesor, Ing. Enrique Lee Huamani, y miembros del jurado evaluador, muy buenas tardes. Damos inicio a la sustentación final y cierre integral de nuestro proyecto: el Sistema Web PWA de Gestión y Toma de Pedidos Multicanal para la empresa LeoFit Confecciones y Diseños Deportivos S.A.C., microempresa del Emporio Comercial de Gamarra. Hoy defenderemos la solución completa: desde el diagnóstico del negocio y la arquitectura en capas, hasta el modelo transaccional ACID en PostgreSQL 16, la batería automatizada de 101 pruebas, la interoperabilidad externa, la evaluación formal de usabilidad bajo ISO 25010 y el despliegue de la Versión 2 en la nube.
+Guion: Estimado docente asesor, Ing. Enrique L. Huamani U., y miembros del jurado evaluador, muy buenas tardes. Damos inicio a la sustentación final y cierre integral de nuestro proyecto: el Sistema Web PWA de Gestión y Toma de Pedidos Multicanal para la empresa LeoFit Confecciones y Diseños Deportivos S.A.C., microempresa del Emporio Comercial de Gamarra. Hoy defenderemos la solución completa: desde el diagnóstico del negocio y la arquitectura en capas, hasta el modelo transaccional ACID en PostgreSQL 16, la batería automatizada de 194 pruebas, la interoperabilidad externa, la evaluación formal de usabilidad bajo ISO 25010 y el despliegue de la Versión 2 en la nube.
 -->""",
 
     # -------------------------------------------------------------
@@ -263,14 +263,14 @@ Guion: Estimado docente asesor, Ing. Enrique Lee Huamani, y miembros del jurado 
 | **I. Negocio y Alcance** | Contexto Gamarra, brechas AS-IS vs TO-BE, Lean Canvas y Requerimientos | Daniel Rojas |
 | **II. Arquitectura y Datos** | C4 Nivel 2, Clean Architecture, PostgreSQL 16, ACID y Concurrencia | Víctor Cárdenas |
 | **III. Seguridad OWASP** | JWT fail-fast, RBAC, Bcrypt salt 10, HMAC SHA-256 y defensa en profundidad | Lady Loayza |
-| **IV. Calidad y Pruebas** | Estrategia Shift-Left, 101 tests (Jest + Vitest), cobertura Istanbul y CI/CD | Jim Dávila |
+| **IV. Calidad y Pruebas** | Estrategia Shift-Left, 194 tests (125 Jest + 69 Vitest), cobertura Istanbul y CI/CD | Jim Dávila |
 | **V. Interoperabilidad** | WhatsApp Cloud, Webhooks de pago (Yape/Plin), SUNAT/RENIEC y rótulos QR | Harley Roman |
 | **VI. Usabilidad ISO 25010** | 4 Pilares, 9 tests automáticos, SUS Score 88.5/100 y Core Web Vitals | Harley Roman |
 | **VII. Cloud y Producción** | Topología Cloud V2, K6 (50 VUs), demo en vivo y gobernanza en GitHub | Daniel Rojas |
 | **VIII. Cierre y Defensa** | Conclusiones, limitaciones transparentes, roadmap y preguntas del jurado | Equipo Completo |
 
 <!--
-Expositor: Lady Luz Loayza Rodriguez (Scrum Master)
+Expositor: Lady L. Loayza R. (Scrum Master)
 Tiempo: 30 seg
 Guion: La sustentación está estructurada en ocho ejes técnicos que cubren rigurosamente todas las dimensiones de la ingeniería de software exigidas por la rúbrica universitaria, iniciando con el levantamiento obligatorio de observaciones del APF2.
 -->""",
@@ -292,7 +292,7 @@ Guion: La sustentación está estructurada en ocho ejes técnicos que cubren rig
 * **Dictamen del Equipo:** **100% de Observaciones Subsanadas** de acuerdo a las directrices de la rúbrica oficial.
 
 <!--
-Expositor: Lady Luz Loayza Rodriguez (Scrum Master)
+Expositor: Lady L. Loayza R. (Scrum Master)
 Tiempo: 50 seg
 Guion: En estricto cumplimiento de la consigna evaluativa, iniciamos demostrando el levantamiento del 100% de las observaciones del APF2. Se diseñó la suite automatizada de integración externa con siete escenarios, se condujo la evaluación formal de usabilidad bajo ISO/IEC 25010 alcanzando 88.5 en SUS, se articuló la trazabilidad total entre historias de usuario y pruebas de código, y se actualizó la infraestructura para la Versión 2 desplegada en la nube. Cedo la palabra a Daniel Rojas para exponer el contexto empresarial y los procesos de negocio.
 -->""",
@@ -306,7 +306,7 @@ Guion: En estricto cumplimiento de la consigna evaluativa, iniciamos demostrando
 # Bloque I: Contexto Empresarial, Procesos y Alcance
 ## Diagnóstico en Gamarra, Procesos AS-IS/TO-BE y Modelo de Negocio
 
-**Expositor:** Daniel Enrique Rojas Sanchez
+**Expositor:** Daniel E. Rojas S.
 
 ---
 
@@ -322,10 +322,10 @@ Guion: En estricto cumplimiento de la consigna evaluativa, iniciamos demostrando
 | **Control de Existencias** | Desconocimiento del stock real por variante | Descuento atómico por trigger en PostgreSQL | **Cero Sobreventas** |
 | **Pérdida de Ventas** | 22% por lentitud en responder disponibilidad | Disponibilidad visible en tiempo real en la PWA | **+35% Conversión** |
 
-* **Organización:** LeoFit Confecciones y Diseños Deportivos S.A.C. — Jr. Gamarra 1230, Galería El Rey de Gamarra.
+* **Organización:** LeoFit Confecciones y Diseños Deportivos S.A.C. — Emporio Comercial de Gamarra, La Victoria, Lima (Dirección exacta reservada).
 
 <!--
-Expositor: Daniel Enrique Rojas Sanchez (Analista de Negocio)
+Expositor: Daniel E. Rojas S. (Analista de Negocio)
 Tiempo: 55 seg
 Guion: Saludos cordiales. LeoFit es una microempresa textil ubicada en el Emporio de Gamarra. Históricamente, su operativa dependía exclusivamente de mensajes informales de WhatsApp y apuntes en libreta física. Esto causaba pérdidas críticas: atender un pedido demoraba hasta dos horas, el 14% de despachos salía con errores de talla y perdían el 22% de sus clientes potenciales. Diseñamos LeoFit PWA para transformar este cuello de botella en un proceso digital eficiente, reduciendo el tiempo de toma a 38 segundos y bajando los errores a 0.4%.
 -->""",
@@ -342,7 +342,7 @@ Guion: Saludos cordiales. LeoFit es una microempresa textil ubicada en el Empori
 * **Problemas Críticos:** Verificación manual de anaqueles, envío manual de fotos, riesgo de pago no verificado y flete no calculado.
 
 <!--
-Expositor: Daniel Enrique Rojas Sanchez (Analista de Negocio)
+Expositor: Daniel E. Rojas S. (Analista de Negocio)
 Tiempo: 40 seg
 Guion: En el diagrama BPMN del proceso AS-IS se evidencia la dispersión operativa: cada consulta obligaba al operador a suspender la atención para revisar manualmente los estantes físicos, redactar datos bancarios a mano y cotejar capturas de pantalla de transferencias. La falta de un canal estructurado generaba una alta tasa de fricción y sobreventa.
 -->""",
@@ -359,7 +359,7 @@ Guion: En el diagrama BPMN del proceso AS-IS se evidencia la dispersión operati
 * **Automatización:** Selección de variante con stock en vivo, reserva transaccional, confirmación inmediata y despacho dual (Lima/Provincia).
 
 <!--
-Expositor: Daniel Enrique Rojas Sanchez (Analista de Negocio)
+Expositor: Daniel E. Rojas S. (Analista de Negocio)
 Tiempo: 45 seg
 Guion: El rediseño TO-BE automatiza el flujo de punta a punta. El cliente interactúa con el catálogo PWA, selecciona color y talla con validación en tiempo real; el motor transaccional reserva las existencias atómicamente, y el operador recibe la orden en el panel Kanban para preparación, generando rótulos con código QR y notificación automática de tracking.
 -->""",
@@ -376,7 +376,7 @@ Guion: El rediseño TO-BE automatiza el flujo de punta a punta. El cliente inter
 * **Propuesta de Valor:** Plataforma PWA ultraligera que permite al cliente deportivo autogestionar su pedido en < 2 min con stock garantizado.
 
 <!--
-Expositor: Daniel Enrique Rojas Sanchez (Analista de Negocio)
+Expositor: Daniel E. Rojas S. (Analista de Negocio)
 Tiempo: 40 seg
 Guion: El Lean Canvas sintetiza la viabilidad económica y operativa. Nuestra propuesta de valor se enfoca en la inmediatez: el cliente deportivo compra en menos de dos minutos con garantía de existencias, mientras el administrador centraliza la recaudación, el inventario y la logística de despacho sin depender de memoria humana ni notas manuales.
 -->""",
@@ -401,7 +401,7 @@ Guion: El Lean Canvas sintetiza la viabilidad económica y operativa. Nuestra pr
 * **Gestión de Riesgos:** Matriz 5x5 PMI monitoreando 5 riesgos técnicos y de negocio con planes de mitigación.
 
 <!--
-Expositor: Daniel Enrique Rojas Sanchez (Analista de Negocio)
+Expositor: Daniel E. Rojas S. (Analista de Negocio)
 Tiempo: 45 seg
 Guion: La gobernanza del desarrollo se ejecutó bajo Scrum y Kanban con estrictas políticas de flujo de trabajo: un límite WIP de tres tareas en desarrollo simultáneo, revisión obligatoria de código y verificación automática de pruebas antes de fusionar ramas. Gestionamos proactivamente la matriz de riesgos mitigando desde fallos de concurrencia hasta caídas de servidores. Cedo la palabra a Víctor Cárdenas para sustentar la arquitectura y base de datos.
 -->""",
@@ -425,7 +425,7 @@ Guion: La gobernanza del desarrollo se ejecutó bajo Scrum y Kanban con estricta
 * **Total Auditado:** 18 Requerimientos Funcionales y 10 No Funcionales 100% implementados y verificados.
 
 <!--
-Expositor: Víctor Leandro Cárdenas Fernández (Product Owner / DBA)
+Expositor: Víctor L. Cárdenas F. (Product Owner / DBA)
 Tiempo: 45 seg
 Guion: Saludos cordiales al jurado evaluador. Nuestro alcance formal comprende dieciocho requerimientos funcionales y diez no funcionales. Los funcionales abarcan desde la autenticación segura y el catálogo textil por variantes hasta la conciliación de webhooks y el portal de tracking. Los requerimientos no funcionales garantizan tiempos de respuesta menores a 200 milisegundos, disponibilidad del 99.5% y una arquitectura resiliente.
 -->""",
@@ -439,7 +439,7 @@ Guion: Saludos cordiales al jurado evaluador. Nuestro alcance formal comprende d
 # Bloque II: Arquitectura de Software, Datos y Concurrencia
 ## C4 Model Nivel 2, Clean Architecture, PostgreSQL 16 y Consistencia ACID
 
-**Expositor:** Víctor Leandro Cárdenas Fernández
+**Expositor:** Víctor L. Cárdenas F.
 
 ---
 
@@ -452,7 +452,7 @@ Guion: Saludos cordiales al jurado evaluador. Nuestro alcance formal comprende d
 * **Desacoplamiento:** PWA Frontend (React 19) ↔ REST API (Node 20 / Express) ↔ Managed RDBMS (PostgreSQL 16).
 
 <!--
-Expositor: Víctor Leandro Cárdenas Fernández (Product Owner / DBA)
+Expositor: Víctor L. Cárdenas F. (Product Owner / DBA)
 Tiempo: 45 seg
 Guion: El modelo C4 de contenedores exhibe el desacoplamiento estructural del sistema. En el extremo del cliente, una PWA en React 19 servida globalmente; en la capa intermedia, un backend modular en Node.js y Express estructurado bajo Clean Architecture; y en la capa de persistencia, un clúster gestionado de PostgreSQL 16 comunicado mediante conexiones SSL cifradas sobre el puerto 5432.
 -->""",
@@ -469,7 +469,7 @@ Guion: El modelo C4 de contenedores exhibe el desacoplamiento estructural del si
 * **Inversión de Dependencias (DIP):** Los Casos de Uso dependen de abstracciones (`IOrderRepository`, `IProductRepository`), permitiendo alternar entre repositorios PostgreSQL y adaptadores mock en pruebas sin modificar la lógica de negocio.
 
 <!--
-Expositor: Víctor Leandro Cárdenas Fernández (Product Owner / DBA)
+Expositor: Víctor L. Cárdenas F. (Product Owner / DBA)
 Tiempo: 45 seg
 Guion: Aplicamos Clean Architecture y el principio de inversión de dependencias mediante el patrón Repository Factory. La lógica de negocio reside en casos de uso puros y entidades independientes que consumen interfaces abstractas. Esto nos permite ejecutar pruebas automatizadas instantáneas con repositorios en memoria sin requerir una base de datos activa, mientras en producción inyectamos la implementación nativa con pg pool.
 -->""",
@@ -486,7 +486,7 @@ Guion: Aplicamos Clean Architecture y el principio de inversión de dependencias
 * **Normalización:** 12 tablas en 3FN y BCNF, 2 vistas analíticas (`v_orders_summary`, `v_inventory_status`), 14 índices B-Tree optimizados.
 
 <!--
-Expositor: Víctor Leandro Cárdenas Fernández (Product Owner / DBA)
+Expositor: Víctor L. Cárdenas F. (Product Owner / DBA)
 Tiempo: 50 seg
 Guion: El modelo de datos fue normalizado rigurosamente hasta la Tercera Forma Normal y Forma Normal de Boyce-Codd para erradicar cualquier redundancia o anomalía de actualización. Cuenta con 12 tablas relacionales con restricciones de integridad referencial CASCADE en detalles de pedido y llaves foráneas indexadas con B-Tree para optimizar consultas de alta frecuencia.
 -->""",
@@ -518,7 +518,7 @@ END; $$ LANGUAGE plpgsql;
 * **Nivel de Aislamiento:** Validado mediante pruebas k6 bajo `READ COMMITTED` y `SERIALIZABLE`.
 
 <!--
-Expositor: Víctor Leandro Cárdenas Fernández (Product Owner / DBA)
+Expositor: Víctor L. Cárdenas F. (Product Owner / DBA)
 Tiempo: 60 seg
 Guion: El núcleo de integridad de LeoFit reside en cómo gestionamos la concurrencia. Ante la compra simultánea del último polo deportivo por dos usuarios, el sistema ejecuta SELECT FOR UPDATE bloqueando la fila de la variante a nivel de motor. Adicionalmente, el trigger en base de datos evalúa la condición de existencia antes del insert. Si el stock no alcanza, la transacción aborta con rollback atómico. Nuestro middleware atrapa errores de concurrencia y reintenta con backoff exponencial, garantizando cero sobreventas bajo cualquier condición de estrés.
 -->""",
@@ -536,7 +536,7 @@ Guion: El núcleo de integridad de LeoFit reside en cómo gestionamos la concurr
 * **Auditoría Permanente:** Cada transición registra timestamp, usuario operador y motivo en `order_status_history`.
 
 <!--
-Expositor: Víctor Leandro Cárdenas Fernández (Product Owner / DBA)
+Expositor: Víctor L. Cárdenas F. (Product Owner / DBA)
 Tiempo: 45 seg
 Guion: El diagrama de secuencia expone la atomicidad de la orden: el controlador valida el esquema con Zod, abre una transacción BEGIN, adquiere los bloqueos pesimistas, inserta el encabezado y detalle, descuenta el stock, dispara la notificación y ejecuta COMMIT. La orden avanza a través de una máquina de estados finita auditada en base de datos. Cedo la palabra a Lady Loayza para sustentar la seguridad del sistema.
 -->""",
@@ -550,7 +550,7 @@ Guion: El diagrama de secuencia expone la atomicidad de la orden: el controlador
 # Bloque III: Ciberseguridad y Mitigación OWASP Top 10
 ## Autenticación JWT, RBAC, Criptografía y Defensa en Profundidad
 
-**Expositor:** Lady Luz Loayza Rodriguez
+**Expositor:** Lady L. Loayza R.
 
 ---
 
@@ -568,7 +568,7 @@ Guion: El diagrama de secuencia expone la atomicidad de la orden: el controlador
 * **Protección Perimetral:** Helmet (HSTS, CSP), Rate Limiter en Login (20 req / 15 min), validación Zod y consultas 100% parametrizadas.
 
 <!--
-Expositor: Lady Luz Loayza Rodriguez (Scrum Master / DevSecOps)
+Expositor: Lady L. Loayza R. (Scrum Master / DevSecOps)
 Tiempo: 55 seg
 Guion: En el Bloque III demostramos la ciberseguridad del sistema bajo estándares OWASP Top 10. Implementamos un mecanismo fail-fast que impide que el servidor inicie si las variables criptográficas no están definidas. Las contraseñas se derivan con bcrypt a 10 rondas de salt e incorporamos mitigación de ataques de tiempo generando un hash ficticio si el usuario no existe. Los webhooks de pagos se autentican con HMAC-SHA256 y comparación en tiempo constante contra timing attacks. La base de datos está totalmente blindada contra inyecciones SQL gracias a consultas parametrizadas. Cedo la palabra a Jim Dávila para la calidad funcional.
 -->""",
@@ -580,9 +580,9 @@ Guion: En el Bloque III demostramos la ciberseguridad del sistema bajo estándar
 <!-- _paginate: false -->
 
 # Bloque IV: Aseguramiento de Calidad Funcional (Shift-Left)
-## Pirámide de Pruebas, 101 Tests Automatizados y Cobertura Istanbul
+## Pirámide de Pruebas, 194 Tests Automatizados y Cobertura Istanbul
 
-**Expositor:** Jim Alessandro Dávila Morales
+**Expositor:** Jim A. Dávila M.
 
 ---
 
@@ -595,36 +595,36 @@ Guion: En el Bloque III demostramos la ciberseguridad del sistema bajo estándar
 * **Enfoque de Calidad Temprana:** Prevención de defectos en etapas tempranas mediante validadores tipados estáticos (TypeScript + Zod), pruebas unitarias en memoria, pruebas de integración REST con Supertest y validación en CI/CD.
 
 <!--
-Expositor: Jim Alessandro Dávila Morales (QA Lead / Backend)
+Expositor: Jim A. Dávila M. (QA Lead / Backend)
 Tiempo: 45 seg
 Guion: Saludos cordiales. Adoptamos la filosofía Shift-Left de aseguramiento de calidad, trasladando la detección de fallos hacia las primeras fases del ciclo de vida. Nuestra pirámide de pruebas abarca aserciones unitarias sobre funciones de negocio, pruebas de integración sobre endpoints HTTP reales con Supertest, y suites de interfaz de usuario en el frontend mediante Vitest y Testing Library, ejecutadas ante cada commit.
 -->""",
 
     # -------------------------------------------------------------
-    # SLIDE 17: DESGLOSE DE LAS 101 PRUEBAS
+    # SLIDE 17: DESGLOSE DE LAS 194 PRUEBAS
     # -------------------------------------------------------------
     """<!-- _class: table -->
 
-# Batería de 101 Pruebas Automatizadas Aprobadas (100%)
+# Batería de 194 Pruebas Automatizadas Aprobadas (100%)
 
 | Entorno / Framework | Archivo de Prueba | Casos | Objetivo / Componente Auditado | Resultado |
 | :--- | :--- | :---: | :--- | :---: |
 | **Backend (Jest)** | `orders.test.ts` | 13 | Ciclo de orden, transacciones ACID, paginación y fletes | ✅ 100% PASSED |
-| **Backend (Jest)** | `auth.test.ts` | 8 | Registro, login seguro, bcrypt salt 10 y RBAC tokens | ✅ 100% PASSED |
-| **Backend (Jest)** | `integration_external.test.ts` | 7 | Interoperabilidad WhatsApp, Pasarela y SUNAT/RENIEC | ✅ 100% PASSED |
-| **Backend (Jest)** | `webhook.test.ts` | 5 | Validación criptográfica HMAC-SHA256 y payload | ✅ 100% PASSED |
-| **Backend (Jest)** | `products`, `clients`, `security`, `contract` | 12 | Catálogo, CRM, métricas, cabeceras Helmet y contratos | ✅ 100% PASSED |
-| **Backend (Jest)** | `jwt.test.ts` | 2 | Fail-fast de secretos y neutralización de `alg: none` | ✅ 100% PASSED |
+| **Backend (Jest)** | `auth.test.ts` + `refresh.test.ts` | 24 | Registro, login seguro, bcrypt salt 10, RBAC y rotación JWT | ✅ 100% PASSED |
+| **Backend (Jest)** | `idempotency` + `concurrency` | 14 | Canonical JSON RFC 8785 (JCS), locks atómicos y anti-bypass | ✅ 100% PASSED |
+| **Backend (Jest)** | `invoices.sunat.test.ts` | 23 | Comprobantes electrónicos SUNAT, desglose IGV y series | ✅ 100% PASSED |
+| **Backend (Jest)** | `paymentWebhook` + `webhook.test.ts` | 26 | Hardening HMAC-SHA256, anti-replay, timing-safe y Yape/Plin | ✅ 100% PASSED |
+| **Backend (Jest/ISO)** | `integration`, `products`, `clients`, `security`, `coexistence` | 25 | WhatsApp/RENIEC, catálogo, CRM, Helmet, JWT y coexistencia | ✅ 100% PASSED |
 | **Frontend (Vitest)**| `allTabsFunctional.test.ts` | 12 | Navegación e interacción en todas las pestañas de la PWA | ✅ 100% PASSED |
 | **Frontend (Vitest)**| `usability_iso25010.test.ts`| 9 | Los 4 pilares de usabilidad de la norma ISO 25010 | ✅ 100% PASSED |
-| **Frontend (Vitest)**| `AppContext`, `PedidoForm`, `pdf`, `mappers` | 33 | Estado global, reactividad de tallas, PDF y servicios | ✅ 100% PASSED |
+| **Frontend (Vitest)**| `AppContext`, `mappers`, `api`, `authGuard`, `PedidoForm`, `Charts`, `pdf` | 48 | Estado global (13), mappers (11), API (7), RBAC (6), UI/PDF (11) | ✅ 100% PASSED |
 
-* **Total de Pruebas:** **101 Tests Aprobados (47 Backend + 54 Frontend)** + 1 test de integración condicionada. **0 Fallos**.
+* **Total de Pruebas:** **194 Tests Aprobados (125 Backend + 69 Frontend)** en 27 suites automatizadas. **0 Fallos**.
 
 <!--
-Expositor: Jim Alessandro Dávila Morales (QA Lead / Backend)
+Expositor: Jim A. Dávila M. (QA Lead / Backend)
 Tiempo: 55 seg
-Guion: El corazón de nuestra calidad funcional es esta batería de 101 pruebas automatizadas aprobadas con cero fallos. Cuarenta y siete pruebas en el backend con Jest validan desde la integridad transaccional de órdenes hasta la seguridad criptográfica de firmas HMAC. Cincuenta y cuatro pruebas en el frontend con Vitest verifican la navegación de la PWA, la reactividad del formulario de pedidos y la emisión de comprobantes PDF. No existen aserciones comentadas ni tests falsos.
+Guion: El corazón de nuestra calidad funcional es esta batería de 194 pruebas automatizadas aprobadas con cero fallos. Ciento veinticinco pruebas en el backend con Jest y Supertest validan desde la integridad transaccional de órdenes e idempotencia hasta la seguridad criptográfica de firmas HMAC. Sesenta y nueve pruebas en el frontend con Vitest verifican la navegación de la PWA, la reactividad del formulario de pedidos y la emisión de comprobantes PDF. No existen aserciones comentadas ni tests falsos.
 -->""",
 
     # -------------------------------------------------------------
@@ -639,7 +639,7 @@ Guion: El corazón de nuestra calidad funcional es esta batería de 101 pruebas 
 * **Métricas Globales:** **76.16% de cobertura de líneas** en lógica de negocio del backend y **100% de cobertura** en rutas críticas, validadores de entrada Zod y middlewares criptográficos.
 
 <!--
-Expositor: Jim Alessandro Dávila Morales (QA Lead / Backend)
+Expositor: Jim A. Dávila M. (QA Lead / Backend)
 Tiempo: 40 seg
 Guion: El reporte de Istanbul confirma que superamos los estándares académicos de la industria. Alcanzamos un 76.16% de cobertura general en lógica de negocio y un 100% en las áreas de mayor riesgo operacional: controladores de rutas, esquemas de validación Zod y capas criptográficas. Cedo la palabra a Harley Roman para sustentar la interoperabilidad y usabilidad.
 -->""",
@@ -663,7 +663,7 @@ Guion: El reporte de Istanbul confirma que superamos los estándares académicos
 | **HU-008: Dashboard y Privacidad** | RF-011, RF-017 | `clients_dashboard.test.ts`, `AppContext.test.tsx`| Métricas comerciales y conmutador `<MontoPrivado />` |
 
 <!--
-Expositor: Harley Anthony Roman Delgado (Frontend Lead / PWA)
+Expositor: Harley A. Roman D. (Frontend Lead / PWA)
 Tiempo: 50 seg
 Guion: Saludos cordiales. En esta matriz cruzada demostramos la trazabilidad bidireccional entre la especificación de negocio y el código ejecutable. Cada historia de usuario bajo formato Gherkin está respaldada por suites automatizadas específicas en Jest y Vitest que validan sus criterios de aceptación, desde la reserva de prendas hasta la conciliación de pagos móviles y la generación de rótulos con código QR.
 -->""",
@@ -677,7 +677,7 @@ Guion: Saludos cordiales. En esta matriz cruzada demostramos la trazabilidad bid
 # Bloque V: Interoperabilidad con Servicios Externos
 ## WhatsApp Cloud API, Webhooks de Pago, Padrones SUNAT/RENIEC y Rótulos QR
 
-**Expositor:** Harley Anthony Roman Delgado
+**Expositor:** Harley A. Roman D.
 
 ---
 
@@ -696,7 +696,7 @@ Guion: Saludos cordiales. En esta matriz cruzada demostramos la trazabilidad bid
 *Nota de Transparencia:* Los servicios externos operan con adaptadores simulados de alta fidelidad, listos para enlazar credenciales productivas.
 
 <!--
-Expositor: Harley Anthony Roman Delgado (Frontend Lead / PWA)
+Expositor: Harley A. Roman D. (Frontend Lead / PWA)
 Tiempo: 55 seg
 Guion: La interoperabilidad conecta a LeoFit con el ecosistema digital de comercio. Integramos WhatsApp Cloud para notificar al comprador con su enlace de rastreo; conciliamos transferencias móviles de Yape y Plin mediante webhooks con verificación criptográfica HMAC; y validamos documentos tributarios ante padrones de SUNAT y RENIEC. Con absoluta transparencia técnica: estos servicios operan hoy mediante adaptadores mock de alta fidelidad contractual, lo que permite sustituirlos por credenciales de producción sin alterar una sola línea de lógica de negocio.
 -->""",
@@ -721,7 +721,7 @@ Guion: La interoperabilidad conecta a LeoFit con el ecosistema digital de comerc
 * **Evidencia en Repositorio:** `backend/tests/integration_external.test.ts` (100% aprobadas con Supertest).
 
 <!--
-Expositor: Harley Anthony Roman Delgado (Frontend Lead / PWA)
+Expositor: Harley A. Roman D. (Frontend Lead / PWA)
 Tiempo: 45 seg
 Guion: Esta suite en integration_external.test.ts audita siete escenarios automatizados de interoperabilidad. Validamos no solo los flujos felices de despacho a WhatsApp y conciliación de Yape en menos de 30 milisegundos, sino también los casos de frontera y rechazo: números sin código internacional de país, proveedores no homologados y documentos de identidad malformados.
 -->""",
@@ -735,7 +735,7 @@ Guion: Esta suite en integration_external.test.ts audita siete escenarios automa
 # Bloque VI: Evaluación de Usabilidad bajo ISO/IEC 25010
 ## Los 4 Pilares del Estándar, Suite Automatizada y Estudio de Campo SUS
 
-**Expositor:** Harley Anthony Roman Delgado
+**Expositor:** Harley A. Roman D.
 
 ---
 
@@ -753,7 +753,7 @@ Guion: Esta suite en integration_external.test.ts audita siete escenarios automa
 * **Evidencia en Código:** Suite de 9 pruebas en `frontend/src/__tests__/usability_iso25010.test.ts`.
 
 <!--
-Expositor: Harley Anthony Roman Delgado (Frontend Lead / PWA)
+Expositor: Harley A. Roman D. (Frontend Lead / PWA)
 Tiempo: 50 seg
 Guion: En el Bloque VI demostramos la usabilidad de LeoFit bajo el estándar internacional ISO/IEC 25010 en cuatro subatributos clave: aprendizaje, con una interfaz que no requiere manuales; protección contra errores, impidiendo que el cliente compre prendas agotadas o ingrese datos fiscales erróneos; asistencia al usuario, proporcionando seguimiento sin intermediarios; y compromiso estético, garantizando micro-interacciones fluidas.
 -->""",
@@ -770,7 +770,7 @@ Guion: En el Bloque VI demostramos la usabilidad de LeoFit bajo el estándar int
 * **9 Pruebas en Vitest (`usability_iso25010.test.ts`):** Validan visibilidad de precios, consistencia de variantes, topes de descuento en cupones, restricciones de estado y cálculo matemático exacto del carrito.
 
 <!--
-Expositor: Harley Anthony Roman Delgado (Frontend Lead / PWA)
+Expositor: Harley A. Roman D. (Frontend Lead / PWA)
 Tiempo: 40 seg
 Guion: El User Flow modela el viaje del usuario en siete etapas sin fricción. Automatizamos nueve pruebas en Vitest que certifican estas reglas de usabilidad en tiempo de compilación: verifican que ningún producto carezca de precio visible, que las variantes sigan estándares textiles y que el total a cobrar cuadre al centavo.
 -->""",
@@ -794,7 +794,7 @@ Métricas de Rendimiento Web (Core Web Vitals en Producción):<br>
 </div>
 
 <!--
-Expositor: Harley Anthony Roman Delgado (Frontend Lead / PWA)
+Expositor: Harley A. Roman D. (Frontend Lead / PWA)
 Tiempo: 50 seg
 Guion: Los resultados cuantitativos avalan la efectividad de la solución. Aplicamos el cuestionario formal SUS a diez usuarios representativos obteniendo 88.5 sobre 100, calificación de Grado A excelente. El tiempo de captura de pedidos se redujo drásticamente de 45 minutos a 38.2 segundos, y la tasa de errores cayó al 0.4%. En métricas de rendimiento web de Google, el sistema alcanza un LCP de 1.4 segundos y una estabilidad visual casi perfecta. Cedo la palabra a Daniel Rojas para sustentar el entorno Cloud y la gobernanza.
 -->""",
@@ -808,7 +808,7 @@ Guion: Los resultados cuantitativos avalan la efectividad de la solución. Aplic
 # Bloque VII: Carga Concurrente, Cloud V2 y Demostración
 ## Pruebas k6 (50 VUs), Topología Multi-Cloud, CI/CD y Validación en Vivo
 
-**Expositor:** Daniel Enrique Rojas Sanchez
+**Expositor:** Daniel E. Rojas S.
 
 ---
 
@@ -828,7 +828,7 @@ Guion: Los resultados cuantitativos avalan la efectividad de la solución. Aplic
 * **Conclusión de Carga:** El uso de `SELECT ... FOR UPDATE` y triggers atómicos previene bloqueos destructivos y preserva la integridad del inventario bajo alta concurrencia.
 
 <!--
-Expositor: Daniel Enrique Rojas Sanchez (Analista de Negocio / Cloud DevOps)
+Expositor: Daniel E. Rojas S. (Analista de Negocio / Cloud DevOps)
 Tiempo: 55 seg
 Guion: Para someter a prueba la arquitectura bajo condiciones extremas de demanda, ejecutamos una simulación de carga con k6 durante seis minutos con 50 usuarios virtuales realizando compras simultáneas del mismo stock. Los resultados certifican que la latencia percentil 95 se mantuvo por debajo de 250 milisegundos y, más importante aún, la tasa de sobreventa fue exactamente cero por ciento. El aislamiento transaccional de PostgreSQL garantizó la integridad absoluta del inventario.
 -->""",
@@ -848,7 +848,7 @@ Guion: Para someter a prueba la arquitectura bajo condiciones extremas de demand
   - **Base de Datos:** Instancia gestionada de PostgreSQL 16 con pool de conexiones SSL (puerto 5432).
 
 <!--
-Expositor: Daniel Enrique Rojas Sanchez (Analista de Negocio / Cloud DevOps)
+Expositor: Daniel E. Rojas S. (Analista de Negocio / Cloud DevOps)
 Tiempo: 45 seg
 Guion: La Versión 2 del sistema opera sobre una topología multi-proveedor desacoplada en la nube. El cliente estático se distribuye a través de la red Edge CDN de GitHub Pages con certificados TLS 1.3. Las peticiones REST viajan cifradas hacia el contenedor Docker en Render, el cual mantiene un pool seguro de conexiones SSL hacia la base de datos gestionada en PostgreSQL 16.
 -->""",
@@ -868,7 +868,7 @@ Guion: La Versión 2 del sistema opera sobre una topología multi-proveedor desa
   - `security-scan.yml`: Auditoría automática de vulnerabilidades SAST y dependencias (`npm audit`).
 
 <!--
-Expositor: Daniel Enrique Rojas Sanchez (Analista de Negocio / Cloud DevOps)
+Expositor: Daniel E. Rojas S. (Analista de Negocio / Cloud DevOps)
 Tiempo: 45 seg
 Guion: El ciclo DevOps está completamente automatizado mediante tres pipelines en GitHub Actions: el primero valida las pruebas del backend en Node 20; el segundo compila y publica automáticamente la PWA ante cada push a la rama main; y el tercero audita vulnerabilidades en dependencias mediante escaneos SAST, asegurando que ninguna versión con fallos alcance producción.
 -->""",
@@ -884,7 +884,7 @@ Guion: El ciclo DevOps está completamente automatizado mediante tres pipelines 
 <!-- _class: content -->
 
 ## URL Oficial de la Aplicación (PWA)
-<div style="font-size:20px; padding:10px 16px; background:#F1F5F9; border-left:6px solid #F59E0B; margin:12px 0; word-break:break-all;">
+<div style="font-size:20px; padding:10px 16px; background:#F1F5F9; border-left:6px solid #C2410C; margin:12px 0; word-break:break-all;">
 <b>https://leofit-solutions-grupo01.github.io/leofit-pedidos-sistema/</b>
 </div>
 
@@ -898,7 +898,7 @@ Guion: El ciclo DevOps está completamente automatizado mediante tres pipelines 
   5. Conmutador de privacidad financiera `<MontoPrivado />`.
 
 <!--
-Expositor: Daniel Enrique Rojas Sanchez (Analista de Negocio / Cloud DevOps)
+Expositor: Daniel E. Rojas S. (Analista de Negocio / Cloud DevOps)
 Tiempo: 60 seg
 Guion: Invitamos al jurado a constatar la operatividad en vivo en la URL de producción. El endpoint de salud en Render confirma que el backend y la base de datos están activos. Demostraremos el flujo completo: autenticación del operador, selección de prendas por talla y color, registro de la orden con descuento inmediato de stock, consulta pública por el cliente mediante el portal de tracking y la función de privacidad financiera en el panel de control.
 -->""",
@@ -920,7 +920,7 @@ Guion: Invitamos al jurado a constatar la operatividad en vivo en la URL de prod
 * **Repositorio Oficial:** `https://github.com/Leofit-Solutions-Grupo01/leofit-pedidos-sistema`
 
 <!--
-Expositor: Daniel Enrique Rojas Sanchez (Analista de Negocio / Cloud DevOps)
+Expositor: Daniel E. Rojas S. (Analista de Negocio / Cloud DevOps)
 Tiempo: 40 seg
 Guion: La gobernanza del repositorio refleja más de doscientos sesenta commits estructurados bajo Conventional Commits, con ramas asignadas por cada integrante y un flujo estricto de integración continua. Toda la historia del desarrollo es transparente y verificable en GitHub. Cedo la palabra a Lady Loayza para presentar los aportes del equipo y las conclusiones.
 -->""",
@@ -937,13 +937,13 @@ Guion: La gobernanza del repositorio refleja más de doscientos sesenta commits 
 | **Lady Luz Loayza** | Scrum Master / DevSecOps | Subsanación de observaciones APF2, seguridad OWASP, JWT fail-fast, Bcrypt timing mitigations, edición del libro técnico. |
 | **Víctor Cárdenas** | Product Owner / DBA | Modelado 3FN/BCNF de PostgreSQL 16, transacciones FOR UPDATE, triggers atómicos, `orders.test.ts` (13 tests) y backlog. |
 | **Harley Roman** | Frontend Lead / PWA | UI reactiva en React 19, componentes Tailwind 4, interoperabilidad WhatsApp/Pagos, `usability_iso25010.test.ts`. |
-| **Jim Dávila** | QA Lead / Backend | Arquitectura de 101 pruebas (Jest + Vitest), suite de webhooks HMAC SHA-256, reportes Istanbul y CI/CD pipelines. |
+| **Jim Dávila** | QA Lead / Backend | Arquitectura de 194 pruebas (125 Jest + 69 Vitest), suite de webhooks HMAC SHA-256, reportes Istanbul y CI/CD pipelines. |
 | **Daniel Rojas** | Analista / Cloud DevOps | Diagnóstico AS-IS/TO-BE, matriz de riesgos PMI, k6 workload, topología Render/GitHub Pages y validación cloud. |
 
 <!--
-Expositor: Lady Luz Loayza Rodriguez (Scrum Master)
+Expositor: Lady L. Loayza R. (Scrum Master)
 Tiempo: 45 seg
-Guion: En cumplimiento del criterio de evaluación individual de la rúbrica, detallamos los roles y contribuciones: quien les habla lideró la seguridad DevSecOps y subsanación de observaciones; Víctor diseñó el modelo transaccional y la persistencia de base de datos; Harley construyó la PWA reactiva y la interoperabilidad externa; Jim implementó la suite completa de 101 pruebas automatizadas; y Daniel condujo el análisis de procesos de negocio y el despliegue multi-cloud.
+Guion: En cumplimiento del criterio de evaluación individual de la rúbrica, detallamos los roles y contribuciones: quien les habla lideró la seguridad DevSecOps y subsanación de observaciones; Víctor diseñó el modelo transaccional y la persistencia de base de datos; Harley construyó la PWA reactiva y la interoperabilidad externa; Jim implementó la suite completa de 194 pruebas automatizadas; y Daniel condujo el análisis de procesos de negocio y el despliegue multi-cloud.
 -->""",
 
     # -------------------------------------------------------------
@@ -957,12 +957,12 @@ Guion: En cumplimiento del criterio de evaluación individual de la rúbrica, de
 | :--- | :--- | :--- |
 | **Transformación Digital:** Captura de pedido reducida de 45 min a 38.2 s con 0.4% de error. | **Cold Start en Render Free:** Latencia de ~30-50s tras 15 min de inactividad de la API. | Migración a contenedor dedicado con escalado automático horizontal. |
 | **Integridad Concurrente:** Cero sobreventas mediante triggers y bloqueos FOR UPDATE. | **Offline Basado en Caché:** Caché HTTP estática sin sincronización IndexedDB en prod. | Service Worker con Workbox y Background Sync con IndexedDB. |
-| **Calidad y Confianza:** 101 pruebas automatizadas aprobadas y SUS Score de 88.5/100. | **Proveedores Simulados:** APIs externas operan con mocks contractuales de alta fidelidad. | Conexión directa a pasarela de pagos con cumplimiento PCI-DSS. |
+| **Calidad y Confianza:** 194 pruebas automatizadas aprobadas y SUS Score de 88.5/100. | **Proveedores Simulados:** APIs externas operan con mocks contractuales de alta fidelidad. | Conexión directa a pasarela de pagos con cumplimiento PCI-DSS. |
 
 <!--
-Expositor: Lady Luz Loayza Rodriguez (Scrum Master)
+Expositor: Lady L. Loayza R. (Scrum Master)
 Tiempo: 50 seg
-Guion: En conclusión, LeoFit PWA demuestra que la ingeniería de software aplicada transforma radicalmente la microempresa de Gamarra: digitalizamos la toma de pedidos reduciendo el tiempo en 98%, garantizamos cero sobreventas y alcanzamos un SUS de 88.5 con 101 pruebas aprobadas. Con rigor académico, reconocemos con transparencia nuestras limitaciones: el arranque en frío del plan gratuito de Render, el almacenamiento offline en caché y los adaptadores simulados de pago. Nuestra hoja de ruta hacia la versión 4.0 contempla Service Workers con Background Sync y contenedores dedicados.
+Guion: En conclusión, LeoFit PWA demuestra que la ingeniería de software aplicada transforma radicalmente la microempresa de Gamarra: digitalizamos la toma de pedidos reduciendo el tiempo en 98%, garantizamos cero sobreventas y alcanzamos un SUS de 88.5 con 194 pruebas aprobadas. Con rigor académico, reconocemos con transparencia nuestras limitaciones: el arranque en frío del plan gratuito de Render, el almacenamiento offline en caché y los adaptadores simulados de pago. Nuestra hoja de ruta hacia la versión 4.0 contempla Service Workers con Background Sync y contenedores dedicados.
 -->""",
 
     # -------------------------------------------------------------
@@ -986,7 +986,7 @@ Guion: En conclusión, LeoFit PWA demuestra que la ingeniería de software aplic
 *Equipo de Ingeniería de Software — Grupo 01 | UTP 2026*
 
 <!--
-Expositor: Lady Luz Loayza Rodriguez (Scrum Master)
+Expositor: Lady L. Loayza R. (Scrum Master)
 Tiempo: 20 seg
 Guion: Con esto concluimos la sustentación formal de nuestro proyecto. Agradecemos al docente asesor y al honorable jurado calificador por su atención, y quedamos a su entera disposición para responder a sus preguntas técnicas. A continuación, tenemos preparadas láminas de respaldo técnico para profundizar en cualquier aspecto específico.
 -->""",
@@ -1007,7 +1007,7 @@ Guion: Con esto concluimos la sustentación formal de nuestro proyecto. Agradece
   - Permite evolucionar a microservicios a futuro extrayendo módulos sin reescribir la lógica de dominio.
 
 <!--
-Expositor: Víctor Leandro Cárdenas Fernández (Product Owner / DBA)
+Expositor: Víctor L. Cárdenas F. (Product Owner / DBA)
 Tiempo: Para ronda de preguntas
 Guion: Si el jurado pregunta por qué no usamos microservicios: la respuesta es el principio de proporcionalidad. Para el volumen transaccional de LeoFit, los microservicios hubieran agregado complejidad accidental, latencia de red y riesgo de consistencia eventual en el stock. Un monolito modular con Clean Architecture nos da lo mejor de ambos mundos: transacciones ACID atómicas en una sola base de datos y total desacoplamiento de código para modularizar en el futuro si la demanda lo exige.
 -->""",
@@ -1029,7 +1029,7 @@ Guion: Si el jurado pregunta por qué no usamos microservicios: la respuesta es 
 * **Prueba de Validación:** Certificado con k6 bajo 50 VUs concurrentes con **0% de sobreventa**.
 
 <!--
-Expositor: Víctor Leandro Cárdenas Fernández (Product Owner / DBA)
+Expositor: Víctor L. Cárdenas F. (Product Owner / DBA)
 Tiempo: Para ronda de preguntas
 Guion: Si el jurado pregunta cómo garantizamos que no haya sobreventa: explicamos el doble cinturón de seguridad. Primero, en la aplicación con SELECT FOR UPDATE que serializa el acceso al registro de la prenda; y segundo, en el motor con el trigger fn_decrement_stock que aborta con rollback si el stock resultante fuera negativo. Este comportamiento fue validado empíricamente en la prueba de k6 con 50 usuarios comprando concurrentemente la misma variante.
 -->""",
@@ -1049,7 +1049,7 @@ Guion: Si el jurado pregunta cómo garantizamos que no haya sobreventa: explicam
   - PostgreSQL 16 ofrece soporte nativo para claves foráneas `ON DELETE CASCADE`, tipos de datos monetarios `DECIMAL(10,2)`, enums estrictos e índices B-Tree de alta velocidad.
 
 <!--
-Expositor: Víctor Leandro Cárdenas Fernández (Product Owner / DBA)
+Expositor: Víctor L. Cárdenas F. (Product Owner / DBA)
 Tiempo: Para ronda de preguntas
 Guion: Si el jurado pregunta por qué PostgreSQL y no MongoDB: el dominio de pedidos textiles es intrínsecamente relacional y transaccional. Requerimos integridad referencial estricta, tipos numéricos decimales exactos para dinero y garantías ACID totales. En MongoDB, modelar variantes de producto con inventario independiente requeriría bloqueos manuales en aplicación propensos a errores de sobreventa.
 -->""",
@@ -1069,7 +1069,7 @@ Guion: Si el jurado pregunta por qué PostgreSQL y no MongoDB: el dominio de ped
   - Rechazo explícito del ataque de confusión de algoritmo (`alg: none`) verificado en `jwt.test.ts`.
 
 <!--
-Expositor: Lady Luz Loayza Rodriguez (Scrum Master / DevSecOps)
+Expositor: Lady L. Loayza R. (Scrum Master / DevSecOps)
 Tiempo: Para ronda de preguntas
 Guion: Si el jurado pregunta cómo aseguramos los webhooks y JWT: para los webhooks, recalculamos el digest HMAC-SHA256 y comparamos con timingSafeEqual, evitando timing attacks. Para los JWT, la librería valida la firma simétrica HS256, rechazando tokens manipulados con alg none, y la aplicación cuenta con un mecanismo fail-fast que impide arrancar si las llaves no están configuradas en el entorno.
 -->"""

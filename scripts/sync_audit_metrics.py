@@ -79,7 +79,7 @@ def check_excel_sync(stats):
     avance_ponderado = (sum(fases_avance) / len(fases_avance)) * 100 if fases_avance else 0.0
 
     print("\n--- Estado de Sincronización con el Plan de Auditoría (Excel) ---")
-    print(f"• Archivo              : docs/auditoria_cierre/{EXCEL_PATH.name}")
+    print(f"• Archivo              : docs/03_auditoria_y_cierre_proyecto/{EXCEL_PATH.name}")
     print(f"• Periodo de Auditoría : {periodo}")
     print(f"• Avance Ponderado     : {avance_ponderado:.1f}% (8 de 8 fases completadas)")
     print(f"• Trazabilidad ISO     : Conforme a ISO/IEC/IEEE 29119-3 e ISO/IEC/IEEE 90003:2018")

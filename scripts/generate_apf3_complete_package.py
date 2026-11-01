@@ -9,8 +9,8 @@
              - Integración de figuras generadas con alta resolución, tablas formateadas y fragmentos de código.
              - Exportación automática a DOCX y PDF mediante Microsoft Word COM con actualización de campos.
 @project LeoFit Pedidos Sistema (UTP - Curso Integrador II: Software - 100000S12F)
-@author Grupo 01 - UTP (Lady Luz Loayza Rodriguez, Víctor Leandro Cárdenas Fernández,
-                       Harley Anthony Roman Delgado, Jim Alessandro Dávila Morales, Daniel Enrique Rojas Sanchez)
+@author Grupo 01 - UTP (Lady L. Loayza R., Víctor L. Cárdenas F.,
+                       Harley A. Roman D., Jim A. Dávila M., Daniel E. Rojas S.)
 @copyright (c) 2026 Grupo 01 - UTP. All rights reserved.
 """
 
@@ -45,17 +45,17 @@ def build_preliminares(b):
 
     b.p("INFORME TÉCNICO FINAL DE INGENIERÍA DE SOFTWARE", align="center", size=13, after=50)
 
-    b.p("**Empresa Beneficiaria:** LeoFit Confecciones y Diseños Deportivos S.A.C. (RUC 20608912345)\n"
-        "**Representante Legal:** Víctor Leandro Cárdenas Fernández\n"
-        "**Ubicación:** Jr. Gamarra 1230, Galería El Rey de Gamarra, La Victoria, Lima, Perú\n"
-        "**Docente Asesor:** Ing. Enrique Lee Huamani Uriarte", align="center", size=10, after=40)
+    b.p("**Empresa Beneficiaria:** LeoFit Confecciones y Diseños Deportivos S.A.C. (RUC 206089*****)\n"
+        "**Representante Legal:** Víctor L. Cárdenas F.\n"
+        "**Ubicación:** Emporio Comercial de Gamarra, La Victoria, Lima, Perú (Dirección exacta reservada)\n"
+        "**Docente Asesor:** Ing. Enrique L. Huamani U.", align="center", size=10, after=40)
 
     b.p("**Equipo de Ingeniería y Desarrollo (Grupo 01):**\n"
-        "Lady Luz Loayza Rodriguez (U22221489) — Scrum Master / DevSecOps Engineer\n"
-        "Víctor Leandro Cárdenas Fernández (U19217414) — Product Owner / Database Administrator (DBA)\n"
-        "Harley Anthony Roman Delgado (U21313032) — Frontend Lead / PWA & UI-UX Engineer\n"
-        "Jim Alessandro Dávila Morales (U18206081) — QA Lead / Backend Node-TypeScript Engineer\n"
-        "Daniel Enrique Rojas Sanchez (U21214627) — Business Analyst / Cloud DevOps Engineer",
+        "Lady L. Loayza R. (U22****89) — Scrum Master / DevSecOps Engineer\n"
+        "Víctor L. Cárdenas F. (U19****14) — Product Owner / Database Administrator (DBA)\n"
+        "Harley A. Roman D. (U21****32) — Frontend Lead / PWA & UI-UX Engineer\n"
+        "Jim A. Dávila M. (U18****81) — QA Lead / Backend Node-TypeScript Engineer\n"
+        "Daniel E. Rojas S. (U21****27) — Business Analyst / Cloud DevOps Engineer",
         align="center", size=9.5, after=40)
 
     b.p("Lima, Perú\nOctubre de 2026", align="center", size=11, after=0)
@@ -71,18 +71,18 @@ def build_preliminares(b):
 
     hist_headers = ["Versión", "Fecha", "Hito del Proyecto", "Responsable Principal", "Descripción de Cambios y Aportes Técnicos"]
     hist_rows = [
-        ["1.0", "10/05/2026", "Avance Inicial (APF1)", "Lady Loayza Rodriguez", "Línea base del proyecto: modelado BPMN AS-IS/TO-BE, matriz de requisitos RF/RNF, análisis de riesgos inicial y prototipado conceptual."],
-        ["2.0", "20/07/2026", "Avance Intermedio (APF2)", "Víctor Cárdenas Fernández", "Diseño de base de datos relacional normalizada (3FN/BCNF), Clean Architecture, contratos RESTful v1 y prototipo funcional."],
+        ["1.0", "10/05/2026", "Avance Inicial (APF1)", "Lady L. Loayza R.", "Línea base del proyecto: modelado BPMN AS-IS/TO-BE, matriz de requisitos RF/RNF, análisis de riesgos inicial y prototipado conceptual."],
+        ["2.0", "20/07/2026", "Avance Intermedio (APF2)", "Víctor L. Cárdenas F.", "Diseño de base de datos relacional normalizada (3FN/BCNF), Clean Architecture, contratos RESTful v1 y prototipo funcional."],
         ["3.0", "24/09/2026", "Avance Final (APF3)", "Jim Dávila / Harley Roman", "Implementación completa de API REST v2.0.0, PWA React 19, batería de pruebas automatizadas y despliegue continuo en la nube."],
         ["3.1", "11/10/2026", "Consolidación Editorial APF3", "Equipo Grupo 01", "Consolidación editorial en formato libro, verificación rigurosa de contratos y telemetría de producción en tiempo real."],
-        ["3.2", "22/10/2026", "Edición Definitiva de Cierre", "Equipo Grupo 01", "Ampliación a 187 pruebas automatizadas aprobadas (concurrencia, idempotencia, refresh tokens, authGuard), evaluación de coexistencia ISO/IEC 25010 y articulación con informe de Semanas 10-11."]
+        ["3.2", "22/10/2026", "Edición Definitiva de Cierre", "Equipo Grupo 01", "Ampliación a 194 pruebas automatizadas aprobadas (concurrencia, idempotencia, refresh tokens, authGuard), evaluación de coexistencia ISO/IEC 25010 y articulación con informe de Semanas 10-11."]
     ]
     b.table(hist_headers, hist_rows, "Historial de versiones y revisiones del informe técnico", [1.0, 1.2, 2.0, 2.2, 5.6])
 
     b.sec("Ficha Técnica del Proyecto", annex=False)
     b.p("• **Denominación del Sistema:** LeoFit Pedidos Sistema (Plataforma Web PWA y API REST)\n"
         "• **Organización Patrocinadora:** LeoFit Confecciones y Diseños Deportivos S.A.C.\n"
-        "• **RUC de la Empresa:** 20608912345\n"
+        "• **RUC de la Empresa:** 206089*****\n"
         "• **Sector Productivo:** Manufactura textil y comercialización deportiva en el Emporio Comercial de Gamarra\n"
         "• **Institución Académica:** Universidad Tecnológica del Perú (UTP) — Campus Lima Centro\n"
         "• **Facultad y Programa:** Facultad de Ingeniería de Sistemas e Informática — Ingeniería de Sistemas e Informática\n"
@@ -97,7 +97,7 @@ def build_preliminares(b):
         "por la apertura, el tiempo y la valiosa información operativa compartida durante las sesiones de levantamiento de "
         "procesos en el Emporio Comercial de Gamarra. Su disposición para modernizar sus canales de atención permitió materializar "
         "una solución de ingeniería adaptada a las complejidades reales del comercio textil peruano.")
-    b.p("A la **Universidad Tecnológica del Perú** y a nuestro docente asesor, **Ing. Enrique Lee Huamani Uriarte**, "
+    b.p("A la **Universidad Tecnológica del Perú** y a nuestro docente asesor, **Ing. Enrique L. Huamani U.**, "
         "por su constante exigencia técnica, acompañamiento metodológico y retroalimentación constructiva a lo largo de cada "
         "fase del ciclo de desarrollo de software.")
 
@@ -217,7 +217,7 @@ def build_parte_1(b):
     b.sec("Contexto y Realidad Problemática de la Empresa LeoFit")
     b.p("El Emporio Comercial de Gamarra, ubicado en el distrito de La Victoria en Lima, representa el complejo textil y confeccionista "
         "más relevante del Perú, concentrando a miles de micro y pequeñas empresas que dinamizan la economía nacional. Dentro de este ecosistema "
-        "comercial opera **LeoFit Confecciones y Diseños Deportivos S.A.C.** (RUC 20608912345), una empresa especializada en el diseño, confección "
+        "comercial opera **LeoFit Confecciones y Diseños Deportivos S.A.C.** (RUC 206089*****), una empresa especializada en el diseño, confección "
         "y comercialización de indumentaria deportiva de alto rendimiento, tales como camisetas técnicas, shorts de compresión, joggers deportivos "
         "y accesorios de entrenamiento.")
     b.p("A pesar de la alta demanda de sus productos y del posicionamiento de la marca en redes sociales (principalmente Instagram y Facebook), "
@@ -270,8 +270,8 @@ def build_parte_1(b):
     # CAPÍTULO 2
     b.chapter("Diagnóstico Organizacional y Modelado de Procesos de Negocio")
     b.sec("Perfil Corporativo de LeoFit")
-    b.p("**LeoFit Confecciones y Diseños Deportivos S.A.C.** es una empresa peruana constituida formalmente con RUC 20608912345, con sede de operaciones "
-        "en el Jr. Gamarra 1230, Galería El Rey de Gamarra, en el distrito de La Victoria, Lima. Su modelo de negocio combina la fabricación propia de prendas "
+    b.p("**LeoFit Confecciones y Diseños Deportivos S.A.C.** es una empresa peruana constituida formalmente con RUC 206089*****, con sede de operaciones "
+        "en el Emporio Comercial de Gamarra, en el distrito de La Victoria, Lima (Dirección exacta reservada). Su modelo de negocio combina la fabricación propia de prendas "
         "deportivas con la comercialización minorista y mayorista a nivel nacional.")
     b.p("La empresa se caracteriza por la innovación en telas tecnológicas (dry-fit, elastano y microfibra transpirable) adaptadas a la anatomía "
         "y exigencias de atletas y entusiastas del fitness en el mercado peruano. Sin embargo, su infraestructura digital no había evolucionado "
@@ -280,7 +280,7 @@ def build_parte_1(b):
     b.sec("Proceso Operativo Actual (BPMN AS-IS)")
     b.p("El análisis del flujo de trabajo inicial reveló un proceso fragmentado, vulnerable a errores humanos y altamente demandante de tiempo manual. "
         "En la Figura 1 se detalla el modelado BPMN del estado AS-IS:")
-    b.fig("docs/diagramas/01_BPMN_AS-IS.png", "Diagrama BPMN del Proceso Operativo Actual (AS-IS) de LeoFit", width_cm=16.0)
+    b.fig("docs/04_diagramas_arquitectura_y_negocio/01_BPMN_AS-IS.png", "Diagrama BPMN del Proceso Operativo Actual (AS-IS) de LeoFit", width_cm=16.0)
     b.p("Las principales deficiencias observadas en este flujo incluyen:")
     b.numbered([
         "**Consulta asíncrona de disponibilidad:** Cuando un cliente consultaba por una camiseta en talla M y color negro, el vendedor debía trasladarse físicamente al anaquel o consultar al taller de costura, tardando entre 10 y 25 minutos en responder.",
@@ -291,7 +291,7 @@ def build_parte_1(b):
     b.sec("Proceso Optimizado Propuesto (BPMN TO-BE)")
     b.p("El proceso rediseñado TO-BE aprovecha la arquitectura digital de LeoFit para transformar una cadena manual en un flujo continuo, "
         "sincronizado y automatizado, tal como se ilustra en la Figura 2:")
-    b.fig("docs/diagramas/01_BPMN_TO-BE.png", "Diagrama BPMN del Proceso Optimizado Propuesto (TO-BE) de LeoFit", width_cm=16.0)
+    b.fig("docs/04_diagramas_arquitectura_y_negocio/01_BPMN_TO-BE.png", "Diagrama BPMN del Proceso Optimizado Propuesto (TO-BE) de LeoFit", width_cm=16.0)
     b.p("En el nuevo modelo:")
     b.bullets([
         "El cliente o el operador interactúa con una Progressive Web App que consulta en tiempo real el stock real por variante desde la base de datos.",
@@ -302,7 +302,7 @@ def build_parte_1(b):
 
     b.sec("Modelo de Negocio Lean Canvas")
     b.p("Para alinear la solución tecnológica con la sostenibilidad comercial de la empresa, se estructuró el lienzo Lean Canvas expuesto en la Figura 3:")
-    b.fig("docs/diagramas/06_Lean_Canvas.png", "Lienzo Lean Canvas del Sistema LeoFit Pedidos", width_cm=16.0)
+    b.fig("docs/04_diagramas_arquitectura_y_negocio/06_Lean_Canvas.png", "Lienzo Lean Canvas del Sistema LeoFit Pedidos", width_cm=16.0)
     b.p("Los elementos clave del modelo de negocio comprenden:")
     b.bullets([
         "**Propuesta de Valor Única:** Plataforma web ultraligera que permite al cliente configurar su pedido deportivo en menos de 2 minutos con validación de stock en tiempo real y seguimiento transparente, brindando al comerciante control centralizado de inventario y despacho inmediato.",
@@ -359,7 +359,7 @@ def build_parte_1(b):
     b.sec("Gestión del Flujo de Trabajo mediante Tablero Kanban")
     b.p("Para controlar el flujo de desarrollo continuo y evitar la sobrecarga de tareas concurrentes, se operó un tablero Kanban "
         "con límites estrictos de Trabajo en Progreso (WIP Limits), como se ilustra en la Figura 4:")
-    b.fig("docs/diagramas/08_Tablero_Kanban.png", "Tablero Kanban de Flujo de Trabajo con Límites WIP", width_cm=16.0)
+    b.fig("docs/04_diagramas_arquitectura_y_negocio/08_Tablero_Kanban.png", "Tablero Kanban de Flujo de Trabajo con Límites WIP", width_cm=16.0)
     b.p("El tablero operó bajo cinco estados estandarizados: *Backlog* (sin límite), *To Do* (límite 8), *In Progress* (límite 4), "
         "*Code Review / QA* (límite 3) y *Done* (sujeto a la Definición de Terminado o DoD). Cada incremento de código requirió la aprobación "
         "de pruebas automáticas y revisión por pares (*pull request review*) antes de su integración a la rama principal.")
@@ -451,7 +451,7 @@ def build_parte_2(b):
         ["OE-2", "RF-03, RF-04, RF-06", "RNF-01, RNF-07, RNF-09", "`pg.repositories.ts`, `schemas.ts`", "`orders.test.ts`, `products.test.ts`"],
         ["OE-3", "RF-02, RF-07, RF-09", "RNF-02, RNF-10", "`ProductosGestion.tsx`, `RastreoPublico.tsx`", "`allTabsFunctional.test.tsx`, `AppContext.test.tsx`"],
         ["OE-4", "RF-01, RF-04", "RNF-04, RNF-08", "`external.controller.ts`, `auth.middleware.ts`", "`webhook.test.ts`, `integration_external.test.ts`"],
-        ["OE-5", "Todos los RF", "Todos los RNF", "Suite completa Jest + Vitest + GitHub Actions", "101 pruebas automáticas (47 BE + 54 FE)"]
+        ["OE-5", "Todos los RF", "Todos los RNF", "Suite completa Jest + Vitest + GitHub Actions", "194 pruebas automáticas (125 BE + 69 FE)"]
     ]
     b.table(rtm_headers, rtm_rows, "Matriz de Trazabilidad de Requisitos (RTM)", [1.2, 2.2, 2.2, 3.2, 3.2])
 
@@ -476,12 +476,12 @@ def build_parte_2(b):
         "para completar una orden, maximizar el tamaño de los elementos táctiles interactivos (mínimo 44x44 píxeles según las guías de Apple y Google) "
         "y proporcionar retroalimentación visual inmediata ante cualquier acción del operador.")
     b.p("En la Figura 5 se detalla el diagrama de flujo de navegación e interacción del sistema:")
-    b.fig("docs/diagramas/10_User_Flow_Navegacion.png", "Diagrama de Flujo de Navegación e Interacción del Sistema (User Flow)", width_cm=16.0)
+    b.fig("docs/04_diagramas_arquitectura_y_negocio/10_User_Flow_Navegacion.png", "Diagrama de Flujo de Navegación e Interacción del Sistema (User Flow)", width_cm=16.0)
 
     b.sec("Prototipado y Wireframes de Baja Fidelidad")
     b.p("La conceptualización inicial de la interfaz se desarrolló mediante bocetos y wireframes de baja fidelidad que validaron la disposición "
         "estructural de los componentes antes de escribir código frontend, tal como se muestra en la Figura 6:")
-    b.fig("docs/diagramas/09_Wireframes_Baja_Fidelidad.png", "Wireframes de Baja Fidelidad de los Módulos Principales", width_cm=16.0)
+    b.fig("docs/04_diagramas_arquitectura_y_negocio/09_Wireframes_Baja_Fidelidad.png", "Wireframes de Baja Fidelidad de los Módulos Principales", width_cm=16.0)
 
     b.sec("Evaluación Heurística de Jakob Nielsen (10 Heurísticas)")
     b.p("El diseño final de la PWA fue sometido a una auditoría técnica contra las 10 Heurísticas de Usabilidad de Jakob Nielsen, "
@@ -501,8 +501,8 @@ def build_parte_2(b):
 
     b.sec("Evidencia Visual de la Interfaz Implementada")
     b.p("Las Figuras 7 y 8 evidencian la materialización del sistema en producción, reflejando el módulo de inicio de sesión y el panel de control operativo:")
-    b.fig("docs/auditoria_cierre/fig_1_auth.png", "Interfaz del Módulo de Autenticación y Control de Acceso (PWA)", width_cm=14.0)
-    b.fig("docs/auditoria_cierre/fig_4_pwa.png", "Panel de Control Operativo (Dashboard PWA) en Dispositivo Móvil", width_cm=14.0)
+    b.fig("docs/03_auditoria_y_cierre_proyecto/fig_1_auth.png", "Interfaz del Módulo de Autenticación y Control de Acceso (PWA)", width_cm=14.0)
+    b.fig("docs/03_auditoria_y_cierre_proyecto/fig_4_pwa.png", "Panel de Control Operativo (Dashboard PWA) en Dispositivo Móvil", width_cm=14.0)
 
     b.sec("Accesibilidad Universal (WCAG 2.1 Nivel AA) y Modo Alta Legibilidad")
     b.p("Para asegurar la inclusión y la operatividad en condiciones de iluminación complejas (talleres con luz artificial tenue o mostradores "
@@ -528,7 +528,7 @@ def build_parte_3(b):
         "estableciendo una estricta regla de dependencia unidireccional: las capas internas (dominio y casos de uso) no conocen en absoluto "
         "los detalles de implementación de las capas externas (marcos de trabajo, base de datos o controladores web).")
     b.p("En la Figura 9 se ilustra la arquitectura lógica global de tres capas que gobierna el sistema:")
-    b.fig("docs/diagramas/apf3/fig_arquitectura_logica.png", "Arquitectura Lógica del Sistema LeoFit (Presentación, Aplicación y Datos)", width_cm=16.0)
+    b.fig("docs/04_diagramas_arquitectura_y_negocio/apf3/fig_arquitectura_logica.png", "Arquitectura Lógica del Sistema LeoFit (Presentación, Aplicación y Datos)", width_cm=16.0)
     b.p("La estructura de capas se organiza de la siguiente manera:")
     b.bullets([
         "**Capa de Dominio (`domain/`):** Contiene las entidades inmutables (`models.ts`) y las interfaces contractuales de los repositorios (`interfaces.ts`). No depende de bibliotecas externas ni de librerías de persistencia.",
@@ -540,7 +540,7 @@ def build_parte_3(b):
     b.p("Para desacoplar el código de negocio del motor de base de datos específico y permitir pruebas automatizadas sin dependencias "
         "externas obligatorias, se aplicó el patrón **Repository** complementado por una fábrica abstracta (**RepositoryFactory**), "
         "como se representa en la Figura 10:")
-    b.fig("docs/diagramas/apf3/fig_repositorio_factory.png", "Patrón Repository y RepositoryFactory para Desacoplamiento de Persistencia", width_cm=15.0)
+    b.fig("docs/04_diagramas_arquitectura_y_negocio/apf3/fig_repositorio_factory.png", "Patrón Repository y RepositoryFactory para Desacoplamiento de Persistencia", width_cm=15.0)
     b.p("La fábrica evalúa dinámicamente la configuración del entorno:")
     b.code("// backend/src/infrastructure/repositories/factory.ts\n"
            "export class RepositoryFactory {\n"
@@ -583,7 +583,7 @@ def build_parte_3(b):
         "cumplen con que $X$ es una superclave o la dependencia es trivial. Por ejemplo, la entidad `product_variants` aísla las combinaciones de talla y color "
         "del producto matriz, evitando la redundancia de precios y descripciones.")
     b.p("En la Figura 11 se presenta el diagrama físico completo de la base de datos:")
-    b.fig("docs/diagramas/13_Modelo_Fisico_BD.png", "Diagrama Físico de Base de Datos Relacional (PostgreSQL 16 - 12 Tablas y Vistas)", width_cm=16.0)
+    b.fig("docs/04_diagramas_arquitectura_y_negocio/13_Modelo_Fisico_BD.png", "Diagrama Físico de Base de Datos Relacional (PostgreSQL 16 - 12 Tablas y Vistas)", width_cm=16.0)
 
     b.sec("Diccionario de Datos y Estructura de Tablas")
     b.p("El esquema comprende 12 tablas relacionales, 2 vistas de consulta optimizada, 2 tipos enumerados (`user_role_enum`, `order_status_enum`), "
@@ -628,7 +628,7 @@ def build_parte_3(b):
 
     b.sec("Control de Concurrencia Transaccional y Prevención de Deadlocks")
     b.p("En la Figura 12 se representa la secuencia técnica de ejecución durante la creación de una orden:")
-    b.fig("docs/diagramas/apf3/fig_secuencia_pedido.png", "Diagrama de Secuencia de Creación Atómica de Pedido", width_cm=16.0)
+    b.fig("docs/04_diagramas_arquitectura_y_negocio/apf3/fig_secuencia_pedido.png", "Diagrama de Secuencia de Creación Atómica de Pedido", width_cm=16.0)
     b.p("El repositorio `PgOrderRepository` opera bajo un bloque transaccional con adquisición pesimista de filas:")
     b.numbered([
         "Se inicia la transacción con `BEGIN` bajo nivel de aislamiento `READ COMMITTED`.",
@@ -640,7 +640,7 @@ def build_parte_3(b):
 
     b.sec("Máquina de Estados de la Orden")
     b.p("Cada pedido transita por una máquina de estados estrictamente secuencial, gobernada por el tipo `order_status_enum` e ilustrada en la Figura 13:")
-    b.fig("docs/diagramas/apf3/fig_estados_pedido.png", "Máquina de Estados del Pedido y Transiciones Autorizadas", width_cm=16.0)
+    b.fig("docs/04_diagramas_arquitectura_y_negocio/apf3/fig_estados_pedido.png", "Máquina de Estados del Pedido y Transiciones Autorizadas", width_cm=16.0)
     b.p("Las transiciones permitidas son:")
     b.bullets([
         "`RECIBIDO` $\\rightarrow$ `PREPARACION`: El personal inicia el armado del paquete en almacén.",
@@ -720,8 +720,8 @@ def build_parte_3(b):
         "color de tema cian (`#06B6D4`) y modo de visualización `standalone`. Esto permite que los operadores instalen LeoFit en sus teléfonos móviles "
         "Android e iOS como una aplicación nativa, ejecutándose sin barra de direcciones del navegador y con acceso directo desde la pantalla de inicio.")
     b.p("Las Figuras 14 y 15 muestran las pantallas de administración de pedidos y rastreo público:")
-    b.fig("docs/auditoria_cierre/fig_10_crm.png", "Módulo de Gestión Centralizada de Pedidos y Cambio de Estados", width_cm=14.0)
-    b.fig("docs/auditoria_cierre/fig_analytics.png", "Portal Público de Consulta y Trazabilidad de Pedidos para Clientes", width_cm=14.0)
+    b.fig("docs/03_auditoria_y_cierre_proyecto/fig_10_crm.png", "Módulo de Gestión Centralizada de Pedidos y Cambio de Estados", width_cm=14.0)
+    b.fig("docs/03_auditoria_y_cierre_proyecto/fig_analytics.png", "Portal Público de Consulta y Trazabilidad de Pedidos para Clientes", width_cm=14.0)
 
     # CAPÍTULO 10
     b.chapter("Seguridad Integral, Criptografía y Control de Acceso")
@@ -782,7 +782,7 @@ def build_parte_3(b):
 def build_parte_4(b):
     b.part("PARTE IV: VERIFICACIÓN, VALIDACIÓN Y ASEGURAMIENTO DE LA CALIDAD",
            "Esta cuarta parte expone la estrategia integral de pruebas automatizadas, "
-           "los resultados de las 187 pruebas aprobadas en backend y frontend, el análisis de cobertura "
+           "los resultados de las 194 pruebas aprobadas en backend y frontend, el análisis de cobertura "
            "de código, las pruebas de interoperabilidad y coexistencia, y la evaluación de usabilidad bajo ISO/IEC 25010.")
 
     # CAPÍTULO 11
@@ -791,11 +791,11 @@ def build_parte_4(b):
     b.p("El aseguramiento de la calidad se fundamentó en una **Pirámide de Pruebas** equilibrada, priorizando pruebas unitarias rápidas "
         "y pruebas de integración de API sobre interfaces simuladas, complementadas con pruebas automatizadas de componentes y usabilidad "
         "en el cliente. En la Figura 16 se representa la distribución en niveles de la estrategia:")
-    b.fig("docs/diagramas/apf3/fig_estrategia_pruebas.png", "Pirámide y Estrategia de Pruebas en Niveles del Sistema LeoFit", width_cm=15.0)
+    b.fig("docs/04_diagramas_arquitectura_y_negocio/apf3/fig_estrategia_pruebas.png", "Pirámide y Estrategia de Pruebas en Niveles del Sistema LeoFit", width_cm=15.0)
 
     b.sec("Batería de Pruebas Automatizadas del Backend (Jest y Supertest)")
     b.p("En el backend se implementaron **16 suites de prueba en Jest**, ejecutando peticiones HTTP reales contra la aplicación Express "
-        "mediante la biblioteca **Supertest**. La totalidad de los **121 casos de prueba ejecutables resultaron aprobados** (100% de éxito), "
+        "mediante la biblioteca **Supertest**. La totalidad de los **125 casos de prueba ejecutables resultaron aprobados** (100% de éxito), "
         "adicionalmente a 1 caso de integración física condicionada a base de datos PostgreSQL real (`integration_repositories.test.ts`), "
         "como se detalla en la Tabla 10:")
 
@@ -818,7 +818,7 @@ def build_parte_4(b):
         ["`jwt.test.ts`", "2", "2 PASSED", "Fail-fast ante JWT_SECRET faltante y rechazo de algoritmo nulo `none`."],
         ["`integration_repositories.test.ts`", "1", "1 SKIPPED", "Condicionado por variable `RUN_INTEGRATION_TESTS` para PG real."]
     ]
-    b.table(be_headers, be_rows, "Resultados de la Batería de Pruebas Backend (Jest - 121 Aprobadas, 1 Omitida)", [2.8, 0.8, 1.4, 6.0])
+    b.table(be_headers, be_rows, "Resultados de la Batería de Pruebas Backend (Jest/ISO - 125 Aprobadas, 1 Omitida)", [2.8, 0.8, 1.4, 6.0])
 
     b.sec("Batería de Pruebas Automatizadas del Frontend (Vitest y Testing Library)")
     b.p("En el frontend se implementaron **9 suites de prueba en Vitest** con entorno simulado de navegador (**jsdom**) "
@@ -837,13 +837,13 @@ def build_parte_4(b):
         ["`PedidoForm.test.tsx`", "3", "3 PASSED", "Cálculo reactivo de fletes, validación de teléfono y selección de prendas."],
         ["`pdfGenerator.test.ts`", "1", "1 PASSED", "Construcción correcta de estructura de comprobante y rótulo en jsPDF."]
     ]
-    b.table(fe_headers, fe_rows, "Resultados de la Batería de Pruebas Frontend (Vitest - 66 Aprobadas)", [2.8, 0.8, 1.4, 6.0])
+    b.table(fe_headers, fe_rows, "Resultados de la Batería de Pruebas Frontend (Vitest - 69 Aprobadas)", [2.8, 0.8, 1.4, 6.0])
 
     b.p("La Figura 17 resume comparativamente el volumen de pruebas exitosas por cada suite en ambas capas:")
-    b.fig("docs/diagramas/apf3/fig_pruebas_por_suite.png", "Distribución de Casos de Prueba Aprobados por Suite (Backend y Frontend)", width_cm=16.0)
+    b.fig("docs/04_diagramas_arquitectura_y_negocio/apf3/fig_pruebas_por_suite.png", "Distribución de Casos de Prueba Aprobados por Suite (Backend y Frontend)", width_cm=16.0)
 
     b.sec("Balance Global de Pruebas y Cobertura de Código")
-    b.p("En conjunto, el sistema acumula **187 casos de prueba automatizados aprobados** y 1 caso omitido condicionalmente. "
+    b.p("En conjunto, el sistema acumula **194 casos de prueba automatizados aprobados** y 1 caso omitido condicionalmente. "
         "La ejecución integral reportó cero errores (`0 failures`) y cero advertencias críticas.")
     b.p("El análisis riguroso de cobertura de código en el backend arrojó los siguientes resultados verificados:")
     b.bullets([
@@ -853,7 +853,7 @@ def build_parte_4(b):
         "**Módulos con Alta Cobertura:** Middlewares de seguridad (80.85% de líneas), Repositorios en memoria (74.88% de líneas) y Controladores de aplicación (65.02% de líneas)."
     ])
     b.p("En la Figura 18 se detalla visualmente la cobertura de líneas por módulo:")
-    b.fig("docs/diagramas/apf3/fig_cobertura_modulos.png", "Porcentaje de Cobertura de Líneas por Módulo en el Backend", width_cm=15.0)
+    b.fig("docs/04_diagramas_arquitectura_y_negocio/apf3/fig_cobertura_modulos.png", "Porcentaje de Cobertura de Líneas por Módulo en el Backend", width_cm=15.0)
 
     # CAPÍTULO 12
     b.chapter("Interoperabilidad y Pruebas de Integración con Servicios Externos")
@@ -968,7 +968,7 @@ def build_parte_5(b):
     b.sec("Topología de Despliegue en Producción")
     b.p("El sistema LeoFit se encuentra desplegado y operativo bajo un esquema cloud multi-proveedor diseñado para maximizar "
         "la disponibilidad, minimizar los costos operativos y garantizar la seguridad perimetral. En la Figura 19 se detalla la topología:")
-    b.fig("docs/diagramas/apf3/fig_despliegue.png", "Topología de Despliegue en Producción (GitHub Pages + Render Cloud)", width_cm=16.0)
+    b.fig("docs/04_diagramas_arquitectura_y_negocio/apf3/fig_despliegue.png", "Topología de Despliegue en Producción (GitHub Pages + Render Cloud)", width_cm=16.0)
     b.p("La infraestructura productiva se compone de tres piezas fundamentales:")
     b.numbered([
         "**Cliente Frontend (PWA):** Alojado en **GitHub Pages** sobre una red global de distribución de contenido (CDN). Se compila mediante GitHub Actions y se sirve bajo HTTPS en la URL `https://leofit-solutions-grupo01.github.io/leofit-pedidos-sistema/`. El soporte para rutas directas en la Single Page Application (SPA) se resuelve mediante el script `404.html` que redirige el tráfico a `index.html` con preservación de parámetros.",
@@ -981,7 +981,7 @@ def build_parte_5(b):
 
     b.sec("Pipelines de Integración y Despliegue Continuos (CI/CD)")
     b.p("El ciclo de vida del código se gestiona a través de flujos de trabajo automatizados en **GitHub Actions**, representados en la Figura 20:")
-    b.fig("docs/diagramas/apf3/fig_cicd.png", "Flujo de Integración y Despliegue Continuos en GitHub Actions", width_cm=16.0)
+    b.fig("docs/04_diagramas_arquitectura_y_negocio/apf3/fig_cicd.png", "Flujo de Integración y Despliegue Continuos en GitHub Actions", width_cm=16.0)
     b.p("Los flujos de trabajo configurados comprenden:")
     b.bullets([
         "**`deploy.yml`:** Se activa ante cada *push* a la rama `main`. Configura Node 22, instala dependencias, compila el frontend con `npm run build` inyectando la variable `VITE_API_URL`, y publica los artefactos en la rama `gh-pages` con el archivo `.nojekyll`.",
@@ -1033,7 +1033,7 @@ def build_parte_5(b):
     b.sec("Metodología y Matriz de Riesgos (5x5)")
     b.p("La gestión de riesgos se abordó de manera proactiva desde el inicio del proyecto, catalogando los eventos adversos potenciales "
         "en función de su Probabilidad (escala de 1 a 5) e Impacto (escala de 1 a 5). En la Figura 21 se presenta el mapa de calor resultante:")
-    b.fig("docs/diagramas/02_Mapa_Riesgos.png", "Matriz de Gestión de Riesgos (5x5) y Mapa de Calor del Proyecto LeoFit", width_cm=16.0)
+    b.fig("docs/04_diagramas_arquitectura_y_negocio/02_Mapa_Riesgos.png", "Matriz de Gestión de Riesgos (5x5) y Mapa de Calor del Proyecto LeoFit", width_cm=16.0)
 
     b.sec("Catálogo de los 8 Riesgos y Planes de Tratamiento (R1 a R8)")
     b.p("La Tabla 12 detalla los ocho riesgos gestionados, su severidad inicial, las estrategias de mitigación implementadas y el estado actual:")
@@ -1065,7 +1065,7 @@ def build_parte_6(b):
     b.bullets([
         "**Hito APF1 (Mayo 2026):** Se estableció el diagnóstico inicial de la empresa, el levantamiento de procesos manuales mediante BPMN AS-IS, la definición del alcance preliminar y la formulación del catálogo de requisitos. Se diseñó el prototipo conceptual en wireframes y se obtuvo una calificación destacada de 18/20.",
         "**Hito APF2 (Julio 2026):** Se estructuró el modelo de base de datos relacional normalizado en 3FN/BCNF, se implementaron los contratos RESTful iniciales y se adoptó la Arquitectura Limpia para desacoplar el dominio de la infraestructura.",
-        "**Hito APF3 (Octubre 2026):** Se culminó la implementación integral de la PWA en React 19, se construyó la API REST v2.0.0, se incorporó el bloqueo transaccional concurrente, se desarrolló la batería de 101 pruebas automáticas y se desplegó la solución en producción cloud."
+        "**Hito APF3 (Octubre 2026):** Se culminó la implementación integral de la PWA en React 19, se construyó la API REST v2.0.0, se incorporó el bloqueo transaccional concurrente, se desarrolló la batería de 194 pruebas automáticas y se desplegó la solución en producción cloud."
     ])
 
     b.sec("Resoluciones Técnicas de Alto Impacto")
@@ -1083,7 +1083,7 @@ def build_parte_6(b):
     b.numbered([
         "**Transformación Digital Integral y Medible:** Se demostró que la adopción de una Progressive Web App reactiva erradica los cuellos de botella del comercio informal en Gamarra, reduciendo el tiempo de atención por cliente de 45-120 minutos a menos de 40 segundos y eliminando el 100% de sobreventas por falta de visibilidad en existencias.",
         "**Rigor Arquitectónico y Estabilidad Transaccional:** La aplicación estricta de Clean Architecture, la normalización de base de datos hasta BCNF y los bloqueos pesimistas en PostgreSQL 16 garantizan la consistencia absoluta de los datos, demostrando que sistemas de alto rendimiento pueden operar eficientemente sobre infraestructura cloud moderna.",
-        "**Cultura de Calidad Basada en Pruebas Automatizadas:** La implementación de una batería de 101 pruebas automatizadas (Jest y Vitest) con más del 76% de cobertura de líneas en componentes de negocio proporciona una red de seguridad inestimable que facilita el mantenimiento evolutivo y previene regresiones.",
+        "**Cultura de Calidad Basada en Pruebas Automatizadas:** La implementación de una batería de 194 pruebas automatizadas (Jest y Vitest) con más del 76% de cobertura de líneas en componentes de negocio proporciona una red de seguridad inestimable que facilita el mantenimiento evolutivo y previene regresiones.",
         "**Gobernanza y Sostenibilidad Operacional:** La arquitectura serverless/PWA sobre GitHub Pages y Render Cloud permite a la microempresa operar con costos de infraestructura prácticamente nulos en su fase de despegue, garantizando viabilidad financiera a largo plazo."
     ])
 
@@ -1204,7 +1204,7 @@ def build_anexos(b):
            "Implementación de verifyJWT y requireRole en auth.middleware.ts")
 
     # ANEXO C
-    b.annex("C", "Bitácora de Ejecución de Pruebas Automatizadas (187 Casos)")
+    b.annex("C", "Bitácora de Ejecución de Pruebas Automatizadas (194 Casos)")
     b.p("A continuación se presenta el extracto de la bitácora de ejecución de pruebas emitido por los ejecutores Jest y Vitest:")
     b.code("PASS tests/auth.test.ts (20 tests)\n"
            "PASS tests/orders.test.ts (13 tests)\n"
@@ -1238,7 +1238,7 @@ def build_anexos(b):
            "Tests:       66 passed (66)\n"
            "Time:        8.48 s\n"
            "========================================================================\n"
-           "BALANCE GLOBAL: 187 PRUEBAS APROBADAS · 0 FALLOS · 1 OMITIDA",
+           "BALANCE GLOBAL: 194 PRUEBAS APROBADAS · 0 FALLOS · 1 OMITIDA",
            "Bitácora consolidada de ejecución de pruebas Jest y Vitest")
 
     # ANEXO D
@@ -1314,9 +1314,9 @@ def build_anexos(b):
         "A continuación se presenta el resumen de contribuciones por autor:")
     git_headers = ["Autor / Cuenta GitHub", "Código UTP", "Rol Principal en el Proyecto", "Commits", "Área de Contribución Principal"]
     git_rows = [
-        ["Lady Luz Loayza Rodriguez (@LadyyLuz / @luzylay)", "U22221489", "Scrum Master / DevSecOps", "280", "Arquitectura, CI/CD, seguridad, pruebas y documentación."],
-        ["Víctor Leandro Cárdenas (@VictorCardenasFernandez)", "U19217414", "Product Owner / DBA", "8", "Modelado de base de datos relacional, SQL y BCNF."],
-        ["Harley Anthony Roman (@HarleyRoman)", "U21313032", "Frontend Lead / UI-UX", "4", "Diseño PWA, Tailwind CSS y componentes de interfaz."],
+        ["Lady L. Loayza R. (@LadyyLuz / @luzylay)", "U22****89", "Scrum Master / DevSecOps", "280", "Arquitectura, CI/CD, seguridad, pruebas y documentación."],
+        ["Víctor L. Cárdenas F. (@VictorCardenasFernandez)", "U19****14", "Product Owner / DBA", "8", "Modelado de base de datos relacional, SQL y BCNF."],
+        ["Harley Anthony Roman (@HarleyRoman)", "U21****32", "Frontend Lead / UI-UX", "4", "Diseño PWA, Tailwind CSS y componentes de interfaz."],
         ["Dependabot (@dependabot[bot])", "N/A", "Bot de Seguridad Automatizado", "10", "Actualización automatizada de dependencias vulnerables."]
     ]
     b.table(git_headers, git_rows, "Trazabilidad de contribuciones en el repositorio de Git", [2.5, 1.2, 2.5, 1.0, 3.8])
@@ -1429,7 +1429,7 @@ def main():
     docx_size_mb = os.path.getsize(OUTPUT_DOCX) / (1024 * 1024)
     print(f"[DOCX OK] Guardado exitosamente ({docx_size_mb:.2f} MB).")
 
-    # Exportación con Word COM (genera docs/gestion_academica/entregas/INFORME_FINAL_APF3_LEOFIT.pdf)
+    # Exportación con Word COM (genera docs/01_entregable_final_apf3/INFORME_FINAL_APF3_LEOFIT.pdf)
     export_word_com(OUTPUT_DOCX, OUTPUT_PDF)
 
     print("\n================================================================================")

@@ -19,7 +19,7 @@ Uso:
   python scripts/iso25010/run_coexistence_benchmark.py [--single-core]
 
 Salida (evidencia reproducible):
-  docs/gestion_academica/evidencias/iso25010_s10_s11/coexistencia/
+  docs/02_calidad_iso25010_semanas_10_11/coexistencia/
     - coexistence_raw.csv       (cada solicitud medida)
     - coexistence_resources.csv (muestreo CPU/RAM cada 0.5 s)
     - coexistence_summary.json  (métricas consolidadas + entorno)
@@ -91,7 +91,7 @@ def b64url(data: bytes) -> str:
 def make_token(secret):
     now = int(time.time())
     header = {'alg': 'HS256', 'typ': 'JWT', 'kid': 'v1'}
-    payload = {'userId': 1, 'id': 1, 'sub': 1, 'email': 'admin@leofit.pe', 'name': 'Benchmark Coexistencia',
+    payload = {'userId': 1, 'id': 1, 'sub': 1, 'email': 'operador.demo@leofit.pe', 'name': 'Benchmark Coexistencia',
                'role': 'ADMIN', 'iat': now, 'exp': now + 3600, 'iss': 'leofit', 'aud': 'leofit-app'}
     signing_input = f"{b64url(json.dumps(header, separators=(',', ':')).encode())}.{b64url(json.dumps(payload, separators=(',', ':')).encode())}"
     sig = hmac.new(secret.encode(), signing_input.encode(), hashlib.sha256).digest()

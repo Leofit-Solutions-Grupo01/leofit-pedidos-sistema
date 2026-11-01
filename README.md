@@ -1,163 +1,94 @@
-# Leofit Solutions — Sistema de Gestión de Pedidos & Control de Inventario Multicanal
+# LeoFit Solutions — Sistema Web PWA de Gestión de Pedidos y Control de Inventario Multicanal (`v2.0.0`)
 ## Universidad Tecnológica del Perú (UTP) — Curso Integrador II: Software (`100000S12F`)
-**Docente:** Ing. Enrique Lee Huamani Uriarte | **Sección:** 35374 | **Grupo:** 01  
+**Docente Asesor:** Ing. Enrique L. Huamani U. | **Sección:** 35374 | **Grupo:** 01  
 **Organización GitHub:** [`Leofit-Solutions-Grupo01`](https://github.com/Leofit-Solutions-Grupo01) | **Repositorio:** [`leofit-pedidos-sistema`](https://github.com/Leofit-Solutions-Grupo01/leofit-pedidos-sistema)
 
 ---
 
-[![Estado APF1](https://img.shields.io/badge/APF1%20(Semana%2005)-18%2F20%20Aprobado-brightgreen.svg)](docs/entregas_academicas/INFORME_FINAL_APF1_LEOFIT.pdf)
-[![Estado APF2](https://img.shields.io/badge/APF2%20(Semana%2009)-100%25%20Completado-blue.svg)](docs/entregas_academicas/INFORME_FINAL_APF2_LEOFIT.pdf)
-[![Pruebas Backend](https://img.shields.io/badge/Backend%20Tests-18%20Passing-brightgreen.svg)](backend/README.md)
-[![Pruebas Frontend](https://img.shields.io/badge/Frontend%20Tests-17%20Passing-brightgreen.svg)](frontend/README.md)
-[![Arquitectura](https://img.shields.io/badge/Architecture-Clean%20Architecture%20%2B%20BCNF-purple.svg)](docs/modulos_tecnicos/07_Arquitectura_Sistema.md)
-[![Seguridad](https://img.shields.io/badge/Security-OWASP%20Top%2010%20%7C%20JWT%20%7C%20bcrypt-red.svg)](docs/modulos_tecnicos/10_Catalogo_Controles_Seguridad_OWASP.md)
-[![Demo PWA](https://img.shields.io/badge/Demo%20Live-PWA%20Online-orange.svg)](https://leofit-solutions-grupo01.github.io/leofit-pedidos-sistema/)
+[![Entregable Final APF3](https://img.shields.io/badge/Informe%20Final%20APF3-100%25%20Completado%20(77%20p%C3%A1gs)-0F172A.svg)](docs/01_entregable_final_apf3/INFORME_FINAL_APF3_LEOFIT.docx)
+[![Calidad ISO 25010](https://img.shields.io/badge/ISO%2FIEC%2025010-97.9%2F100%20(Grado%20A%2B)-15803D.svg)](docs/02_calidad_iso25010_semanas_10_11/README.md)
+[![Pruebas Automatizadas](https://img.shields.io/badge/Tests%20Automatizados-194%20Passing%20(125%20BE%20%2B%2069%20FE)-1665D8.svg)](docs/04_diagramas_arquitectura_y_negocio/README.md)
+[![Arquitectura](https://img.shields.io/badge/Architecture-Clean%20Architecture%20%2B%203FN%2FBCNF-1E3A8A.svg)](docs/04_diagramas_arquitectura_y_negocio/README.md)
+[![Seguridad](https://img.shields.io/badge/Security-OWASP%20%7C%20JWT%20%7C%20HMAC%20%7C%20JCS-C2410C.svg)](SECURITY.md)
+[![Demo PWA](https://img.shields.io/badge/Demo%20Live-PWA%20Online-15803D.svg)](https://leofit-solutions-grupo01.github.io/leofit-pedidos-sistema/)
 
 ---
 
-## 1. Descripción del Proyecto
+## 1. Ubicación Rápida de los Entregables para el Profesor (`docs/`)
 
-**LeoFit Solutions** es una plataforma web progresiva (PWA) de alto rendimiento conectada a un backend de Arquitectura Limpia con persistencia en PostgreSQL 16. La solución digitaliza el flujo integral de ventas, toma de pedidos y control de existencias en tiempo real para la empresa textil deportiva **LeoFit** (Gamarra, La Victoria, Lima).
+Para facilitar la revisión inmediata, la carpeta [`docs/`](docs/README.md) está organizada numéricamente por orden de prioridad:
 
-### Problemática Resuelta:
-- **Sobreventa y descontrol de stock:** Desincronización entre canales físicos y virtuales (WhatsApp / Instagram).
-- **Registro manual en papel:** Retrasos de hasta 48 horas en la preparación de paquetes y pérdida de comprobantes.
-- **Falta de métricas:** Ausencia de indicadores en tiempo real de facturación, prendas más vendidas y alertas de stock bajo.
-
----
-
-## 2. Integrantes del Equipo y Asignación de Roles
-
-| Integrante | Código UTP | Usuario GitHub | Rol Primario Scrum | Rol Técnico Especializado |
-| :--- | :--- | :--- | :--- | :--- |
-| **Lady Luz Loayza Rodriguez** | `U22221489` | `@LadyyLuz` / `luzylay` | **Scrum Master** | DevSecOps, Coordinadora de Seguridad JWT & Gobernanza |
-| **Víctor Leandro Cárdenas F.** | `U19217414` | `@VictorCardenazFernandez` | **Product Owner** | Arquitecto de Base de Datos (DBA), BCNF & Replicación WAL |
-| **Harley Anthony Roman D.** | `U21313032` | `@hroman2004` | **Frontend Lead** | Especialista PWA, Diseñador UI/UX & Optimización WPO |
-| **Jim Alessandro Dávila M.** | `U18206081` | `@Jim4279` | **QA Engineer Lead** | Desarrollador Backend Node.js/TS & Pruebas Automatizadas |
-| **Daniel Enrique Rojas S.** | `U21214627` | `@Daniel102608` | **Business Analyst** | Cloud DevOps, SLA/SLO, Render/Vercel & Supabase |
+| Carpeta Numerada | Contenido Principal | Acceso Directo al Documento Principal |
+| :--- | :--- | :--- |
+| **[`docs/01_entregable_final_apf3/`](docs/01_entregable_final_apf3/)** | **Informe Final APF3 y Diapositivas de Sustentación** | [**`INFORME_FINAL_APF3_LEOFIT.docx`**](docs/01_entregable_final_apf3/INFORME_FINAL_APF3_LEOFIT.docx) · [**`.pdf`**](docs/01_entregable_final_apf3/INFORME_FINAL_APF3_LEOFIT.pdf) · [**`.md`**](docs/01_entregable_final_apf3/INFORME_FINAL_APF3_LEOFIT.md) <br> [**`APF3_LEOFIT_Presentacion.pptx`**](docs/01_entregable_final_apf3/presentacion_sustentacion/APF3_LEOFIT_Presentacion.pptx) · [**`.pdf`**](docs/01_entregable_final_apf3/presentacion_sustentacion/APF3_LEOFIT_Presentacion.pdf) |
+| **[`docs/02_calidad_iso25010_semanas_10_11/`](docs/02_calidad_iso25010_semanas_10_11/)** | **Informe ISO/IEC 25010 (Sem. 10-11) y Manuales ISO 25000** | [**`INFORME_ISO25010_SEMANAS_10_11_LEOFIT.docx`**](docs/02_calidad_iso25010_semanas_10_11/INFORME_ISO25010_SEMANAS_10_11_LEOFIT.docx) · [**`.pdf`**](docs/02_calidad_iso25010_semanas_10_11/INFORME_ISO25010_SEMANAS_10_11_LEOFIT.pdf) <br> [**`Manual_Calidad_ISO_25000_[Completo...].docx`**](docs/02_calidad_iso25010_semanas_10_11/Manual_Calidad_ISO_25000_Leofit_Pedidos_[Completo_Auditoria_y_ComiteTecnico].docx) <br> [**`Manual_Calidad_ISO_25000_[Ejecutivo...].docx`**](docs/02_calidad_iso25010_semanas_10_11/Manual_Calidad_ISO_25000_Leofit_Pedidos_[Ejecutivo_Gerencia_y_ProductOwner].docx) |
+| **[`docs/03_auditoria_y_cierre_proyecto/`](docs/03_auditoria_y_cierre_proyecto/)** | **Dashboard Excel ISO 29119/90003, Cierre de Issues y Deuda Técnica** | [**`Plan_Auditoria_Software_LeoFit_Dashboard-Loayza-Lady.xlsx`**](docs/03_auditoria_y_cierre_proyecto/Plan_Auditoria_Software_LeoFit_Dashboard-Loayza-Lady.xlsx) · [**`DEUDA_TECNICA.md`**](docs/03_auditoria_y_cierre_proyecto/DEUDA_TECNICA.md) |
+| **[`docs/04_diagramas_arquitectura_y_negocio/`](docs/04_diagramas_arquitectura_y_negocio/)** | **Catálogo de 25 Diagramas (C4, BPMN, 3FN, Secuencia, QA)** | [**`Catálogo Visual de Diagramas (README.md)`**](docs/04_diagramas_arquitectura_y_negocio/README.md) |
+| **[`docs/05_operaciones_respaldo_drp/`](docs/05_operaciones_respaldo_drp/)** | **Protocolo y Simulacro de Recuperación ante Desastres (DRP)** | [**`BACKUP_RESTORE_DRILL.md`**](docs/05_operaciones_respaldo_drp/BACKUP_RESTORE_DRILL.md) |
+| **[`docs/06_historial_entregas_anteriores_apf1_apf2/`](docs/06_historial_entregas_anteriores_apf1_apf2/)** | **Entregas Históricas APF1 y APF2 (Archivadas)** | [**`INFORME_FINAL_APF2_LEOFIT.docx`**](docs/06_historial_entregas_anteriores_apf1_apf2/INFORME_FINAL_APF2_LEOFIT.docx) |
+| **[`docs/07_material_referencia_curso_utp/`](docs/07_material_referencia_curso_utp/)** | **Sílabo, Rúbricas UTP y Clases Teóricas (Semanas 01 a 18)** | [**`rubricas_evaluacion_utp/`**](docs/07_material_referencia_curso_utp/rubricas_evaluacion_utp/) |
 
 ---
 
-## 3. Entregables Oficiales e Informes Académicos UTP
+## 2. Descripción del Proyecto
 
-| Hito | Calificación / Estado | Entregable Oficial en Word (.docx) | Entregable Oficial en PDF (.pdf) |
-| :--- | :---: | :---: | :---: |
-| **APF1 (Avance 1 - Sem. 05)** | **18 / 20 (Aprobado)** | [`INFORME_FINAL_APF1_LEOFIT.docx`](docs/entregas_academicas/INFORME_FINAL_APF1_LEOFIT.docx) | [`INFORME_FINAL_APF1_LEOFIT.pdf`](docs/entregas_academicas/INFORME_FINAL_APF1_LEOFIT.pdf) |
-| **APF2 (Avance 2 - Sem. 09)** | **100% Completado** | [`INFORME_FINAL_APF2_LEOFIT.docx`](docs/entregas_academicas/INFORME_FINAL_APF2_LEOFIT.docx) | [`INFORME_FINAL_APF2_LEOFIT.pdf`](docs/entregas_academicas/INFORME_FINAL_APF2_LEOFIT.pdf) |
-| **APF3 (Avance 3 - Sem. 13)** | *Planificado (Sprint 4)* | *En desarrollo según cronograma* | *En desarrollo según cronograma* |
-| **PROY (Proyecto Final - Sem. 18)** | *Planificado (Sprint 5)* | *En desarrollo según cronograma* | *En desarrollo según cronograma* |
+**LeoFit Solutions** es una plataforma web progresiva (PWA) de alto rendimiento conectada a una API RESTful v2.0.0 bajo **Clean Architecture** con persistencia transaccional en **PostgreSQL 16 (3FN/BCNF)**. La solución digitaliza el flujo integral de ventas, toma de pedidos, facturación electrónica SUNAT y control de existencias en tiempo real para la empresa textil deportiva **LeoFit Confecciones y Diseños Deportivos S.A.C.** (Emporio Comercial de Gamarra, La Victoria, Lima).
 
-> Para consultar la colección completa de los 13 módulos de especificación técnica y material de clase, revise el [`Directorio Maestro de Documentación (docs/README.md)`](docs/README.md).
+![Arquitectura Lógica de LeoFit](docs/04_diagramas_arquitectura_y_negocio/apf3/fig_arquitectura_logica.png)
 
 ---
 
-## 4. Arquitectura de Software y Persistencia de Datos
+## 3. Integrantes del Equipo y Asignación de Roles (Grupo 01)
 
-### Diagrama de Contenedores C4 (Nivel 2)
-```text
-+-------------------------------------------------------------------------+
-|                         USUARIO / OPERADOR LEOFIT                       |
-|               (Dispositivo Móvil / Laptop / Navegador Web)             |
-+-------------------------------------------------------------------------+
-                                    |
-                            [HTTPS / TLS 1.3]
-                                    v
-+-------------------------------------------------------------------------+
-|                    FRONTEND PWA (Vercel Edge Network)                   |
-|           React 19 + TypeScript + Vite + TailwindCSS + Offline SW        |
-+-------------------------------------------------------------------------+
-                                    |
-                    [REST API / JSON / Bearer JWT / CORS]
-                                    v
-+-------------------------------------------------------------------------+
-|                  BACKEND API REST (Render.com / Docker)                 |
-|         Node.js 20 + TypeScript + Express + Zod + Helmet + RateLimit    |
-|      - Capa Dominio: Entidades & Interfaces de Repositorio             |
-|      - Capa Infraestructura: PgOrderRepository (Consultas $1, ACID)     |
-|      - Capa Fallback: MemoryOrderRepository (In-Memory Fallback)        |
-+-------------------------------------------------------------------------+
-                                    |
-                    [TCP/IP / Port 5432 / SSL Encrypted]
-                                    v
-+-------------------------------------------------------------------------+
-|             BASE DE DATOS RELACIONAL (Supabase / PostgreSQL 16)         |
-|      - Normalización BCNF (12 tablas/vistas con integridad referencial) |
-|      - Physical Streaming Replication (Primary -> Standby WAL slot)     |
-|      - Backups Diarios PITR con verificación de hash SHA-256            |
-+-------------------------------------------------------------------------+
-```
+| Integrante (Formato Corporativo) | Código UTP (Protegido) | Rol Scrum | Especialidad Técnica |
+| :--- | :---: | :--- | :--- |
+| **Loayza R., Lady L.** | `U22****89` | **Scrum Master** | DevSecOps, Seguridad JWT/HMAC, Auditoría ISO 25000 y Gobernanza |
+| **Cárdenas F., Víctor L.** | `U19****14` | **Product Owner** | Arquitecto de Base de Datos (DBA), 3FN/BCNF, Concurrencia ACID y Replicación |
+| **Roman D., Harley A.** | `U21****32` | **Frontend Lead** | Especialista PWA React 19, Accesibilidad WCAG 2.1 AA/AAA y Usabilidad ISO 25010 |
+| **Dávila M., Jim A.** | `U18****81` | **QA Engineer Lead** | Desarrollador Backend Node.js/TS y Arquitectura de 194 Pruebas Automatizadas |
+| **Rojas S., Daniel E.** | `U21****27` | **Business Analyst** | Procesos BPMN AS-IS/TO-BE, Gestión de Riesgos PMI y Despliegue Cloud DevOps |
 
 ---
 
-## 5. Pruebas Automatizadas y Cobertura de Calidad (35 Tests Totales)
+## 4. Batería de 194 Pruebas Automatizadas (100% Aprobadas, 0 Fallos)
 
-El proyecto cuenta con **35 pruebas automatizadas (100% aprobadas)** distribuidas en Frontend y Backend:
+El sistema cuenta con **194 pruebas automatizadas aprobadas** en **27 suites activas** (`125 Backend + 69 Frontend`):
 
-### A. Backend (18 tests con Jest & Supertest)
+![Distribución de 194 Pruebas por Suite](docs/04_diagramas_arquitectura_y_negocio/apf3/fig_pruebas_por_suite.png)
+
+### Ejecución Rápida de Pruebas
 ```bash
+# 1. Ejecutar las 125 validaciones de Backend (Jest + Supertest + Benchmark Coexistencia)
 cd backend && npm test
-```
-- `tests/orders.test.ts`: Creación, cálculo atómico y rechazo por ruptura de stock.
-- `tests/auth.test.ts`: Registro, login JWT, protección RBAC y manejo de contraseñas erróneas.
-- `tests/security.test.ts`: Cabeceras Helmet, mitigación de inyección SQL y saneamiento Zod.
-- `tests/products.test.ts`: Catálogo de indumentaria y detalle de variantes.
-- `tests/clients_dashboard.test.ts`: Registro de clientes y cálculo de KPIs.
+python scripts/iso25010/run_coexistence_benchmark.py
 
-### B. Frontend (17 tests con Vitest)
-```bash
+# 2. Ejecutar las 69 pruebas de Frontend (Vitest + React Testing Library)
 cd frontend && npm test
 ```
-- `src/__tests__/mockData.test.ts`: Integridad de datos y validaciones de inventario.
-- `src/__tests__/allTabsFunctional.test.ts`: Navegación, cambio de estados y renderizado de módulos.
-- `src/__tests__/pdfGenerator.test.ts`: Generación vectorial de comprobantes oficiales y rótulos.
 
 ---
 
-## 6. Guía de Ejecución Local y Despliegue con Docker
+## 5. Guía de Ejecución Local y Despliegue con Docker
 
-### Opción A: Despliegue Rápido con Docker Compose (Recomendado)
+### Opción A: Despliegue con Docker Compose
 ```bash
-# Inicia PostgreSQL 16, Backend API y Adminer con un solo comando
 docker-compose up -d
-
-# Acceso al Backend API: http://localhost:4000/api/health
-# Acceso a Adminer (Gestor BD): http://localhost:8080
+# Backend API Health: http://localhost:4000/api/health
 ```
 
-### Opción B: Ejecución Manual en Entorno de Desarrollo
+### Opción B: Ejecución en Entorno de Desarrollo
 ```bash
-# 1. Iniciar el Backend API
-cd backend
-npm install
-npm run dev
+# 1. Iniciar Backend API
+cd backend && npm install && npm run dev
 
-# 2. Iniciar el Frontend PWA (en otra terminal)
-cd frontend
-npm install
-npm run dev
+# 2. Iniciar Frontend PWA
+cd frontend && npm install && npm run dev
 ```
 
 ---
 
-## 7. Seguridad de la Información y Manejo de Secretos
+## 6. Seguridad, Privacidad PII y Accesibilidad Universal (WCAG 2.1 AA/AAA)
 
-- **Sin credenciales expuestas:** Todos los parámetros confidenciales se configuran mediante variables de entorno en el servidor (`process.env.DATABASE_URL`, `process.env.JWT_SECRET`).
-- **Plantilla de referencia:** Ver [`backend/.env.example`](backend/.env.example) para configurar un entorno local seguro.
-- **Protección de contraseñas:** Cifrado con algoritmo **bcrypt** (10 rondas de salt).
-- **Protección perimetral:** Cabeceras HTTP seguras configuradas con **Helmet**, mitigación de ataques DoS con **Rate-Limiting** y sanitización de consultas preparadas `$1` contra inyecciones SQL.
-
----
-
-## 8. Licencia y Gobernanza
-
-- **Licencia:** MIT License. Ver archivo [`LICENSE`](LICENSE).
-- **Gobernanza de Código:** Ver [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md) y [`CONTRIBUTING.md`](CONTRIBUTING.md).
-- **Políticas de Seguridad:** Ver [`SECURITY.md`](SECURITY.md).
-
-## Requisitos de Entorno Local
-
-Para garantizar la seguridad de las credenciales y levantar la infraestructura local (bases de datos y scripts de generación), es **obligatorio** configurar las variables de entorno.
-
-1. Copie el archivo .env.example a .env en la raíz del proyecto.
-2. Complete los valores requeridos, especialmente POSTGRES_PASSWORD y DATABASE_URL.
-3. Sin este archivo, la ejecución de docker-compose up y de scripts (ej. generate_master_markdown.py) fallarán inmediatamente (Fail-fast).
+- **Cero Credenciales y Cero Filtración PII:** Todas las claves se inyectan por entorno (`fail-fast`). Los nombres personales, códigos universitarios (`U22****89`), RUC (`206089*****`) y direcciones exactas están sanitizados en toda la documentación.
+- **Identidad Oscura Accesible:** Paleta oficial LeoFit (`#0F172A` con contraste **17.8:1 AAA**, `#1665D8` con **5.42:1 AA** y acento terracota deportivo `#C2410C` con **5.74:1 AA**), adaptada para personas con visibilidad media o baja.
+- **Políticas y Gobernanza:** Ver [`LICENSE`](LICENSE), [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md), [`CONTRIBUTING.md`](CONTRIBUTING.md) y [`SECURITY.md`](SECURITY.md).
