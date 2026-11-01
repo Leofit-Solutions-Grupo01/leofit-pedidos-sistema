@@ -9,19 +9,27 @@ dotenv.config();
 
 const isProduction = process.env.NODE_ENV === 'production';
 
+const rawDatabaseUrl = process.env.DATABASE_URL?.trim().replace(/^["']|["']$/g, '');
+
 const requiresSsl =
   process.env.DB_SSL === 'true' ||
-  (process.env.DATABASE_URL
-    ? /sslmode=require|neon\.tech|supabase\.co|render\.com/i.test(process.env.DATABASE_URL)
+  (rawDatabaseUrl
+    ? /sslmode=require|neon\.tech|supabase\.co|render\.com/i.test(rawDatabaseUrl)
     : false);
 
-const poolConfig: PoolConfig = process.env.DATABASE_URL
+const normalizedConnectionString = rawDatabaseUrl
+  ? rawDatabaseUrl
+      .replace(/([?&])channel_binding=require(&|$)/i, '$1')
+      .replace(/[?&]$/, '')
+  : undefined;
+
+const poolConfig: PoolConfig = normalizedConnectionString
   ? {
-      connectionString: process.env.DATABASE_URL,
+      connectionString: normalizedConnectionString,
       ssl: requiresSsl ? { rejectUnauthorized: false } : undefined,
       max: 20,
       idleTimeoutMillis: 30000,
-      connectionTimeoutMillis: 5000,
+      connectionTimeoutMillis: 15000,
     }
   : {
       host: process.env.DB_HOST || 'localhost',
@@ -32,7 +40,7 @@ const poolConfig: PoolConfig = process.env.DATABASE_URL
       ssl: requiresSsl ? { rejectUnauthorized: false } : undefined,
       max: 20,
       idleTimeoutMillis: 30000,
-      connectionTimeoutMillis: 5000,
+      connectionTimeoutMillis: 15000,
     };
 
 export const dbPool = new Pool(poolConfig);

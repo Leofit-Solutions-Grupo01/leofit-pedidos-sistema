@@ -69,9 +69,8 @@ export async function runVersionedMigrations(): Promise<void> {
     const { rows } = await client.query('SELECT version FROM schema_migrations');
     const appliedVersions = new Set(rows.map((r: any) => r.version));
 
-    // 4. Aplicar migraciones pendientes ordenadas por versión
-    const sorted = [...MIGRATIONS].sort((a, b) => a.version.localeCompare(b.version));
-    for (const migration of sorted) {
+    // 4. Aplicar migraciones pendientes respetando el orden cronológico de definición (001 -> 015)
+    for (const migration of MIGRATIONS) {
       if (!appliedVersions.has(migration.version)) {
         logger.info(`[Migration Runner] Aplicando migración: ${migration.version} - ${migration.name}...`);
         
