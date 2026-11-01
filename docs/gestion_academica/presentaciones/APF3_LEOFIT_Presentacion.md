@@ -10,7 +10,7 @@ footer: "Grupo 01 | Curso Integrador II: Software (100000S12F) | UTP 2026"
   :root { 
     --primary: #1E3A8A; 
     --primary-dark: #0F172A;
-    --accent: #F59E0B; 
+    --accent: #C2410C; 
     --neutral: #F8FAFC;
     --text-dark: #1F2937;
     --border-color: #E2E8F0;

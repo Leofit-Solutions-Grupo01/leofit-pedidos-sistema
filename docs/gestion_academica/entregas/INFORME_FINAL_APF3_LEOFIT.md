@@ -168,7 +168,7 @@ Para erradicar estos cuellos de botella, se construyó una arquitectura desacopl
 ### ANEXOS TÉCNICOS Y REFERENCIAS
 * **Anexo A:** Script SQL DDL y Triggers en PostgreSQL 16 (`database/schema.sql`).
 * **Anexo B:** Fragmentos de Código Fuente Críticos (Middlewares, Repository, Handlers).
-* **Anexo C:** Bitácora de Ejecución de las 101 Pruebas Automatizadas (Jest y Vitest).
+* **Anexo C:** Bitácora de Ejecución de las 187 Pruebas Automatizadas (Jest y Vitest).
 * **Anexo D:** Reporte de Auditoría de Seguridad SAST y Criptografía (`npm audit`).
 * **Anexo E:** Matriz Completa de Esquemas Zod y Contratos de la API REST v2.0.0.
 * **Anexo F:** Esquemas de Payload para Interoperabilidad Externa y Webhooks.

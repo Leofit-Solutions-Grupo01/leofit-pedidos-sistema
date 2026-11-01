@@ -1,8 +1,8 @@
 # Evaluación Teórica de Requisitos: SRS frente a la Teoría de Ingeniería de Software
 
-> [VIGENTE HASTA APF2 — 2026-10-01]
-> Este documento refleja el cierre del sprint APF2. Para el estado actual,
-> ver `SECURITY.md` (sección 6) y el cierre APF3 cuando exista.
+> [ESTADO FINAL DEFINITIVO — APF3 & AUDITORÍA INTEGRAL — 2026-10-31]
+> Este documento formaliza las justificaciones y auditorías de cierre técnico del sistema LeoFit
+> plenamente alineado al Informe Definitivo APF3, ISO/IEC 25010:2023 y la versión de producción v2.0.0.
 
 De acuerdo con las buenas prácticas de la Ingeniería de Requisitos (alineadas a los estándares **ISO/IEC/IEEE 29148**), la especificación de un sistema no debe forzar una simetría artificial entre Requisitos Funcionales (RF) y No Funcionales (RNF). Cada requisito debe estar justificado por una necesidad de negocio o un atributo de calidad crítico, y debe ser verificable.
 

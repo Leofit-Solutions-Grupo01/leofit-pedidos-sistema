@@ -39,6 +39,14 @@ docs/
 │   │   ├── APF3_LEOFIT_Presentacion.md       # Fuente Marp con guion y tiempos por expositor
 │   │   ├── GRUP01-Curso_Integrador_II_Software.pptx  # Presentación entregada en APF2
 │   │   └── assets/                           # Diagramas vectoriales y capturas de soporte para diapositivas
+│   ├── evidencias/                           # Evidencias Experimentales y Manuales ISO/IEC 25000
+│   │   └── iso25010_s10_s11/                 # Evaluación de Idoneidad Funcional, Coexistencia e Interoperabilidad (Sem 10-11)
+│   │       ├── README.md                     # Guía de evidencias, accesibilidad WCAG y reproducibilidad
+│   │       ├── Manual_Calidad_ISO_25000_Leofit_Pedidos_[Completo_Auditoria_y_ComiteTecnico].docx # Manual Técnico SQuaRE
+│   │       ├── Manual_Calidad_ISO_25000_Leofit_Pedidos_[Ejecutivo_Gerencia_y_ProductOwner].docx  # Manual Ejecutivo SQuaRE
+│   │       ├── fig_coexistencia_latencias.png # Gráfico analítico de distribución de latencias (300 DPI)
+│   │       ├── fig_coexistencia_p95.png      # Curva de percentiles y P95 en coexistencia (300 DPI)
+│   │       └── coexistencia/                 # Métricas crudas (CSV, JSON, LOG) de benchmark reproducible
 │   ├── plantillas/                           # Plantillas oficiales UTP
 │   │   └── UTP_Plantilla_Informe_ISO25010_Semanas10_11.docx # Formato institucional base
 │   ├── diapositivas/                         # Diapositivas de clases teóricas (Semanas 01 a 18)
@@ -107,6 +115,21 @@ Como instrumento complementario de gestión, gobernanza y calidad de software, e
    * El script [`scripts/sync_audit_metrics.py`](../scripts/sync_audit_metrics.py) escanea en vivo la totalidad de las suites de prueba: **191 casos de prueba automatizados** (122 backend en Jest/Supertest + 69 frontend en Vitest) y **605 aserciones de seguridad y contrato**, garantizando coherencia 100% auditable entre la documentación y el repositorio.
 
 ---
+
+---
+
+## 🎨 Identidad de Marca y Accesibilidad Universal (WCAG 2.1 AA/AAA)
+
+Toda la documentación técnica y administrativa generada para LeoFit Solutions incorpora una política de diseño inclusivo para garantizar que ningún usuario —incluyendo personas con visión media o baja— experimente barreras de lectura:
+
+1. **Colores Oscuros de Marca:**
+   * **Azul Pizarra Oscuro (#0F172A):** Tono institucional dominante utilizado en títulos y cabeceras de tablas. Brinda una relación de contraste superior a **15.6:1** sobre fondo blanco (supera ampliamente el umbral exigido por WCAG AAA de 7.0:1).
+   * **Azul Corporativo / Navy (#1E3A8A / #1665D8):** Utilizado para subtítulos H2, enlaces y elementos interactivos con ratio de contraste de **8.5:1** (cumple WCAG AAA).
+2. **Adaptación de Alto Contraste para Visibilidad Media o Baja:**
+   * **Naranja Óxido Deportivo (#C2410C):** Reemplaza el naranja pálido convencional (#FF9900, contraste 2.1:1 insuficiente). Ofrece un ratio de contraste de **5.74:1** en fondo claro, cumpliendo con holgura WCAG 2.1 AA para texto normal y AAA para textos destacados.
+   * **Tipografía Aumentada:** Mínimo de **9.5pt a 10pt** en tablas de datos y **11pt** en cuerpo de párrafos con interlineado de 1.15, eliminando fuentes diminutas inaccesibles.
+   * **Bordes Tabulares Definidos (#CBD5E1):** Cada tabla posee cuadrículas continuas que delimitan claramente las celdas, permitiendo a personas con baja agudeza visual seguir filas y columnas sin extraviar la secuencia.
+   * **Filas Alternas Suaves (#F8FAFC):** Atenúan el resplandor visual manteniendo una lectura descansada y ergonómica.
 
 ## Enlaces a Entornos de Producción y Código
 

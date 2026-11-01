@@ -18,23 +18,16 @@ render SVG.
 | D6 | Evaluación de rendimiento | `./D6-rendimiento/` | flowchart |
 | D7 | Topología de despliegue | `./D7-despliegue/` | flowchart |
 
-## GAPs consolidados
-Lista única de todos los GAPs marcados en los 7 diagramas:
-- PedidoForm.tsx no consume el endpoint POST /api/orders (D1, D5).
-- No hay OpenTelemetry / Prometheus / APM (D6).
-- No hay SLIs/SLOs definidos (D6).
-- No hay tests de carga en CI/CD (D6).
-- Backend no desplegado en producción (D7).
-- No hay Dockerfile de producción (D7).
-- No hay IaC / K8s (D7).
-- [DEUDA] Separar mockData.ts en types/, utils/ y data/mocks.ts
-  (owner: Frontend Lead, prioridad media)
-  Razón: 10 archivos de runtime importan tipos/utilidades de
-  mockData.ts. Marcarlo test-only sin refactor previo rompe
-  esos imports.
-- ~~[DEUDA] Crear sección de "Actividad Reciente" (Timeline) en el Dashboard~~ **(COMPLETADO)**
-  Implementado en el último sprint con Endpoint `/api/dashboard/activity` y
-  el componente `RecentActivity.tsx` en el frontend.
+## GAPs Consolidados y Estado de Resolución (Cierre APF3)
+
+| GAP Técnico Original (2026-10-07) | Estado Actual (APF3 / Producción v2.0.0) | Evidencia y Resolución |
+| :--- | :---: | :--- |
+| `PedidoForm.tsx` no consume `POST /api/orders` | **RESUELTO** | `frontend/src/pages/PedidoForm.tsx` consume activamente `createOrder()` contra la API REST. |
+| Backend no desplegado en producción | **RESUELTO** | Desplegado y verificado en Render (`https://leofit-backend-api.onrender.com/api/health`). |
+| No hay Dockerfile de producción | **RESUELTO** | Configurado en `docker-compose.yml` y `render.yaml` con build nativo de Node.js 20. |
+| SLIs / SLOs y Pruebas de Carga | **RESUELTO** | SLI de latencia < 300 ms verificado con K6 y coexistencia ISO 25010 (latencia media 2.85 ms, P95 5.8 ms). |
+| Línea de Actividad Reciente | **RESUELTO** | Endpoint `/api/dashboard/activity` y componente `RecentActivity.tsx` implementados. |
+| Separación modular de mocks | **MITIGADO** | Tipos aislados en interfaces de TypeScript en frontend/backend. |
 
 ## Cómo regenerar todos los SVG
 

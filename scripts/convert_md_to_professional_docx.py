@@ -25,7 +25,7 @@ def parse_inline_formatting(paragraph, text, default_color=RGBColor(30, 41, 59),
     - **negrita**
     - *cursiva*
     - `codigo`
-    - $\ge$, $\le$, etc. (limpia delimitadores LaTeX)
+    - $\\ge$, $\\le$, etc. (limpia delimitadores LaTeX)
     """
     # Regex para capturar tokens: **bold**, *italic*, `code`, $math$
     # Grupos: 1: bold, 2: italic, 3: code, 4: math
@@ -103,6 +103,23 @@ def set_cell_margins(cell, top=100, bottom=100, left=150, right=150):
         tcMar.append(node)
     tcPr.append(tcMar)
 
+def set_cell_border(cell, color='CBD5E1', sz='4'):
+    """Establece bordes visibles y de alto contraste en celdas de tabla para baja/media visión."""
+    tcPr = cell._tc.get_or_add_tcPr()
+    for child in list(tcPr):
+        if child.tag.endswith('tcBorders'):
+            tcPr.remove(child)
+    borders_xml = (
+        f'<w:tcBorders {nsdecls("w")}>'
+        f'<w:top w:val="single" w:sz="{sz}" w:space="0" w:color="{color}"/>'
+        f'<w:left w:val="single" w:sz="{sz}" w:space="0" w:color="{color}"/>'
+        f'<w:bottom w:val="single" w:sz="{sz}" w:space="0" w:color="{color}"/>'
+        f'<w:right w:val="single" w:sz="{sz}" w:space="0" w:color="{color}"/>'
+        f'</w:tcBorders>'
+    )
+    tcPr.append(parse_xml(borders_xml))
+
+
 def convert_md_to_docx(md_filepath, docx_filepath):
     print(f"Transformando {md_filepath} -> {docx_filepath}...")
     with open(md_filepath, 'r', encoding='utf-8') as f:
@@ -163,6 +180,7 @@ def convert_md_to_docx(md_filepath, docx_filepath):
                                 cell = t.cell(r_idx, c_idx)
                                 cell.vertical_alignment = WD_ALIGN_VERTICAL.CENTER
                                 set_cell_margins(cell, top=120, bottom=120, left=150, right=150)
+                                set_cell_border(cell, color='CBD5E1', sz='4')
                                 
                                 # Limpiar párrafo por defecto
                                 cell_p = cell.paragraphs[0]
@@ -228,7 +246,7 @@ def convert_md_to_docx(md_filepath, docx_filepath):
             p.paragraph_format.space_before = Pt(14)
             p.paragraph_format.space_after = Pt(4)
             p.paragraph_format.keep_with_next = True
-            parse_inline_formatting(p, line[3:].strip(), default_color=RGBColor(249, 115, 22), font_size=Pt(14))
+            parse_inline_formatting(p, line[3:].strip(), default_color=RGBColor(194, 65, 12), font_size=Pt(14))
             for r in p.runs:
                 r.font.bold = True
         elif line.startswith('### '):
@@ -244,7 +262,7 @@ def convert_md_to_docx(md_filepath, docx_filepath):
             p.paragraph_format.space_before = Pt(8)
             p.paragraph_format.space_after = Pt(2)
             p.paragraph_format.keep_with_next = True
-            parse_inline_formatting(p, line[5:].strip(), default_color=RGBColor(71, 85, 105), font_size=Pt(11))
+            parse_inline_formatting(p, line[5:].strip(), default_color=RGBColor(30, 41, 59), font_size=Pt(11))
             for r in p.runs:
                 r.font.bold = True
                 

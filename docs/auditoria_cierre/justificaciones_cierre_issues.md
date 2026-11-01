@@ -1,8 +1,8 @@
 # Justificaciones de Cierre de Issues (GitHub Projects) - Versión Extendida y APA 7.ª ed.
 
-> [VIGENTE HASTA APF2 — 2026-10-01]
-> Este documento refleja el cierre del sprint APF2. Para el estado actual,
-> ver `SECURITY.md` (sección 6) y el cierre APF3 cuando exista.
+> [ESTADO FINAL DEFINITIVO — APF3 & AUDITORÍA INTEGRAL — 2026-10-31]
+> Este documento formaliza las justificaciones y auditorías de cierre técnico del sistema LeoFit
+> plenamente alineado al Informe Definitivo APF3, ISO/IEC 25010:2023 y la versión de producción v2.0.0.
 
 Para cada cierre en el tablero, utilicen este formato ampliado que refleja el rigor académico y técnico del trabajo en equipo.
 
