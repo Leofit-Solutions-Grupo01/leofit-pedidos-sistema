@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Visor de Alta Accesibilidad — Flujo RBAC LeoFit</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    :root {
+      --font-scale: 1.15;
+    }
+    body {
+      font-size: calc(16px * var(--font-scale));
+    }
+    .badge-status {
+      font-size: calc(13px * var(--font-scale));
+      padding: 0.35rem 0.75rem;
+    }
+    .endpoint-code {
+      font-size: calc(15px * var(--font-scale));
+    }
+    .high-contrast-mode {
+      background-color: #000000 !important;
+      color: #FFFF00 !important;
+    }
+    .high-contrast-mode .card-box {
+      background-color: #0A0A0A !important;
+      border: 3px solid #FFFF00 !important;
+      color: #FFFFFF !important;
+    }
+    .high-contrast-mode .text-highlight {
+      color: #00FFFF !important;
+    }
+    .high-contrast-mode .text-desc {
+      color: #FFFFFF !important;
+    }
+  </style>
+</head>
+<body class="bg-[#080D1A] text-slate-100 antialiased p-4 md:p-6 min-h-screen">
+
+  <!-- BARRA DE ACCESIBILIDAD SUPERIOR (WCAG 2.1 AAA) -->
+  <header class="bg-[#0F172A] border-2 border-blue-500 rounded-2xl p-5 mb-6 shadow-xl flex flex-wrap items-center justify-between gap-4">
+    <div>
+      <h1 class="text-2xl md:text-3xl font-extrabold text-white tracking-wide flex items-center gap-3">
+        <span class="inline-block w-4 h-4 rounded-full bg-blue-500"></span>
+        Flujo RBAC: Administrador vs. Operador
+      </h1>
+      <p class="text-slate-300 text-base mt-1">
+        Llamadas API, Middlewares de Seguridad y Neon PostgreSQL (Costo: S/ 0.00 / mes)
+      </p>
+    </div>
+
+    <!-- CONTROLES DE ZOOM Y CONTRASTE PARA DISCAPACIDAD VISUAL -->
+    <div class="flex items-center gap-2 bg-[#1E293B] p-2 rounded-xl border border-slate-700" role="toolbar" aria-label="Controles de Accesibilidad Visual">
+      <span class="text-xs text-slate-400 font-bold uppercase tracking-wider mr-1">Tamaño de Texto:</span>
+      <button onclick="changeFontSize(-0.15)" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-white rounded-lg font-bold border border-slate-600 text-lg" aria-label="Reducir tamaño de letra">A-</button>
+      <button onclick="resetFontSize()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-white rounded-lg font-bold border border-slate-600 text-sm" aria-label="Tamaño de letra predeterminado">Normal</button>
+      <button onclick="changeFontSize(0.20)" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-lg font-bold border border-blue-400 text-xl" aria-label="Aumentar tamaño de letra">A+</button>
+      <button onclick="toggleHighContrast()" class="ml-2 px-3 py-1.5 bg-yellow-500 hover:bg-yellow-400 text-black rounded-lg font-bold border border-yellow-300 text-sm flex items-center gap-1.5" aria-label="Modo Alto Contraste">
+        🌓 Contraste Alto
+      </button>
+    </div>
+  </header>
+
+  <!-- PESTAÑAS DE NAVEGACIÓN POR ROL (Permite ver 1 rol a la vez en pantalla grande sin saturación) -->
+  <nav class="flex flex-wrap gap-3 mb-6" aria-label="Selección de perfil">
+    <button id="btn-tab-all" onclick="setTab('all')" class="tab-btn px-6 py-3 rounded-xl font-extrabold text-base border-2 bg-blue-600 border-blue-400 text-white shadow-lg transition-all">
+      👥 Vista Comparativa Completa
+    </button>
+    <button id="btn-tab-admin" onclick="setTab('admin')" class="tab-btn px-6 py-3 rounded-xl font-extrabold text-base border-2 bg-[#1E293B] border-emerald-500 text-emerald-400 hover:bg-emerald-950/40 transition-all">
+      👑 Solo Administrador (Control Total)
+    </button>
+    <button id="btn-tab-operador" onclick="setTab('operador')" class="tab-btn px-6 py-3 rounded-xl font-extrabold text-base border-2 bg-[#1E293B] border-amber-500 text-amber-400 hover:bg-amber-950/40 transition-all">
+      📦 Solo Operador Logístico (Mínimo Privilegio)
+    </button>
+  </nav>
+
+  <!-- PIPELINE DE MIDDLEWARES Y COMPUERTA RBAC -->
+  <section class="card-box bg-[#0B132B] border-2 border-indigo-500 rounded-2xl p-5 mb-8 shadow-xl">
+    <h2 class="text-xl md:text-2xl font-bold text-indigo-300 mb-3 flex items-center gap-2">
+      🛡️ Pipeline de Middlewares Backend (leofit-backend-api en Render)
+    </h2>
+    <p class="text-slate-300 mb-4 text-base text-desc">
+      Toda petición pasa obligatoriamente por estos 5 filtros perimetrales antes de tocar la base de datos Neon:
+    </p>
+    <div class="grid grid-cols-1 md:grid-cols-5 gap-3">
+      <div class="bg-[#1E1B4B] border border-indigo-500/50 p-4 rounded-xl">
+        <span class="text-indigo-400 font-bold block text-sm">PASO 1</span>
+        <strong class="text-white text-lg block mt-0.5">Helmet & CORS</strong>
+        <p class="text-slate-300 text-sm mt-1 text-desc">Cabeceras HSTS + CSP y filtro de orígenes autorizados.</p>
+      </div>
+      <div class="bg-[#1E1B4B] border border-indigo-500/50 p-4 rounded-xl">
+        <span class="text-indigo-400 font-bold block text-sm">PASO 2</span>
+        <strong class="text-white text-lg block mt-0.5">RateLimiter</strong>
+        <p class="text-slate-300 text-sm mt-1 text-desc">Protección anti-DDoS e Idempotency Lock determinista.</p>
+      </div>
+      <div class="bg-[#1E3A8A] border border-blue-400 p-4 rounded-xl">
+        <span class="text-blue-300 font-bold block text-sm">PASO 3</span>
+        <strong class="text-white text-lg block mt-0.5">Token JWT</strong>
+        <p class="text-slate-300 text-sm mt-1 text-desc">Verifica firma HMAC-SHA256 y extrae el rol del usuario.</p>
+      </div>
+      <div class="bg-[#7C2D12] border-2 border-orange-500 p-4 rounded-xl">
+        <span class="text-orange-300 font-bold block text-sm">PASO 4 (CRÍTICO)</span>
+        <strong class="text-white text-lg block mt-0.5">requireRole('ADMIN')</strong>
+        <p class="text-orange-100 text-sm mt-1">¿Es ADMIN? Pasa. ¿Es OPERATOR? Corta de inmediato con HTTP 403.</p>
+      </div>
+      <div class="bg-[#064E3B] border border-emerald-400 p-4 rounded-xl">
+        <span class="text-emerald-300 font-bold block text-sm">PASO 5</span>
+        <strong class="text-white text-lg block mt-0.5">Neon PostgreSQL</strong>
+        <p class="text-slate-300 text-sm mt-1 text-desc">Ejecuta SELECT / UPDATE / INSERT con transacciones ACID.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTENEDOR DE PERFILES -->
+  <div class="space-y-8">
+
+    <!-- PERFIL 1: ADMINISTRADOR -->
+    <section id="sec-admin" class="card-box bg-[#0B172A] border-2 border-emerald-500 rounded-2xl p-6 shadow-2xl">
+      <div class="flex flex-wrap items-center justify-between border-b-2 border-emerald-500/50 pb-4 mb-6 gap-3">
+        <div>
+          <span class="px-3 py-1 bg-emerald-600 text-white font-black rounded-lg text-sm uppercase tracking-wider">Perfil 1</span>
+          <h2 class="text-2xl md:text-3xl font-extrabold text-emerald-400 mt-2">
+            Administrador (admin@leofit.pe)
+          </h2>
+          <p class="text-slate-300 text-base mt-1 text-desc">
+            Rol: <strong>ADMIN</strong> — Control Total Operativo y Financiero (100% de llamadas autorizadas con 200/201)
+          </p>
+        </div>
+        <div class="bg-emerald-950/60 border border-emerald-400/40 px-4 py-2 rounded-xl text-emerald-200 text-sm font-semibold">
+          ✅ Pasa la compuerta requireRole('ADMIN')
+        </div>
+      </div>
+
+      <!-- LISTA DE LLAMADAS ADMINISTRADOR -->
+      <div class="space-y-3.5">
+
+        <div class="bg-[#112240] border-l-8 border-emerald-500 p-4 rounded-xl flex flex-wrap md:flex-nowrap items-center justify-between gap-4">
+          <div class="flex items-center gap-3">
+            <span class="badge-status bg-emerald-700 text-white font-mono font-bold rounded-lg shadow">200 OK</span>
+            <div>
+              <code class="endpoint-code font-bold text-white block">GET /api/dashboard/metrics</code>
+              <p class="text-slate-300 text-base text-desc mt-0.5">Métricas de ingresos totales, pedidos por estado y prendas con stock bajo.</p>
+            </div>
+          </div>
+          <span class="text-emerald-300 font-mono text-sm md:text-base font-bold bg-slate-900/80 px-3 py-1.5 rounded-lg border border-emerald-500/30 text-highlight">
+            Consulta vistas vw_orders_summary + vw_low_stock
+          </span>
+        </div>
+
+        <div class="bg-[#112240] border-l-8 border-emerald-500 p-4 rounded-xl flex flex-wrap md:flex-nowrap items-center justify-between gap-4">
+          <div class="flex items-center gap-3">
+            <span class="badge-status bg-emerald-700 text-white font-mono font-bold rounded-lg shadow">201 CREATED</span>
+            <div>
+              <code class="endpoint-code font-bold text-white block">POST /api/products</code>
+              <p class="text-slate-300 text-base text-desc mt-0.5">Crea nueva prenda en el catálogo con categoría, precio base y fotos.</p>
+            </div>
+          </div>
+          <span class="text-emerald-300 font-mono text-sm md:text-base font-bold bg-slate-900/80 px-3 py-1.5 rounded-lg border border-emerald-500/30 text-highlight">
+            Inserta en tabla products + auditoría audit_log
+          </span>
+        </div>
+
+        <div class="bg-[#112240] border-l-8 border-emerald-500 p-4 rounded-xl flex flex-wrap md:flex-nowrap items-center justify-between gap-4">
+          <div class="flex items-center gap-3">
+            <span class="badge-status bg-emerald-700 text-white font-mono font-bold rounded-lg shadow">200 OK</span>
+            <div>
+              <code class="endpoint-code font-bold text-white block">PATCH /api/products/variant/:id/stock</code>
+              <p class="text-slate-300 text-base text-desc mt-0.5">Ajusta físicamente el conteo de stock de una talla/color (SET / INCREMENT).</p>
+            </div>
+          </div>
+          <span class="text-emerald-300 font-mono text-sm md:text-base font-bold bg-slate-900/80 px-3 py-1.5 rounded-lg border border-emerald-500/30 text-highlight">
+            Modifica product_variants.stock + audit_log
+          </span>
+        </div>
+
+        <div class="bg-[#112240] border-l-8 border-emerald-500 p-4 rounded-xl flex flex-wrap md:flex-nowrap items-center justify-between gap-4">
+          <div class="flex items-center gap-3">
+            <span class="badge-status bg-emerald-700 text-white font-mono font-bold rounded-lg shadow">200 OK</span>
+            <div>
+              <code class="endpoint-code font-bold text-white block">DELETE /api/products/:id</code>
+              <p class="text-slate-300 text-base text-desc mt-0.5">Retira una prenda del catálogo preservando integridad histórica (Soft-Delete).</p>
+            </div>
+          </div>
+          <span class="text-emerald-300 font-mono text-sm md:text-base font-bold bg-slate-900/80 px-3 py-1.5 rounded-lg border border-emerald-500/30 text-highlight">
+            Setea products.deleted_at = NOW() + audit_log
+          </span>
+        </div>
+
+        <div class="bg-[#112240] border-l-8 border-emerald-500 p-4 rounded-xl flex flex-wrap md:flex-nowrap items-center justify-between gap-4">
+          <div class="flex items-center gap-3">
+            <span class="badge-status bg-emerald-700 text-white font-mono font-bold rounded-lg shadow">201 CREATED</span>
+            <div>
+              <code class="endpoint-code font-bold text-white block">POST /api/orders (Idempotency-Key)</code>
+              <p class="text-slate-300 text-base text-desc mt-0.5">Registra un nuevo pedido y descuenta stock atómicamente con SELECT FOR UPDATE.</p>
+            </div>
+          </div>
+          <span class="text-emerald-300 font-mono text-sm md:text-base font-bold bg-slate-900/80 px-3 py-1.5 rounded-lg border border-emerald-500/30 text-highlight">
+            Transacción ACID en orders, order_items y variants
+          </span>
+        </div>
+
+        <div class="bg-[#112240] border-l-8 border-emerald-500 p-4 rounded-xl flex flex-wrap md:flex-nowrap items-center justify-between gap-4">
+          <div class="flex items-center gap-3">
+            <span class="badge-status bg-emerald-700 text-white font-mono font-bold rounded-lg shadow">200 OK</span>
+            <div>
+              <code class="endpoint-code font-bold text-white block">POST /api/orders/:id/cancel</code>
+              <p class="text-slate-300 text-base text-desc mt-0.5">Anula el pedido, devuelve automáticamente las prendas al stock y emite Nota de Crédito.</p>
+            </div>
+          </div>
+          <span class="text-emerald-300 font-mono text-sm md:text-base font-bold bg-slate-900/80 px-3 py-1.5 rounded-lg border border-emerald-500/30 text-highlight">
+            Restituye stock en Neon DB + emite Nota Crédito SUNAT
+          </span>
+        </div>
+
+        <div class="bg-[#112240] border-l-8 border-emerald-500 p-4 rounded-xl flex flex-wrap md:flex-nowrap items-center justify-between gap-4">
+          <div class="flex items-center gap-3">
+            <span class="badge-status bg-emerald-700 text-white font-mono font-bold rounded-lg shadow">201 CREATED</span>
+            <div>
+              <code class="endpoint-code font-bold text-white block">POST /api/invoices/emit</code>
+              <p class="text-slate-300 text-base text-desc mt-0.5">Emite comprobante electrónico formal (Boleta de Venta BBB1 o Factura FFF1 con IGV 18%).</p>
+            </div>
+          </div>
+          <span class="text-emerald-300 font-mono text-sm md:text-base font-bold bg-slate-900/80 px-3 py-1.5 rounded-lg border border-emerald-500/30 text-highlight">
+            Encola en invoice_queue y genera XML firmado + CDR
+          </span>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- PERFIL 2: OPERADOR LOGÍSTICO -->
+    <section id="sec-operador" class="card-box bg-[#1A1528] border-2 border-amber-500 rounded-2xl p-6 shadow-2xl">
+      <div class="flex flex-wrap items-center justify-between border-b-2 border-amber-500/50 pb-4 mb-6 gap-3">
+        <div>
+          <span class="px-3 py-1 bg-amber-600 text-white font-black rounded-lg text-sm uppercase tracking-wider">Perfil 2</span>
+          <h2 class="text-2xl md:text-3xl font-extrabold text-amber-400 mt-2">
+            Operador Logístico (operador@leofit.pe)
+          </h2>
+          <p class="text-slate-300 text-base mt-1 text-desc">
+            Rol: <strong>OPERATOR</strong> — Principio de Mínimo Privilegio (Maneja despacho pero tiene prohibido alterar catálogo o anular ventas)
+          </p>
+        </div>
+        <div class="bg-amber-950/60 border border-amber-400/40 px-4 py-2 rounded-xl text-amber-200 text-sm font-semibold">
+          🛡️ Protegido por requireRole('ADMIN')
+        </div>
+      </div>
+
+      <!-- LISTA DE LLAMADAS OPERADOR (PERMITIDAS VS BLOQUEADAS) -->
+      <div class="space-y-3.5">
+
+        <!-- Permitidas -->
+        <div class="bg-[#152438] border-l-8 border-emerald-500 p-4 rounded-xl flex flex-wrap md:flex-nowrap items-center justify-between gap-4">
+          <div class="flex items-center gap-3">
+            <span class="badge-status bg-emerald-700 text-white font-mono font-bold rounded-lg shadow">200 OK</span>
+            <div>
+              <code class="endpoint-code font-bold text-white block">GET /api/products & /alerts/low-stock</code>
+              <p class="text-slate-300 text-base text-desc mt-0.5">Consulta el catálogo de prendas, tallas, colores y alertas para reposición.</p>
+            </div>
+          </div>
+          <span class="text-emerald-300 font-mono text-sm md:text-base font-bold bg-slate-900/80 px-3 py-1.5 rounded-lg border border-emerald-500/30 text-highlight">
+            SELECT directo en products y product_variants
+          </span>
+        </div>
+
+        <div class="bg-[#152438] border-l-8 border-emerald-500 p-4 rounded-xl flex flex-wrap md:flex-nowrap items-center justify-between gap-4">
+          <div class="flex items-center gap-3">
+            <span class="badge-status bg-emerald-700 text-white font-mono font-bold rounded-lg shadow">200 OK</span>
+            <div>
+              <code class="endpoint-code font-bold text-white block">GET /api/orders & GET /api/orders/:id</code>
+              <p class="text-slate-300 text-base text-desc mt-0.5">Visualiza la cola de pedidos pendientes de empaque y seguimiento de rutas.</p>
+            </div>
+          </div>
+          <span class="text-emerald-300 font-mono text-sm md:text-base font-bold bg-slate-900/80 px-3 py-1.5 rounded-lg border border-emerald-500/30 text-highlight">
+            SELECT en orders con filtros por estado logístico
+          </span>
+        </div>
+
+        <div class="bg-[#152438] border-l-8 border-emerald-500 p-4 rounded-xl flex flex-wrap md:flex-nowrap items-center justify-between gap-4">
+          <div class="flex items-center gap-3">
+            <span class="badge-status bg-emerald-700 text-white font-mono font-bold rounded-lg shadow">201 CREATED</span>
+            <div>
+              <code class="endpoint-code font-bold text-white block">POST /api/orders (Idempotente)</code>
+              <p class="text-slate-300 text-base text-desc mt-0.5">Registra pedidos recepcionados por WhatsApp y reserva stock físico.</p>
+            </div>
+          </div>
+          <span class="text-emerald-300 font-mono text-sm md:text-base font-bold bg-slate-900/80 px-3 py-1.5 rounded-lg border border-emerald-500/30 text-highlight">
+            Crea pedido y descuenta stock automáticamente en Neon
+          </span>
+        </div>
+
+        <div class="bg-[#152438] border-l-8 border-emerald-500 p-4 rounded-xl flex flex-wrap md:flex-nowrap items-center justify-between gap-4">
+          <div class="flex items-center gap-3">
+            <span class="badge-status bg-emerald-700 text-white font-mono font-bold rounded-lg shadow">200 OK</span>
+            <div>
+              <code class="endpoint-code font-bold text-white block">PATCH /api/orders/:id/status</code>
+              <p class="text-slate-300 text-base text-desc mt-0.5">Avanza el despacho: RECIBIDO -> PREPARACIÓN -> EN CAMINO -> ENTREGADO.</p>
+            </div>
+          </div>
+          <span class="text-emerald-300 font-mono text-sm md:text-base font-bold bg-slate-900/80 px-3 py-1.5 rounded-lg border border-emerald-500/30 text-highlight">
+            Actualiza tabla orders e inserta en order_status_history
+          </span>
+        </div>
+
+        <!-- Bloqueadas (En Rojo) -->
+        <div class="bg-[#2D1515] border-l-8 border-red-500 p-4 rounded-xl flex flex-wrap md:flex-nowrap items-center justify-between gap-4">
+          <div class="flex items-center gap-3">
+            <span class="badge-status bg-red-700 text-white font-mono font-bold rounded-lg shadow">403 FORBIDDEN</span>
+            <div>
+              <code class="endpoint-code font-bold text-red-200 block">POST / PUT / DELETE /api/products</code>
+              <p class="text-red-300 text-base mt-0.5">Intento de crear nuevas prendas, alterar precios o eliminar productos del catálogo.</p>
+            </div>
+          </div>
+          <span class="text-red-400 font-mono text-sm md:text-base font-bold bg-black/60 px-3 py-1.5 rounded-lg border border-red-500/50">
+            ⛔ BLOQUEADO por requireRole('ADMIN') en Middleware 4
+          </span>
+        </div>
+
+        <div class="bg-[#2D1515] border-l-8 border-red-500 p-4 rounded-xl flex flex-wrap md:flex-nowrap items-center justify-between gap-4">
+          <div class="flex items-center gap-3">
+            <span class="badge-status bg-red-700 text-white font-mono font-bold rounded-lg shadow">403 FORBIDDEN</span>
+            <div>
+              <code class="endpoint-code font-bold text-red-200 block">PATCH /api/products/variant/:id/stock</code>
+              <p class="text-red-300 text-base mt-0.5">Intento de modificar manualmente las unidades de stock de una talla o color.</p>
+            </div>
+          </div>
+          <span class="text-red-400 font-mono text-sm md:text-base font-bold bg-black/60 px-3 py-1.5 rounded-lg border border-red-500/50">
+            ⛔ BLOQUEADO por requireRole('ADMIN') en Middleware 4
+          </span>
+        </div>
+
+        <div class="bg-[#2D1515] border-l-8 border-red-500 p-4 rounded-xl flex flex-wrap md:flex-nowrap items-center justify-between gap-4">
+          <div class="flex items-center gap-3">
+            <span class="badge-status bg-red-700 text-white font-mono font-bold rounded-lg shadow">403 FORBIDDEN</span>
+            <div>
+              <code class="endpoint-code font-bold text-red-200 block">POST /api/orders/:id/cancel | /refund</code>
+              <p class="text-red-300 text-base mt-0.5">Intento de anular ventas ya consolidadas o procesar reembolsos de dinero.</p>
+            </div>
+          </div>
+          <span class="text-red-400 font-mono text-sm md:text-base font-bold bg-black/60 px-3 py-1.5 rounded-lg border border-red-500/50">
+            ⛔ BLOQUEADO por requireRole('ADMIN') en Middleware 4
+          </span>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+
+  <!-- PIE DE PÁGINA (COSTO S/ 0.00 Y ACCESIBILIDAD) -->
+  <footer class="mt-8 bg-[#0F172A] border border-slate-700 rounded-2xl p-5 text-center shadow-lg">
+    <p class="text-base text-blue-400 font-bold">
+      ARQUITECTURA DE PRODUCCIÓN 100% OPERATIVA — COSTO: S/ 0.00 / MES
+    </p>
+    <p class="text-sm text-slate-400 mt-1">
+      Frontend en Render Static ($0) | Backend API en Render Free ($0) | Neon PostgreSQL Oregon ($0 perpetuo) | Cumple norma ISO/IEC 25010 y WCAG 2.1 AAA
+    </p>
+  </footer>
+
+  <script>
+    let currentScale = 1.15;
+    let highContrast = false;
+
+    function changeFontSize(delta) {
+      currentScale = Math.max(0.9, Math.min(2.0, currentScale + delta));
+      document.documentElement.style.setProperty('--font-scale', currentScale);
+    }
+
+    function resetFontSize() {
+      currentScale = 1.15;
+      document.documentElement.style.setProperty('--font-scale', currentScale);
+    }
+
+    function toggleHighContrast() {
+      highContrast = !highContrast;
+      document.body.classList.toggle('high-contrast-mode', highContrast);
+    }
+
+    function setTab(tab) {
+      const secAdmin = document.getElementById('sec-admin');
+      const secOper = document.getElementById('sec-operador');
+      const btnAll = document.getElementById('btn-tab-all');
+      const btnAdmin = document.getElementById('btn-tab-admin');
+      const btnOper = document.getElementById('btn-tab-operador');
+
+      // Restablecer estilos de botones
+      [btnAll, btnAdmin, btnOper].forEach(b => {
+        b.className = 'tab-btn px-6 py-3 rounded-xl font-extrabold text-base border-2 bg-[#1E293B] border-slate-600 text-slate-300 hover:bg-slate-800 transition-all';
+      });
+
+      if (tab === 'all') {
+        secAdmin.style.display = 'block';
+        secOper.style.display = 'block';
+        btnAll.className = 'tab-btn px-6 py-3 rounded-xl font-extrabold text-base border-2 bg-blue-600 border-blue-400 text-white shadow-lg transition-all';
+      } else if (tab === 'admin') {
+        secAdmin.style.display = 'block';
+        secOper.style.display = 'none';
+        btnAdmin.className = 'tab-btn px-6 py-3 rounded-xl font-extrabold text-base border-2 bg-emerald-600 border-emerald-400 text-white shadow-lg transition-all';
+      } else if (tab === 'operador') {
+        secAdmin.style.display = 'none';
+        secOper.style.display = 'block';
+        btnOper.className = 'tab-btn px-6 py-3 rounded-xl font-extrabold text-base border-2 bg-amber-600 border-amber-400 text-white shadow-lg transition-all';
+      }
+    }
+  </script>
+</body>
+</html>

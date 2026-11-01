@@ -20,6 +20,9 @@ Todos los diagramas cumplen con la línea gráfica corporativa oscura de LeoFit 
 | **ARQ-08** | [`03_backend.png`](./03_backend.png) / [`.mmd`](./03_backend.mmd) | Backend API | Flujo interno de middlewares perimetrales y ejecución transaccional de `POST /api/orders`. |
 | **ARQ-09** | [`04_general.png`](./04_general.png) / [`.mmd`](./04_general.mmd) | Ecosistema | Panorama end-to-end del ecosistema multicanal LeoFit. |
 | **ARQ-10** | [`15_Flujo_RBAC_Admin_vs_Operador.png`](./15_Flujo_RBAC_Admin_vs_Operador.png) / [`.mmd`](./15_Flujo_RBAC_Admin_vs_Operador.mmd) | Seguridad RBAC | Flujo End-to-End de llamadas y respuestas por perfil (`ADMIN` vs. `OPERATOR`) desde Frontend PWA hasta Neon PostgreSQL. |
+| **ARQ-10A** | [`15A_Flujo_Admin_Alta_Accesibilidad.png`](./15A_Flujo_Admin_Alta_Accesibilidad.png) | Accesibilidad WCAG | Lámina de Alta Visibilidad (tipografía 16-20pt): Llamadas y respuestas del Administrador (`admin@leofit.pe`). |
+| **ARQ-10B** | [`15B_Flujo_Operador_Alta_Accesibilidad.png`](./15B_Flujo_Operador_Alta_Accesibilidad.png) | Accesibilidad WCAG | Lámina de Alta Visibilidad (tipografía 16-20pt): Llamadas permitidas y bloqueos 403 del Operador (`operador@leofit.pe`). |
+| **ARQ-10-UI** | [`visor_accesible_flujo_rbac.html`](./visor_accesible_flujo_rbac.html) | Accesibilidad Web | Visor Interactivo accesible con zoom dinámico (hasta 200%), modo alto contraste y pestañas por rol. |
 | **DAT-00** | [`05_erd_bd.png`](./05_erd_bd.png) / [`.mmd`](./05_erd_bd.mmd) | Base de Datos (Neon) | Diagrama Entidad-Relación Maestro Completo (22 tablas BCNF + 2 vistas analíticas + 15 migraciones en Neon PostgreSQL). |
 | **DAT-01** | [`12_Modelo_Logico_BD.png`](./12_Modelo_Logico_BD.png) | Base de Datos | Modelo lógico relacional normalizado hasta 3FN/BCNF. |
 | **DAT-02** | [`13_Modelo_Fisico_BD.png`](./13_Modelo_Fisico_BD.png) | Base de Datos | Modelo físico en PostgreSQL 16 (12 tablas, 2 vistas, índices, `CHECK` constraints y triggers). |
