@@ -2,7 +2,7 @@
 """
 Genera el Diagrama de Flujo End-to-End de Llamadas y Respuestas por Rol (RBAC):
 Perfil ADMINISTRADOR (ADMIN) vs. Perfil OPERADOR (OPERATOR)
-con arquitectura Cloud de Costo S/ 0.00 (Frontend PWA -> Render API -> Neon PostgreSQL).
+con tipografía grande, legible, alto contraste y optimizada para lectura en pantallas y documentos.
 """
 import os
 import matplotlib
@@ -54,85 +54,88 @@ MMD_CONTENT = """flowchart LR
 """
 
 def draw_card(ax, x, y, w, h, title, subtitle, bg_color, border_color, title_color="#FFFFFF", items=None):
+    # Sombra
     shadow = FancyBboxPatch(
-        (x + 0.04, y - 0.04), w, h,
-        boxstyle="round,pad=0.02,rounding_size=0.10",
-        facecolor="#020617", edgecolor="none", alpha=0.40, zorder=2
+        (x + 0.06, y - 0.06), w, h,
+        boxstyle="round,pad=0.03,rounding_size=0.12",
+        facecolor="#020617", edgecolor="none", alpha=0.45, zorder=2
     )
     ax.add_patch(shadow)
 
+    # Cuerpo de tarjeta
     box = FancyBboxPatch(
         (x, y), w, h,
-        boxstyle="round,pad=0.02,rounding_size=0.10",
-        facecolor=bg_color, edgecolor=border_color, linewidth=1.8, zorder=3
+        boxstyle="round,pad=0.03,rounding_size=0.12",
+        facecolor=bg_color, edgecolor=border_color, linewidth=2.0, zorder=3
     )
     ax.add_patch(box)
 
-    hdr_h = 0.42 if subtitle else 0.34
+    hdr_h = 0.58 if subtitle else 0.44
     hdr = FancyBboxPatch(
         (x, y + h - hdr_h), w, hdr_h,
-        boxstyle="round,pad=0.02,rounding_size=0.10",
-        facecolor=border_color, edgecolor=border_color, linewidth=1.0, zorder=4
+        boxstyle="round,pad=0.03,rounding_size=0.12",
+        facecolor=border_color, edgecolor=border_color, linewidth=1.2, zorder=4
     )
     ax.add_patch(hdr)
 
     ax.text(
-        x + w / 2, y + h - (0.15 if subtitle else hdr_h / 2),
-        title, color=title_color, fontsize=9.4, fontweight="bold",
+        x + w / 2, y + h - (0.22 if subtitle else hdr_h / 2),
+        title, color=title_color, fontsize=12.2, fontweight="bold",
         ha="center", va="center", zorder=5
     )
     if subtitle:
         ax.text(
-            x + w / 2, y + h - 0.32,
-            subtitle, color="#E2E8F0", fontsize=7.6,
+            x + w / 2, y + h - 0.44,
+            subtitle, color="#E2E8F0", fontsize=9.8,
             ha="center", va="center", zorder=5
         )
 
     if items:
-        curr_y = y + h - hdr_h - 0.18
+        curr_y = y + h - hdr_h - 0.22
+        row_step = (h - hdr_h - 0.30) / len(items)
         for badge, endpoint, desc, resp in items:
             badge_bg = "#15803D" if "200" in badge or "201" in badge else ("#B91C1C" if "403" in badge else "#1D4ED8")
             b_patch = FancyBboxPatch(
-                (x + 0.12, curr_y - 0.18), 1.05, 0.25,
-                boxstyle="round,pad=0.01,rounding_size=0.05",
+                (x + 0.16, curr_y - 0.20), 1.25, 0.32,
+                boxstyle="round,pad=0.02,rounding_size=0.06",
                 facecolor=badge_bg, edgecolor="none", zorder=5
             )
             ax.add_patch(b_patch)
             ax.text(
-                x + 0.645, curr_y - 0.055, badge,
-                color="#FFFFFF", fontsize=7.3, fontweight="bold",
+                x + 0.785, curr_y - 0.04, badge,
+                color="#FFFFFF", fontsize=9.5, fontweight="bold",
                 ha="center", va="center", family="DejaVu Sans Mono", zorder=6
             )
             ax.text(
-                x + 1.28, curr_y - 0.03, endpoint,
-                color="#F8FAFC", fontsize=8.1, fontweight="bold",
+                x + 1.55, curr_y - 0.02, endpoint,
+                color="#F8FAFC", fontsize=10.6, fontweight="bold",
                 ha="left", va="center", family="DejaVu Sans Mono", zorder=5
             )
             ax.text(
-                x + 1.28, curr_y - 0.22, desc,
-                color="#CBD5E1", fontsize=7.5,
+                x + 1.55, curr_y - 0.25, desc,
+                color="#CBD5E1", fontsize=9.4,
                 ha="left", va="center", zorder=5
             )
             ax.text(
-                x + w - 0.14, curr_y - 0.12, resp,
+                x + w - 0.20, curr_y - 0.13, resp,
                 color="#38BDF8" if "403" not in badge else "#FCA5A5",
-                fontsize=7.4, fontweight="bold",
+                fontsize=9.8, fontweight="bold",
                 ha="right", va="center", family="DejaVu Sans Mono", zorder=5
             )
-            curr_y -= 0.50
+            curr_y -= row_step
 
 def draw_arrow(ax, x1, y1, x2, y2, color="#38BDF8", label=""):
     ax.annotate(
         "", xy=(x2, y2), xytext=(x1, y1),
-        arrowprops=dict(arrowstyle="-|>,head_width=0.25,head_length=0.35", lw=1.8, color=color),
+        arrowprops=dict(arrowstyle="-|>,head_width=0.30,head_length=0.45", lw=2.2, color=color),
         zorder=6
     )
     if label:
         mx, my = (x1 + x2) / 2, (y1 + y2) / 2
         ax.text(
-            mx, my + 0.10, label, color="#F8FAFC", fontsize=7.4, fontweight="bold",
+            mx, my + 0.12, label, color="#F8FAFC", fontsize=9.2, fontweight="bold",
             ha="center", va="bottom",
-            bbox=dict(boxstyle="round,pad=0.15", facecolor="#0F172A", edgecolor=color, lw=1.0),
+            bbox=dict(boxstyle="round,pad=0.20", facecolor="#0F172A", edgecolor=color, lw=1.2),
             zorder=7
         )
 
@@ -141,52 +144,55 @@ def main():
     with open(OUT_MMD, "w", encoding="utf-8") as f:
         f.write(MMD_CONTENT)
 
-    fig, ax = plt.subplots(figsize=(22, 13.5), dpi=220)
+    fig, ax = plt.subplots(figsize=(24, 15.5), dpi=180)
     fig.patch.set_facecolor("#0B1120")
     ax.set_facecolor("#0B1120")
-    ax.set_xlim(0, 22)
-    ax.set_ylim(0, 13.5)
+    ax.set_xlim(0, 24)
+    ax.set_ylim(0, 15.5)
     ax.axis("off")
 
-    # Title Banner
+    # Banner Superior de Título
     banner = FancyBboxPatch(
-        (0.35, 12.45), 21.3, 0.82,
-        boxstyle="round,pad=0.02,rounding_size=0.10",
-        facecolor="#1E3A8A", edgecolor="#3B82F6", linewidth=1.8, zorder=3
+        (0.40, 14.10), 23.2, 1.10,
+        boxstyle="round,pad=0.03,rounding_size=0.14",
+        facecolor="#1E3A8A", edgecolor="#3B82F6", linewidth=2.2, zorder=3
     )
     ax.add_patch(banner)
     ax.text(
-        11.0, 12.98,
+        12.0, 14.80,
         "FLUJO END-TO-END DE LLAMADAS Y RESPUESTAS POR PERFIL (RBAC): ADMIN vs. OPERADOR",
-        color="#FFFFFF", fontsize=14.2, fontweight="bold", ha="center", va="center", zorder=5
+        color="#FFFFFF", fontsize=16.5, fontweight="bold", ha="center", va="center", zorder=5
     )
     ax.text(
-        11.0, 12.64,
+        12.0, 14.36,
         "Arquitectura Funcional Real de Costo S/ 0.00: Frontend PWA (Render/GitHub Pages)  -->  API Node.js (Render Free)  -->  Neon PostgreSQL (neondb)",
-        color="#BAE6FD", fontsize=9.5, ha="center", va="center", zorder=5
+        color="#BAE6FD", fontsize=11.2, ha="center", va="center", zorder=5
     )
 
-    # TOP LANE: ADMINISTRADOR (role = ADMIN)
+    # 1A. PANEL IZQUIERDO ARRIBA: ADMINISTRADOR (role = ADMIN)
     draw_card(
-        ax, 0.35, 7.15, 4.10, 5.00,
-        "1. PERFIL ADMINISTRADOR (PWA)",
+        ax, 0.40, 7.80, 4.40, 6.00,
+        "1A. PERFIL ADMINISTRADOR (PWA)",
         "admin@leofit.pe | Rol: ADMIN (Control Total)",
         "#1E293B", "#2563EB"
     )
     admin_steps = [
-        ("PASO 1: Login e Identidad JWT", "POST /api/auth/login -> Verifica bcrypt en tabla users.\nRecibe Access Token (role='ADMIN', exp=15m) +\nCookie HttpOnly leofit_rt (rotación en refresh_tokens)."),
-        ("PASO 2: UI Completa Habilitada", "AppContext detecta role === 'ADMIN':\n- Muestra KPIs financieros y márgenes en Dashboard.\n- Habilita botones: + Nuevo Producto, Editar Stock,\n  Eliminar Prenda, Cancelar Pedido y Reembolsar."),
-        ("PASO 3: Emisión de Peticiones", "apiFetch() inyecta automáticamente:\n- Authorization: Bearer <JWT_ADMIN>\n- Idempotency-Key: <UUIDv4> (en POST /api/orders)\n- X-Correlation-ID: <trace_id>"),
+        ("PASO 1: Login e Identidad JWT",
+         "POST /api/auth/login -> Valida hash bcrypt en users.\nRecibe Access Token (role='ADMIN', exp=15m) +\nCookie HttpOnly leofit_rt con rotación segura."),
+        ("PASO 2: UI Completa Habilitada",
+         "AppContext detecta role === 'ADMIN':\n- Muestra KPIs financieros y márgenes en Dashboard.\n- Habilita botones: + Nuevo Producto, Editar Stock,\n  Eliminar Prenda, Cancelar Pedido y Reembolsos."),
+        ("PASO 3: Emisión de Peticiones",
+         "apiFetch() inyecta automáticamente:\n- Authorization: Bearer <JWT_ADMIN>\n- Idempotency-Key: <UUIDv4> (en POST /orders)\n- X-Correlation-ID: <trace_id>"),
     ]
-    sy = 11.35
+    sy = 12.80
     for st_title, st_body in admin_steps:
-        ax.text(0.55, sy, st_title, color="#60A5FA", fontsize=8.4, fontweight="bold", zorder=5)
-        ax.text(0.55, sy - 0.52, st_body, color="#E2E8F0", fontsize=7.5, va="center", zorder=5)
-        sy -= 1.48
+        ax.text(0.65, sy, st_title, color="#60A5FA", fontsize=10.4, fontweight="bold", zorder=5)
+        ax.text(0.65, sy - 0.60, st_body, color="#F1F5F9", fontsize=9.4, va="center", zorder=5, linespacing=1.25)
+        sy -= 1.82
 
-    # ADMIN CALLS MATRIX (Center-Right Top)
+    # 3A. RESPUESTAS ADMIN (DERECHA ARRIBA)
     draw_card(
-        ax, 10.25, 7.15, 11.40, 5.00,
+        ax, 10.70, 7.80, 12.90, 6.00,
         "3A. RESPUESTAS OBTENIDAS POR EL ADMINISTRADOR EN CADA LLAMADA (100% AUTORIZADO)",
         "Todas las rutas operativas y administrativas pasan requireRole('ADMIN') y ejecutan en Neon PostgreSQL (neondb)",
         "#0F172A", "#15803D",
@@ -202,55 +208,60 @@ def main():
         ]
     )
 
-    # MIDDLE PIPELINE (x=5.05): BACKEND MIDDLEWARE PIPELINE + NEON DB
+    # 2. COLUMNA CENTRAL: PIPELINE BACKEND + MOTOR NEON DB
     draw_card(
-        ax, 5.00, 1.35, 4.65, 10.80,
+        ax, 5.20, 1.25, 5.10, 12.55,
         "2. PIPELINE BACKEND & NEON DB",
         "leofit-backend-api (Render) + neondb (Neon)",
         "#1E1B4B", "#7C3AED"
     )
     pipe_boxes = [
-        ("MW-1: Perímetro HTTP", "Helmet (CSP/HSTS) + CORS\n+ X-Correlation-ID (AsyncLocalStorage)", "#312E81", "#6366F1", 10.75),
-        ("MW-2: Control de Tráfico", "RateLimiter (protección DDoS)\n+ Idempotency Lock (tabla idempotency_keys)", "#312E81", "#6366F1", 9.35),
-        ("MW-3: authenticateToken", "Valida firma JWT (HMAC-SHA256 + kid)\nExtrae req.user = { id, email, role }", "#1E3A8A", "#3B82F6", 7.95),
-        ("MW-4: requireRole('ADMIN')", "Compuerta RBAC (OWASP A01):\n¿req.user.role === 'ADMIN'?\n- SÍ -> Pasa al Controlador y Neon DB\n- NO (OPERATOR) -> Corta con HTTP 403", "#7C2D12", "#F97316", 6.25),
-        ("MW-5: Zod + audit()", "Valida esquema estricto de entrada\ny graba before/after en tabla audit_log", "#14532D", "#22C55E", 4.65),
+        ("MW-1: Perímetro HTTP", "Helmet (CSP / HSTS) + CORS Multi-Origen\n+ X-Correlation-ID (AsyncLocalStorage)", "#312E81", "#6366F1", 11.60),
+        ("MW-2: Control de Tráfico", "RateLimiter perimetral (anti-fuerza bruta)\n+ Idempotency Lock (tabla idempotency_keys)", "#312E81", "#6366F1", 9.95),
+        ("MW-3: authenticateToken", "Valida firma JWT (HMAC-SHA256 + kid v1)\nExtrae req.user = { id, email, role }", "#1E3A8A", "#3B82F6", 8.30),
+        ("MW-4: requireRole('ADMIN')", "Compuerta RBAC Estricta (OWASP A01):\n¿req.user.role === 'ADMIN'?\n- SÍ -> Pasa al Controlador y Neon DB\n- NO (OPERATOR) -> Corta con HTTP 403", "#7C2D12", "#F97316", 6.25),
+        ("MW-5: Zod + audit()", "Valida esquema DTO estricto de entrada\ny graba before/after en tabla audit_log", "#14532D", "#22C55E", 4.60),
         ("MOTOR NEON POSTGRESQL", "Host: ep-young-lake-akgakejb (Oregon)\n22 Tablas BCNF + 2 Vistas Analíticas\nTransacciones ACID + Triggers Stock\nCosto: $0.00 / S/ 0.00 perpetuo", "#064E3B", "#10B981", 2.45),
     ]
     for p_title, p_desc, p_bg, p_bd, py in pipe_boxes:
-        ph = 1.45 if "MW-4" in p_title or "NEON" in p_title else 1.15
+        ph = 1.80 if "MW-4" in p_title or "NEON" in p_title else 1.40
         pb = FancyBboxPatch(
-            (5.22, py), 4.21, ph,
-            boxstyle="round,pad=0.02,rounding_size=0.07",
-            facecolor=p_bg, edgecolor=p_bd, linewidth=1.4, zorder=4
+            (5.42, py), 4.66, ph,
+            boxstyle="round,pad=0.03,rounding_size=0.09",
+            facecolor=p_bg, edgecolor=p_bd, linewidth=1.8, zorder=4
         )
         ax.add_patch(pb)
-        ax.text(7.325, py + ph - 0.22, p_title, color="#FFFFFF", fontsize=8.4, fontweight="bold", ha="center", va="center", zorder=5)
-        ax.text(7.325, py + (ph - 0.25) / 2, p_desc, color="#E2E8F0", fontsize=7.3, ha="center", va="center", zorder=5)
+        header_y = py + ph - 0.28
+        body_y = py + (ph - 0.28) / 2
+        ax.text(7.75, header_y, p_title, color="#FFFFFF", fontsize=10.6, fontweight="bold", ha="center", va="center", zorder=5)
+        ax.text(7.75, body_y, p_desc, color="#F1F5F9", fontsize=9.2, ha="center", va="center", zorder=5, linespacing=1.2)
 
-    # BOTTOM LANE: OPERADOR (role = OPERATOR)
+    # 1B. PANEL IZQUIERDO ABAJO: OPERADOR (role = OPERATOR)
     draw_card(
-        ax, 0.35, 1.35, 4.10, 5.35,
+        ax, 0.40, 1.25, 4.40, 6.25,
         "1B. PERFIL OPERADOR (PWA)",
         "operador@leofit.pe | Rol: OPERATOR (Logística)",
         "#1E293B", "#0D9488"
     )
     oper_steps = [
-        ("PASO 1: Login Operativo", "POST /api/auth/login -> Verifica credenciales.\nRecibe Access Token (role='OPERATOR', exp=15m)."),
-        ("PASO 2: Restricción Preventiva en UI", "AppContext detecta role === 'OPERATOR':\n- Oculta creación/edición/borrado de productos.\n- Oculta opción 'Cancelar Pedido' en selector.\n- Enfoca la vista en despacho y seguimiento."),
-        ("PASO 3: Defensa en Profundidad (API)", "Aunque intente invocar rutas de Admin vía\nPostman/cURL, el token lleva role='OPERATOR'\ny el backend lo rechaza con 403 FORBIDDEN."),
+        ("PASO 1: Login Operativo",
+         "POST /api/auth/login -> Valida credenciales.\nRecibe Access Token con claim role='OPERATOR'."),
+        ("PASO 2: Restricción Preventiva en UI",
+         "AppContext detecta role === 'OPERATOR':\n- Oculta creación, edición y borrado de productos.\n- Oculta opción 'Cancelar Pedido' en el listado.\n- Enfoca la vista en despacho y seguimiento."),
+        ("PASO 3: Defensa en Profundidad (API)",
+         "Aunque intente invocar rutas de Admin vía\nPostman o cURL, el token lleva role='OPERATOR'\ny el middleware requireRole corta con 403."),
     ]
-    osy = 5.85
+    osy = 6.70
     for st_title, st_body in oper_steps:
-        ax.text(0.55, osy, st_title, color="#2DD4BF", fontsize=8.4, fontweight="bold", zorder=5)
-        ax.text(0.55, osy - 0.52, st_body, color="#E2E8F0", fontsize=7.5, va="center", zorder=5)
-        osy -= 1.55
+        ax.text(0.65, osy, st_title, color="#2DD4BF", fontsize=10.4, fontweight="bold", zorder=5)
+        ax.text(0.65, osy - 0.60, st_body, color="#F1F5F9", fontsize=9.4, va="center", zorder=5, linespacing=1.25)
+        osy -= 1.85
 
-    # OPERATOR CALLS MATRIX (Center-Right Bottom)
+    # 3B. RESPUESTAS OPERADOR (DERECHA ABAJO)
     draw_card(
-        ax, 10.25, 1.35, 11.40, 5.35,
+        ax, 10.70, 1.25, 12.90, 6.25,
         "3B. RESPUESTAS OBTENIDAS POR EL OPERADOR EN CADA LLAMADA (PERMITIDAS vs. BLOQUEADAS POR RBAC)",
-        "Principio de Mínimo Privilegio (ISO/IEC 25010 Seguridad): Opera despacho completo pero no puede alterar precios, catálogo ni anular ventas",
+        "Principio de Mínimo Privilegio (ISO/IEC 25010 Seguridad): Opera despacho completo pero no puede alterar precios ni anular ventas",
         "#0F172A", "#0D9488",
         items=[
             ("200 OK", "GET /api/products & /alerts/low-stock", "Lee catálogo de prendas, tallas, colores y alertas de stock bajo desde Neon", "Catálogo en vivo"),
@@ -264,24 +275,24 @@ def main():
         ]
     )
 
-    # Arrows connecting columns
-    draw_arrow(ax, 4.45, 9.80, 5.00, 9.80, color="#60A5FA", label="JWT (ADMIN)")
-    draw_arrow(ax, 4.45, 4.20, 5.00, 4.20, color="#2DD4BF", label="JWT (OPERATOR)")
-    draw_arrow(ax, 9.65, 9.80, 10.25, 9.80, color="#4ADE80", label="200 / 201 OK")
-    draw_arrow(ax, 9.65, 4.80, 10.25, 4.80, color="#2DD4BF", label="200 OK (Operativas)")
-    draw_arrow(ax, 9.65, 2.50, 10.25, 2.50, color="#F87171", label="403 FORBIDDEN")
+    # Conectores y Flechas
+    draw_arrow(ax, 4.80, 10.80, 5.20, 10.80, color="#60A5FA", label="JWT (ADMIN)")
+    draw_arrow(ax, 4.80, 4.40, 5.20, 4.40, color="#2DD4BF", label="JWT (OPERATOR)")
+    draw_arrow(ax, 10.30, 10.80, 10.70, 10.80, color="#4ADE80", label="200 / 201 OK")
+    draw_arrow(ax, 10.30, 5.20, 10.70, 5.20, color="#2DD4BF", label="200 OK (Operativas)")
+    draw_arrow(ax, 10.30, 2.60, 10.70, 2.60, color="#F87171", label="403 FORBIDDEN")
 
-    # Footer
+    # Pie de Página Explicativo
     ax.text(
-        11.0, 0.55,
+        12.0, 0.45,
         "INFRAESTRUCTURA 100% GRATUITA (S/ 0.00 / MES):  Frontend PWA en Render Static + GitHub Pages ($0)   |   Backend API en Render Web Service Free ($0)   |   Base de Datos PostgreSQL en Neon Free Tier ($0 sin caducidad)",
-        color="#94A3B8", fontsize=8.6, fontweight="bold", ha="center", va="center",
-        bbox=dict(boxstyle="round,pad=0.35", facecolor="#0F172A", edgecolor="#334155", lw=1.2),
+        color="#94A3B8", fontsize=10.2, fontweight="bold", ha="center", va="center",
+        bbox=dict(boxstyle="round,pad=0.35", facecolor="#0F172A", edgecolor="#334155", lw=1.4),
         zorder=5
     )
 
-    plt.tight_layout(pad=0.3)
-    plt.savefig(OUT_PNG, dpi=220, facecolor=fig.get_facecolor())
+    plt.tight_layout(pad=0.25)
+    plt.savefig(OUT_PNG, dpi=180, facecolor=fig.get_facecolor())
     plt.close(fig)
     print(f"Generated {OUT_PNG} ({os.path.getsize(OUT_PNG)} bytes)")
 
