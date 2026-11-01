@@ -242,13 +242,13 @@ Guion: Estimado docente asesor, Ing. Enrique L. Huamani U., y miembros del jurad
 | Bloque Temático | Contenido Técnico Clave | Expositor Responsable |
 | :--- | :--- | :--- |
 | **0. Levantamiento APF2** | Subsanación al 100% de observaciones previas de la rúbrica | Lady Loayza |
-| **I. Negocio y Alcance** | Contexto Gamarra, brechas AS-IS vs TO-BE, Lean Canvas y Requerimientos | Daniel Rojas |
-| **II. Arquitectura y Datos** | C4 Nivel 2, Clean Architecture, PostgreSQL 16, ACID y Concurrencia | Víctor Cárdenas |
+| **I. Negocio y Alcance** | Contexto Gamarra, brechas AS-IS vs TO-BE, Lean Canvas y Requerimientos | Rojas S., Daniel E. |
+| **II. Arquitectura y Datos** | C4 Nivel 2, Clean Architecture, PostgreSQL 16, ACID y Concurrencia | Cárdenas F., Víctor L. |
 | **III. Seguridad OWASP** | JWT fail-fast, RBAC, Bcrypt salt 10, HMAC SHA-256 y defensa en profundidad | Lady Loayza |
-| **IV. Calidad y Pruebas** | Estrategia Shift-Left, 194 tests (125 Jest + 69 Vitest), cobertura Istanbul y CI/CD | Jim Dávila |
-| **V. Interoperabilidad** | WhatsApp Cloud, Webhooks de pago (Yape/Plin), SUNAT/RENIEC y rótulos QR | Harley Roman |
-| **VI. Usabilidad ISO 25010** | 4 Pilares, 9 tests automáticos, SUS Score 88.5/100 y Core Web Vitals | Harley Roman |
-| **VII. Cloud y Producción** | Topología Cloud V2, K6 (50 VUs), demo en vivo y gobernanza en GitHub | Daniel Rojas |
+| **IV. Calidad y Pruebas** | Estrategia Shift-Left, 194 tests (125 Jest + 69 Vitest), cobertura Istanbul y CI/CD | Dávila M., Jim A. |
+| **V. Interoperabilidad** | WhatsApp Cloud, Webhooks de pago (Yape/Plin), SUNAT/RENIEC y rótulos QR | Roman D., Harley A. |
+| **VI. Usabilidad ISO 25010** | 4 Pilares, 9 tests automáticos, SUS Score 88.5/100 y Core Web Vitals | Roman D., Harley A. |
+| **VII. Cloud y Producción** | Topología Cloud V2, K6 (50 VUs), demo en vivo y gobernanza en GitHub | Rojas S., Daniel E. |
 | **VIII. Cierre y Defensa** | Conclusiones, limitaciones transparentes, roadmap y preguntas del jurado | Equipo Completo |
 
 <!--
@@ -275,7 +275,7 @@ Guion: La sustentación está estructurada en ocho ejes técnicos que cubren rig
 <!--
 Expositor: Lady L. Loayza R. (Scrum Master)
 Tiempo: 50 seg
-Guion: En estricto cumplimiento de la consigna evaluativa, iniciamos demostrando el levantamiento del 100% de las observaciones del APF2. Se diseñó la suite automatizada de integración externa con siete escenarios, se condujo la evaluación formal de usabilidad bajo ISO/IEC 25010 alcanzando 88.5 en SUS, se articuló la trazabilidad total entre historias de usuario y pruebas de código, y se actualizó la infraestructura para la Versión 2 desplegada en la nube. Cedo la palabra a Daniel Rojas para exponer el contexto empresarial y los procesos de negocio.
+Guion: En estricto cumplimiento de la consigna evaluativa, iniciamos demostrando el levantamiento del 100% de las observaciones del APF2. Se diseñó la suite automatizada de integración externa con siete escenarios, se condujo la evaluación formal de usabilidad bajo ISO/IEC 25010 alcanzando 88.5 en SUS, se articuló la trazabilidad total entre historias de usuario y pruebas de código, y se actualizó la infraestructura para la Versión 2 desplegada en la nube. Cedo la palabra a Rojas S., Daniel E. para exponer el contexto empresarial y los procesos de negocio.
 -->
 
 ---
@@ -379,7 +379,7 @@ Guion: El Lean Canvas sintetiza la viabilidad económica y operativa. Nuestra pr
 <!--
 Expositor: Daniel E. Rojas S. (Analista de Negocio)
 Tiempo: 45 seg
-Guion: La gobernanza del desarrollo se ejecutó bajo Scrum y Kanban con estrictas políticas de flujo de trabajo: un límite WIP de tres tareas en desarrollo simultáneo, revisión obligatoria de código y verificación automática de pruebas antes de fusionar ramas. Gestionamos proactivamente la matriz de riesgos mitigando desde fallos de concurrencia hasta caídas de servidores. Cedo la palabra a Víctor Cárdenas para sustentar la arquitectura y base de datos.
+Guion: La gobernanza del desarrollo se ejecutó bajo Scrum y Kanban con estrictas políticas de flujo de trabajo: un límite WIP de tres tareas en desarrollo simultáneo, revisión obligatoria de código y verificación automática de pruebas antes de fusionar ramas. Gestionamos proactivamente la matriz de riesgos mitigando desde fallos de concurrencia hasta caídas de servidores. Cedo la palabra a Cárdenas F., Víctor L. para sustentar la arquitectura y base de datos.
 -->
 
 ---
@@ -539,7 +539,7 @@ Guion: El diagrama de secuencia expone la atomicidad de la orden: el controlador
 <!--
 Expositor: Lady L. Loayza R. (Scrum Master / DevSecOps)
 Tiempo: 55 seg
-Guion: En el Bloque III demostramos la ciberseguridad del sistema bajo estándares OWASP Top 10. Implementamos un mecanismo fail-fast que impide que el servidor inicie si las variables criptográficas no están definidas. Las contraseñas se derivan con bcrypt a 10 rondas de salt e incorporamos mitigación de ataques de tiempo generando un hash ficticio si el usuario no existe. Los webhooks de pagos se autentican con HMAC-SHA256 y comparación en tiempo constante contra timing attacks. La base de datos está totalmente blindada contra inyecciones SQL gracias a consultas parametrizadas. Cedo la palabra a Jim Dávila para la calidad funcional.
+Guion: En el Bloque III demostramos la ciberseguridad del sistema bajo estándares OWASP Top 10. Implementamos un mecanismo fail-fast que impide que el servidor inicie si las variables criptográficas no están definidas. Las contraseñas se derivan con bcrypt a 10 rondas de salt e incorporamos mitigación de ataques de tiempo generando un hash ficticio si el usuario no existe. Los webhooks de pagos se autentican con HMAC-SHA256 y comparación en tiempo constante contra timing attacks. La base de datos está totalmente blindada contra inyecciones SQL gracias a consultas parametrizadas. Cedo la palabra a Dávila M., Jim A. para la calidad funcional.
 -->
 
 ---
@@ -607,7 +607,7 @@ Guion: El corazón de nuestra calidad funcional es esta batería de 194 pruebas 
 <!--
 Expositor: Jim A. Dávila M. (QA Lead / Backend)
 Tiempo: 40 seg
-Guion: El reporte de Istanbul confirma que superamos los estándares académicos de la industria. Alcanzamos un 76.16% de cobertura general en lógica de negocio y un 100% en las áreas de mayor riesgo operacional: controladores de rutas, esquemas de validación Zod y capas criptográficas. Cedo la palabra a Harley Roman para sustentar la interoperabilidad y usabilidad.
+Guion: El reporte de Istanbul confirma que superamos los estándares académicos de la industria. Alcanzamos un 76.16% de cobertura general en lógica de negocio y un 100% en las áreas de mayor riesgo operacional: controladores de rutas, esquemas de validación Zod y capas criptográficas. Cedo la palabra a Roman D., Harley A. para sustentar la interoperabilidad y usabilidad.
 -->
 
 ---
@@ -756,7 +756,7 @@ Métricas de Rendimiento Web (Core Web Vitals en Producción):<br>
 <!--
 Expositor: Harley A. Roman D. (Frontend Lead / PWA)
 Tiempo: 50 seg
-Guion: Los resultados cuantitativos avalan la efectividad de la solución. Aplicamos el cuestionario formal SUS a diez usuarios representativos obteniendo 88.5 sobre 100, calificación de Grado A excelente. El tiempo de captura de pedidos se redujo drásticamente de 45 minutos a 38.2 segundos, y la tasa de errores cayó al 0.4%. En métricas de rendimiento web de Google, el sistema alcanza un LCP de 1.4 segundos y una estabilidad visual casi perfecta. Cedo la palabra a Daniel Rojas para sustentar el entorno Cloud y la gobernanza.
+Guion: Los resultados cuantitativos avalan la efectividad de la solución. Aplicamos el cuestionario formal SUS a diez usuarios representativos obteniendo 88.5 sobre 100, calificación de Grado A excelente. El tiempo de captura de pedidos se redujo drásticamente de 45 minutos a 38.2 segundos, y la tasa de errores cayó al 0.4%. En métricas de rendimiento web de Google, el sistema alcanza un LCP de 1.4 segundos y una estabilidad visual casi perfecta. Cedo la palabra a Rojas S., Daniel E. para sustentar el entorno Cloud y la gobernanza.
 -->
 
 ---
@@ -820,7 +820,7 @@ Guion: La Versión 2 del sistema opera sobre una topología multi-proveedor desa
 ![w:900](./assets/github_actions_ci.png)
 
 * **3 Workflows Automatizados en GitHub Actions:**
-  - `backend-ci-cd.yml`: Compilación TypeScript, linter de código y ejecución de las 47 pruebas con Jest.
+  - `backend-ci-cd.yml`: Compilación TypeScript, linter de código y ejecución de las 125 pruebas en 17 suites con Jest/Supertest.
   - `deploy.yml`: Empaquetado con Vite, generación de bundle optimizado y publicación a rama `gh-pages`.
   - `security-scan.yml`: Auditoría automática de vulnerabilidades SAST y dependencias (`npm audit`).
 
@@ -867,7 +867,7 @@ Guion: Invitamos al jurado a constatar la operatividad en vivo en la URL de prod
 
 | Criterio de Auditoría | Evidencia Concreta en GitHub | Impacto en la Calidad del Proyecto |
 | :--- | :--- | :--- |
-| **Historial Progresivo** | Más de **260 commits** verificables a lo largo de las 16 semanas | Evidencia de desarrollo continuo y autoría genuina |
+| **Historial Progresivo** | Más de **300 commits** verificables a lo largo de las 16 semanas | Evidencia de desarrollo continuo y autoría genuina |
 | **Estrategia de Ramas** | Ramas dedicadas: `feature/cardenas`, `feature/davila`, `feature/loayza`, etc. | Desarrollo concurrente modular sin colisiones |
 | **Convención de Mensajes**| Estándar *Conventional Commits* (`feat:`, `fix:`, `test:`, `docs:`, `chore:`) | Trazabilidad exacta en el changelog de cambios |
 | **Protección de `main`** | Despliegue condicionado a la aprobación del pipeline CI/CD | Estabilidad garantizada en el entorno productivo |
@@ -888,11 +888,11 @@ Guion: La gobernanza del repositorio refleja más de doscientos sesenta commits 
 
 | Integrante | Rol Principal | Aporte Técnico Verificable en Código y Documentación |
 | :--- | :--- | :--- |
-| **Lady Luz Loayza** | Scrum Master / DevSecOps | Subsanación de observaciones APF2, seguridad OWASP, JWT fail-fast, Bcrypt timing mitigations, edición del libro técnico. |
-| **Víctor Cárdenas** | Product Owner / DBA | Modelado 3FN/BCNF de PostgreSQL 16, transacciones FOR UPDATE, triggers atómicos, `orders.test.ts` (13 tests) y backlog. |
-| **Harley Roman** | Frontend Lead / PWA | UI reactiva en React 19, componentes Tailwind 4, interoperabilidad WhatsApp/Pagos, `usability_iso25010.test.ts`. |
-| **Jim Dávila** | QA Lead / Backend | Arquitectura de 194 pruebas (125 Jest + 69 Vitest), suite de webhooks HMAC SHA-256, reportes Istanbul y CI/CD pipelines. |
-| **Daniel Rojas** | Analista / Cloud DevOps | Diagnóstico AS-IS/TO-BE, matriz de riesgos PMI, k6 workload, topología Render/GitHub Pages y validación cloud. |
+| **Loayza R., Lady L.** | Scrum Master / DevSecOps | Subsanación de observaciones APF2, seguridad OWASP, JWT fail-fast, Bcrypt timing mitigations, edición del libro técnico. |
+| **Cárdenas F., Víctor L.** | Product Owner / DBA | Modelado 3FN/BCNF de PostgreSQL 16, transacciones FOR UPDATE, triggers atómicos, `orders.test.ts` (13 tests) y backlog. |
+| **Roman D., Harley A.** | Frontend Lead / PWA | UI reactiva en React 19, componentes Tailwind 4, interoperabilidad WhatsApp/Pagos, `usability_iso25010.test.ts`. |
+| **Dávila M., Jim A.** | QA Lead / Backend | Arquitectura de 194 pruebas (125 Jest + 69 Vitest), suite de webhooks HMAC SHA-256, reportes Istanbul y CI/CD pipelines. |
+| **Rojas S., Daniel E.** | Analista / Cloud DevOps | Diagnóstico AS-IS/TO-BE, matriz de riesgos PMI, k6 workload, topología Render/GitHub Pages y validación cloud. |
 
 <!--
 Expositor: Lady L. Loayza R. (Scrum Master)

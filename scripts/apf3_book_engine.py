@@ -1,14 +1,14 @@
 """
 Motor de maquetación del Informe Final APF3 (formato libro de ingeniería de software).
 
-Cumplimiento normativo estricto:
+Cumplimiento normativo y de accesibilidad:
 - Tipografía: Times New Roman, 12 pt para el cuerpo del texto.
 - Niveles de títulos claramente diferenciados en Times New Roman.
-- Texto y tablas en blanco y negro (escala de grises profesional y formal).
-- Figuras, diagramas, capturas y gráficos a todo color en alta resolución.
+- Tablas con cabecera corporativa LeoFit (#0F172A), texto blanco, filas alternas (#F8FAFC) y bordes (#CBD5E1).
+- Figuras, diagramas, capturas y gráficos a todo color en alta resolución (220 DPI, WCAG 2.1 AA/AAA).
 - Sangría de primera línea de 1.27 cm (0.5 pulgadas) en párrafos de texto continuo.
 - Numeración de páginas formal (romanos en front-matter, arábigos desde el inicio del cuerpo).
-- Título formal del documento centrado y en negrita en la primera página del texto.
+- Exportación simultánea a DOCX y Markdown extendido completo (save_md) sin omisiones.
 """
 import os
 import re
@@ -20,11 +20,11 @@ from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 from docx.shared import Cm, Pt, Inches, RGBColor
 
-# Paleta formal en Blanco y Negro para texto y tablas
+# Paleta formal y accesible (LeoFit Brand + WCAG 2.1 AA/AAA)
 BLACK = RGBColor(0x00, 0x00, 0x00)
-DARK_GREY = RGBColor(0x26, 0x26, 0x26)
-MID_GREY = RGBColor(0x55, 0x55, 0x55)
-LIGHT_GREY = RGBColor(0x88, 0x88, 0x88)
+DARK_GREY = RGBColor(0x1E, 0x29, 0x3B)
+MID_GREY = RGBColor(0x47, 0x55, 0x69)
+LIGHT_GREY = RGBColor(0x64, 0x74, 0x8B)
 WHITE = RGBColor(0xFF, 0xFF, 0xFF)
 
 # Tipografías requeridas
@@ -69,8 +69,8 @@ def cell_margins(table, top=50, bottom=50, left=90, right=90):
     tblPr.append(m)
 
 
-def table_borders(table, color="404040", sz=4):
-    """Bordes formales en escala de grises / negro para tablas."""
+def table_borders(table, color="CBD5E1", sz=4):
+    """Bordes formales visibles (#CBD5E1) para tablas."""
     tblPr = table._tbl.tblPr
     b = OxmlElement("w:tblBorders")
     for k in ("top", "left", "bottom", "right", "insideH", "insideV"):
@@ -124,7 +124,7 @@ def add_field(paragraph, instr, placeholder="", bold=None, size=None, color=None
     return res
 
 
-def para_border(paragraph, side="bottom", color="000000", sz=8, space=4):
+def para_border(paragraph, side="bottom", color="0F172A", sz=8, space=4):
     """Línea de borde formal para encabezados o títulos."""
     pPr = paragraph._p.get_or_add_pPr()
     pb = pPr.find(qn("w:pBdr"))
@@ -147,6 +147,8 @@ class Book:
         self.tab_n = 0
         self.chap_n = 0
         self.sec_n = 0
+        self.md_lines = []
+        self._in_cover = True
         self._setup_page()
         self._setup_styles()
 
@@ -154,8 +156,8 @@ class Book:
     def _setup_page(self):
         s = self.doc.sections[0]
         s.page_width, s.page_height = Cm(21.0), Cm(29.7)
-        s.left_margin = s.right_margin = Cm(2.54) # 1 pulgada formal
-        s.top_margin = s.bottom_margin = Cm(2.54) # 1 pulgada formal
+        s.left_margin = s.right_margin = Cm(2.54)  # 1 pulgada formal
+        s.top_margin = s.bottom_margin = Cm(2.54)  # 1 pulgada formal
         s.header_distance = Cm(1.27)
         s.footer_distance = Cm(1.27)
 
@@ -169,11 +171,6 @@ class Book:
         n.paragraph_format.space_after = Pt(6)
         n.paragraph_format.line_spacing = 1.3
 
-        # Configuración formal de niveles de títulos en Times New Roman (Blanco y Negro)
-        # Nivel 1: 16 pt, Negrita
-        # Nivel 2: 14 pt, Negrita
-        # Nivel 3: 13 pt, Negrita
-        # Nivel 4: 12 pt, Negrita y Cursiva
         cfg = {
             "Heading 1": (16, BLACK, 18, 10, True, False),
             "Heading 2": (14, BLACK, 14, 8, True, False),
@@ -254,7 +251,7 @@ class Book:
                 r = p.add_run(part[1:-1])
                 r.font.name = CODE_FONT
                 _rfonts(r._r, CODE_FONT)
-                r.font.size = Pt((size or 12) - 1.5)
+                r.font.size = Pt(max(9.5, (size or 12) - 1.5))
                 r.font.color.rgb = DARK_GREY
                 continue
             else:
@@ -271,7 +268,7 @@ class Book:
     def p(self, text, align="justify", size=None, italic=False, after=None, indent=None, first_indent=None):
         """Párrafo de texto con sangría de primera línea de 1.27 cm (0.5 in) según norma formal."""
         par = self.doc.add_paragraph()
-        actual_size = size or 12
+        actual_size = max(9.5, size) if size else 12
         self._inline(par, text, size=actual_size, color=BLACK)
         par.alignment = {"justify": WD_ALIGN_PARAGRAPH.JUSTIFY, "left": WD_ALIGN_PARAGRAPH.LEFT,
                          "center": WD_ALIGN_PARAGRAPH.CENTER}[align]
@@ -287,12 +284,16 @@ class Book:
         if indent:
             par.paragraph_format.left_indent = Cm(indent)
 
-        # Sangría de primera línea: 1.27 cm (0.5 pulgadas)
-        # Se aplica automáticamente a párrafos de texto continuo justificados
         if first_indent is True or (first_indent is None and align == "justify" and indent is None):
             par.paragraph_format.first_line_indent = Inches(0.5)
         else:
             par.paragraph_format.first_line_indent = Inches(0)
+
+        # Registro en Markdown
+        if not self._in_cover:
+            md_txt = f"*{text}*" if italic and not text.startswith("*") else text
+            self.md_lines.append(md_txt)
+            self.md_lines.append("")
 
         return par
 
@@ -302,7 +303,9 @@ class Book:
             par.paragraph_format.first_line_indent = Inches(0)
             self._inline(par, it, size=12, color=BLACK)
             par.alignment = WD_ALIGN_PARAGRAPH.LEFT
+            self.md_lines.append(f"- {it}")
         self.doc.paragraphs[-1].paragraph_format.space_after = Pt(6)
+        self.md_lines.append("")
 
     def numbered(self, items):
         for i, it in enumerate(items, 1):
@@ -316,7 +319,9 @@ class Book:
             _rfonts(r._r, BODY_FONT)
             r.font.color.rgb = BLACK
             self._inline(par, it, size=12, color=BLACK)
+            self.md_lines.append(f"{i}. {it}")
         self.doc.paragraphs[-1].paragraph_format.space_after = Pt(6)
+        self.md_lines.append("")
 
     # ------------------------------------------------------------------ títulos
     def doc_title(self, title):
@@ -339,7 +344,11 @@ class Book:
         h.paragraph_format.page_break_before = True
         h.paragraph_format.first_line_indent = Inches(0)
         h.paragraph_format.space_before = Pt(40)
-        para_border(h, "bottom", "000000", 12, 6)
+        para_border(h, "bottom", "0F172A", 12, 6)
+        self.md_lines.append("---")
+        self.md_lines.append("")
+        self.md_lines.append(f"# {title}")
+        self.md_lines.append("")
         if intro:
             par = self.p(intro, italic=True, first_indent=False)
             par.paragraph_format.space_before = Pt(12)
@@ -350,7 +359,11 @@ class Book:
         h.paragraph_format.page_break_before = page_break
         h.paragraph_format.first_line_indent = Inches(0)
         h.paragraph_format.space_before = Pt(0)
-        para_border(h, "bottom", "000000", 12, 6)
+        para_border(h, "bottom", "0F172A", 12, 6)
+        self.md_lines.append("---")
+        self.md_lines.append("")
+        self.md_lines.append(f"## {title}")
+        self.md_lines.append("")
         return h
 
     def chapter(self, title):
@@ -360,7 +373,9 @@ class Book:
         h.paragraph_format.page_break_before = True
         h.paragraph_format.first_line_indent = Inches(0)
         h.paragraph_format.space_before = Pt(0)
-        para_border(h, "bottom", "333333", 8, 6)
+        para_border(h, "bottom", "1E3A8A", 8, 6)
+        self.md_lines.append(f"## Capítulo {self.chap_n}. {title}")
+        self.md_lines.append("")
         return h
 
     def annex(self, letter, title):
@@ -368,9 +383,11 @@ class Book:
         h.paragraph_format.page_break_before = True
         h.paragraph_format.first_line_indent = Inches(0)
         h.paragraph_format.space_before = Pt(0)
-        para_border(h, "bottom", "333333", 8, 6)
+        para_border(h, "bottom", "1E3A8A", 8, 6)
         self.sec_n = 0
         self.annex_letter = letter
+        self.md_lines.append(f"## Anexo {letter}. {title}")
+        self.md_lines.append("")
         return h
 
     def sec(self, title, annex=False):
@@ -378,11 +395,15 @@ class Book:
         label = f"{getattr(self, 'annex_letter', '')}.{self.sec_n}" if annex else f"{self.chap_n}.{self.sec_n}"
         h = self.doc.add_heading(f"{label}  {title}", level=3)
         h.paragraph_format.first_line_indent = Inches(0)
+        self.md_lines.append(f"### {label} {title}")
+        self.md_lines.append("")
         return h
 
     def sub(self, title):
         h = self.doc.add_heading(title, level=4)
         h.paragraph_format.first_line_indent = Inches(0)
+        self.md_lines.append(f"#### {title}")
+        self.md_lines.append("")
         return h
 
     # ------------------------------------------------------------------ captions
@@ -395,7 +416,7 @@ class Book:
         _rfonts(r._r, HEAD_FONT)
         r.font.size = Pt(10)
         r.font.color.rgb = BLACK
-        res = add_field(cp, f"SEQ {label} \\* ARABIC", str(n), bold=True, color=BLACK)
+        add_field(cp, f"SEQ {label} \\* ARABIC", str(n), bold=True, color=BLACK)
         for rx in cp.runs:
             rx.font.name = HEAD_FONT
             _rfonts(rx._r, HEAD_FONT)
@@ -427,14 +448,25 @@ class Book:
         par.add_run().add_picture(path, width=Cm(width_cm))
         self._caption("Figura", self.fig_n, caption)
 
-    # ------------------------------------------------------------------ tablas (EN BLANCO Y NEGRO)
+        # Ruta relativa desde docs/01_entregable_final_apf3/
+        norm_rel = rel_path.replace("\\", "/")
+        if norm_rel.startswith("docs/"):
+            md_img_path = "../" + norm_rel[len("docs/"):]
+        else:
+            md_img_path = norm_rel
+        self.md_lines.append(f"![Figura {self.fig_n}. {caption}]({md_img_path})")
+        self.md_lines.append(f"*Figura {self.fig_n}. {caption}*")
+        self.md_lines.append("")
+
+    # ------------------------------------------------------------------ tablas (CORPORATIVAS ACCESIBLES)
     def table(self, headers, rows, caption, widths=None, size=9.5, align=None):
         self.tab_n += 1
+        actual_size = max(9.5, size)
         self._caption("Tabla", self.tab_n, caption, before=True)
         t = self.doc.add_table(rows=1, cols=len(headers))
         t.alignment = WD_TABLE_ALIGNMENT.CENTER
         t.autofit = False
-        table_borders(t, color="404040", sz=4) # Bordes negros/grises
+        table_borders(t, color="CBD5E1", sz=4)
         cell_margins(t, top=60, bottom=60, left=90, right=90)
         total = 16.0
         if widths is None:
@@ -443,22 +475,22 @@ class Book:
             k = total / sum(widths)
             widths = [w * k for w in widths]
 
-        # Encabezado de tabla en blanco y negro (fondo gris oscuro carbón, texto blanco en negrita)
+        # Encabezado de tabla LeoFit Brand Dark (#0F172A, texto blanco en negrita)
         for i, h in enumerate(headers):
             c = t.rows[0].cells[i]
             c.width = Cm(widths[i])
-            cell_bg(c, "262626")
+            cell_bg(c, "0F172A")
             c.paragraphs[0].paragraph_format.space_after = Pt(0)
             c.paragraphs[0].paragraph_format.first_line_indent = Inches(0)
             r = c.paragraphs[0].add_run(h)
             r.bold = True
-            r.font.size = Pt(size)
+            r.font.size = Pt(actual_size)
             r.font.name = HEAD_FONT
             _rfonts(r._r, HEAD_FONT)
             r.font.color.rgb = WHITE
         repeat_header(t.rows[0])
 
-        # Filas de datos en escala de grises
+        # Filas de datos con zebra accesible (#F8FAFC)
         for ri, row in enumerate(rows):
             cells = t.add_row().cells
             no_split(t.rows[-1])
@@ -466,14 +498,14 @@ class Book:
                 c = cells[i]
                 c.width = Cm(widths[i])
                 if ri % 2 == 1:
-                    cell_bg(c, "F5F5F5") # Gris muy claro alterno
+                    cell_bg(c, "F8FAFC")
                 par = c.paragraphs[0]
                 par.paragraph_format.space_after = Pt(0)
                 par.paragraph_format.line_spacing = 1.15
                 par.paragraph_format.first_line_indent = Inches(0)
                 if align and align[i] == "c":
                     par.alignment = WD_ALIGN_PARAGRAPH.CENTER
-                self._inline(par, str(val), size=size, color=BLACK)
+                self._inline(par, str(val), size=actual_size, color=BLACK)
                 for r in par.runs:
                     if r.font.name != CODE_FONT:
                         r.font.name = HEAD_FONT
@@ -483,38 +515,60 @@ class Book:
         sp = self.doc.add_paragraph()
         sp.paragraph_format.first_line_indent = Inches(0)
         sp.paragraph_format.space_after = Pt(6)
+
+        # Registro en Markdown
+        self.md_lines.append(f"**Tabla {self.tab_n}.** *{caption}*")
+        self.md_lines.append("")
+        self.md_lines.append("| " + " | ".join(str(h) for h in headers) + " |")
+        self.md_lines.append("| " + " | ".join("---" for _ in headers) + " |")
+        for row in rows:
+            clean_cells = [str(v).replace("\n", " ") for v in row]
+            self.md_lines.append("| " + " | ".join(clean_cells) + " |")
+        self.md_lines.append("")
         return t
 
-    # ------------------------------------------------------------------ código (escala de grises)
-    def code(self, text, caption=None, size=8.5):
+    # ------------------------------------------------------------------ código (legibilidad >= 9.5pt)
+    def code(self, text, caption=None, size=9.5):
+        actual_size = max(9.5, size)
         if caption:
             self.tab_n += 1
             self._caption("Tabla", self.tab_n, caption, before=True)
+            self.md_lines.append(f"**Tabla {self.tab_n} (Listado de Código).** *{caption}*")
+            self.md_lines.append("")
         t = self.doc.add_table(rows=1, cols=1)
         t.alignment = WD_TABLE_ALIGNMENT.CENTER
-        table_borders(t, "737373", 4)
+        table_borders(t, "CBD5E1", 4)
         cell_margins(t, 80, 80, 140, 140)
         c = t.rows[0].cells[0]
         c.width = Cm(16)
-        cell_bg(c, "F5F5F5")
+        cell_bg(c, "F8FAFC")
         lines = text.strip("\n").split("\n")
         for i, ln in enumerate(lines):
             par = c.paragraphs[0] if i == 0 else c.add_paragraph()
             par.paragraph_format.first_line_indent = Inches(0)
             par.paragraph_format.space_after = Pt(0)
-            par.paragraph_format.line_spacing = 1.0
+            par.paragraph_format.line_spacing = 1.05
             r = par.add_run(ln if ln else " ")
             r.font.name = CODE_FONT
             _rfonts(r._r, CODE_FONT)
-            r.font.size = Pt(size)
+            r.font.size = Pt(actual_size)
             r.font.color.rgb = BLACK
         sp = self.doc.add_paragraph()
         sp.paragraph_format.first_line_indent = Inches(0)
         sp.paragraph_format.space_after = Pt(6)
 
-    # ------------------------------------------------------------------ notas (A COLOR)
+        self.md_lines.append("```")
+        self.md_lines.append(text.strip("\n"))
+        self.md_lines.append("```")
+        self.md_lines.append("")
+
+    # ------------------------------------------------------------------ notas (A COLOR WCAG AA/AAA)
     def note(self, title, text, kind="info"):
-        fills = {"info": ("E6F6FA", "06B6D4"), "warn": ("FEF3C7", "F59E0B"), "ok": ("DCFCE7", "16A34A")}
+        fills = {
+            "info": ("EFF6FF", "1665D8"),
+            "warn": ("FFF7ED", "C2410C"),
+            "ok":   ("DCFCE7", "15803D"),
+        }
         fill, edge = fills[kind]
         t = self.doc.add_table(rows=1, cols=1)
         t.alignment = WD_TABLE_ALIGNMENT.CENTER
@@ -549,6 +603,11 @@ class Book:
         sp.paragraph_format.first_line_indent = Inches(0)
         sp.paragraph_format.space_after = Pt(6)
 
+        alert_map = {"info": "NOTE", "warn": "WARNING", "ok": "TIP"}
+        self.md_lines.append(f"> [!{alert_map.get(kind, 'NOTE')}]")
+        self.md_lines.append(f"> **{title}:** {text}")
+        self.md_lines.append("")
+
     def page_break(self):
         p = self.doc.add_paragraph()
         p.paragraph_format.first_line_indent = Inches(0)
@@ -565,7 +624,7 @@ class Book:
         r.font.name = HEAD_FONT
         _rfonts(r._r, HEAD_FONT)
         r.font.color.rgb = BLACK
-        para_border(h, "bottom", "000000", 12, 6)
+        para_border(h, "bottom", "0F172A", 12, 6)
         h.paragraph_format.space_after = Pt(14)
         par = self.doc.add_paragraph()
         par.paragraph_format.first_line_indent = Inches(0)
@@ -591,18 +650,18 @@ class Book:
             r._r.getparent().remove(r._r)
         if running_head:
             r1 = hp.add_run(header_text + "\t")
-            r1.font.size = Pt(9)
+            r1.font.size = Pt(9.5)
             r1.font.name = HEAD_FONT
             _rfonts(r1._r, HEAD_FONT)
             r1.font.color.rgb = DARK_GREY
 
             r2 = hp.add_run("UTP · Curso Integrador II: Software")
-            r2.font.size = Pt(9)
+            r2.font.size = Pt(9.5)
             r2.font.name = HEAD_FONT
             _rfonts(r2._r, HEAD_FONT)
             r2.font.color.rgb = DARK_GREY
 
-            para_border(hp, "bottom", "737373", 4, 4)
+            para_border(hp, "bottom", "CBD5E1", 4, 4)
             hp.paragraph_format.tab_stops.add_tab_stop(Cm(16), alignment=2)
 
         fp = section.footer.paragraphs[0]
@@ -618,6 +677,7 @@ class Book:
 
     def new_section(self, kind="front"):
         """kind: front (romano) | body (arábigo, reinicia en 1)."""
+        self._in_cover = False
         sec = self.doc.add_section(WD_SECTION.NEW_PAGE)
         if kind == "front":
             self._pgnum(sec, "lowerRoman", 1)
@@ -627,7 +687,6 @@ class Book:
         if kind == "front":
             sec.header.is_linked_to_previous = False
             self._header_footer(sec, running_head=False)
-            # pie con número romano
             fp = sec.footer.paragraphs[0]
             fp.paragraph_format.first_line_indent = Inches(0)
             fp.alignment = WD_ALIGN_PARAGRAPH.CENTER
@@ -639,6 +698,13 @@ class Book:
     def finish_cover_section(self):
         s0 = self.doc.sections[0]
         self._header_footer(s0, running_head=False)
+        self._in_cover = False
 
     def save(self, path):
         self.doc.save(path)
+
+    def save_md(self, md_path, header_banner=None):
+        with open(md_path, "w", encoding="utf-8") as f:
+            if header_banner:
+                f.write(header_banner.strip() + "\n\n")
+            f.write("\n".join(self.md_lines).strip() + "\n")
