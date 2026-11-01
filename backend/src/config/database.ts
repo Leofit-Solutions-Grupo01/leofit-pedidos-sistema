@@ -9,10 +9,16 @@ dotenv.config();
 
 const isProduction = process.env.NODE_ENV === 'production';
 
+const requiresSsl =
+  process.env.DB_SSL === 'true' ||
+  (process.env.DATABASE_URL
+    ? /sslmode=require|neon\.tech|supabase\.co|render\.com/i.test(process.env.DATABASE_URL)
+    : false);
+
 const poolConfig: PoolConfig = process.env.DATABASE_URL
   ? {
       connectionString: process.env.DATABASE_URL,
-      ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : undefined,
+      ssl: requiresSsl ? { rejectUnauthorized: false } : undefined,
       max: 20,
       idleTimeoutMillis: 30000,
       connectionTimeoutMillis: 5000,
@@ -23,7 +29,7 @@ const poolConfig: PoolConfig = process.env.DATABASE_URL
       user: process.env.DB_USER || 'postgres',
       password: process.env.DB_PASSWORD || 'postgres',
       database: process.env.DB_NAME || 'leofit_db',
-      ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : undefined,
+      ssl: requiresSsl ? { rejectUnauthorized: false } : undefined,
       max: 20,
       idleTimeoutMillis: 30000,
       connectionTimeoutMillis: 5000,
@@ -33,7 +39,7 @@ export const dbPool = new Pool(poolConfig);
 
 let isPgConnected = false;
 
-// Evita caídas del proceso si la instancia de PostgreSQL (ej. Render Free Tier) se suspende o cierra conexiones inactivas
+// Evita caídas del proceso si la instancia de PostgreSQL (ej. Render Free Tier / Neon Serverless) cierra conexiones inactivas
 dbPool.on('error', (err) => {
   console.warn('⚠️ Conexión PostgreSQL interrumpida en runtime. Conmutando a Almacén Transaccional en Memoria (Fallback):', err.message);
   isPgConnected = false;
@@ -45,7 +51,7 @@ export async function checkDatabaseConnection(): Promise<boolean> {
     await client.query('SELECT 1');
     client.release();
     isPgConnected = true;
-    console.log('✅ Conexión exitosa al clúster PostgreSQL / Supabase.');
+    console.log('✅ Conexión exitosa al clúster PostgreSQL (Neon / Render / Supabase).');
     return true;
   } catch (error) {
     console.warn('⚠️ No se detectó instancia activa de PostgreSQL local. Activando Almacén Transaccional en Memoria (Repository Pattern Fallback).');
