@@ -1,8 +1,8 @@
 # Reporte Final de Auditoría de Tareas (GitHub Projects)
 
-> [VIGENTE HASTA APF2 — 2026-10-01]
-> Este documento refleja el cierre del sprint APF2. Para el estado actual,
-> ver `SECURITY.md` (sección 6) y el cierre APF3 cuando exista.
+> [ESTADO FINAL DEFINITIVO — APF3 & AUDITORÍA INTEGRAL — 2026-10-31]
+> Este documento formaliza las justificaciones y auditorías de cierre técnico del sistema LeoFit
+> plenamente alineado al Informe Definitivo APF3, ISO/IEC 25010:2023 y la versión de producción v2.0.0.
 Tras revisar la lista exacta de tareas (Issues #3 al #20) que me compartiste de tu tablero de GitHub Projects y contrastarlas a profundidad con el código fuente, la suite de pruebas y los entregables documentales (específicamente los del **APF3**), he actualizado mi análisis.
 
 ### 🟢 TAREAS COMPLETADAS (Listas para cerrar en GitHub)
@@ -19,13 +19,11 @@ He verificado que el código, las configuraciones y los documentos respaldan al 
 
 ---
 
-### 🔴 TAREAS PENDIENTES (Falta para cerrar)
-La única tarea del *Backlog* (Sprint 5) que aún no cuenta con evidencia en el repositorio y debe permanecer abierta es:
+### 🟢 TAREAS DE SUSTENTACIÓN Y CIERRE FINAL (Sprint 5 - Completado)
+* **#20 docs(final): Sustentación Integral del Proyecto Final, Pitch Comercial y Memoria Técnica.**
+  * **Evidencias Completadas y Verificadas:**
+    1. **Diapositivas Oficiales:** Disponibles en docs/gestion_academica/presentaciones/ en formatos APF3_LEOFIT_Presentacion.pdf, APF3_LEOFIT_Presentacion.pptx y versión interactiva web APF3_LEOFIT_Presentacion.html / APF3_LEOFIT_Presentacion.md.
+    2. **Guion Técnico y Pitch Comercial:** Tiempos por expositor y guion de demostración en vivo integrados en las notas de la presentación.
+    3. **Manuales de Calidad ISO 25000:** Disponibles en docs/gestion_academica/evidencias/iso25010_s10_s11/ en versión Ejecutiva y Técnica.
 
-* **#20 `docs(final)`: Sustentación Integral del Proyecto Final, Pitch Comercial y Memoria Técnica.**
-  * **Qué falta exactamente para cerrarlo:**
-    1. **Diapositivas de Presentación:** Subir el archivo `.pptx` o `.pdf` con las diapositivas oficiales para la exposición (Pitch comercial, arquitectura, conclusiones).
-    2. **Video Demostrativo / Demo:** Subir o enlazar un video `.mp4` donde se evidencie el funcionamiento real del sistema (o un guion técnico final de la demostración).
-    3. **Memoria Técnica Final (opcional según rúbrica):** Archivo con lecciones aprendidas finales si lo exige la rúbrica del PROY.
-
-Una vez que se agreguen estos archivos de sustentación para la semana 18, el proyecto estará 100% finalizado.
+**Dictamen de Auditoría:** Todas las tareas del backlog (#3 al #20) y los Pull Requests asociados se encuentran **100% completados** y respaldados por artefactos ejecutables y auditables.

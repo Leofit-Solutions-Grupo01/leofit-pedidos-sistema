@@ -1,16 +1,280 @@
+import { triggerSessionExpired, validateAndDecodeJwt } from './authGuard';
+
+export class ApiError extends Error {
+  public code: string;
+  public status: number;
+
+  constructor(codeOrMessage: string, messageOrStatus?: string | number, code?: string) {
+    if (typeof messageOrStatus === 'number') {
+      // Firma de Víctor: new ApiError(message, status, code)
+      super(codeOrMessage);
+      this.status = messageOrStatus;
+      this.code = code || 'API_ERROR';
+    } else {
+      // Firma de Main: new ApiError(code, message)
+      super(messageOrStatus || codeOrMessage);
+      this.code = codeOrMessage;
+      this.status = 0;
+    }
+    this.name = 'ApiError';
+  }
+}
+
+export function getApiBaseUrl(): string {
+  const envApiUrl = import.meta.env.VITE_API_URL;
+  const baseUrl = envApiUrl !== undefined
+    ? envApiUrl
+    : (typeof window !== 'undefined' && window.location.hostname === 'localhost'
+        ? 'http://localhost:4000'
+        : 'https://leofit-backend-api.onrender.com');
+
+  if (!baseUrl) {
+    throw new Error('VITE_API_URL no está definido');
+  }
+
+  return baseUrl.replace(/\/+$/, '');
+}
+
+let inMemoryAccessToken: string | null = null;
+let refreshPromise: Promise<boolean> | null = null;
+const authListeners = new Set<(evt: 'logout' | 'refreshed') => void>();
+
+export function setAccessToken(token: string | null): void {
+  inMemoryAccessToken = token;
+  if (typeof sessionStorage !== 'undefined') {
+    if (token) {
+      sessionStorage.setItem('leofit_session', token);
+    } else {
+      sessionStorage.removeItem('leofit_session');
+    }
+  }
+}
+
+export function getAccessToken(): string | null {
+  if (inMemoryAccessToken) return inMemoryAccessToken;
+  if (typeof sessionStorage !== 'undefined') {
+    return sessionStorage.getItem('leofit_session');
+  }
+  return null;
+}
+
+export function onAuthEvent(fn: (evt: 'logout' | 'refreshed') => void): () => void {
+  authListeners.add(fn);
+  return () => {
+    authListeners.delete(fn);
+  };
+}
+
+function emitAuthEvent(evt: 'logout' | 'refreshed'): void {
+  authListeners.forEach((listener) => {
+    try {
+      listener(evt);
+    } catch {
+      // Ignorar errores de observadores
+    }
+  });
+}
+
 /**
- * @file api.ts
- * @description Cliente HTTP del backend LeoFit + mapeadores entre el modelo de pantalla
- *              (Pedido / Producto, en español) y el modelo de la API (Order / Product, snake_case).
- * @project LeoFit Pedidos Sistema (UTP - Curso Integrador II)
- *
- * Decisiones de diseño:
- *  - Un `Producto` de pantalla equivale a UNA VARIANTE de la API (producto + talla + color),
- *    por eso su id es el id de la variante. Es lo que el backend necesita para crear pedidos.
- *  - La API no guarda algunos datos propios de la operación peruana (canal, DNI/RUC, agencia,
- *    guía, cupón, número de operación). Se serializan de forma compacta al final de `notes`
- *    (bloque [[LFT-META]]) y se recuperan al leer. Mejora futura: columnas propias en `orders`.
+ * Ejecuta la renovación silenciosa del access token usando la cookie HttpOnly leofit_rt.
+ * Implementa Single-Flight para deduplicar peticiones concurrentes a /api/auth/refresh.
  */
+export async function doRefresh(): Promise<boolean> {
+  if (!refreshPromise) {
+    refreshPromise = (async () => {
+      try {
+        const baseUrl = getApiBaseUrl();
+        const res = await fetch(`${baseUrl}/api/auth/refresh`, {
+          method: 'POST',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json' }
+        });
+
+        if (!res.ok) {
+          return false;
+        }
+
+        const data = await res.json();
+        const newAccessToken = data?.data?.accessToken || data?.data?.token;
+        if (newAccessToken) {
+          setAccessToken(newAccessToken);
+          emitAuthEvent('refreshed');
+          return true;
+        }
+        return false;
+      } catch {
+        return false;
+      } finally {
+        refreshPromise = null;
+      }
+    })();
+  }
+  return refreshPromise;
+}
+
+export async function apiBootstrap(): Promise<boolean> {
+  return doRefresh();
+}
+
+export async function apiLogout(): Promise<void> {
+  try {
+    const baseUrl = getApiBaseUrl();
+    await fetch(`${baseUrl}/api/auth/logout`, {
+      method: 'POST',
+      credentials: 'include'
+    });
+  } catch {
+    // Si la red falla, aseguramos la limpieza local
+  } finally {
+    setAccessToken(null);
+    emitAuthEvent('logout');
+  }
+}
+
+export async function apiFetch<T>(
+  endpoint: string,
+  options: RequestInit = {},
+  cerrarSesionFn?: () => void
+): Promise<T> {
+  const currentToken = getAccessToken();
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+    ...(options.headers as Record<string, string>)
+  };
+
+  if (currentToken) {
+    const isSynthetic = currentToken.startsWith('token-mock-') || currentToken.startsWith('token-offline-');
+    if (!isSynthetic) {
+      headers['Authorization'] = `Bearer ${currentToken}`;
+    }
+  }
+
+  const baseUrl = getApiBaseUrl();
+  const url = endpoint.startsWith('http') ? endpoint : `${baseUrl}${endpoint}`;
+
+  const method = (options.method || 'GET').toUpperCase();
+  const hasIdempotencyKey = !!(headers['Idempotency-Key'] || headers['idempotency-key'] || headers['X-Idempotency-Key']);
+  const isRetryable = method === 'GET' || hasIdempotencyKey;
+  const maxRetries = isRetryable ? 2 : 0;
+
+  let res: Response | null = null;
+
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    try {
+      res = await fetch(url, { ...options, headers, credentials: 'include' });
+    } catch (error: any) {
+      if (attempt < maxRetries && error.name !== 'AbortError') {
+        const delayMs = Math.min(4000, 1000 * Math.pow(2, attempt) + Math.random() * 250);
+        await new Promise((resolve) => setTimeout(resolve, delayMs));
+        continue;
+      }
+      throw new ApiError('NETWORK_ERROR', error.message || 'Error de red');
+    }
+
+    // Si el servidor está procesando concurrentemente la misma Idempotency-Key (409) o en cold-start (502, 503, 504)
+    const isConcurrentIdempotency = (res.status === 409 || res.status === 425) && hasIdempotencyKey;
+    const isServerWakingOrDegraded = [502, 503, 504].includes(res.status);
+
+    if (res && (isServerWakingOrDegraded || isConcurrentIdempotency) && attempt < maxRetries) {
+      const retryAfter = res.headers ? res.headers.get('Retry-After') : null;
+      let delayMs = Math.min(4000, 1000 * Math.pow(2, attempt) + Math.random() * 250);
+      if (retryAfter) {
+        const seconds = parseInt(retryAfter, 10);
+        if (!isNaN(seconds) && seconds > 0) {
+          delayMs = Math.min(seconds * 1000, 6000);
+        }
+      }
+      await new Promise((resolve) => setTimeout(resolve, delayMs));
+      continue;
+    }
+
+    break;
+  }
+
+  if (!res) {
+    throw new ApiError('NETWORK_ERROR', 'No se pudo obtener respuesta del servidor');
+  }
+
+  // 401 Manejo con Refresh Silencioso (siempre que no estemos llamando a los endpoints de auth)
+  if (res.status === 401 && !endpoint.includes('/api/auth/')) {
+    const refreshed = await doRefresh();
+    if (refreshed) {
+      const newAuthToken = getAccessToken();
+      const retryHeaders = {
+        ...headers,
+        ...(newAuthToken ? { Authorization: `Bearer ${newAuthToken}` } : {})
+      };
+      res = await fetch(url, { ...options, headers: retryHeaders, credentials: 'include' });
+    }
+  }
+
+  if (!res.ok) {
+    let errCode = 'UNKNOWN_ERROR';
+    let errMessage = `HTTP Error ${res.status}`;
+    
+    try {
+      const errorData = await res.json();
+      if (errorData && !errorData.success && errorData.error) {
+        errCode = errorData.error.code || errCode;
+        errMessage = errorData.error.message || errMessage;
+      }
+    } catch {
+      // Ignore if not json
+    }
+
+    const isTokenExpiredOrInvalid =
+      res.status === 401 ||
+      (res.status === 403 && (
+        errCode === 'FORBIDDEN' ||
+        errMessage.toLowerCase().includes('token') ||
+        errMessage.toLowerCase().includes('expirado') ||
+        errMessage.toLowerCase().includes('inválido') ||
+        errMessage.toLowerCase().includes('sesión')
+      ));
+
+    if (isTokenExpiredOrInvalid) {
+      setAccessToken(null);
+      emitAuthEvent('logout');
+      if (cerrarSesionFn) {
+        triggerSessionExpired(errMessage || 'Token de sesión inválido o expirado. Inicie sesión nuevamente.');
+        cerrarSesionFn();
+      }
+      throw new ApiError('UNAUTHORIZED', errMessage);
+    }
+    
+    throw new ApiError(errCode, errMessage);
+  }
+
+  if (res.status === 204) {
+    return {} as T;
+  }
+
+  try {
+    const data = await res.json();
+    if (data && typeof data === 'object' && 'success' in data) {
+      if (!data.success) {
+         throw new ApiError(data.error?.code || 'API_ERROR', data.error?.message || 'Error en la respuesta');
+      }
+      return data.data as T;
+    }
+    return data as T;
+  } catch (e) {
+    if (e instanceof ApiError) throw e;
+    return {} as T;
+  }
+}
+
+
+/* ------------------------------------------------------------------ */
+/* Compatibilidad con Feature Branch: Víctor Cárdenas (Backend/Mappers) */
+/* ------------------------------------------------------------------ */
+
+export const SESSION_KEY = 'leofit_session';
+export const API_URL = getApiBaseUrl();
+export const getToken = getAccessToken;
+export const setToken = setAccessToken;
+export const clearToken = () => setAccessToken(null);
+
 import type {
   Pedido,
   Producto,
@@ -18,72 +282,30 @@ import type {
   MetodoPago,
   TipoEnvio,
   AgenciaEncomienda,
-} from "../data/mockData";
-
-/* ------------------------------------------------------------------ */
-/* Configuración y sesión                                              */
-/* ------------------------------------------------------------------ */
-
-export const SESSION_KEY = "leofit_session";
-
-/** URL base del backend, sin "/" final y sin "/api" (ej.: https://leofit-api.onrender.com). */
-export const API_URL: string =
-  ((import.meta as any).env?.VITE_API_URL as string | undefined)?.replace(/\/+$/, "") || "";
-
-export const getToken = (): string | null => {
-  try {
-    return sessionStorage.getItem(SESSION_KEY);
-  } catch {
-    return null;
-  }
-};
-export const setToken = (token: string): void => {
-  try {
-    sessionStorage.setItem(SESSION_KEY, token);
-  } catch {
-    /* sandbox / navegación privada */
-  }
-};
-export const clearToken = (): void => {
-  try {
-    sessionStorage.removeItem(SESSION_KEY);
-  } catch {
-    /* noop */
-  }
-};
-
-export class ApiError extends Error {
-  status: number;
-  code?: string;
-  constructor(message: string, status: number, code?: string) {
-    super(message);
-    this.name = "ApiError";
-    this.status = status;
-    this.code = code;
-  }
-}
+} from '../data/mockData';
 
 async function request<T>(
   path: string,
   opts: { method?: string; body?: unknown; auth?: boolean } = {}
 ): Promise<{ json: any; data: T }> {
-  const { method = "GET", body, auth = true } = opts;
+  const { method = 'GET', body, auth = true } = opts;
   const headers: Record<string, string> = {};
-  if (body !== undefined) headers["Content-Type"] = "application/json";
+  if (body !== undefined) headers['Content-Type'] = 'application/json';
   if (auth) {
     const token = getToken();
-    if (token) headers["Authorization"] = `Bearer ${token}`;
+    if (token) headers['Authorization'] = `Bearer ${token}`;
   }
 
   let res: Response;
   try {
-    res = await fetch(`${API_URL}/api${path}`, {
+    const baseUrl = getApiBaseUrl();
+    res = await fetch(`${baseUrl}/api${path}`, {
       method,
       headers,
       body: body !== undefined ? JSON.stringify(body) : undefined,
     });
   } catch {
-    throw new ApiError("No se pudo conectar con el servidor. Verifique su conexión.", 0, "NETWORK");
+    throw new ApiError('No se pudo conectar con el servidor. Verifique su conexión.', 0, 'NETWORK');
   }
 
   let json: any = null;
@@ -95,17 +317,18 @@ async function request<T>(
 
   if (!res.ok) {
     const detalles = Array.isArray(json?.error?.details)
-      ? " (" + json.error.details.map((d: any) => `${d.field}: ${d.message}`).join("; ") + ")"
-      : "";
+      ? ' (' + json.error.details.map((d: any) => `${d.field}: ${d.message}`).join('; ') + ')'
+      : '';
     const msg = (json?.error?.message || `Error ${res.status}`) + detalles;
     if (res.status === 401 && auth) {
       clearToken();
-      if (typeof window !== "undefined") window.dispatchEvent(new Event("leofit:unauthorized"));
+      if (typeof window !== 'undefined') window.dispatchEvent(new Event('leofit:unauthorized'));
     }
     throw new ApiError(msg, res.status, json?.error?.code);
   }
   return { json, data: json?.data as T };
 }
+
 
 /* ------------------------------------------------------------------ */
 /* Tipos de la API (solo lo que usa el frontend)                       */

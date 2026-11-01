@@ -137,11 +137,13 @@ def create_c4_diagram():
     ax.text(8.0, 0.3, 'C4 Model Level 2 - Contenedores de Software | Conforme a Estándar IEEE 1471 / ISO 42010 | LeoFit Multi-Carrier Dispatch',
             ha='center', va='center', fontsize=9, style='italic', color='#64748B')
 
-    os.makedirs('diagrams', exist_ok=True)
+    out_dir = os.path.join('docs', 'diagramas')
+    os.makedirs(out_dir, exist_ok=True)
+    out_file = os.path.join(out_dir, '11_Arquitectura_C4_Model.png')
     plt.tight_layout()
-    plt.savefig('diagrams/11_Arquitectura_C4_Model.png', dpi=300, bbox_inches='tight')
+    plt.savefig(out_file, dpi=300, bbox_inches='tight')
     plt.close()
-    print('[OK] Diagrama C4 actualizado exitosamente en diagrams/11_Arquitectura_C4_Model.png')
+    print(f'[OK] Diagrama C4 actualizado exitosamente en {out_file}')
 
 if __name__ == '__main__':
     create_c4_diagram()

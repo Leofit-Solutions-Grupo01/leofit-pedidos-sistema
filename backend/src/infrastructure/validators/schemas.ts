@@ -5,8 +5,12 @@
 import { z } from 'zod';
 
 export const LoginSchema = z.object({
-  email: z.string().email('Email inválido').max(150),
+  email: z.string().max(150).optional(),
+  username: z.string().max(150).optional(),
   password: z.string().min(6, 'La contraseña debe tener al menos 6 caracteres').max(100)
+}).refine((data) => !!(data.email || data.username), {
+  message: 'Debe proporcionar email o username para iniciar sesión',
+  path: ['email']
 });
 
 export const RegisterUserSchema = z.object({
@@ -42,17 +46,17 @@ export const CreateProductSchema = z.object({
 export const UpdateProductSchema = CreateProductSchema.partial();
 
 export const CreateClientSchema = z.object({
-  fullName: z.string().min(3).max(120),
-  phone: z.string().min(7).max(20),
-  address: z.string().min(5).max(255),
-  district: z.string().min(2).max(80),
+  fullName: z.string().min(2).max(120),
+  phone: z.string().min(6).max(20),
+  address: z.string().min(3).max(255),
+  district: z.string().max(80).optional().default('Lima'),
   reference: z.string().max(255).optional()
 });
 
 export const CreateOrderSchema = z.object({
   clientId: z.number().int().positive().optional(),
   clientData: CreateClientSchema.optional(),
-  paymentMethod: z.enum(['YAPE', 'PLIN', 'TRANSFERENCIA', 'CONTRAENTREGA', 'EFECTIVO']),
+  paymentMethod: z.enum(['YAPE', 'PLIN', 'TRANSFERENCIA', 'CONTRAENTREGA', 'EFECTIVO', 'CULQI', 'NIUBIZ', 'TARJETA']),
   shippingCost: z.number().min(0).default(0),
   shippingType: z.enum(['LIMA', 'PROVINCIA']).optional(),
   destinationCity: z.string().min(2).max(100).optional(),

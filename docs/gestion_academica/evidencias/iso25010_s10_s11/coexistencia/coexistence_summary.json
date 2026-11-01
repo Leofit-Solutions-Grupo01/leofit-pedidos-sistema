@@ -1,0 +1,223 @@
+{
+  "entorno": {
+    "fecha_inicio": "2026-10-22T19:00:10",
+    "fecha_fin": "2026-10-22T19:00:23",
+    "commit": "89adda5",
+    "rama": "main",
+    "node": "v26.4.0",
+    "python": "3.13.7",
+    "so": "Windows 11 (10.0.26300)",
+    "cpu_logicos": 12,
+    "cpu_fisicos": 6,
+    "ram_total_gb": 31.8,
+    "persistencia_servicio_A": {
+      "status": "UP",
+      "timestamp": "2026-10-23T00:00:10.309Z",
+      "uptime": "361s",
+      "service": "leofit-backend-api",
+      "version": "2.0.0",
+      "database": {
+        "engine": "In-Memory Transactional Store (Fallback)",
+        "status": "DEGRADED"
+      },
+      "system": {
+        "nodeVersion": "v26.4.0",
+        "rssMemoryMB": "108.59",
+        "heapUsedMB": "20.74"
+      },
+      "slo": {
+        "targetAvailability": "99.9%",
+        "targetLatencyMs": "< 200ms"
+      }
+    },
+    "afinidad_cpu": "A y B fijados al núcleo lógico 0 (emulación de vCPU compartida)",
+    "parametros": {
+      "n_lecturas": 200,
+      "n_escrituras": 60,
+      "n_reportes": 100,
+      "concurrencia_carga_fondo": 4,
+      "registros_por_reporte_B": 40000
+    },
+    "umbrales_predefinidos": {
+      "latencia_var_max_pct": 15.0,
+      "error_max_pct": 0.5,
+      "cpu_pico_max_pct": 70.0,
+      "rss_pico_max_mb": 450.0
+    }
+  },
+  "resultados": {
+    "A_read_base": {
+      "n": 200,
+      "mean_ms": 4.92,
+      "median_ms": 2.11,
+      "p95_ms": 24.35,
+      "min_ms": 1.48,
+      "max_ms": 43.61,
+      "errors": 0,
+      "error_pct": 0.0
+    },
+    "A_write_base": {
+      "n": 60,
+      "mean_ms": 5.02,
+      "median_ms": 3.09,
+      "p95_ms": 15.88,
+      "min_ms": 2.04,
+      "max_ms": 26.91,
+      "errors": 0,
+      "error_pct": 0.0
+    },
+    "B_report_base": {
+      "n": 100,
+      "mean_ms": 22.02,
+      "median_ms": 19.59,
+      "p95_ms": 36.16,
+      "min_ms": 16.3,
+      "max_ms": 43.3,
+      "errors": 0,
+      "error_pct": 0.0
+    },
+    "A_read_sim": {
+      "n": 200,
+      "mean_ms": 4.42,
+      "median_ms": 2.08,
+      "p95_ms": 22.78,
+      "min_ms": 1.38,
+      "max_ms": 28.35,
+      "errors": 0,
+      "error_pct": 0.0
+    },
+    "A_write_sim": {
+      "n": 60,
+      "mean_ms": 3.44,
+      "median_ms": 2.45,
+      "p95_ms": 3.65,
+      "min_ms": 1.97,
+      "max_ms": 24.52,
+      "errors": 0,
+      "error_pct": 0.0
+    },
+    "bg_B": {
+      "requests": 121,
+      "errors": 0
+    },
+    "B_report_sim": {
+      "n": 100,
+      "mean_ms": 39.3,
+      "median_ms": 34.92,
+      "p95_ms": 78.83,
+      "min_ms": 18.08,
+      "max_ms": 88.98,
+      "errors": 0,
+      "error_pct": 0.0
+    },
+    "bg_A": {
+      "requests": 2776,
+      "errors": 0
+    }
+  },
+  "recursos": {
+    "F1_A_base": {
+      "A": {
+        "cpu_mean": 21.8,
+        "cpu_peak": 21.8,
+        "rss_mean_mb": 108.2,
+        "rss_peak_mb": 108.2
+      },
+      "B": {
+        "cpu_mean": 0.0,
+        "cpu_peak": 0.0,
+        "rss_mean_mb": 94.2,
+        "rss_peak_mb": 94.2
+      }
+    },
+    "F2_B_base": {
+      "A": {
+        "cpu_mean": 5.0,
+        "cpu_peak": 25.0,
+        "rss_mean_mb": 108.6,
+        "rss_peak_mb": 108.6
+      },
+      "B": {
+        "cpu_mean": 60.6,
+        "cpu_peak": 84.3,
+        "rss_mean_mb": 149.8,
+        "rss_peak_mb": 184.5
+      }
+    },
+    "F3_A_con_B": {
+      "A": {
+        "cpu_mean": 6.2,
+        "cpu_peak": 18.7,
+        "rss_mean_mb": 108.6,
+        "rss_peak_mb": 108.7
+      },
+      "B": {
+        "cpu_mean": 79.3,
+        "cpu_peak": 90.6,
+        "rss_mean_mb": 188.2,
+        "rss_peak_mb": 190.2
+      }
+    },
+    "F4_B_con_A": {
+      "A": {
+        "cpu_mean": 38.2,
+        "cpu_peak": 71.8,
+        "rss_mean_mb": 108.3,
+        "rss_peak_mb": 109.4
+      },
+      "B": {
+        "cpu_mean": 37.7,
+        "cpu_peak": 59.3,
+        "rss_mean_mb": 187.6,
+        "rss_peak_mb": 191.4
+      }
+    }
+  },
+  "comparaciones": [
+    {
+      "label": "PC-01 Latencia A - GET /api/products (impacto B->A)",
+      "base_mean_ms": 4.92,
+      "sim_mean_ms": 4.42,
+      "base_p95_ms": 24.35,
+      "sim_p95_ms": 22.78,
+      "variation": -10.16,
+      "variation_kind": "pct",
+      "base_error_pct": 0.0,
+      "sim_error_pct": 0.0,
+      "error_diff_abs": 0.0,
+      "verdict": "APROBADA"
+    },
+    {
+      "label": "PC-02 Latencia A - POST /api/orders (impacto B->A)",
+      "base_mean_ms": 5.02,
+      "sim_mean_ms": 3.44,
+      "base_p95_ms": 15.88,
+      "sim_p95_ms": 3.65,
+      "variation": -31.47,
+      "variation_kind": "pct",
+      "base_error_pct": 0.0,
+      "sim_error_pct": 0.0,
+      "error_diff_abs": 0.0,
+      "verdict": "APROBADA"
+    },
+    {
+      "label": "PC-03 Latencia B - GET /report (impacto A->B)",
+      "base_mean_ms": 22.02,
+      "sim_mean_ms": 39.3,
+      "base_p95_ms": 36.16,
+      "sim_p95_ms": 78.83,
+      "variation": 78.47,
+      "variation_kind": "pct",
+      "base_error_pct": 0.0,
+      "sim_error_pct": 0.0,
+      "error_diff_abs": 0.0,
+      "verdict": "NO CONFORME"
+    },
+    {
+      "label": "PC-04 CPU / RAM pico por proceso (A y B)",
+      "peak_cpu_pct": 90.6,
+      "peak_rss_mb": 191.4,
+      "verdict": "NO CONFORME"
+    }
+  ]
+}

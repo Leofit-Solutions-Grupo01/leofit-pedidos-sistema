@@ -1,4 +1,4 @@
-import { Pedido } from "../data/mockData";
+import { Pedido, Producto } from "../data/mockData";
 
 export interface CreateOrderDTO {
   clientData: {
@@ -20,6 +20,71 @@ export interface CreateOrderDTO {
     quantity: number;
     unitPrice: number;
   }>;
+}
+
+export function mapCategoryName(catName?: string): Producto["categoria"] {
+  if (!catName) return "Deportiva";
+  const lower = catName.toLowerCase();
+  if (lower.includes("accesorio") || lower.includes("strap") || lower.includes("gorra") || lower.includes("mochila")) {
+    return "Accesorios";
+  }
+  if (lower.includes("jogger") || lower.includes("casual")) {
+    return "Casual";
+  }
+  return "Deportiva";
+}
+
+/**
+ * Normaliza y mapea productos desde el backend o catálogo local a la estructura que espera la interfaz de usuario.
+ * Transforma estructuras relacionales con variantes (PostgreSQL) o estructuras planas (mock) de forma transparente.
+ */
+export function normalizeProductCatalog(rawProducts: unknown): Producto[] {
+  if (!Array.isArray(rawProducts)) return [];
+
+  const resultado: Producto[] = [];
+
+  for (const p of rawProducts) {
+    if (!p || typeof p !== "object") continue;
+
+    const prod = p as Record<string, any>;
+    const basePrice = Number(prod.precio ?? parseFloat(prod.base_price || "0")) || 0;
+    const cat = prod.categoria || mapCategoryName(prod.category_name);
+
+    // Si viene del backend con variantes (PostgreSQL DDL)
+    if (Array.isArray(prod.variants) && prod.variants.length > 0) {
+      for (const v of prod.variants) {
+        if (!v) continue;
+        const variantId = String(v.id);
+        const talla = v.size || prod.talla || "M";
+        const color = v.color || prod.color || "Negro";
+        const stock = typeof v.stock === "number" ? Math.max(0, v.stock) : 0;
+        const nombreBase = prod.name || prod.nombre || "Prenda LeoFit";
+
+        resultado.push({
+          id: variantId,
+          nombre: `${nombreBase} - ${color} (${talla})`,
+          categoria: cat,
+          talla,
+          color,
+          precio: basePrice,
+          stock,
+        });
+      }
+    } else {
+      // Si es un producto plano (mock o creado en frontend)
+      resultado.push({
+        id: String(prod.id ?? `p${resultado.length + 1}`),
+        nombre: prod.nombre || prod.name || "Prenda LeoFit",
+        categoria: cat,
+        talla: prod.talla || "M",
+        color: prod.color || "Negro",
+        precio: basePrice,
+        stock: typeof prod.stock === "number" ? Math.max(0, prod.stock) : 0,
+      });
+    }
+  }
+
+  return resultado;
 }
 
 export function toCreateOrderDTO(pedido: Pedido): CreateOrderDTO {
@@ -51,7 +116,8 @@ export function toCreateOrderDTO(pedido: Pedido): CreateOrderDTO {
     case "Transferencia BCP":
     case "Transferencia BBVA": paymentMapped = "TRANSFERENCIA"; break;
     case "Contra Entrega": paymentMapped = "CONTRAENTREGA"; break;
-    default: throw new Error(`Método de pago no soportado: ${pedido.metodoPago}`);
+    case "Tarjeta/Link": paymentMapped = "TRANSFERENCIA"; break;
+    default: paymentMapped = "EFECTIVO";
   }
 
   const items = pedido.items.map(item => {
@@ -71,14 +137,14 @@ export function toCreateOrderDTO(pedido: Pedido): CreateOrderDTO {
       fullName: pedido.cliente.nombre,
       phone: pedido.cliente.telefono,
       address: pedido.cliente.direccion,
-      district: pedido.cliente.distrito,
+      district: (pedido.cliente.distrito && pedido.cliente.distrito.trim()) ? pedido.cliente.distrito.trim() : 'Lima',
       reference: pedido.cliente.referencia,
     },
     paymentMethod: paymentMapped,
     shippingCost: pedido.costoDelivery,
     shippingType: tipoEnvioMapped,
-    destinationCity: pedido.ciudadDestino,
-    shippingAgency: pedido.agenciaEncomienda,
+    destinationCity: tipoEnvioMapped === "PROVINCIA" ? (pedido.ciudadDestino || 'Provincia') : undefined,
+    shippingAgency: tipoEnvioMapped === "PROVINCIA" ? (pedido.agenciaEncomienda || 'Shalom') : undefined,
     trackingNumber: pedido.numeroGuia,
     notes: pedido.notas,
     items

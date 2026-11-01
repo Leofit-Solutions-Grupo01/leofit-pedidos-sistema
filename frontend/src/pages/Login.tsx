@@ -16,10 +16,23 @@ export default function Login() {
   const [mostrarPass, setMostrarPass] = useState(false);
   const [error, setError] = useState("");
   const [cargando, setCargando] = useState(false);
+  const [mensajeExpiracion, setMensajeExpiracion] = useState<string | null>(() => {
+    try {
+      const msg = sessionStorage.getItem("leofit_auth_message");
+      if (msg) {
+        sessionStorage.removeItem("leofit_auth_message");
+        return msg;
+      }
+    } catch {
+      // Ignora restricciones
+    }
+    return null;
+  });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+    setMensajeExpiracion(null);
     if (!email || !password) {
       setError("Completa todos los campos para continuar.");
       return;
@@ -49,6 +62,13 @@ export default function Login() {
 
         <div className="bg-white rounded-3xl shadow-2xl p-7 border border-slate-200">
           <h1 className="text-xl font-bold text-slate-900 mb-6">Iniciar Sesión</h1>
+
+          {mensajeExpiracion && (
+            <div className="flex items-start gap-2.5 bg-amber-50 border-2 border-amber-300 rounded-2xl px-4 py-3 mb-4">
+              <span className="material-icons text-amber-600 mt-0.5" style={{ fontSize: "18px" }}>schedule</span>
+              <p className="text-xs text-amber-900 font-semibold leading-relaxed">{mensajeExpiracion}</p>
+            </div>
+          )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
@@ -124,9 +144,49 @@ export default function Login() {
               )}
             </button>
           </form>
+
+          {/* Selector Rápido de Roles (Acceso Demo / Evaluación) */}
+          <div className="mt-6 pt-5 border-t border-slate-200">
+            <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider text-center mb-2.5">
+              Acceso Rápido por Rol
+            </p>
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setEmail("admin@leofit.pe");
+                  setPassword("password");
+                  setError("");
+                }}
+                className="py-2.5 px-3 bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded-xl text-left transition-all active:scale-95 group"
+                title="Cargar credenciales de Administrador"
+              >
+                <span className="block text-[11px] font-extrabold text-blue-900 flex items-center gap-1">
+                  <span className="w-2 h-2 rounded-full bg-blue-600"></span>
+                  Admin
+                </span>
+                <span className="block text-[10px] text-blue-700 font-medium truncate">admin@leofit.pe</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setEmail("operador@leofit.pe");
+                  setPassword("password");
+                  setError("");
+                }}
+                className="py-2.5 px-3 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 rounded-xl text-left transition-all active:scale-95 group"
+                title="Cargar credenciales de Operador"
+              >
+                <span className="block text-[11px] font-extrabold text-emerald-900 flex items-center gap-1">
+                  <span className="w-2 h-2 rounded-full bg-emerald-600"></span>
+                  Operador
+                </span>
+                <span className="block text-[10px] text-emerald-700 font-medium truncate">operador@leofit.pe</span>
+              </button>
+            </div>
+          </div>
         </div>
-
-
 
         <p className="mt-5 text-center text-xs text-slate-300 font-normal">
           Sistema Oficial de Pedidos · LeoFit Sportswear

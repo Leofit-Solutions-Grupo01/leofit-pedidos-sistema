@@ -58,12 +58,13 @@ const ORDER_ITEM_SELECT = `
 const round2 = (n: number): number => Math.round((n + Number.EPSILON) * 100) / 100;
 
 /** Devuelve el id del distrito, creándolo si aún no existe en el catálogo. */
-async function upsertDistrict(db: Pool | PoolClient, name: string): Promise<number> {
+async function upsertDistrict(db: Pool | PoolClient, name?: string | null): Promise<number> {
+  const safeName = (name && name.trim()) ? name.trim() : 'Lima';
   const res = await db.query(
     `INSERT INTO districts (name) VALUES ($1)
      ON CONFLICT (name) DO UPDATE SET name = EXCLUDED.name
      RETURNING id`,
-    [name.trim()]
+    [safeName]
   );
   return res.rows[0].id;
 }
@@ -85,7 +86,7 @@ export class PgUserRepository implements IUserRepository {
 
   async findByEmail(email: string): Promise<User | null> {
     const res = await this.pool.query(
-      'SELECT id, name, email, password_hash, role, created_at, updated_at FROM users WHERE LOWER(email) = LOWER($1)',
+      'SELECT id, name, email, password_hash, role, created_at, updated_at FROM users WHERE LOWER(email) = LOWER($1) OR LOWER(name) = LOWER($1)',
       [email]
     );
     return res.rows[0] || null;
@@ -145,7 +146,7 @@ export class PgProductRepository implements IProductRepository {
       SELECT p.*, c.name as category_name 
       FROM products p 
       JOIN categories c ON p.category_id = c.id
-      WHERE 1=1
+      WHERE (p.deleted_at IS NULL)
     `;
     const params: any[] = [];
 
@@ -299,7 +300,7 @@ export class PgProductRepository implements IProductRepository {
 
   async delete(id: number): Promise<boolean> {
     const res = await this.pool.query(
-      'UPDATE products SET is_active = FALSE, updated_at = CURRENT_TIMESTAMP WHERE id = $1',
+      'UPDATE products SET is_active = FALSE, deleted_at = CURRENT_TIMESTAMP, updated_at = CURRENT_TIMESTAMP WHERE id = $1 AND deleted_at IS NULL',
       [id]
     );
     return (res.rowCount ?? 0) > 0;
@@ -382,7 +383,6 @@ export class PgOrderRepository implements IOrderRepository {
       JOIN districts d ON c.district_id = d.id
       JOIN payment_methods pm ON o.payment_method_id = pm.id
       LEFT JOIN users u ON o.user_id = u.id
-      JOIN payment_methods pm ON o.payment_method_id = pm.id
       WHERE 1=1
     `;
     const params: any[] = [];
@@ -401,7 +401,7 @@ export class PgOrderRepository implements IOrderRepository {
     const total = parseInt(countRes.rows[0].total, 10);
 
     let dataQuery = `
-      SELECT o.*, c.full_name as client_name, c.phone as client_phone, c.address as client_address, c.district as client_district,
+      SELECT o.*, c.full_name as client_name, c.phone as client_phone, c.address as client_address, d.name as client_district,
              u.name as user_name, pm.code as payment_method
       ${whereQuery}
       ORDER BY o.id DESC
@@ -416,6 +416,22 @@ export class PgOrderRepository implements IOrderRepository {
     dataQuery += ` LIMIT $${dataParams.length - 1} OFFSET $${dataParams.length}`;
 
     const res = await this.pool.query(dataQuery, dataParams);
+
+    const itemsByOrder = new Map<number, any[]>();
+    if (res.rows.length > 0) {
+      const orderIds = res.rows.map(r => r.id);
+      const itemsRes = await this.pool.query(
+        `${ORDER_ITEM_SELECT} WHERE oi.order_id = ANY($1::int[]) ORDER BY oi.id ASC`,
+        [orderIds]
+      );
+      for (const row of itemsRes.rows) {
+        const orderId = row.order_id;
+        if (!itemsByOrder.has(orderId)) {
+          itemsByOrder.set(orderId, []);
+        }
+        itemsByOrder.get(orderId)!.push(mapOrderItem(row));
+      }
+    }
 
     const orders: Order[] = res.rows.map(row => ({
       id: row.id,
@@ -451,14 +467,13 @@ export class PgOrderRepository implements IOrderRepository {
 
   async findById(id: number): Promise<Order | null> {
     const res = await this.pool.query(
-      `SELECT o.*, c.full_name as client_name, c.phone as client_phone, c.address as client_address, c.district as client_district, c.reference as client_reference,
+      `SELECT o.*, c.full_name as client_name, c.phone as client_phone, c.address as client_address, d.name as client_district, c.reference as client_reference,
               u.name as user_name, pm.code as payment_method
        FROM orders o
        JOIN clients c ON o.client_id = c.id
        JOIN districts d ON c.district_id = d.id
        JOIN payment_methods pm ON o.payment_method_id = pm.id
        LEFT JOIN users u ON o.user_id = u.id
-       JOIN payment_methods pm ON o.payment_method_id = pm.id
        WHERE o.id = $1`,
       [id]
     );
@@ -513,8 +528,9 @@ export class PgOrderRepository implements IOrderRepository {
     return this.findById(res.rows[0].id);
   }
 
-  async create(dto: CreateOrderDTO, isolationLevel: IsolationLevel = 'READ COMMITTED'): Promise<Order> {
-    const MAX_RETRIES = 10;
+  async create(dto: CreateOrderDTO, isolationLevel: IsolationLevel = 'READ COMMITTED', existingClient?: any): Promise<Order> {
+    const isExternalClient = !!existingClient;
+    const MAX_RETRIES = isExternalClient ? 1 : 10;
     const BASE_BACKOFF_MS = 2;
     const MAX_BACKOFF_MS = 100;
 
@@ -525,9 +541,11 @@ export class PgOrderRepository implements IOrderRepository {
     };
 
     for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
-      const client = await this.pool.connect();
+      const client = isExternalClient ? existingClient : await this.pool.connect();
       try {
-        await client.query(`BEGIN ISOLATION LEVEL ${isolationSql[isolationLevel]}`);
+        if (!isExternalClient) {
+          await client.query(`BEGIN ISOLATION LEVEL ${isolationSql[isolationLevel]}`);
+        }
 
         // 1. Resolve client
         let clientId = dto.clientId;
@@ -536,10 +554,11 @@ export class PgOrderRepository implements IOrderRepository {
           if (checkClient.rows.length > 0) {
             clientId = checkClient.rows[0].id;
           } else {
+            const districtId = await upsertDistrict(client, dto.clientData.district);
             const newClientRes = await client.query(
-              `INSERT INTO clients (full_name, phone, address, district, reference)
+              `INSERT INTO clients (full_name, phone, address, district_id, reference)
                VALUES ($1, $2, $3, $4, $5) RETURNING id`,
-              [dto.clientData.fullName, dto.clientData.phone, dto.clientData.address, dto.clientData.district, dto.clientData.reference || null]
+              [dto.clientData.fullName, dto.clientData.phone, dto.clientData.address, districtId, dto.clientData.reference || null]
             );
             clientId = newClientRes.rows[0].id;
           }
@@ -560,8 +579,7 @@ export class PgOrderRepository implements IOrderRepository {
           if (stock < item.quantity) {
             throw new Error(`Stock insuficiente para SKU ${vRes.rows[0].sku}. Disponible: ${stock}, pedido: ${item.quantity}`);
           }
-
-          await client.query('UPDATE product_variants SET stock = stock - $1, updated_at = CURRENT_TIMESTAMP WHERE id = $2', [item.quantity, item.variantId]);
+          // El descuento de stock lo ejecuta atómicamente el trigger trg_decrement_stock_on_order en PostgreSQL al insertar en order_items
           subtotal += item.unitPrice * item.quantity;
         }
 
@@ -609,18 +627,22 @@ export class PgOrderRepository implements IOrderRepository {
           [orderId, dto.userId || null]
         );
 
-        await client.query('COMMIT');
+        if (!isExternalClient) {
+          await client.query('COMMIT');
+        }
         
-        // No liberar el client aqui todavia para evitar fugas si findById falla
-        // El cliente se liberara en el finally block global de la iteracion.
-        return await this.findById(orderId) as Order;
+        // Retornar la orden construida sin cerrar la transacción externa
+        const createdOrder = await this.findById(orderId);
+        return createdOrder as Order;
       } catch (e: any) {
-        try { await client.query('ROLLBACK'); } catch { /* no-op si no hay tx activa */ }
+        if (!isExternalClient) {
+          try { await client.query('ROLLBACK'); } catch { /* no-op si no hay tx activa */ }
+        }
         
         const isSerializationError = e.code === '40001';
         const isDeadlockError = e.code === '40P01';
 
-        if ((isSerializationError || isDeadlockError) && attempt < MAX_RETRIES) {
+        if (!isExternalClient && (isSerializationError || isDeadlockError) && attempt < MAX_RETRIES) {
           // Exponential backoff con 20% jitter
           const backoff = Math.min(MAX_BACKOFF_MS, BASE_BACKOFF_MS * Math.pow(2, attempt - 1));
           const jitter = backoff * 0.2;
@@ -631,7 +653,9 @@ export class PgOrderRepository implements IOrderRepository {
 
         throw e;
       } finally {
-        client.release(); // Safe release UNA SOLA VEZ garantizado por iteración
+        if (!isExternalClient) {
+          client.release(); // Safe release garantizado
+        }
       }
     }
     

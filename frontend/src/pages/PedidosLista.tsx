@@ -16,7 +16,8 @@ const ESTADOS: (EstadoPedido | "Todos")[] = ["Todos", "Recibido", "Preparación"
 const POR_PAGINA = 10;
 
 export default function PedidosLista() {
-  const { pedidos, actualizarEstadoPedido, filtroInicial, modoAccesible } = useApp();
+  const { pedidos, actualizarEstadoPedido, filtroInicial, modoAccesible, usuarioActual } = useApp();
+  const esAdmin = !usuarioActual || usuarioActual.role === "ADMIN";
   const [busqueda, setBusqueda] = useState("");
   const [filtroEstado, setFiltroEstado] = useState<EstadoPedido | "Todos">("Todos");
   const [desde, setDesde] = useState("");
@@ -352,7 +353,17 @@ export default function PedidosLista() {
                         {/* Status change */}
                         {pedido.estado !== "Entregado" && pedido.estado !== "Cancelado" && (
                           <div className="pt-2">
-                            <p className="text-[11px] sm:text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">Cambiar Estado del Pedido</p>
+                            <div className="flex items-center justify-between mb-2">
+                              <p className="text-[11px] sm:text-xs font-semibold text-slate-700 uppercase tracking-wider">
+                                Cambiar Estado del Pedido
+                              </p>
+                              {!esAdmin && (
+                                <span className="text-[10px] text-slate-500 font-medium flex items-center gap-1 bg-slate-100 px-2 py-0.5 rounded-lg border border-slate-200">
+                                  <span className="material-icons text-slate-400" style={{ fontSize: "12px" }}>shield</span>
+                                  Anulación: Solo Admin
+                                </span>
+                              )}
+                            </div>
                             {editandoId === pedido.id ? (
                               <select
                                 value={pedido.estado}
@@ -361,7 +372,9 @@ export default function PedidosLista() {
                                 autoFocus
                                 className="w-full text-xs sm:text-sm font-semibold border-2 border-[#E63946] rounded-2xl px-3 sm:px-4 py-2.5 sm:py-3 focus:outline-none bg-white shadow-md"
                               >
-                                {((["Recibido", "Preparación", "Camino", "Entregado", "Cancelado"] as EstadoPedido[])).map((e) => (
+                                {((["Recibido", "Preparación", "Camino", "Entregado", "Cancelado"] as EstadoPedido[])
+                                  .filter((e) => e !== "Cancelado" || esAdmin)
+                                ).map((e) => (
                                   <option key={e}>{e}</option>
                                 ))}
                               </select>

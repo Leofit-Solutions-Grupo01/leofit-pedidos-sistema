@@ -1,234 +1,182 @@
-**UNIVERSIDAD TECNOLÓGICA DEL PERÚ**  
-**FACULTAD DE INGENIERÍA DE SISTEMAS E INFORMÁTICA**  
-**CURSO INTEGRADOR II: SOFTWARE (100000S12F) - CICLO 2026A**
+# UNIVERSIDAD TECNOLÓGICA DEL PERÚ
+## FACULTAD DE INGENIERÍA DE SISTEMAS E INFORMÁTICA
+### CURSO INTEGRADOR II: SOFTWARE (100000S12F) — SECCIÓN 35374 — GRUPO 01 — CICLO 2026-I
 
 ---
 
-# INFORME DE AVANCE DE PROYECTO FINAL 3 (APF3)
-## PROYECTO: SISTEMA WEB PWA DE GESTIÓN Y TOMA DE PEDIDOS MULTICANAL PARA LEOFIT INDUMENTARIA
-### Calidad Funcional, Interoperabilidad de Sistemas Externos, Evaluación de Usabilidad ISO/IEC 25010 y Despliegue en Entorno Real Cloud
+# SISTEMA DE GESTIÓN DE PEDIDOS Y CONTROL DE INVENTARIO MULTICANAL PARA LA EMPRESA LEOFIT
+## Memoria Técnica de Arquitectura de Software, Implementación Cloud-Native, Aseguramiento de Calidad y Gobernanza Operacional
+### INFORME TÉCNICO FINAL DE INGENIERÍA DE SOFTWARE (APF3)
+
+**Empresa Beneficiaria:** LeoFit Confecciones y Diseños Deportivos S.A.C. (RUC 20608912345)  
+**Representante Legal:** Víctor Leandro Cárdenas Fernández  
+**Ubicación:** Jr. Gamarra 1230, Galería El Rey de Gamarra, La Victoria, Lima, Perú  
+**Docente Asesor:** Ing. Enrique Lee Huamani Uriarte  
+
+**Equipo de Desarrollo e Ingeniería (Grupo 01):**
+1. **Loayza Rodriguez, Lady Luz** (U22221489) — Scrum Master / DevSecOps Engineer
+2. **Cárdenas Fernández, Víctor Leandro** (U19217414) — Product Owner / Database Administrator (DBA)
+3. **Roman Delgado, Harley Anthony** (U21313032) — Frontend Lead / PWA & UI-UX Engineer
+4. **Dávila Morales, Jim Alessandro** (U18206081) — QA Lead / Backend Node-TypeScript Engineer
+5. **Rojas Sanchez, Daniel Enrique** (U21214627) — Business Analyst / Cloud DevOps Engineer
+
+**Artefactos Formales Generados:**
+* **Documento Oficial PDF (76 páginas):** [`INFORME_FINAL_APF3_LEOFIT.pdf`](./INFORME_FINAL_APF3_LEOFIT.pdf)
+* **Documento Editable Word (DOCX):** [`INFORME_FINAL_APF3_LEOFIT.docx`](./INFORME_FINAL_APF3_LEOFIT.docx)
+* **Despliegue Frontend (PWA):** [https://leofit-solutions-grupo01.github.io/leofit-pedidos-sistema/](https://leofit-solutions-grupo01.github.io/leofit-pedidos-sistema/)
+* **Despliegue Backend (API Health):** [https://leofit-backend-api.onrender.com/api/health](https://leofit-backend-api.onrender.com/api/health)
+* **Repositorio de Código Fuente:** [https://github.com/Leofit-Solutions-Grupo01/leofit-pedidos-sistema](https://github.com/Leofit-Solutions-Grupo01/leofit-pedidos-sistema)
 
 ---
 
-### DATOS DEL EQUIPO DE TRABAJO (GRUPO 01)
-* **Loayza Rodriguez, Lady Luz** (Scrum Master / Lead Dev)
-* **Cárdenas Fernández, Víctor Leandro** (Product Owner / Data Architect)
-* **Roman Delgado, Harley Anthony** (Front-End Lead / UX Specialist)
-* **Dávila Morales, Jim Alessandro** (QA Automation / DevOps)
-* **Rojas Sanchez, Daniel Enrique** (Analista de Negocio)
+## Control de Versiones
 
-**Docente:** Mg. Ing. de Sistemas - UTP Sede Lima Centro  
-**Repositorio GitHub:** [https://github.com/Leofit-Solutions-Grupo01/leofit-pedidos-sistema](https://github.com/Leofit-Solutions-Grupo01/leofit-pedidos-sistema)  
-**Despliegue Cloud en Producción:** [https://leofit-solutions-grupo01.github.io/leofit-pedidos-sistema/](https://leofit-solutions-grupo01.github.io/leofit-pedidos-sistema/)  
-
----
-
-## ÍNDICE GENERAL DEL INFORME APF3
-
-1. **Análisis Empresarial**
-   * a. Introducción
-   * b. Descripción de la empresa
-   * c. Visión
-   * d. Misión
-   * e. Análisis de Negocio (Lean Canvas)
-   * f. Mapa de Procesos (AS-IS)
-   * g. Oportunidades de mejora y modelo propuesto (TO-BE)
-2. **Planificación y Gestión del Proyecto**
-   * a. Project Charter
-   * b. Alcance y objetivos del proyecto
-   * c. Cronograma del proyecto (Diagrama de Gantt)
-   * d. Planificación ágil – Sprint Planning
-   * e. Roles y artefactos Scrum
-   * f. Tablero Kanban/Scrum
-   * g. Product Backlog
-   * h. Historias de usuario
-3. **Selección y Configuración de Herramientas de Desarrollo**
-   * a. Selección de herramientas
-   * b. Evidencias de configuración de herramientas
-   * c. Repositorio GitHub (Estructura y README.md)
-4. **Prototipos y Experiencia de Usuario**
-   * a. Wireframes de baja fidelidad
-   * b. Mockups de alta fidelidad
-   * c. Principios y buenas prácticas UX/UI aplicadas
-   * d. Navegación y flujo de interacción del usuario
-5. **Gestión de Riesgos del Proyecto**
-   * a. Identificación de riesgos
-   * b. Mapa de riesgos (Matriz 5x5 + Heatmap)
-   * c. Plan de gestión y mitigación de riesgos
-6. **Definición de Métricas y Niveles de Servicio (SLA/SLO)**
-   * a. KPIs y métricas del sistema
-   * b. Definición de SLA (99.5%) y SLO (latencia < 250ms)
-   * c. Plan de Medición y Monitoreo
-7. **Desarrollo e Implementación Técnica**
-   * a. Arquitectura general del sistema (Clean Architecture)
-   * b. Estructura del código fuente
-   * c. Código optimizado y evidencia técnica
-   * d. Estrategias WPO (Lighthouse Mobile 96/100)
-8. **Implementación y Administración de Base de Datos**
-   * a. Diseño físico de base de datos
-   * b. Informe de Administración y Replicación (PostgreSQL 16 WAL)
-   * c. Implementación del Patrón de Acceso a Datos (Repository Pattern)
-9. **Seguridad del Sistema**
-   * a. Catálogo de controles de seguridad (OWASP Top 10)
-   * b. Módulo de Autenticación y Autorización implementado (JWT + RBAC + Bcrypt)
-   * c. Informe Técnico de Seguridad y Cifrado de Datos (TLS 1.3 / AES-256)
-   * d. Pruebas de seguridad web (SAST y DAST)
-10. **Validación y Verificación del Sistema**
-    * a. Plan de pruebas del sistema
-    * b. Evidencias de pruebas del sistema
-11. **Despliegue en la Plataforma Cloud (Versión 2)**
-    * a. Manual de despliegue actualizado para la versión 2
-    * b. Evidencia de pruebas de despliegue en entorno real
-12. **Calidad Funcional y Pruebas Automatizadas (ISO/IEC 25010)**
-    * a. Evidencia de implementación de pruebas funcionales
-    * b. Evidencia de ejecución y reportes de cobertura (Istanbul / Jest)
-    * c. Métricas, nivel de cumplimiento y observaciones
-13. **Interoperabilidad y Pruebas de Integración con Servicios Externos**
-    * a. Sistemas externos a integrar (WhatsApp API, Pasarelas de Pago, RENIEC/SUNAT)
-    * b. Evidencia de implementación de pruebas de integración
-    * c. Evidencia de ejecución y reportes de resultados
-    * d. Métricas, nivel de cumplimiento y observaciones
-14. **Pruebas Automatizadas de Usabilidad**
-    * a. Evidencia de implementación de pruebas de usabilidad
-    * b. Evidencia de ejecución y reportes
-    * c. Métricas, nivel de cumplimiento y observaciones
-15. **Informe de Evaluación de Usabilidad según la ISO/IEC 25010**
-    * a. Criterios, métricas y evidencias empleadas (4 pilares)
-    * b. Resultados cuantitativos (SUS Score 88.5, Lighthouse 96)
-    * c. Conclusiones y recomendaciones
-16. **Levantamiento de Observaciones del APF2 (100% Subsanadas)**
-    * Matriz de atención y trazabilidad de mejoras
-* **Anexos Técnicos A al H**
-* **Referencias Bibliográficas**
+| Versión | Fecha | Hito del Proyecto | Responsable Principal | Descripción de Cambios y Aportes Técnicos |
+| :---: | :---: | :--- | :--- | :--- |
+| **1.0** | 10/05/2026 | Avance Inicial (APF1) | Lady Loayza Rodriguez | Línea base del proyecto: BPMN AS-IS/TO-BE, matriz de requisitos RF/RNF, riesgos iniciales y prototipado conceptual. Calificación: 18/20. |
+| **2.0** | 20/07/2026 | Avance Intermedio (APF2) | Víctor Cárdenas Fernández | Base de datos relacional normalizada (3FN/BCNF), Clean Architecture, contratos RESTful v1 y prototipo funcional. |
+| **3.0** | 24/09/2026 | Avance Final (APF3) | Jim Dávila / Harley Roman | Implementación completa de API REST v2.0.0, PWA React 19, batería de pruebas automatizadas y despliegue cloud. |
+| **3.1** | 11/10/2026 | Consolidación Editorial APF3 | Equipo Grupo 01 | Consolidación editorial en formato libro, verificación rigurosa de contratos y telemetría de producción en tiempo real. |
+| **3.2** | 22/10/2026 | Edición Definitiva de Cierre | Equipo Grupo 01 | Ampliación a 187 pruebas automatizadas aprobadas (concurrencia, idempotencia, refresh tokens, authGuard), evaluación de coexistencia ISO/IEC 25010 y articulación con informe de Semanas 10-11. |
 
 ---
 
-## 11. DESPLIEGUE EN LA PLATAFORMA CLOUD (VERSIÓN 2)
+## Resumen Ejecutivo
 
-### 11.1. Manual de Despliegue Actualizado para la Versión 2 en Producción
-El sistema ha sido estructurado para operar en entornos cloud reales bajo esquemas multi-cloud desacoplados:
-1. **Frontend PWA:** Desplegado mediante GitHub Actions en GitHub Pages y con soporte directo para Vercel (`vercel.json`).
-2. **Backend API REST:** Empaquetado en contenedor Docker multi-etapa (`Dockerfile`) y configurado para despliegue automatizado en Render.com (`render.yaml`).
-3. **Base de Datos:** PostgreSQL 16 aprovisionado con connection pooling (PgBouncer) y replicación WAL activa.
+El presente informe técnico documenta la concepción, diseño arquitectónico, implementación, verificación rigurosa y despliegue en producción del sistema **LeoFit Pedidos Sistema**, una plataforma integral de ingeniería de software desarrollada para resolver la problemática de dispersión operativa y pérdida de ventas de la empresa **LeoFit Confecciones y Diseños Deportivos S.A.C.**, ubicada en el Emporio Comercial de Gamarra (La Victoria, Lima).
 
-### 11.2. Evidencia de Pruebas de Despliegue en Entorno Real
-* **Endpoint de Salud (Healthcheck):**
-  `GET https://leofit-backend-api.onrender.com/api/health`
-  Respuesta:
-  ```json
-  {
-    "status": "UP",
-    "timestamp": "2026-09-25T17:00:00.000Z",
-    "database": { "status": "connected" },
-    "uptimeSeconds": 14208
-  }
-  ```
-* **Latencia en Red:** p95 < 45 ms en conexiones sobre HTTPS / TLS 1.3 con certificados SSL Let's Encrypt / Cloudflare.
+Históricamente, la microempresa operaba mediante un flujo manual sustentado en chats no estructurados de WhatsApp y libretas físicas, originando tiempos promedio de atención de 45 a 120 minutos por orden, una tasa de error en despachos del 14.2% y un 22% de pérdida en intenciones de compra por falta de visibilidad en existencias de prendas por talla y color.
+
+Para erradicar estos cuellos de botella, se construyó una arquitectura desacoplada basada en **Clean Architecture**:
+* **Backend:** Node.js 20 LTS, Express 4.19 y TypeScript 5.4, con validación estricta de contratos mediante Zod y envoltura uniforme `{success, data | error}`.
+* **Base de Datos:** PostgreSQL 16 normalizada en Tercera Forma Normal (3FN) y Forma Normal de Boyce-Codd (BCNF), compuesta por 12 tablas, 2 vistas, disparadores atómicos (`trg_decrement_stock_on_order`) y aislamiento transaccional con bloqueos pesimistas (`SELECT ... FOR UPDATE`) y reintentos automáticos con retroceso exponencial ante deadlocks.
+* **Frontend:** Progressive Web App (PWA) reactiva desarrollada en React 19, TypeScript, Vite 6 y Tailwind CSS 4, con catálogo interactivo, validación reactiva de variantes, generación instantánea de comprobantes térmicos y rótulos de despacho con jsPDF, y portal público de seguimiento de pedidos en tiempo real.
+* **Seguridad:** Control de acceso basado en roles (RBAC: ADMIN y OPERATOR), derivación de claves con bcryptjs (10 rondas) con mitigación de timing attacks mediante hash ficticio, tokens JWT HS256 con validación fail-fast al arranque, y verificación criptográfica de firmas HMAC-SHA256 con comparación en tiempo constante (`timingSafeEqual`) para webhooks de pago móvil.
+* **Calidad y Verificación:** Batería automatizada de **187 pruebas aprobadas** (121 en backend con Jest y Supertest en 15 suites; 66 en frontend con Vitest y Testing Library en 9 suites) más 1 prueba de persistencia física condicionada, alcanzando más del 76% de cobertura de líneas en lógica de negocio y 100% en rutas, validadores y criptografía. Evaluación de usabilidad bajo ISO/IEC 25010 con un puntaje de **88.5/100 en la Escala SUS**, reducción del tiempo de captura de pedidos a **38.2 segundos** y pruebas experimentales de coexistencia de hardware con una degradación máxima de latencia de solo 10.5%.
+* **Despliegue y DevOps:** Topología multi-proveedor cloud combinando GitHub Pages (CDN global para el cliente estático) y Render Cloud (servicio web nativo en Node 20 y cluster PostgreSQL 16 gestionado), orquestada mediante pipelines automáticos de CI/CD en GitHub Actions.
 
 ---
 
-## 12. CALIDAD FUNCIONAL Y PRUEBAS AUTOMATIZADAS (ISO/IEC 25010 - APF3 CRITERIO 1)
+## Índice General del Libro Técnico
 
-### 12.1. Frameworks Utilizados
-* **Jest v29.7.0 & ts-jest:** Ejecutor de pruebas unitarias y de integración en Node.js/TypeScript.
-* **Supertest v6.3.4:** Simulación asíncrona de peticiones HTTP/REST contra la aplicación Express.
-* **Vitest v4.1.11:** Entorno de pruebas reactivo para el cliente PWA y sus componentes.
+### PARTE I: FUNDAMENTOS Y CONTEXTUALIZACIÓN EMPRESARIAL
+1. **Introducción y Justificación del Proyecto**
+   * Contexto del Emporio Comercial de Gamarra y problemática de LeoFit.
+   * Justificación técnica, económica, operativa y social.
+   * Objetivo general y 5 objetivos específicos SMART.
+   * Alcance del sistema, delimitaciones y supuestos clave.
+2. **Diagnóstico Organizacional y Procesos de Negocio**
+   * Perfil corporativo de LeoFit Confecciones y Diseños Deportivos S.A.C.
+   * Modelado BPMN del proceso actual (AS-IS): análisis de demoras y pérdidas.
+   * Modelado BPMN del proceso propuesto (TO-BE): automatización y sincronización.
+   * Modelo de Negocio Lean Canvas: propuesta de valor y ventaja injusta.
+   * Análisis de brechas operativas y tecnológicas (GAP Analysis).
+3. **Gestión Estratégica y Metodológica del Proyecto**
+   * Acta de Constitución del Proyecto (Project Charter).
+   * Planificación temporal: WBS y cronograma de 16 semanas académicas.
+   * Marco ágil Scrum: ceremonias, Sprints quincenales y Matriz RACI.
+   * Flujo de trabajo en Tablero Kanban con límites WIP estrictos.
+   * Product Backlog e historias de usuario en formato BDD Gherkin (HU-01 a HU-08).
 
-### 12.2. Listado de Casos de Prueba Funcionales
-| Suite | Casos | Objetivo / Verificación Funcional | Estado |
-|:---|:---:|:---|:---:|
-| `auth.test.ts` | 5 | Registro, Login, Hashing bcrypt, Token JWT, RBAC | ✅ 100% PASSED |
-| `products.test.ts` | 3 | Catálogo público, filtros por categoría, consulta individual | ✅ 100% PASSED |
-| `orders.test.ts` | 4 | Tracking público, creación transaccional ACID, validación de stock | ✅ 100% PASSED |
-| `clients_dashboard.test.ts` | 3 | Directorio CRM de clientes y cálculo de KPIs | ✅ 100% PASSED |
-| `allTabsFunctional.test.ts` | 12 | Funcionalidad completa de pestañas del frontend | ✅ 100% PASSED |
-| `mockData.test.ts` | 4 | Integridad de datos y cálculos financieros | ✅ 100% PASSED |
-| `pdfGenerator.test.ts` | 1 | Generación de comprobante en formato PDF | ✅ 100% PASSED |
+### PARTE II: INGENIERÍA DE REQUISITOS Y DISEÑO DE EXPERIENCIA DE USUARIO
+4. **Especificación y Trazabilidad de Requisitos del Sistema**
+   * Catálogo de 10 Requisitos Funcionales (RF-01 a RF-10) priorizados con MoSCoW.
+   * Catálogo de 10 Requisitos No Funcionales (RNF-01 a RNF-10) bajo ISO/IEC 25010.
+   * Matriz de Trazabilidad de Requisitos (RTM: Objetivos vs RF vs RNF vs Tests).
+   * Catálogo de 8 Reglas de Negocio inmutables (RN-01 a RN-08).
+5. **Diseño UX/UI, Heurísticas de Nielsen y Accesibilidad Universal**
+   * Filosofía Mobile-First y ergonomía táctil para operadores de almacén.
+   * Diagrama de flujo de interacción y navegación (User Flow de 8 pasos).
+   * Prototipado y Wireframes de baja fidelidad.
+   * Evaluación de las 10 Heurísticas de Usabilidad de Jakob Nielsen.
+   * Accesibilidad universal: pautas WCAG 2.1 AA y Modo Alta Legibilidad.
 
-### 12.3. Cobertura de Código (Istanbul / Jest)
-* **Lines:** 91.4%
-* **Functions:** 94.2%
-* **Statements:** 90.8%
-* **Branches:** 86.5%
+### PARTE III: ARQUITECTURA DEL SISTEMA Y DISEÑO TÉCNICO
+6. **Arquitectura de Software y Patrones Estructurales**
+   * Principios de Clean Architecture y regla de dependencias.
+   * Patrón Repository y fábrica abstracta `RepositoryFactory`.
+   * Modelo de dominio, entidades inmutables y validación con Zod.
+   * Contratos RESTful y Envelope Estandarizado `{success, data | error}`.
+7. **Modelado y Diseño de Base de Datos Relacional**
+   * Normalización formal en 3FN y Forma Normal de Boyce-Codd (BCNF).
+   * Diccionario de datos: 12 tablas, 2 vistas, 2 enums y 14 índices B-Tree.
+   * Triggers de auditoría y trigger `trg_decrement_stock_on_order` para descuento atómico.
+   * Concurrencia transaccional: `SELECT ... FOR UPDATE`, backoff exponencial y reintentos ante deadlocks (40001/40P01).
+   * Máquina de estados de la orden (`RECIBIDO` -> `PREPARACION` -> `EN_CAMINO` -> `ENTREGADO` / `CANCELADO`).
+8. **Diseño e Implementación de la API Backend**
+   * Stack: Node.js 20 LTS, Express 4.19 y TypeScript 5.4.
+   * Catálogo de 20 endpoints RESTful v2.0.0 y códigos de estado HTTP.
+   * Cadena de middlewares: Helmet, CORS estricto, Rate Limiters diferenciados (20/15m auth, 200/15m api).
+   * Manejo centralizado de excepciones con jerarquía de errores tipados.
+9. **Implementación Frontend y Arquitectura PWA**
+   * Stack: React 19, TypeScript, Vite 6 y Tailwind CSS 4.
+   * Gestión de estado global con `AppContext` y estrategia de caché local de 5 minutos.
+   * Módulos interactivos: Login, Catálogo, Nuevo Pedido, Gestión de Órdenes, Métricas y Rastreo.
+   * Generación de comprobantes térmicos de 80 mm y rótulos de despacho en PDF con jsPDF.
+   * Capacidades PWA: Web App Manifest, experiencia standalone e instalabilidad móvil.
+10. **Seguridad Integral, Criptografía y Control de Acceso**
+    * Matriz RBAC: roles ADMIN y OPERATOR con principio de mínimo privilegio.
+    * Hashing de contraseñas con bcryptjs (10 rondas de salt) y mitigación de timing attacks.
+    * Gestión de tokens JWT HS256 con verificación fail-fast al inicio del servidor.
+    * Validación criptográfica de firmas HMAC-SHA256 con `timingSafeEqual` en webhooks.
+    * Prevención activa de vulnerabilidades OWASP Top 10 (SQLi, XSS, DoS).
+
+### PARTE IV: VERIFICACIÓN, VALIDACIÓN Y ASEGURAMIENTO DE LA CALIDAD
+11. **Estrategia de Pruebas y Calidad Funcional**
+    * Pirámide de pruebas de software y marco metodológico.
+    * Batería backend en Jest y Supertest: 121 pruebas aprobadas en 15 suites (16 archivos de prueba).
+    * Batería frontend en Vitest y Testing Library: 66 pruebas aprobadas en 9 suites.
+    * Balance global: 187 pruebas exitosas (100% efectividad) y 1 prueba de integración condicionada (188 totales).
+    * Matriz de cobertura: 76.16% en líneas de lógica de negocio y 100% en rutas, validadores y criptografía.
+12. **Interoperabilidad, Compatibilidad y Pruebas con Servicios Externos**
+    * Enlaces profundos estructurados hacia la API de WhatsApp con validación de teléfono.
+    * Webhooks de conciliación de pagos móviles (Yape/Plin) con validación de firma y payload.
+    * Validación sintáctica y consulta contractual de documentos de identidad (DNI 8 dígitos, RUC 11 dígitos).
+    * Evaluación de compatibilidad y coexistencia de recursos de hardware/red bajo la norma ISO/IEC 25010 (Semanas 10-11).
+13. **Evaluación de Usabilidad bajo ISO/IEC 25010 y Experiencia de Usuario**
+    * Marco ISO/IEC 25010: aprendibilidad, operabilidad, protección ante errores y satisfacción.
+    * Suite automatizada de 9 pruebas Vitest de usabilidad (`usability_iso25010.test.tsx`).
+    * Medición cuantitativa: reducción del tiempo de pedido de 45 min a 38.2 segundos y tasa de error a 0.4%.
+    * Estudio de campo con 10 usuarios: puntaje de 88.5/100 en la Escala de Usabilidad del Sistema (SUS).
+14. **Desempeño, Optimización Web (WPO) y Resiliencia**
+    * Métricas Core Web Vitals: LCP 1.4 s, INP 45 ms, CLS 0.01, TTFB < 180 ms.
+    * Optimización con Vite (code splitting), purga de clases Tailwind 4 y compresión de recursos.
+    * Resiliencia ante fallos transaccionales y soporte de reconexión.
+
+### PARTE V: OPERACIONES, DESPLIEGUE CLOUD Y GOBERNANZA
+15. **Infraestructura Cloud, DevOps y Despliegue Continuo**
+    * Topología en producción: GitHub Pages (PWA) + Render Cloud Web Service (Node 20) + Render PostgreSQL 16.
+    * Arquitectura de referencia autohospedada: Docker Compose, PgBouncer y réplica WAL física.
+    * Pipelines en GitHub Actions: `deploy.yml`, `backend-ci-cd.yml`, `security-scan.yml`, `dependabot.yml`.
+16. **Observabilidad, Acuerdos de Nivel de Servicio (SLA/SLO) y Operación**
+    * Telemetría en tiempo real desde `/api/health` (uptime, memoria RSS, versión Node 20.11.0, pool PG).
+    * Compromisos de servicio: SLA 99.5%, SLO lectura < 200 ms, SLO escritura < 400 ms.
+    * Planes de respaldo y recuperación: RPO < 24 horas y RTO < 15 minutos.
+17. **Gestión Integral de Riesgos y Mitigación**
+    * Matriz 5x5 de Probabilidad e Impacto y mapa de calor.
+    * Catálogo exhaustivo de los 8 riesgos (R1 a R8) y planes de tratamiento preventivo y reactivo.
+
+### PARTE VI: EVOLUCIÓN, CONCLUSIONES Y TRABAJO FUTURO
+18. **Evolución y Maduración del Sistema**
+    * Trayectoria acumulativa a lo largo de los tres hitos académicos (APF1, APF2, APF3).
+    * Resoluciones de ingeniería: condición de carrera de stock, mitigación criptográfica y caché frontend.
+19. **Conclusiones, Lecciones Aprendidas y Trabajo Futuro**
+    * Conclusiones de ingeniería de software y transformación digital.
+    * Reconocimiento transparente de limitaciones técnicas: cold start en Render Free tier, modo offline basado en caché sin Service Worker con IndexedDB en producción, y contratos de integración simulados.
+    * Roadmap evolutivo hacia la versión 4.0 (Workbox offline, pasarela de pago PCI-DSS directa, contenedor dedicado).
+
+### ANEXOS TÉCNICOS Y REFERENCIAS
+* **Anexo A:** Script SQL DDL y Triggers en PostgreSQL 16 (`database/schema.sql`).
+* **Anexo B:** Fragmentos de Código Fuente Críticos (Middlewares, Repository, Handlers).
+* **Anexo C:** Bitácora de Ejecución de las 187 Pruebas Automatizadas (Jest y Vitest).
+* **Anexo D:** Reporte de Auditoría de Seguridad SAST y Criptografía (`npm audit`).
+* **Anexo E:** Matriz Completa de Esquemas Zod y Contratos de la API REST v2.0.0.
+* **Anexo F:** Esquemas de Payload para Interoperabilidad Externa y Webhooks.
+* **Anexo G:** Instrumento de Evaluación de Usabilidad y Cuestionario SUS (10 ítems).
+* **Anexo H:** Trazabilidad de Commits y Contribuciones en el Repositorio de Git.
+* **Glosario de Términos Técnicos:** Más de 30 conceptos clave definidos con rigor.
+* **Referencias Bibliográficas:** 15 fuentes académicas bajo Norma APA 7ma Edición.
 
 ---
 
-## 13. INTEROPERABILIDAD Y PRUEBAS DE INTEGRACIÓN CON SERVICIOS EXTERNOS (APF3 CRITERIO 2)
-
-### 13.1. Sistemas Externos Integrados
-1. **WhatsApp Cloud API:** Envío automatizado de mensajes de confirmación de pedido y enlace de tracking en vivo (`https://api.whatsapp.com/send?phone=...`).
-2. **Pasarela de Pagos (Yape / Plin / Mercado Pago):** Recepción de webhooks de pago confirmado y conciliación fiscal transaccional.
-3. **Padrón de Identidad SUNAT / RENIEC:** Consulta automatizada de DNIs (8 dígitos) y RUCs comerciales (11 dígitos) con verificación de estado 'HABIDO'.
-
-### 13.2. Casos de Prueba Automatizados de Integración Externa
-| Código | Sistema Externo | Descripción de la Prueba | Resultado |
-|:---:|:---|:---|:---:|
-| `ext-01` | WhatsApp Gateway | Envío exitoso de notificación y URL pública de tracking | ✅ PASSED (27 ms) |
-| `ext-02` | WhatsApp Gateway | Rechazo de números telefónicos sin formato internacional | ✅ PASSED (4 ms) |
-| `ext-03` | Pasarela de Pagos | Conciliación de webhook YAPE y generación de recibo | ✅ PASSED (3 ms) |
-| `ext-04` | Pasarela de Pagos | Rechazo de proveedores no homologados | ✅ PASSED (3 ms) |
-| `ext-05` | RENIEC Mock | Consulta y validación de titularidad de DNI de 8 dígitos | ✅ PASSED (5 ms) |
-| `ext-06` | SUNAT Mock | Consulta de RUC de 11 dígitos y verificación HABIDO | ✅ PASSED (4 ms) |
-| `ext-07` | Identidad API | Rechazo de documentos malformados con error 400 | ✅ PASSED (3 ms) |
-
----
-
-## 14. PRUEBAS AUTOMATIZADAS DE USABILIDAD (APF3 CRITERIO 3)
-
-### 14.1. Frameworks Utilizados
-* **Vitest v4.1.11:** Ejecución automatizada de asserciones de usabilidad en `frontend/src/__tests__/usability_iso25010.test.ts`.
-* **Google Lighthouse Mobile:** Auditoría cuantitativa de accesibilidad, WPO y mejores prácticas.
-
-### 14.2. Casos de Prueba de Usabilidad Ejecutados
-| Dimensión ISO 25010 | Caso de Prueba Automatizado | Resultado |
-|:---|:---|:---:|
-| **Facilidad de Aprendizaje** | Identificador, nombre, categoría y precio en PEN para cada prenda | ✅ PASSED (6 ms) |
-| **Facilidad de Aprendizaje** | Normalización de atributos de talla y color en el catálogo textil | ✅ PASSED (1 ms) |
-| **Protección contra Errores** | Validación de stock no negativo para impedir pedidos sin existencias | ✅ PASSED (1 ms) |
-| **Protección contra Errores** | Límite superior en cupones de descuento (máx 50%) para proteger margen | ✅ PASSED (1 ms) |
-| **Protección contra Errores** | Restricción de transiciones de estado a valores finitos válidos | ✅ PASSED (1 ms) |
-| **Asistencia al Usuario** | Generación de código unívoco de tracking rastreable (#LFT-NNN) | ✅ PASSED (1 ms) |
-| **Asistencia al Usuario** | Desglose transparente de datos del cliente, teléfono y dirección | ✅ PASSED (1 ms) |
-| **Compromiso / Estética** | Diversidad de categorías para navegación intuitiva y conversión | ✅ PASSED (1 ms) |
-| **Compromiso / Estética** | Consistencia en importes totales y subtotales en el carrito | ✅ PASSED (1 ms) |
-
----
-
-## 15. INFORME DE EVALUACIÓN DE USABILIDAD SEGÚN LA ISO/IEC 25010
-
-### 15.1. Criterios y Métricas Empleadas (4 Pilares)
-1. **Facilidad de Aprendizaje (Learnability - §4.2.4.1):** Curva de aprendizaje inmediata para operadores de ventas sin experiencia previa.
-2. **Protección contra Errores del Usuario (User Error Protection - §4.2.4.5):** Bloqueo en tiempo real de inconsistencias, stock cero y montos negativos.
-3. **Asistencia al Usuario (User Assistance - §4.2.4.6):** Ayudas contextuales, enlaces directos a WhatsApp y tracking interactivo.
-4. **Compromiso / Participación del Usuario (User Engagement - §4.2.4.4):** Interfaz fluida, micro-interacciones, diseño visual de alto impacto deportivo.
-
-### 15.2. Resultados Cuantitativos Obtenidos
-| Indicador de Usabilidad | Valor Obtenido | Meta / Umbral | Estado |
-|:---|:---:|:---:|:---:|
-| **System Usability Scale (SUS)** | **88.5 / 100** | ≥ 75.0 (Grado A) | ✅ Cumplido |
-| **Google Lighthouse Usabilidad/Accesibilidad** | **96 / 100** | ≥ 90.0 | ✅ Cumplido |
-| **Tasa de Éxito en Tareas (Task Success)** | **98.4%** | ≥ 95.0% | ✅ Cumplido |
-| **Tiempo Medio de Registro de Pedido** | **38.2 seg** | ≤ 60.0 seg | ✅ Cumplido |
-| **Tasa de Errores Operativos** | **0.4%** | ≤ 1.5% | ✅ Cumplido |
-
----
-
-## 16. LEVANTAMIENTO DE OBSERVACIONES DEL APF2 (100% SUBSANADAS)
-
-| N° | Observación APF2 | Acción Correctiva Implementada en APF3 | Verificación / Evidencia |
-|:---:|:---|:---|:---|
-| 1 | Pruebas de integración con servicios externos | Desarrollo de `external.controller.ts` y suite `integration_external.test.ts` para WhatsApp, pagos y SUNAT/RENIEC | 7 pruebas automatizadas 100% aprobadas |
-| 2 | Evaluación de usabilidad formal bajo ISO 25010 | Implementación de `usability_iso25010.test.ts` y capítulo 15 con métricas SUS y Lighthouse | 9 pruebas de usabilidad aprobadas y SUS de 88.5 |
-| 3 | Trazabilidad completa de requerimientos vs pruebas | Matriz de trazabilidad cruzada en Capítulo 12 vinculando HU-001 a HU-008 con suites de test | 100% de historias de usuario auditadas |
-| 4 | Actualización de manual de despliegue cloud v2 | Creación de `vercel.json`, `render.yaml` y guía técnica de producción | Frontend activo en GitHub Pages y backend en Render |
-
-**Calificación proyectada en Levantamiento de Observaciones: 4.0 / 4.0 pts (100%).**
-
----
-
-## REFERENCIAS BIBLIOGRÁFICAS
-* [1] ISO/IEC, *Systems and software Quality Requirements and Evaluation (SQuaRE) — Product quality model*, ISO/IEC 25010:2023, International Organization for Standardization, Geneva, 2023.
-* [2] OWASP Foundation, *OWASP Top 10 Web Application Security Risks*, OWASP.org, 2021.
-* [3] R. C. Martin, *Clean Architecture: A Craftsman's Guide to Software Structure and Design*, Boston: Prentice Hall, 2017.
-* [4] J. Brooke, *SUS: A 'Quick and Dirty' Usability Scale*, London: Taylor & Francis, 1996.
-* [5] PostgreSQL Global Development Group, *PostgreSQL 16 Documentation - High Availability and Replication*, postgresql.org, 2024.
+*(Para consultar el desarrollo exhaustivo con tablas completas, fragmentos de código y figuras de alta resolución, remitirse al documento oficial [`INFORME_FINAL_APF3_LEOFIT.pdf`](./INFORME_FINAL_APF3_LEOFIT.pdf)).*

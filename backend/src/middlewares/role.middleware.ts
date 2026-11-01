@@ -29,7 +29,10 @@ export function requireRole(...allowedRoles: UserRole[]) {
       return;
     }
 
-    if (!allowedRoles.includes(req.user.role)) {
+    const userRole = (req.user.role || '').toUpperCase() as UserRole;
+    const allowed = allowedRoles.map(r => (r || '').toUpperCase() as UserRole);
+
+    if (!allowed.includes(userRole)) {
       res.status(403).json({
         success: false,
         error: {

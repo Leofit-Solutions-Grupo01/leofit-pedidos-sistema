@@ -291,9 +291,13 @@ def generate_logical_model():
     ax.text(12.0, 0.72, "NOTACIÓN CROW'S FOOT:  || Uno obligatorio (Mandatory One)    ○< Cero a muchos (Optional Many)    (PK) Primary Key    (FK) Foreign Key",
             ha='center', va='center', color='#000000', fontsize=9.0, family='monospace', fontweight='bold')
 
-    plt.savefig('diagrams/12_Modelo_Logico_BD.png', dpi=300, facecolor='#FFFFFF', bbox_inches='tight')
+    import os
+    out_dir = os.path.join('docs', 'diagramas')
+    os.makedirs(out_dir, exist_ok=True)
+    out_file = os.path.join(out_dir, '12_Modelo_Logico_BD.png')
+    plt.savefig(out_file, dpi=300, facecolor='#FFFFFF', bbox_inches='tight')
     plt.close()
-    print("[OK] Modelo Lógico guardado: diagrams/12_Modelo_Logico_BD.png")
+    print(f"[OK] Modelo Lógico guardado: {out_file}")
 
 
 # ======================================================================
@@ -513,9 +517,13 @@ def generate_physical_model():
     ax.text(12.0, 0.72, "CONVENCIONES FÍSICAS RDBMS:  [PK] PRIMARY KEY    [FK] FOREIGN KEY    [UK] UNIQUE KEY    ON DELETE CASCADE en order_items y order_status_history",
             ha='center', va='center', color='#000000', fontsize=9.0, family='monospace', fontweight='bold')
 
-    plt.savefig('diagrams/13_Modelo_Fisico_BD.png', dpi=300, facecolor='#FFFFFF', bbox_inches='tight')
+    import os
+    out_dir = os.path.join('docs', 'diagramas')
+    os.makedirs(out_dir, exist_ok=True)
+    out_file = os.path.join(out_dir, '13_Modelo_Fisico_BD.png')
+    plt.savefig(out_file, dpi=300, facecolor='#FFFFFF', bbox_inches='tight')
     plt.close()
-    print("[OK] Modelo Físico guardado: diagrams/13_Modelo_Fisico_BD.png")
+    print(f"[OK] Modelo Físico guardado: {out_file}")
 
 
 if __name__ == '__main__':
