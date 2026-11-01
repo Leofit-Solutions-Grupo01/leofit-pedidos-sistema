@@ -19,6 +19,7 @@ Todos los diagramas cumplen con la línea gráfica corporativa oscura de LeoFit 
 | **ARQ-07** | [`02_service_worker.png`](./02_service_worker.png) / [`.mmd`](./02_service_worker.mmd) | Resiliencia PWA | Estrategia híbrida de caché y operación offline-first del Service Worker. |
 | **ARQ-08** | [`03_backend.png`](./03_backend.png) / [`.mmd`](./03_backend.mmd) | Backend API | Flujo interno de middlewares perimetrales y ejecución transaccional de `POST /api/orders`. |
 | **ARQ-09** | [`04_general.png`](./04_general.png) / [`.mmd`](./04_general.mmd) | Ecosistema | Panorama end-to-end del ecosistema multicanal LeoFit. |
+| **ARQ-10** | [`15_Flujo_RBAC_Admin_vs_Operador.png`](./15_Flujo_RBAC_Admin_vs_Operador.png) / [`.mmd`](./15_Flujo_RBAC_Admin_vs_Operador.mmd) | Seguridad RBAC | Flujo End-to-End de llamadas y respuestas por perfil (`ADMIN` vs. `OPERATOR`) desde Frontend PWA hasta Neon PostgreSQL. |
 | **DAT-00** | [`05_erd_bd.png`](./05_erd_bd.png) / [`.mmd`](./05_erd_bd.mmd) | Base de Datos (Neon) | Diagrama Entidad-Relación Maestro Completo (22 tablas BCNF + 2 vistas analíticas + 15 migraciones en Neon PostgreSQL). |
 | **DAT-01** | [`12_Modelo_Logico_BD.png`](./12_Modelo_Logico_BD.png) | Base de Datos | Modelo lógico relacional normalizado hasta 3FN/BCNF. |
 | **DAT-02** | [`13_Modelo_Fisico_BD.png`](./13_Modelo_Fisico_BD.png) | Base de Datos | Modelo físico en PostgreSQL 16 (12 tablas, 2 vistas, índices, `CHECK` constraints y triggers). |
