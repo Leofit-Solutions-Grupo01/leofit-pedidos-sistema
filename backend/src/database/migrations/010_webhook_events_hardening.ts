@@ -24,6 +24,7 @@ export const migration010: Migration = {
       -- 2. Hardening del estado y trazabilidad de eventos de webhooks
       ALTER TABLE webhook_events
         ADD COLUMN IF NOT EXISTS status        VARCHAR(20) NOT NULL DEFAULT 'RECEIVED',
+        ADD COLUMN IF NOT EXISTS created_at    TIMESTAMPTZ NOT NULL DEFAULT NOW(),
         ADD COLUMN IF NOT EXISTS processed_at  TIMESTAMPTZ,
         ADD COLUMN IF NOT EXISTS error_message TEXT,
         ADD COLUMN IF NOT EXISTS attempts      INT NOT NULL DEFAULT 0;
@@ -59,6 +60,7 @@ export const migration010: Migration = {
       ALTER TABLE webhook_events DROP CONSTRAINT IF EXISTS chk_webhook_status;
       ALTER TABLE webhook_events
         DROP COLUMN IF EXISTS status,
+        DROP COLUMN IF EXISTS created_at,
         DROP COLUMN IF EXISTS processed_at,
         DROP COLUMN IF EXISTS error_message,
         DROP COLUMN IF EXISTS attempts;
