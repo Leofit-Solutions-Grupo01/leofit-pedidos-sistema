@@ -7,12 +7,11 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const isProduction = process.env.NODE_ENV === 'production';
-
 const rawDatabaseUrl = process.env.DATABASE_URL?.trim().replace(/^["']|["']$/g, '');
 
 const requiresSsl =
   process.env.DB_SSL === 'true' ||
+  process.env.NODE_ENV === 'production' ||
   (rawDatabaseUrl
     ? /sslmode=require|neon\.tech|supabase\.co|render\.com/i.test(rawDatabaseUrl)
     : false);
@@ -48,7 +47,7 @@ export const dbPool = new Pool(poolConfig);
 let isPgConnected = false;
 
 // Evita caídas del proceso si la instancia de PostgreSQL (ej. Render Free Tier / Neon Serverless) cierra conexiones inactivas
-dbPool.on('error', (err) => {
+dbPool.on('error', (err: Error) => {
   console.warn('⚠️ Conexión PostgreSQL interrumpida en runtime. Conmutando a Almacén Transaccional en Memoria (Fallback):', err.message);
   isPgConnected = false;
 });
