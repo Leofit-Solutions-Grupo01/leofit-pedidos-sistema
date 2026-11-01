@@ -15,9 +15,7 @@ services:
       - key: PORT
         value: 4000
       - key: DATABASE_URL
-        fromDatabase:
-          name: leofit-postgres
-          property: connectionString
+        sync: false
       - key: JWT_SECRET
         generateValue: true
       - key: JWT_SECRET_V1
@@ -70,11 +68,3 @@ services:
         value: https://leofit-backend-api.onrender.com
       - key: VITE_APP_ENV
         value: production
-
-databases:
-  # 3. PostgreSQL 16 Managed Database
-  - name: leofit-postgres
-    plan: free
-    region: oregon
-    databaseName: leofit_db
-    user: leofit_user
