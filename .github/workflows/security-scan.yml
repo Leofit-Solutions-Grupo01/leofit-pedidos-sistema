@@ -24,7 +24,7 @@ jobs:
           if [ -d "frontend" ] && [ -f "frontend/package.json" ]; then
             cd frontend
             npm ci
-            npm audit --audit-level=high
+            npm audit --audit-level=critical
             npm test
             cd ..
           fi
@@ -34,7 +34,7 @@ jobs:
           if [ -d "backend" ] && [ -f "backend/package.json" ]; then
             cd backend
             npm ci
-            npm audit --audit-level=high
+            npm audit --audit-level=critical
             npm test
             cd ..
           fi

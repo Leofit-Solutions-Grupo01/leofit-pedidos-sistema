@@ -75,3 +75,4 @@
 
 ### Anexos Técnicos y Referencias
 - **Glosario Técnico** y **Anexos A al H** (DDL SQL, Middlewares, Bitácora de 194 Pruebas, Auditoría SAST, Contratos Zod, Payload Webhook, Instrumento SUS, Trazabilidad de Ramas Git) y **Referencias Bibliográficas APA 7ma Edición**.
+

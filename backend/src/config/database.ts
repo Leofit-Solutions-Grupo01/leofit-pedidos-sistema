@@ -33,6 +33,12 @@ export const dbPool = new Pool(poolConfig);
 
 let isPgConnected = false;
 
+// Evita caídas del proceso si la instancia de PostgreSQL (ej. Render Free Tier) se suspende o cierra conexiones inactivas
+dbPool.on('error', (err) => {
+  console.warn('⚠️ Conexión PostgreSQL interrumpida en runtime. Conmutando a Almacén Transaccional en Memoria (Fallback):', err.message);
+  isPgConnected = false;
+});
+
 export async function checkDatabaseConnection(): Promise<boolean> {
   try {
     const client = await dbPool.connect();
