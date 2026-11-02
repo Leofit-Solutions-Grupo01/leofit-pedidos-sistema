@@ -20,7 +20,13 @@ except ImportError:
     openpyxl = None
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-EXCEL_PATH = BASE_DIR / "docs" / "auditoria_cierre" / "Plan_Auditoria_Software_LeoFit_Dashboard-Loayza-Lady.xlsx"
+_candidate_paths = [
+    BASE_DIR / "docs" / "03_auditoria_y_cierre_proyecto" / "Plan_Auditoria_Software_LeoFit_Dashboard-Loayza-Lady.xlsx",
+    BASE_DIR / "docs" / "03_auditoria_cierre_y_deuda_tecnica" / "Plan_Auditoria_Software_LeoFit_Dashboard-Loayza-Lady.xlsx",
+    BASE_DIR / "docs" / "auditoria_cierre" / "Plan_Auditoria_Software_LeoFit_Dashboard-Loayza-Lady.xlsx",
+    BASE_DIR / "docs" / "Plan_Auditoria_Software_LeoFit_Dashboard-Loayza-Lady.xlsx",
+]
+EXCEL_PATH = next((p for p in _candidate_paths if p.exists()), _candidate_paths[0])
 
 def scan_tests():
     backend_tests_dir = BASE_DIR / "backend" / "tests"
