@@ -16,6 +16,7 @@ Las carpetas dentro de `docs/` están numeradas del **`01` al `07`** para que al
 
 | # | Carpeta | ¿Qué encontrarás aquí? | Documento Principal |
 | :-: | :--- | :--- | :--- |
+| **⭐ 00** | **[`00_ENTREGA_OFICIAL_DOCENTE_CANVAS_APF3/`](./00_ENTREGA_OFICIAL_DOCENTE_CANVAS_APF3/)** | **PAQUETE CONSOLIDADO PARA SUBIDA A CANVAS Y EVALUACIÓN DEL PROFESOR** (Informes APF3 e ISO 25010 en DOCX/PDF, Presentación PPTX, Dashboard Excel y ZIP listo) | [**`HOJA_DE_ENTREGA_Y_ENLACES_DOCENTE.pdf`**](./00_ENTREGA_OFICIAL_DOCENTE_CANVAS_APF3/HOJA_DE_ENTREGA_Y_ENLACES_DOCENTE.pdf) <br> [**`PAQUETE_ENTREGA_APF3_GRUPO01_LEOFIT.zip`**](./00_ENTREGA_OFICIAL_DOCENTE_CANVAS_APF3/PAQUETE_ENTREGA_APF3_GRUPO01_LEOFIT.zip) <br> [**`01_INFORME_FINAL_APF3_LEOFIT.pdf`**](./00_ENTREGA_OFICIAL_DOCENTE_CANVAS_APF3/01_INFORME_FINAL_APF3_LEOFIT.pdf) |
 | **01** | **[`01_entregable_final_apf3/`](./01_entregable_final_apf3/)** | **EL INFORME FINAL APF3 A ENTREGAR AL PROFESOR** + Diapositivas de Sustentación Final | [**`INFORME_FINAL_APF3_LEOFIT.docx`**](./01_entregable_final_apf3/INFORME_FINAL_APF3_LEOFIT.docx) <br> [**`INFORME_FINAL_APF3_LEOFIT.pdf`**](./01_entregable_final_apf3/INFORME_FINAL_APF3_LEOFIT.pdf) <br> [**`INFORME_FINAL_APF3_LEOFIT.md`**](./01_entregable_final_apf3/INFORME_FINAL_APF3_LEOFIT.md) <br> [**`presentacion_sustentacion/APF3_LEOFIT_Presentacion.pptx`**](./01_entregable_final_apf3/presentacion_sustentacion/APF3_LEOFIT_Presentacion.pptx) |
 | **02** | **[`02_calidad_iso25010_semanas_10_11/`](./02_calidad_iso25010_semanas_10_11/)** | **Informe ISO/IEC 25010 (Semanas 10-11)** + **2 Manuales de Calidad ISO 25000 (Auditoría y Ejecutivo)** + Benchmark de Coexistencia | [**`INFORME_ISO25010_SEMANAS_10_11_LEOFIT.docx`**](./02_calidad_iso25010_semanas_10_11/INFORME_ISO25010_SEMANAS_10_11_LEOFIT.docx) <br> [**`Manual_Calidad_ISO_25000_[Completo...].docx`**](./02_calidad_iso25010_semanas_10_11/Manual_Calidad_ISO_25000_Leofit_Pedidos_[Completo_Auditoria_y_ComiteTecnico].docx) <br> [**`Manual_Calidad_ISO_25000_[Ejecutivo...].docx`**](./02_calidad_iso25010_semanas_10_11/Manual_Calidad_ISO_25000_Leofit_Pedidos_[Ejecutivo_Gerencia_y_ProductOwner].docx) |
 | **03** | **[`03_auditoria_y_cierre_proyecto/`](./03_auditoria_y_cierre_proyecto/)** | **Dashboard Excel de Auditoría (ISO 29119/90003)**, Cierre de Issues, Análisis Teórico de Requisitos y Deuda Técnica Saldada | [**`Plan_Auditoria_Software_LeoFit_Dashboard-Loayza-Lady.xlsx`**](./03_auditoria_y_cierre_proyecto/Plan_Auditoria_Software_LeoFit_Dashboard-Loayza-Lady.xlsx) <br> [**`justificaciones_cierre_issues.docx`**](./03_auditoria_y_cierre_proyecto/justificaciones_cierre_issues.docx) <br> [**`DEUDA_TECNICA.md`**](./03_auditoria_y_cierre_proyecto/DEUDA_TECNICA.md) |
@@ -35,6 +36,16 @@ docs/
 ├── Libro_Estudio_ISO25010_Semanas10_11_Enrique_Lee.pdf          # Libro Oficial del Asesor (ISO 25010 Sem 10-11, 37 págs)
 ├── Manual_Integral_ISO25010_Unidad3_UTP_Enrique_Lee.pdf        # Manual Integral Unidad 3 del Asesor (Sem 10-13, 52 págs)
 ├── UTP_Plantilla_Informe_ISO25010_Semanas10_11.docx             # Plantilla Word Oficial del Asesor (Completada en carpeta 02)
+│
+├── 00_ENTREGA_OFICIAL_DOCENTE_CANVAS_APF3/                      # ⭐ CARPETA DE ENTREGA RÁPIDA PARA CANVAS / DOCENTE
+│   ├── HOJA_DE_ENTREGA_Y_ENLACES_DOCENTE.pdf                    # Ficha de Enlaces, Repositorio y Mapeo de Rúbrica
+│   ├── 01_INFORME_FINAL_APF3_LEOFIT.pdf / .docx                 # Informe Final Maestro APF3 (77 págs, 21 diagramas)
+│   ├── 02_INFORME_ISO25010_SEMANAS_10_11_LEOFIT.pdf / .docx     # Informe Semanas 10-11 (Plantilla UTP Completada)
+│   ├── 03_PRESENTACION_SUSTENTACION_APF3_LEOFIT.pdf / .pptx     # Diapositivas de Sustentación (10 min)
+│   ├── 04_PLAN_AUDITORIA_SOFTWARE_DASHBOARD_LEOFIT.xlsx         # Dashboard Excel de Auditoría (ISO 29119 / 90003)
+│   ├── 05_MANUAL_CALIDAD_ISO_25000_TECNICO.docx                 # Manual de Calidad Técnico
+│   ├── 06_MANUAL_CALIDAD_ISO_25000_EJECUTIVO.docx               # Manual de Calidad Ejecutivo
+│   └── PAQUETE_ENTREGA_APF3_GRUPO01_LEOFIT.zip                  # Archivo ZIP Comprimido con Todo Listo para Canvas
 │
 ├── 01_entregable_final_apf3/                                    # ENTREGABLE FINAL AL PROFESOR (APF3)
 │   ├── INFORME_FINAL_APF3_LEOFIT.docx                           # Informe Final Editable Word (77 págs, 21 diagramas)
