@@ -12,6 +12,7 @@ import Badge from "../components/common/Badge";
 import { EstadoPedido, Pedido, estaEnRiesgo, calcularIngresos } from "../data/mockData";
 import MontoPrivado from "../components/common/MontoPrivado";
 import RecentActivity from "../components/dashboard/RecentActivity";
+import PerformanceCharts from "../components/dashboard/PerformanceCharts";
 
 /**
  * Hook personalizado para animar transiciones numéricas fluidas (Count-Up).
@@ -153,6 +154,14 @@ export default function Dashboard() {
   useEffect(() => {
     const t = setInterval(() => setAhora(new Date()), 60_000);
     return () => clearInterval(t);
+  }, []);
+
+  // Scroll automático a sección si la URL contiene ancla específica
+  useEffect(() => {
+    if (typeof window !== "undefined" && (window.location.hash.includes("charts") || window.location.pathname.includes("charts"))) {
+      const el = document.getElementById("performance-charts-section");
+      if (el) el.scrollIntoView({ behavior: "instant" as ScrollBehavior });
+    }
   }, []);
 
   const HOY = ahora.toISOString().split("T")[0];
@@ -428,6 +437,15 @@ export default function Dashboard() {
             })}
           </div>
         </div>
+
+        {/* Panel de Rendimiento Operativo y Ventas para el dueño (Víctor / LeoFit) */}
+        <PerformanceCharts
+          pedidos={pedidos}
+          productos={productos}
+          privacidad={ocultarTotal || privacidad}
+          modoAccesible={modoAccesible}
+          vistaInicial={typeof window !== "undefined" && window.location.pathname.includes("sla") ? "operaciones" : "ventas"}
+        />
 
         {/* Acciones rápidas (Responsive: Stack on narrow mobile, horizontal on sm+) */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3">

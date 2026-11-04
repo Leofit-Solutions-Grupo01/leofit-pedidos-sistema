@@ -1,0 +1,22 @@
+[2026-10-22 19:00:10] === PRUEBA DE COEXISTENCIA ISO/IEC 25010 - LeoFit (Servicio A: API) vs Reportes (Servicio B) ===
+[2026-10-22 19:00:10] Servicio A detectado: PID 30672 (node.exe), health={"status": "UP", "timestamp": "2026-10-23T00:00:10.309Z", "uptime": "361s", "service": "leofit-backend-api", "version": "2.0.0", "database": {"engine": "In-Memory Transactional Store (Fallback)", "status": "DEGRADED"}, "system": {"nodeVersion": "v26.4.0", "rssMemoryMB": "108.59", "heapUsedMB": "20.7
+[2026-10-22 19:00:10] Catálogo: 4 productos; variantes usadas para escritura: [9, 7]
+[2026-10-22 19:00:10] Servicio B iniciado: PID 36600 (node service_b_reportes.js)
+[2026-10-22 19:00:10] Afinidad de CPU: A y B fijados al núcleo lógico 0 (emulación de vCPU compartida)
+[2026-10-22 19:00:11] Muestreo del contenedor PostgreSQL: no disponible
+[2026-10-22 19:00:11] Fase 1 - Línea base del servicio A (B en reposo)
+[2026-10-22 19:00:12]   [F1_A_base] A GET /api/products: n=200 media=4.92 ms p95=24.35 ms errores=0
+[2026-10-22 19:00:12]   [F1_A_base] A POST /api/orders: n=60 media=5.02 ms p95=15.88 ms errores=0
+[2026-10-22 19:00:12] Fase 2 - Línea base del servicio B (A en reposo)
+[2026-10-22 19:00:14]   [F2_B_base] B GET /report: n=100 media=22.02 ms p95=36.16 ms errores=0
+[2026-10-22 19:00:14] Fase 3 - Servicio A medido con B bajo carga (4 clientes concurrentes en /report)
+[2026-10-22 19:00:17]   [F3_A_con_B] A GET /api/products: n=200 media=4.42 ms p95=22.78 ms errores=0
+[2026-10-22 19:00:17]   [F3_A_con_B] A POST /api/orders: n=60 media=3.44 ms p95=3.65 ms errores=0
+[2026-10-22 19:00:17]   Carga de fondo en B: 121 solicitudes, 0 errores
+[2026-10-22 19:00:17] Fase 4 - Servicio B medido con A bajo carga (4 clientes concurrentes en /api/products)
+[2026-10-22 19:00:22]   [F4_B_con_A] B GET /report: n=100 media=39.3 ms p95=78.83 ms errores=0
+[2026-10-22 19:00:22]   Carga de fondo en A: 2776 solicitudes, 0 errores
+[2026-10-22 19:00:23] DICTAMEN PC-01 Latencia A - GET /api/products (impacto B->A): APROBADA | base_mean_ms=4.92, sim_mean_ms=4.42, base_p95_ms=24.35, sim_p95_ms=22.78, variation=-10.16, variation_kind=pct, base_error_pct=0.0, sim_error_pct=0.0, error_diff_abs=0.0
+[2026-10-22 19:00:23] DICTAMEN PC-02 Latencia A - POST /api/orders (impacto B->A): APROBADA | base_mean_ms=5.02, sim_mean_ms=3.44, base_p95_ms=15.88, sim_p95_ms=3.65, variation=-31.47, variation_kind=pct, base_error_pct=0.0, sim_error_pct=0.0, error_diff_abs=0.0
+[2026-10-22 19:00:23] DICTAMEN PC-03 Latencia B - GET /report (impacto A->B): NO CONFORME | base_mean_ms=22.02, sim_mean_ms=39.3, base_p95_ms=36.16, sim_p95_ms=78.83, variation=78.47, variation_kind=pct, base_error_pct=0.0, sim_error_pct=0.0, error_diff_abs=0.0
+[2026-10-22 19:00:23] DICTAMEN PC-04 CPU / RAM pico por proceso (A y B): NO CONFORME | peak_cpu_pct=90.6, peak_rss_mb=191.4

@@ -64,6 +64,27 @@ describe('apiFetch', () => {
     expect(cerrarFn).toHaveBeenCalled();
   });
 
+  it('T3b: 403 con mensaje de token inválido o expirado llama cerrarSesionFn y arroja ApiError UNAUTHORIZED', async () => {
+    globalFetch.mockResolvedValue({
+      ok: false,
+      status: 403,
+      json: async () => ({
+        success: false,
+        error: { code: 'FORBIDDEN', message: 'Token de sesión inválido o expirado. Inicie sesión nuevamente.' }
+      })
+    });
+
+    const cerrarFn = vi.fn();
+    try {
+      await apiFetch('/test', {}, cerrarFn);
+      expect.fail('Should have thrown');
+    } catch (e) {
+      expect(e).toBeInstanceOf(ApiError);
+      expect((e as ApiError).code).toBe('UNAUTHORIZED');
+    }
+    expect(cerrarFn).toHaveBeenCalled();
+  });
+
   it('T4: Envelope con success: false arroja ApiError con el código devuelto', async () => {
     globalFetch.mockResolvedValueOnce({
       ok: false,

@@ -110,7 +110,7 @@ WHERE slot_name = 'standby_slot_leofit_replica1';
 -- PASO 7: Configuración postgresql.conf del NODO STANDBY
 --
 -- primary_conninfo      = 'host=10.0.0.10 port=5432 user=replicator_leofit
---                          password=Leofit_Repl_2026!SecurePass sslmode=require'
+--                          password=${REPLICATION_PASSWORD} sslmode=require'
 -- primary_slot_name     = 'standby_slot_leofit_replica1'
 -- hot_standby           = on
 -- hot_standby_feedback  = on

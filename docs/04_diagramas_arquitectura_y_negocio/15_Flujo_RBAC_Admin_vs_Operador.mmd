@@ -1,0 +1,49 @@
+flowchart LR
+    subgraph ADMIN["PERFIL 1: ADMINISTRADOR (admin@leofit.pe | role: ADMIN)"]
+        A1["Login PWA -> POST /api/auth/login
+Recibe JWT (role=ADMIN) + Cookie HttpOnly"]
+        A2["GET /api/dashboard/metrics
+-> 200 OK (KPIs financieros S/ + Alertas Stock)"]
+        A3["POST/PUT/DELETE /api/products & PATCH stock
+-> 200/201 OK (Muta products & product_variants + audit_log)"]
+        A4["POST /api/orders/:id/cancel | /refund | /credit-note
+-> 200 OK (Restituye stock + Nota Crédito SUNAT + audit_log)"]
+        A5["POST /api/orders & PATCH /api/orders/:id/status
+-> 201/200 OK (Flujo operativo completo)"]
+    end
+
+    subgraph PIPE["PIPELINE PERIMETRAL BACKEND (Render Free - S/ 0.00)"]
+        M1["1. Helmet + CORS + Correlation-ID"]
+        M2["2. RateLimiter + Idempotency-Key"]
+        M3["3. authenticateToken (Verifica JWT HMAC-SHA256)"]
+        M4{"4. requireRole('ADMIN')
+en rutas críticas"}
+        M5["5. validateBody (Zod) + audit()"]
+    end
+
+    subgraph OPER["PERFIL 2: OPERADOR LOGÍSTICO (operador@leofit.pe | role: OPERATOR)"]
+        O1["Login PWA -> POST /api/auth/login
+Recibe JWT (role=OPERATOR) | UI oculta botones destructivos"]
+        O2["GET /api/products & GET /api/orders
+-> 200 OK (Consulta catálogo y cola de despacho)"]
+        O3["POST /api/orders (Idempotency-Key)
+-> 201 Created (LOCK FOR UPDATE + Descuento Stock ACID)"]
+        O4["PATCH /api/orders/:id/status
+(RECIBIDO -> PREPARACION -> EN_CAMINO -> ENTREGADO) -> 200 OK"]
+        O5["Intento de POST/DELETE /api/products o /cancel o /refund
+-> 403 FORBIDDEN (Bloqueado en Middleware RBAC)"]
+    end
+
+    subgraph NEON["BASE DE DATOS NEON POSTGRESQL (neondb - S/ 0.00)"]
+        DB1[("22 Tablas BCNF + 2 Vistas
+orders, product_variants,
+invoices, audit_log")]
+    end
+
+    A1 --> M1 --> M2 --> M3 --> M4
+    O1 --> M1
+    M4 -->|"role == ADMIN (PASA)"| M5 --> DB1
+    M4 -->|"role == OPERATOR (BLOQUEA)"| O5
+    M3 -->|"Rutas Operativas (ADMIN u OPERATOR)"| DB1
+    DB1 --> A2 & A3 & A4 & A5
+    DB1 --> O2 & O3 & O4

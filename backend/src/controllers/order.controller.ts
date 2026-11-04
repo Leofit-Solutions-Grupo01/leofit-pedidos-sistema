@@ -16,6 +16,7 @@ import { Request, Response, NextFunction } from 'express';
 import { RepositoryFactory } from '../infrastructure/repositories/factory';
 import { AuthenticatedRequest } from '../middlewares/auth.middleware';
 import { OrderStatus } from '../domain/entities/models';
+import { createCulqiCheckout } from '../services/payments/culqi';
 import { z } from 'zod';
 
 export class OrderController {
@@ -127,11 +128,12 @@ export class OrderController {
     try {
       const orderRepo = RepositoryFactory.getOrderRepository();
 
-      // Ejecución de la transacción ACID a través de la capa de persistencia
+      // Ejecución de la transacción ACID a través de la capa de persistencia (usando res.locals.dbClient si proviene de idempotencia)
+      const dbClient = res.locals.dbClient;
       const order = await orderRepo.create({
         ...req.body,
         userId: req.user?.userId
-      }, 'READ COMMITTED');
+      }, 'READ COMMITTED', dbClient);
 
       res.status(201).json({
         success: true,
@@ -162,6 +164,18 @@ export class OrderController {
     try {
       const id = parseInt(req.params.id, 10);
       const { status, comments } = req.body;
+
+      if (status === 'CANCELADO' && req.user?.role !== 'ADMIN') {
+        res.status(403).json({
+          success: false,
+          error: {
+            code: 'INSUFFICIENT_PERMISSIONS',
+            message: 'Acceso restringido. La cancelación de pedidos requiere privilegios de Administrador (ADMIN).'
+          }
+        });
+        return;
+      }
+
       const orderRepo = RepositoryFactory.getOrderRepository();
 
       const updated = status === 'CANCELADO'
@@ -211,6 +225,72 @@ export class OrderController {
         success: true,
         message: 'Pedido cancelado satisfactoriamente y existencias reincorporadas al inventario.',
         data: cancelled
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * @route POST /api/orders/:id/payment-link
+   * @desc Genera o retorna el enlace de pago de la pasarela para una orden pendiente.
+   * @access Protegido (ADMIN / OPERATOR)
+   */
+  public static async getPaymentLink(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const id = parseInt(req.params.id, 10);
+      const orderRepo = RepositoryFactory.getOrderRepository();
+      const order = await orderRepo.findById(id);
+
+      if (!order) {
+        res.status(404).json({
+          success: false,
+          error: { code: 'ORDER_NOT_FOUND', message: `Pedido con ID ${id} no encontrado.` }
+        });
+        return;
+      }
+
+      let estado = ((order as any).estado || (order as any).status || '').toUpperCase();
+      if (estado === 'RECIBIDO') estado = 'PENDIENTE';
+      if (estado !== 'PENDIENTE') {
+        res.status(409).json({
+          success: false,
+          error: { code: 'ORDER_NOT_PAYABLE', message: `El pedido está en estado ${estado} y no puede pagarse.`, estado }
+        });
+        return;
+      }
+
+      // Revalidación de defensa en profundidad: recomputar suma de ítems + envío vs total
+      const orderTotalCents = Math.round(Number(order.total_amount) * 100);
+      if (order.items && order.items.length > 0) {
+        const itemsSum = order.items.reduce(
+          (acc: number, item: any) => acc + Number(item.quantity) * Number(item.unit_price || item.unitPrice || 0),
+          0
+        );
+        const expectedTotalCents = Math.round((itemsSum + Number(order.shipping_cost || 0)) * 100);
+        if (Math.abs(expectedTotalCents - orderTotalCents) > 1) {
+          res.status(500).json({
+            success: false,
+            error: {
+              code: 'ORDER_TOTAL_MISMATCH',
+              message: 'Inconsistencia detectada entre el cálculo de ítems y el total del pedido.'
+            }
+          });
+          return;
+        }
+      }
+
+      const email = order.client?.phone ? `${order.client.phone}@cliente.leofit.pe` : 'cliente@leofit.pe';
+
+      const checkout = await createCulqiCheckout({
+        id: order.id,
+        totalCents: orderTotalCents,
+        email
+      });
+
+      res.status(200).json({
+        success: true,
+        data: checkout
       });
     } catch (error) {
       next(error);

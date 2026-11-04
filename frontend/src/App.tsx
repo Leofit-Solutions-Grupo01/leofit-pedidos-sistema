@@ -14,39 +14,39 @@ import PedidosLista from "./pages/PedidosLista";
 import PedidoForm from "./pages/PedidoForm";
 import ProductosGestion from "./pages/ProductosGestion";
 import RastreoPublico from "./pages/RastreoPublico";
-
 import Analytics from "./pages/Analytics";
+import ErrorBoundary from "./components/common/ErrorBoundary";
+import { SessionExpiredModal } from "./components/common/SessionExpiredModal";
 
 function AppContent() {
-  const { autenticado, paginaActual, errorApi, limpiarError, cargando } = useApp();
+  const { autenticado, paginaActual } = useApp();
 
   if (!autenticado) return <Login />;
 
   return (
     <div className="min-h-screen bg-[#F1FAEE]">
       <Navbar />
-      {(paginaActual === "dashboard" || paginaActual === "nuevo-pedido") && <Dashboard />}
+      {paginaActual === "dashboard" && <Dashboard />}
+      {paginaActual === "nuevo-pedido" && (
+        <div className="pt-16 pb-32 sm:pb-28 min-h-screen bg-[#F1FAEE]">
+          <PedidoForm />
+        </div>
+      )}
       {paginaActual === "analytics" && <Analytics />}
       {paginaActual === "pedidos" && <PedidosLista />}
       {paginaActual === "productos" && <ProductosGestion />}
       {paginaActual === "rastreo" && <RastreoPublico />}
-      
-      {/* Modal Nuevo Pedido */}
-      {paginaActual === "nuevo-pedido" && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-900/60 backdrop-blur-sm">
-          <div className="bg-white w-full max-w-4xl max-h-[95vh] overflow-y-auto rounded-2xl shadow-2xl relative">
-            <PedidoForm />
-          </div>
-        </div>
-      )}
+      <SessionExpiredModal />
     </div>
   );
 }
 
 export default function App() {
   return (
-    <AppProvider>
-      <AppContent />
-    </AppProvider>
+    <ErrorBoundary>
+      <AppProvider>
+        <AppContent />
+      </AppProvider>
+    </ErrorBoundary>
   );
 }

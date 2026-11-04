@@ -169,5 +169,33 @@ interfaces.txt
 
 # Backup files
 *.bak
+*.bak.*
+*.backup
+*.backup.*
 *.old
 *.orig
+*.tmp
+
+# Temporary test screenshots and preview harnesses
+screenshot*.png
+dash_capture*.png
+test_out.png
+test_res_*.png
+preview*.html
+frontend/dist/preview*.html
+
+# Presentaciones locales y temporales
+docs/gestion_academica/presentaciones/EXPOSICION_VALIDACION_CLOUD.md
+
+# Temporary scratch and render caches
+scratch/
+docs/bw_cache/
+diagrams/
+test_apa.docx
+
+# Redundant root docs outputs (official deliverables are in docs/gestion_academica/entregas/)
+docs/INFORME_FINAL_*.docx
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class

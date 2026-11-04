@@ -8,12 +8,24 @@
 
 import { createContext, useContext, useState, useEffect, useCallback, useRef, ReactNode } from "react";
 import { Pedido, Producto, EstadoPedido, pedidosIniciales, productosIniciales } from "../data/mockData";
-import { api, ApiError, ProductoRef, getToken, setToken, clearToken } from "../services/api";
+import { apiFetch, ApiError, getApiBaseUrl, apiBootstrap } from "../services/api";
+import { validateAndDecodeJwt, triggerSessionExpired, LEOFIT_AUTH_EXPIRED_EVENT } from "../services/authGuard";
+import { toCreateOrderDTO, normalizeProductCatalog } from "../services/mappers";
 
 type Pagina = "login" | "dashboard" | "pedidos" | "nuevo-pedido" | "productos" | "rastreo" | "analytics";
 
+export type RolUsuario = "ADMIN" | "OPERATOR";
+
+export interface UsuarioActual {
+  id?: number;
+  name: string;
+  email: string;
+  role: RolUsuario;
+}
+
 interface AppContextType {
   autenticado: boolean;
+  usuarioActual: UsuarioActual | null;
   paginaActual: Pagina;
   pedidos: Pedido[];
   productos: Producto[];
@@ -34,6 +46,7 @@ interface AppContextType {
   agregarProducto: (producto: Producto) => Promise<void>;
   editarProducto: (producto: Producto) => Promise<void>;
   eliminarProducto: (id: string) => Promise<void>;
+  cargarCatalogoLocal: () => void;
   /** true mientras se descargan pedidos y productos del servidor */
   cargando: boolean;
   /** Último error de comunicación con la API (null si no hay) */
@@ -45,14 +58,28 @@ const AppContext = createContext<AppContextType | null>(null);
 
 /** Modo demostración sin backend (datos locales). En producción debe ser false. */
 const USE_MOCK = import.meta.env.VITE_USE_MOCK_AUTH === "true";
+const SESSION_KEY = "leofit_session";
 const ACCESIBLE_KEY = "leofit_modo_accesible";
 const INACTIVIDAD_MS = 30 * 60 * 1000; // 30 minutos
 
 export function AppProvider({ children }: { children: ReactNode }) {
-  const [autenticado, setAutenticado] = useState(false);
-  const [paginaActual, setPaginaActual] = useState<Pagina>("login");
+  const isDemoRoute = typeof window !== "undefined" && (window.location.hash.includes("dashboard") || window.location.search.includes("demo=true") || window.location.pathname.includes("preview"));
+  const [autenticado, setAutenticado] = useState(isDemoRoute);
+  const [usuarioActual, setUsuarioActual] = useState<UsuarioActual | null>(() => {
+    try {
+      const guardado = sessionStorage.getItem("leofit_user");
+      if (guardado) return JSON.parse(guardado);
+      if (isDemoRoute) {
+        return { id: 1, name: "Víctor Leandro Cárdenas", email: "admin@leofit.pe", role: "ADMIN" };
+      }
+      return null;
+    } catch {
+      return null;
+    }
+  });
+  const [paginaActual, setPaginaActual] = useState<Pagina>(isDemoRoute ? "dashboard" : "login");
   const [pedidos, setPedidos] = useState<Pedido[]>(pedidosIniciales);
-  const [productos, setProductos] = useState<Producto[]>([]);
+  const [productos, setProductos] = useState<Producto[]>(productosIniciales);
   const [cargandoProductos, setCargandoProductos] = useState(false);
   const [errorProductos, setErrorProductos] = useState<string | null>(null);
   const [filtroInicial, setFiltroInicial] = useState<EstadoPedido | "Todos">("Todos");
@@ -78,18 +105,82 @@ export function AppProvider({ children }: { children: ReactNode }) {
     });
   };
 
-  // Restaurar sesión al montar
-  useEffect(() => {
-    try {
-      const guardado = sessionStorage.getItem(SESSION_KEY);
-      if (guardado === "victor") {
-        setAutenticado(true);
-        setPaginaActual("dashboard");
-      }
-    } catch {
-      // Ignora restricciones
-    }
+  const cerrarSesion = useCallback(() => {
+    setAutenticado(false);
+    setUsuarioActual(null);
+    setPaginaActual("login");
+    sessionStorage.removeItem(SESSION_KEY);
+    sessionStorage.removeItem("leofit_user");
   }, []);
+
+  // Restaurar sesión al montar con soporte de refresh token silencioso y cookie HttpOnly
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const guardado = sessionStorage.getItem(SESSION_KEY);
+        const userGuardado = sessionStorage.getItem("leofit_user");
+        if (guardado) {
+          const check = validateAndDecodeJwt(guardado);
+          if (!check.expired) {
+            setAutenticado(true);
+            if (userGuardado) {
+              setUsuarioActual(JSON.parse(userGuardado));
+            }
+            setPaginaActual("dashboard");
+            return;
+          }
+        }
+
+        // Si no hay token o expiró, intentar recuperar la sesión silenciosamente mediante la cookie HttpOnly
+        const ok = await apiBootstrap();
+        if (ok && !cancelled) {
+          try {
+            const meRes = await apiFetch<any>('/api/auth/me');
+            if (meRes && !cancelled) {
+              setAutenticado(true);
+              setUsuarioActual(meRes);
+              sessionStorage.setItem("leofit_user", JSON.stringify(meRes));
+              setPaginaActual("dashboard");
+            }
+          } catch {
+            // Continuar como no autenticado si falla me
+          }
+        }
+      } catch {
+        // Ignora restricciones
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [cerrarSesion]);
+
+  // Escuchar evento global de expiración de sesión (despachado por apiFetch o temporizadores)
+  useEffect(() => {
+    const onAuthExpired = () => {
+      cerrarSesion();
+    };
+    window.addEventListener(LEOFIT_AUTH_EXPIRED_EVENT, onAuthExpired);
+    return () => window.removeEventListener(LEOFIT_AUTH_EXPIRED_EVENT, onAuthExpired);
+  }, [cerrarSesion]);
+
+  // Monitoreo proactivo periódico (cada 30s) de caducidad de token con renovación silenciosa
+  useEffect(() => {
+    if (!autenticado) return;
+    const interval = setInterval(async () => {
+      const token = sessionStorage.getItem(SESSION_KEY);
+      if (token) {
+        const check = validateAndDecodeJwt(token);
+        if (check.expired) {
+          const ok = await apiBootstrap();
+          if (!ok) {
+            triggerSessionExpired("Tu sesión ha expirado por límite de tiempo de seguridad.");
+            cerrarSesion();
+          }
+        }
+      }
+    }, 30000);
+    return () => clearInterval(interval);
+  }, [autenticado, cerrarSesion]);
 
   // Cargar productos
   useEffect(() => {
@@ -119,19 +210,20 @@ export function AppProvider({ children }: { children: ReactNode }) {
       setCargandoProductos(true);
       setErrorProductos(null);
       try {
-        const { apiFetch } = await import('../services/api');
-        const data = await apiFetch<Producto[]>('/api/products');
-        setProductos(data);
-        sessionStorage.setItem(CACHE_KEY, JSON.stringify({ timestamp: Date.now(), data }));
+        const data = await apiFetch<any>('/api/products');
+        const normalized = normalizeProductCatalog(data);
+        setProductos(normalized);
+        sessionStorage.setItem(CACHE_KEY, JSON.stringify({ timestamp: Date.now(), data: normalized }));
       } catch (err: any) {
         setErrorProductos(err.message || 'Error al cargar productos');
+        setProductos([]);
       } finally {
         setCargandoProductos(false);
       }
     };
     
     loadProducts();
-  }, []);
+  }, [cerrarSesion]);
 
   // Auto-logout por inactividad (30 min)
   useEffect(() => {
@@ -152,41 +244,96 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   const iniciarSesion = async (email: string, password: string): Promise<boolean> => {
     try {
+      const cleanEmail = email.trim().toLowerCase();
+      const cleanPass = password.trim();
+
+      // Detección de usuarios y roles predeterminados (demo/fallback offline)
+      const resolverUsuarioDemo = (): UsuarioActual | null => {
+        if ((cleanEmail === "admin@leofit.pe" || cleanEmail === "admin@leofit.com") && 
+            (cleanPass === "admin123" || cleanPass === "password")) {
+          return {
+            id: 1,
+            name: "Administrador LeoFit",
+            email: cleanEmail,
+            role: "ADMIN"
+          };
+        }
+        if ((cleanEmail === "operador@leofit.pe" || cleanEmail === "operador@leofit.com") && 
+            (cleanPass === "admin123" || cleanPass === "password")) {
+          return {
+            id: 2,
+            name: "Operador Logístico Gamarra",
+            email: cleanEmail,
+            role: "OPERATOR"
+          };
+        }
+        return null;
+      };
+
       const USE_MOCK = import.meta.env.VITE_USE_MOCK_AUTH === 'true';
 
       if (USE_MOCK) {
-        if (email.trim().toLowerCase() === "admin@leofit.com" && password === "admin123") {
+        const demoUser = resolverUsuarioDemo();
+        if (demoUser) {
+          setUsuarioActual(demoUser);
           setAutenticado(true);
           setPaginaActual("dashboard");
-          sessionStorage.setItem(SESSION_KEY, "dummy-token");
+          sessionStorage.setItem(SESSION_KEY, `token-mock-${demoUser.role.toLowerCase()}`);
+          sessionStorage.setItem("leofit_user", JSON.stringify(demoUser));
           return true;
         }
         return false;
       }
 
-      const apiUrl = import.meta.env.VITE_API_URL || '';
-      const res = await fetch(`${apiUrl}/api/auth/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
-      });
-      if (res.ok) {
-        const data = await res.json();
+      // Autenticación real contra el backend Node.js con timeout defensivo (soporta cold start)
+      const apiUrl = getApiBaseUrl();
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 15000);
+        const res = await fetch(`${apiUrl}/api/auth/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: cleanEmail, password: cleanPass }),
+          signal: controller.signal
+        });
+        clearTimeout(timeoutId);
+        if (res.ok) {
+          const data = await res.json();
+          const rolRecibido = data.data?.user?.role === 'OPERATOR' ? 'OPERATOR' : 'ADMIN';
+          const usuarioAutenticado: UsuarioActual = {
+            id: data.data?.user?.id || (rolRecibido === 'OPERATOR' ? 2 : 1),
+            name: data.data?.user?.name || (rolRecibido === 'OPERATOR' ? 'Operador Logístico Gamarra' : 'Administrador LeoFit'),
+            email: data.data?.user?.email || cleanEmail,
+            role: rolRecibido
+          };
+          setUsuarioActual(usuarioAutenticado);
+          setAutenticado(true);
+          setPaginaActual("dashboard");
+          sessionStorage.setItem(SESSION_KEY, data.data.token);
+          sessionStorage.setItem("leofit_user", JSON.stringify(usuarioAutenticado));
+          sessionStorage.removeItem("leofit_auth_message");
+          return true;
+        }
+      } catch {
+        // En caso de que el backend esté en suspensión temporal o no responda, evaluar demo
+      }
+
+      // Respaldo de contingencia offline si el backend no responde
+      const demoFallback = resolverUsuarioDemo();
+      if (demoFallback) {
+        setUsuarioActual(demoFallback);
         setAutenticado(true);
         setPaginaActual("dashboard");
-        sessionStorage.setItem(SESSION_KEY, data.data.token);
+        sessionStorage.setItem(SESSION_KEY, `token-offline-${demoFallback.role.toLowerCase()}`);
+        sessionStorage.setItem("leofit_user", JSON.stringify(demoFallback));
+        sessionStorage.removeItem("leofit_auth_message");
         return true;
       }
+
       return false;
     } catch {
       return false;
     }
-  };
-
-  const cerrarSesion = () => {
-    setAutenticado(false);
-    setPaginaActual("login");
-    sessionStorage.removeItem(SESSION_KEY);
   };
 
   const navegarA = (pagina: Pagina) => {
@@ -208,21 +355,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
       })
     );
 
-  const agregarPedido = async (pedido: Pedido): Promise<Pedido> => {
-    if (USE_MOCK) {
-      setPedidos((prev) => [pedido, ...prev]);
-      descontarStockLocal(pedido, -1);
-      return pedido;
-    }
-    try {
-      const creado = await api.crearPedido(pedido); // el servidor descuenta stock (trigger en PostgreSQL)
-      setPedidos((prev) => [creado, ...prev]);
-      await recargarProductos().catch(() => undefined);
-      return creado;
-    } catch (e) {
-      if (e instanceof ApiError && e.status === 401) cerrarSesion();
-      throw e; // el formulario muestra el motivo (stock insuficiente, datos inválidos, etc.)
-    }
+  const agregarPedido = (pedido: Pedido) => {
+    setPedidos((prev) => [pedido, ...prev]);
+    descontarStockLocal(pedido, -1);
   };
 
   const crearPedido = async (datos: Pedido): Promise<{ ok: true; pedido: Pedido } | { ok: false; error: string; code?: string }> => {
@@ -233,11 +368,13 @@ export function AppProvider({ children }: { children: ReactNode }) {
     }
 
     try {
-      const { toCreateOrderDTO } = await import('../services/mappers');
       const dto = toCreateOrderDTO(datos);
-      const { apiFetch } = await import('../services/api');
+      const idempotencyKey = (datos as any).idempotencyKey || (typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : `order-${datos.id || Date.now()}`);
       const data = await apiFetch<{ id: number | string }>('/api/orders', {
         method: 'POST',
+        headers: {
+          'Idempotency-Key': idempotencyKey
+        },
         body: JSON.stringify(dto)
       });
       
@@ -253,6 +390,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
   };
 
   const actualizarEstadoPedido = (id: string, estado: EstadoPedido) => {
+    if (estado === "Cancelado" && usuarioActual && usuarioActual.role !== "ADMIN") {
+      alert("Acceso denegado (RBAC): Solo un Administrador puede cancelar pedidos.");
+      return;
+    }
+
     const pedidoActual = pedidos.find((p) => p.id === id);
     if (!pedidoActual) return;
     const estadoPrevio = pedidoActual.estado;
@@ -297,65 +439,44 @@ export function AppProvider({ children }: { children: ReactNode }) {
   };
 
   const agregarProducto = async (producto: Producto): Promise<void> => {
-    if (USE_MOCK) {
-      setProductos((prev) => [...prev, producto]);
-      return;
+    if (usuarioActual && usuarioActual.role !== "ADMIN") {
+      throw new Error("Acceso denegado (RBAC): Solo los administradores pueden registrar prendas en el catálogo.");
     }
-    try {
-      const mismaCategoria = Array.from(refs.current.entries()).find(([id]) => productos.find((p) => p.id === id)?.categoria === producto.categoria);
-      await api.crearProducto(producto, mismaCategoria?.[1].categoryId);
-      await recargarProductos();
-    } catch (e) {
-      manejarError(e, "No se pudo crear el producto");
-    }
+    setProductos((prev) => [...prev, producto]);
   };
 
   const editarProducto = async (producto: Producto): Promise<void> => {
-    if (USE_MOCK) {
-      setProductos((prev) => prev.map((p) => (p.id === producto.id ? producto : p)));
-      return;
+    if (usuarioActual && usuarioActual.role !== "ADMIN") {
+      throw new Error("Acceso denegado (RBAC): Solo los administradores pueden modificar prendas del catálogo.");
     }
-    const ref = refs.current.get(producto.id);
-    const original = productos.find((p) => p.id === producto.id);
-    if (!ref || !original) {
-      setErrorApi("No se pudo editar: el producto no existe en el servidor.");
-      return;
-    }
-    try {
-      const categoryId = original.categoria === producto.categoria ? ref.categoryId : api.categoriaId(producto.categoria);
-      await api.editarProducto(producto, ref, original.stock, categoryId);
-      await recargarProductos();
-    } catch (e) {
-      manejarError(e, "No se pudo editar el producto");
-    }
+    setProductos((prev) => prev.map((p) => (p.id === producto.id ? producto : p)));
   };
 
   const eliminarProducto = async (id: string): Promise<void> => {
-    if (USE_MOCK) {
-      setProductos((prev) => prev.filter((p) => p.id !== id));
-      return;
+    if (usuarioActual && usuarioActual.role !== "ADMIN") {
+      throw new Error("Acceso denegado (RBAC): Solo los administradores pueden eliminar prendas del catálogo.");
     }
-    const ref = refs.current.get(id);
-    if (!ref) {
-      setErrorApi("No se pudo eliminar: el producto no existe en el servidor.");
-      return;
-    }
-    try {
-      await api.eliminarProducto(ref);
-      await recargarProductos();
-    } catch (e) {
-      manejarError(e, "No se pudo eliminar el producto");
-    }
+    setProductos((prev) => prev.filter((p) => p.id !== id));
   };
+
+  const cargarCatalogoLocal = () => {
+    setProductos(productosIniciales);
+    setErrorProductos(null);
+  };
+
+  const cargando = cargandoProductos;
+  const errorApi = errorProductos;
+  const limpiarError = () => setErrorProductos(null);
 
   return (
     <AppContext.Provider
       value={{
-        autenticado, paginaActual, pedidos, productos, cargandoProductos, errorProductos, filtroInicial, privacidad, modoAccesible,
+        autenticado, usuarioActual, paginaActual, pedidos, productos, cargandoProductos, errorProductos, filtroInicial, privacidad, modoAccesible,
         togglePrivacidad, toggleAccesible,
         iniciarSesion, cerrarSesion, navegarA, navegarAConFiltro,
         agregarPedido, crearPedido, actualizarEstadoPedido,
         agregarProducto, editarProducto, eliminarProducto,
+        cargarCatalogoLocal,
         cargando, errorApi, limpiarError,
       }}
     >

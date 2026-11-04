@@ -1,0 +1,756 @@
+=== PAGE 1 ===
+ 
+ 
+Consigna para AVANCE DE PROYECTO FINAL 3 
+ 
+1. Logro a evaluar:  
+Al finalizar la unidad, el estudiante integra la solución informática con otro sistema 
+externo, aplicando prácticas de calidad de software relacionadas con la 
+funcionalidad, la compatibilidad y la capacidad de interacción. 
+ 
+2. Indicación general: 
+Deberán trabajar en el desarrollo de su proyecto de software en la empresa 
+elegida. Para este avance, incorporarán buenas prácticas de calidad de software 
+basado en estándares internacionales. Así mismo, se desplegará la segunda 
+versión del sistema que se integrará con un software externo para extender las 
+capacidades de la solución propuesta. 
+ 
+3. Indicaciones específicas: 
+La evaluación es grupal. Los estudiantes entregarán un informe escrito (en 
+formato MS Word) y sustentarán su proyecto de manera oral y con apoyo de 
+diapositivas. La entrega es a través de la plataforma virtual de aprendizaje   y 
+debe incluir: 
+• Informe de avance en formato MS Word. 
+• Presentación de su exposición en formato PPT u otro formato de 
+presentación de diapositivas. 
+• Revisar el Anexo, donde encontrarás la estructura del informe. 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+
+=== PAGE 2 ===
+El informe escrito deberá contener los siguientes artefactos: 
+ 
+Item Artefacto Descripción 
+1 Pruebas Funcionales 
+Automáticas (Test 
+Suite Automatizado) 
+Implementación práctica de pruebas 
+funcionales automatizadas que verifiquen el 
+cumplimiento de los requerimientos definidos 
+en el Plan de pruebas del sistema. Se debe 
+evidenciar el uso de testing frameworks (p.e. 
+Junit, Selenium, etc.) 
+2 Pruebas Automáticas 
+de Interoperabilidad 
+(Integration Test Suite) 
+Implementación de pruebas automatizadas 
+diseñadas para validar la interoperabilidad 
+entre el sistema y otros servicios o 
+componentes externos (por ejemplo: APIs 
+REST, microservicios, bases de datos 
+externas, sistemas de autenticación, etc.). 
+Incluye un breve informe con la identificación 
+de los sistemas o servicios externos con los 
+que se comunica el software (APIs, bases de 
+datos, microservicios, etc.), métrica a evaluar, 
+nivel de cumplimiento y observaciones. Se 
+debe evidenciar el uso (reporte de resultados 
+de scripts o casos de prueba automatizados) 
+de herramientas como Junit, Selenium, 
+Insomnia, etc.  
+3 Pruebas Automáticas 
+de Usabilidad 
+(Automated Usability 
+Test Suite) 
+Implementación práctica de pruebas 
+automatizadas diseñadas para validar 
+aspectos de interacción, facilidad de uso y 
+prevención de errores mediante el uso de 
+herramientas de automatización de interfaz y 
+pruebas de accesibilidad. Se debe evidenciar 
+el uso (reporte de resultados de scripts o 
+casos de prueba automatizados) de 
+herramientas como Selenium, Lighhouse, etc. 
+
+=== PAGE 3 ===
+ 
+4 Informe de Evaluación 
+de Usabilidad según 
+ISO/IEC 25010 
+Documento donde el estudiante analiza la 
+usabilidad del sistema con base en los 
+subatributos de la ISO 25010:  
+• Facilidad de aprendizaje (Learnability) 
+• Protección contra errores del usuario (User 
+Error Protection) 
+• Asistencia al usuario (User Assistance) 
+• User engagement (Compromiso o 
+participación del usuario) 
+Incluye: Descripción general del sistema o 
+módulo evaluado. Criterios o métricas a 
+evaluar. Evidencia o herramienta usada. 
+Resultados obtenidos. Conclusiones 
+5 Evidencia de pruebas 
+de despliegue de la 
+versión 2 
+Se actualizará el item 11 del informe APF2 
+correspondiente al Despliegue. Se actualizará 
+el manual para incluir los pasos para integrar 
+el software externo y se incluirán capturas de 
+pantalla del sistema en funcionamiento en la 
+plataforma cloud elegida 
+6 Historial de commits Evidencia del avance progresivo de desarrollo 
+de software en GitHub mediante el uso de 
+commits que permitan identificar: fecha y hora 
+de cada commit, autor del cambio, distribución 
+de trabajo por ramas y mensajes descriptivos 
+del cambio 
+ 
+La sustentación oral se realizará en el ambiente asignado a las clases del curso. 
+Para su ejecución se deberá tener en cuenta los siguientes aspectos: 
+• Todos los integrantes deberán participar en la sustentación. 
+• La calificación es individual. 
+• La sustentación deberá iniciar con el levantamiento de las observaciones o 
+aspectos de mejora realizados a la APF2. 
+• Cada integrante deberá exponer sus principales aportes al proyecto. 
+• Ningún integrante deberá repetir la exposición de otro integrante. 
+
+=== PAGE 4 ===
+• Se expondrá el proyecto, siguiendo un orden lógico y demostrando 
+capacidad de síntesis. 
+• Se demostrará el dominio del tema, argumentando y sustentando el 
+proyecto. 
+• Se evidenciará el funcionamiento de la aplicación actualizada a su versión 
+2 en una plataforma cloud. 
+ 
+ 
+4. Recomendaciones 
+● Coordinarás con tu docente la viabilidad de tu proyecto antes de 
+empezarlo a desarrollar. 
+● Asistirás a todas las sesiones y presentarás todas las actividades previas a 
+la entrega del informe para obtener retroalimentación. 
+● Tomarás nota de toda la retroalimentación y realizarás las correcciones 
+necesarias indicadas por el docente. 
+● Revisarás el material de la clase y tus anotaciones antes de elaborar el 
+informe. 
+● Consultarás el material complementario del curso. 
+ 
+5. Criterios de evaluación 
+A continuación, podrás encontrar la rúbrica de evaluación con la que será 
+evaluada la actividad. Recuerda que también puedes encontrarla en la plataforma 
+virtual de aprendizaje. Asegúrate de leerla antes de realizar la actividad. 
+ 
+A tomar en cuenta en caso de plagio:  
+ 
+ 
+“Todo acto de copiar, intentarlo o dejar copiar, durante una prueba, examen, 
+práctica, trabajo o cualquier asignación académica, usando tanto el medio físico 
+como el electrónico, se encuentra normado en el Reglamento de Estudios y el 
+Reglamento de Disciplina del Estudiante vigentes en el Portal de Transparencia 
+y/o en el Portal del Estudiante”. 
+
+=== PAGE 5 ===
+ 
+RÚBRICA DE AVANCE DE PROYECTO FINAL 3 
+ 
+Criterio Definición del criterio Estándar esperado En proceso 2 En proceso 1 Inicial 
+Evaluación de 
+Pruebas 
+funcionales 
+Se califica que el 
+estudiante evalúe la 
+funcionalidad del 
+sistema mediante la 
+automatización de las 
+pruebas funcionales 
+que validen la 
+completitud, 
+corrección e 
+idoneidad del 
+software según la ISO 
+25010 considerando 
+cinco artefactos.   
+Evalúa la funcionalidad del 
+sistema mediante la 
+automatización de las 
+pruebas funcionales que 
+validen la completitud, 
+corrección e idoneidad del 
+software según la ISO 
+25010 considerando los 
+siguientes artefactos: 
+1) Frameworks utilizados 
+2) Listado de casos de 
+prueba 
+3) Capturas de ejecución 
+4) Reportes de cobertura 
+5) Métricas, nivel de 
+cumplimiento y 
+observaciones 
+Evalúa la funcionalidad del 
+sistema mediante la 
+automatización de las 
+pruebas funcionales que 
+validen la completitud, 
+corrección e idoneidad del 
+software según la ISO 
+25010 considerando 4 de 5 
+de los siguientes 
+artefactos: 
+1) Frameworks utilizados 
+2) Listado de casos de 
+prueba 
+3) Capturas de ejecución 
+4) Reportes de cobertura 
+5) Métricas, nivel de 
+cumplimiento y 
+observaciones 
+Evalúa la funcionalidad del 
+sistema mediante la 
+automatización de las 
+pruebas funcionales que 
+validen la completitud, 
+corrección e idoneidad del 
+software según la ISO 
+25010 considerando 3 de 5 
+de los siguientes 
+artefactos: 
+1) Frameworks utilizados 
+2) Listado de casos de 
+prueba 
+3) Capturas de ejecución 
+4) Reportes de cobertura 
+5) Métricas, nivel de 
+cumplimiento y 
+observaciones 
+Evalúa la funcionalidad del 
+sistema mediante la 
+automatización de las 
+pruebas funcionales que 
+validen la completitud, 
+corrección e idoneidad del 
+software según la ISO 
+25010 considerando 1 o 2 
+de 5 de los siguientes 
+artefactos: 
+1) Frameworks utilizados 
+2) Listado de casos de 
+prueba 
+3) Capturas de ejecución 
+4) Reportes de cobertura 
+5) Métricas, nivel de 
+cumplimiento y 
+observaciones 
+4 3 2 1 
+Automatización 
+de Pruebas de 
+Integración 
+Se califica que el 
+estudiante automatice 
+pruebas de integración 
+que validen la 
+interoperabilidad y co-
+existencia del sistema 
+con servicios o 
+Automatiza pruebas de 
+integración que validen la 
+interoperabilidad y co-
+existencia del sistema con 
+servicios o sistemas 
+externos considerando los 
+siguientes artefactos: 
+Automatiza pruebas de 
+integración que validen la 
+interoperabilidad y co-
+existencia del sistema con 
+servicios o sistemas 
+externos considerando 5 
+de 6 de los siguientes 
+Automatiza pruebas de 
+integración que validen la 
+interoperabilidad y co-
+existencia del sistema con 
+servicios o sistemas 
+externos considerando 4 o 
+3 de 6 de los siguientes 
+Automatiza pruebas de 
+integración que validen la 
+interoperabilidad y co-
+existencia del sistema con 
+servicios o sistemas 
+externos considerando 1 o 
+2 de los siguientes 
+
+=== PAGE 6 ===
+Criterio Definición del criterio Estándar esperado En proceso 2 En proceso 1 Inicial 
+sistemas externos 
+considerando seis 
+artefactos. 
+ 
+1) Sistemas externos a 
+integrar 
+2) Frameworks utilizados 
+3) Listado de casos de 
+prueba 
+4) Capturas de ejecución 
+5) Reportes de resultados 
+6) Métricas, nivel de 
+cumplimiento y 
+observaciones 
+artefactos: 
+1) Sistemas externos a 
+integrar 
+2) Frameworks utilizados 
+3) Listado de casos de 
+prueba 
+4) Capturas de ejecución 
+5) Reportes de resultados 
+6) Métricas, nivel de 
+cumplimiento y 
+observaciones 
+artefactos: 
+1) Sistemas externos a 
+integrar 
+2) Frameworks utilizados 
+3) Listado de casos de 
+prueba 
+4) Capturas de ejecución 
+5) Reportes de resultados 
+6) Métricas, nivel de 
+cumplimiento y 
+observaciones 
+artefactos: 
+1) Sistemas externos a 
+integrar 
+2) Frameworks utilizados 
+3) Listado de casos de 
+prueba 
+4) Capturas de ejecución 
+5) Reportes de resultados 
+6) Métricas, nivel de 
+cumplimiento y 
+observaciones 
+4 3 2 1 
+
+=== PAGE 7 ===
+ 
+Criterio Definición del criterio Estándar esperado En proceso 2 En proceso 1 Inicial 
+Evaluación de la 
+Usabilidad del 
+Sistema 
+Se califica que el 
+estudiante evalúe la 
+usabilidad del sistema 
+aplicando criterios de 
+la ISO/IEC 25010 
+mediante pruebas 
+automatizadas que lo 
+validen, considerando 
+seis artefactos. 
+ 
+Evalúa la usabilidad del 
+sistema aplicando criterios 
+de la ISO/IEC 25010 
+mediante pruebas 
+automatizadas que lo 
+validen, considerando los 
+siguientes artefactos: 
+1) Informe de evaluación 
+de Usabilidad 
+2) Frameworks utilizados 
+3) Listado de casos de 
+prueba 
+4) Capturas de ejecución 
+5) Reportes de resultados 
+6) Métricas, nivel de 
+cumplimiento y 
+observaciones 
+Evalúa la usabilidad del 
+sistema aplicando criterios 
+de la ISO/IEC 25010 
+mediante pruebas 
+automatizadas que lo 
+validen, considerando 5 de 
+6 de los siguientes 
+artefactos: 
+1) Informe de evaluación 
+de Usabilidad 
+2) Frameworks utilizados 
+3) Listado de casos de 
+prueba 
+4) Capturas de ejecución 
+5) Reportes de resultados 
+6) Métricas, nivel de 
+cumplimiento y 
+observaciones 
+Evalúa la usabilidad del 
+sistema aplicando criterios 
+de la ISO/IEC 25010 
+mediante pruebas 
+automatizadas que lo 
+validen, considerando 4 o 3 
+de los 6 los siguientes 
+artefactos: 
+1) Informe de evaluación 
+de Usabilidad 
+2) Frameworks utilizados 
+3) Listado de casos de 
+prueba 
+4) Capturas de ejecución 
+5) Reportes de resultados 
+6) Métricas, nivel de 
+cumplimiento y 
+observaciones 
+Evalúa la usabilidad del 
+sistema aplicando criterios 
+de la ISO/IEC 25010 
+mediante pruebas 
+automatizadas que lo 
+validen, considerando 1 o 2 
+de 6 de los siguientes 
+artefactos: 
+1) Informe de evaluación 
+de Usabilidad 
+2) Frameworks utilizados 
+3) Listado de casos de 
+prueba 
+4) Capturas de ejecución 
+5) Reportes de resultados 
+6) Métricas, nivel de 
+cumplimiento y 
+observaciones 
+4 3 2 1 
+Validación y 
+Verificación del 
+Sistema en la 
+Plataforma Cloud 
+Se califica que el 
+estudiante valide el 
+funcionamiento del 
+sistema mediante 
+pruebas funcionales y 
+de integración en la 
+plataforma cloud 
+considerando los 
+Se espera que el 
+estudiante valide de 
+manera precisa el 
+funcionamiento del sistema 
+mediante pruebas 
+funcionales y de 
+integración en la 
+plataforma cloud 
+considerando los aspectos 
+Se espera que el 
+estudiante valide de 
+manera adecuada el 
+funcionamiento del sistema 
+mediante pruebas 
+funcionales y de 
+integración en la 
+plataforma cloud 
+considerando algunos de 
+Se espera que el 
+estudiante valide el 
+funcionamiento del sistema 
+mediante pruebas 
+funcionales en la 
+plataforma cloud 
+considerando algunos de 
+los aspectos de usabilidad 
+y automatización. 
+Se espera que el 
+estudiante valide el 
+funcionamiento del sistema 
+mediante pruebas 
+funcionales considerando 
+algunos de los aspectos de 
+usabilidad y 
+automatización. 
+
+=== PAGE 8 ===
+Criterio Definición del criterio Estándar esperado En proceso 2 En proceso 1 Inicial 
+aspectos de usabilidad 
+y automatización. 
+de usabilidad y 
+automatización. 
+los aspectos de usabilidad 
+y automatización. 
+2 1.5 1 0.5 
+Sustentación 
+Se califica que el 
+estudiante argumente 
+el proyecto con 
+claridad, coherencia 
+técnica y dominio 
+conceptual, explicando 
+las decisiones tomadas 
+en cada fase del 
+desarrollo.  
+ 
+Argumenta el proyecto con 
+claridad, coherencia 
+técnica y dominio 
+conceptual, explicando las 
+decisiones tomadas en 
+cada fase del desarrollo 
+cumpliendo los siguientes 
+puntos:  
+1) Se expone los 
+principales aportes al 
+proyecto 
+2) Se sigue un orden 
+lógico, coherente y con 
+capacidad de síntesis 
+3) Se demuestra dominio 
+del tema, argumentando y 
+sustentando los artefactos 
+elaborados 
+4) Se muestra el 
+funcionamiento del sistema 
+actualizado a su versión 2 
+en una plataforma cloud 
+Argumenta el proyecto con 
+claridad, coherencia 
+técnica y dominio 
+conceptual, explicando las 
+decisiones tomadas en 
+cada fase del desarrollo 
+cumpliendo 3 de 4 de los 
+siguientes puntos:  
+1) Se expone los 
+principales aportes al 
+proyecto 
+2) Se sigue un orden 
+lógico, coherente y con 
+capacidad de síntesis 
+3) Se demuestra dominio 
+del tema, argumentando y 
+sustentando los artefactos 
+elaborados 
+4) Se muestra el 
+funcionamiento del sistema 
+actualizado a su versión 2 
+en una plataforma cloud 
+Argumenta el proyecto con 
+claridad, coherencia 
+técnica y dominio 
+conceptual, explicando las 
+decisiones tomadas en 
+cada fase del desarrollo 
+cumpliendo 2 de 4 de los 
+siguientes puntos:  
+1) Se expone los 
+principales aportes al 
+proyecto 
+2) Se sigue un orden 
+lógico, coherente y con 
+capacidad de síntesis 
+3) Se demuestra dominio 
+del tema, argumentando y 
+sustentando los artefactos 
+elaborados 
+4) Se muestra el 
+funcionamiento del sistema 
+actualizado a su versión 2 
+en una plataforma cloud 
+Argumenta el proyecto con 
+claridad, coherencia 
+técnica y dominio 
+conceptual, explicando las 
+decisiones tomadas en 
+cada fase del desarrollo 
+cumpliendo 1 de 4 de los 
+siguientes puntos:  
+1) Se expone los 
+principales aportes al 
+proyecto 
+2) Se sigue un orden 
+lógico, coherente y con 
+capacidad de síntesis 
+3) Se demuestra dominio 
+del tema, argumentando y 
+sustentando los artefactos 
+elaborados 
+4) Se muestra el 
+funcionamiento del sistema 
+actualizado a su versión 2 
+en una plataforma cloud 
+2 1.5 1 0.5 
+Se califica que el 
+estudiante realice el 
+levantamiento de 
+Realiza el levantamiento 
+del 100% de todas las 
+observaciones 
+Realiza el levantamiento 
+del 80% de todas las 
+observaciones 
+Realiza el levantamiento 
+del 50% de todas las 
+observaciones 
+Realiza el levantamiento 
+del 30% de todas las 
+observaciones 
+
+=== PAGE 9 ===
+ 
+Criterio Definición del criterio Estándar esperado En proceso 2 En proceso 1 Inicial 
+Levantamiento 
+de 
+Observaciones  
+todas las 
+observaciones 
+realizadas en el 
+Avance de proyecto 
+Final 2 
+realizadas en el Avance 
+de proyecto Final 2. 
+realizadas en el Avance 
+de proyecto Final 2. 
+realizadas en el Avance 
+de proyecto Final 2. 
+realizadas en el Avance 
+de proyecto Final 2.  
+4 3 2 1 
+ 
+ 
+ 
+ 
+
+=== PAGE 10 ===
+Anexo. Estructura del informe 
+ 
+1. Análisis Empresarial 
+a. Introducción 
+b. Descripción de la empresa 
+c. Visión 
+d. Misión 
+e. Análisis de Negocio (Lean Canvas) 
+f. Mapa de Procesos (AS-IS) 
+g. Oportunidades de mejora y modelo propuesto (TO-BE) 
+2. Planificación y Gestión del Proyecto 
+a. Project Charter 
+b. Alcance y objetivos del proyecto 
+c. Cronograma del proyecto (Diagrama de Gantt) 
+d. Planificación ágil – Sprint Planning 
+e. Roles y artefactos Scrum 
+f. Tablero Kanban/Scrum 
+g. Product Backlog 
+h. Historias de usuario 
+3. Selección y Configuración de Herramientas de desarrollo 
+a. Selección de herramientas 
+b. Evidencias de configuración de herramientas 
+c. Repositorio GitHub 
+i. Estructura del repositorio 
+ii. Archivo README.md 
+4. Prototipos 
+a. Wireframes de baja fidelidad 
+b. Mockups de alta fidelidad 
+c. Principios y buenas prácticas UX/UI aplicadas 
+d. Navegación y flujo de interacción del usuario 
+5. Gestión de riesgos del proyecto 
+a. Identificación de riesgos 
+b. Mapa de riesgos (Matriz de Probabilidad–Impacto + Heatmap) 
+c. Plan de gestión de riesgos 
+i. Estrategias de mitigación y respuesta 
+ii. Seguimiento y control de riesgos 
+
+=== PAGE 11 ===
+ 
+6. Definición de Métricas y Niveles de Servicio 
+a. Identificación de KPIs y métricas del sistema 
+b. Definición de SLA (Service Level Agreement) y SLO (Service Level Objective) 
+c. Plan de Medición y Monitoreo 
+i. Herramientas de monitoreo utilizadas 
+ii. Métricas recolectadas 
+7. Desarrollo e Implementación Técnica 
+a. Arquitectura general del sistema 
+b. Estructura del código fuente 
+c. Código optimizado y evidencia técnica 
+d. Estrategias WPO 
+i. Métricas antes y después de la optimización 
+ii. Estrategias implementadas 
+8. Implementación y Administración de Base de Datos 
+a. Diseño físico de base de datos 
+b. Informe de Administración y Replicación 
+i. Estrategia de respaldo y replicación 
+ii. Configuración de alta disponibilidad 
+iii. Evidencias de monitoreo y administración 
+c. Implementación del Patrón de Acceso a Datos 
+i. Patrón de Acceso a Datos elegido 
+ii. Diagrama de clases de muestra de uso del patrón 
+iii. Ejemplo de código implementado 
+9. Seguridad del Sistema 
+a. Catálogo de controles de seguridad 
+b. Módulo de Autenticación y Autorización implementado 
+c. Informe Técnico de Seguridad y Cifrado de Datos 
+d. Pruebas de seguridad web 
+i. Metodología empleada 
+ii. Resultados y vulnerabilidades detectadas 
+iii. Acciones correctivas y recomendaciones 
+10. Validación y Verificación del Sistema 
+a. Plan de pruebas del sistema 
+b. Evidencias de pruebas del sistema 
+ 
+ 
+
+=== PAGE 12 ===
+11. Despliegue 
+a. Manual de despliegue (actualizado para la versión 2 del sistema) 
+b. Evidencia de pruebas de despliegue (actualizado para la versión 2 del sistema) 
+12. Calidad Funcional y Pruebas Automatizadas 
+a. Evidencia de implementación de pruebas funcionales 
+i. Frameworks utilizados 
+ii. Listado de casos de prueba 
+b. Evidencia de ejecución 
+i. Capturas de ejecución 
+ii. Reportes de cobertura 
+c. Métricas, nivel de cumplimiento y observaciones 
+13. Interoperabilidad y Pruebas de Integración 
+a. Sistemas externos a integrar 
+b. Evidencia de implementación de pruebas de integración 
+i. Frameworks utilizados 
+ii. Lista de casos de prueba 
+c. Evidencia de ejecución 
+i. Capturas de ejecución 
+ii. Reportes de resultados 
+d. Métricas, nivel de cumplimiento y observaciones 
+14. Pruebas automatizadas de Usabilidad 
+a. Evidencia de implementación de pruebas de usabilidad 
+i. Frameworks utilizados 
+ii. Lista de casos de prueba 
+b. Evidencia de ejecución 
+i. Capturas de ejecución 
+ii. Reportes de ejecución 
+c. Métricas, nivel de cumplimiento y observaciones 
+15. Informe de Evaluación de Usabilidad según la ISO 25010 
+a. Criterios, métricas y evidencias empleadas 
+i. Facilidad de aprendizaje 
+ii. Protección contra errores del usuario 
+iii. Asistencia al usuario 
+iv. Compromiso/participación del usuario 
+b. Resultados  
+c. Conclusiones 
+
+=== PAGE 13 ===
+ 
+ 
+ 
+  Anexos 
+• A. Script SQL y archivos de configuración de base de datos 
+• B. Fragmentos de código fuente relevantes 
+• C. Reportes automatizados de pruebas 
+• D. Reportes automatizados de seguridad 
+• E. Reportes automatizados de funcionalidad 
+• F. Reportes automatizados de integración 
+• G. Reportes automatizados de usabilidad 
+• H. Evidencia de historial de commits en el repositorio 
+  Referencias Bibliográficas 
+

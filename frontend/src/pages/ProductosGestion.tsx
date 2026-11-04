@@ -22,7 +22,10 @@ function formVacio(): FormData {
 }
 
 export default function ProductosGestion() {
-  const { productos, agregarProducto, editarProducto, eliminarProducto, modoAccesible } = useApp();
+  const { productos, agregarProducto, editarProducto, eliminarProducto, modoAccesible, cargarCatalogoLocal, cargandoProductos, errorProductos, usuarioActual } = useApp();
+  const esAdmin = !usuarioActual || usuarioActual.role === "ADMIN";
+  const esOperador = usuarioActual?.role === "OPERATOR";
+
   const [modalAbierto, setModalAbierto] = useState(false);
   const [editando, setEditando] = useState<Producto | null>(null);
   const [form, setForm] = useState<FormData>(formVacio());
@@ -33,6 +36,7 @@ export default function ProductosGestion() {
    * Prepara y abre el modal de registro para dar de alta una nueva prenda en el catálogo.
    */
   const abrirNuevo = () => {
+    if (!esAdmin) return;
     setEditando(null);
     setForm(formVacio());
     setFormError("");
@@ -44,6 +48,7 @@ export default function ProductosGestion() {
    * @param {Producto} producto Objeto de prenda a modificar.
    */
   const abrirEditar = (producto: Producto) => {
+    if (!esAdmin) return;
     setEditando(producto);
     setForm({
       nombre: producto.nombre,
@@ -62,6 +67,10 @@ export default function ProductosGestion() {
    * Verifica que el nombre no esté vacío y que el precio de venta sea estrictamente positivo (> 0).
    */
   const handleGuardar = () => {
+    if (!esAdmin) {
+      setFormError("Acceso denegado (RBAC): Solo los administradores pueden guardar prendas.");
+      return;
+    }
     if (!form.nombre.trim()) { setFormError("El nombre del producto es obligatorio."); return; }
     if (form.precio <= 0) { setFormError("El precio debe ser mayor a 0."); return; }
     setFormError("");
@@ -74,6 +83,10 @@ export default function ProductosGestion() {
   };
 
   const handleEliminar = () => {
+    if (!esAdmin) {
+      setConfirmando(null);
+      return;
+    }
     if (confirmando) {
       eliminarProducto(confirmando.id);
       setConfirmando(null);
@@ -89,75 +102,133 @@ export default function ProductosGestion() {
   return (
     <div className={`pt-16 pb-32 sm:pb-28 min-h-screen ${modoAccesible ? "bg-[#E2E8F0]" : "bg-[#F1FAEE]"}`}>
       <div className="max-w-5xl mx-auto px-3 sm:px-6 py-4 sm:py-5">
+        
+        {/* Banner Informativo RBAC si el usuario es OPERATOR */}
+        {esOperador && (
+          <div className="mb-4 p-3.5 bg-emerald-50 border border-emerald-300/80 rounded-2xl flex items-center gap-3 text-emerald-950 shadow-sm">
+            <span className="material-icons text-emerald-700 text-2xl shrink-0">visibility</span>
+            <div className="text-xs sm:text-sm">
+              <span className="font-extrabold text-emerald-900">Vista de Inventario (Solo Lectura):</span>{" "}
+              Tu rol como <span className="font-semibold underline">Operador Logístico</span> te permite consultar existencias y catálogo en tiempo real. La creación, edición y eliminación de prendas requieren privilegios de <span className="font-bold text-slate-900">Administrador (ADMIN)</span>.
+            </div>
+          </div>
+        )}
+
         <div className="flex flex-wrap items-center justify-between gap-2.5 mb-5">
-          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900">Catálogo e Inventario</h1>
-          <button
-            onClick={abrirNuevo}
-            className="flex items-center gap-1.5 sm:gap-2 bg-[#E63946] hover:bg-[#C62828] active:scale-95 text-white px-4 sm:px-5 py-2.5 sm:py-3 rounded-2xl text-sm sm:text-base font-bold transition-all shadow-lg shadow-red-500/30 ring-2 ring-white"
-          >
-            <span className="material-icons" style={{ fontSize: "18px" }}>add</span>
-            <span>+ Nueva Prenda</span>
-          </button>
+          <div className="flex items-center gap-2">
+            <h1 className="text-2xl sm:text-3xl font-bold text-slate-900">Catálogo e Inventario</h1>
+            {!esAdmin && (
+              <span className="text-[11px] font-bold bg-slate-200 text-slate-700 px-2.5 py-1 rounded-xl uppercase tracking-wider border border-slate-300">
+                Solo Lectura
+              </span>
+            )}
+          </div>
+          {esAdmin ? (
+            <button
+              onClick={abrirNuevo}
+              className="flex items-center gap-1.5 sm:gap-2 bg-[#E63946] hover:bg-[#C62828] active:scale-95 text-white px-4 sm:px-5 py-2.5 sm:py-3 rounded-2xl text-sm sm:text-base font-bold transition-all shadow-lg shadow-red-500/30 ring-2 ring-white"
+            >
+              <span className="material-icons" style={{ fontSize: "18px" }}>add</span>
+              <span>Nueva Prenda</span>
+            </button>
+          ) : (
+            <div className="flex items-center gap-1.5 px-3 py-2 bg-slate-100 border border-slate-300 text-slate-600 rounded-2xl text-xs font-bold">
+              <span className="material-icons" style={{ fontSize: "16px" }}>lock</span>
+              <span>Gestión Bloqueada (ADMIN Requerido)</span>
+            </div>
+          )}
         </div>
 
         <div className="bg-white rounded-3xl shadow-sm overflow-hidden border border-slate-200">
-          {productos.length === 0 ? (
+          {cargandoProductos ? (
+            <div className="py-16 text-center px-4">
+              <span className="material-icons text-blue-500 text-5xl sm:text-6xl block mb-3 animate-spin">autorenew</span>
+              <p className="text-base font-bold text-slate-800">Cargando catálogo en tiempo real...</p>
+              <p className="text-xs text-slate-500 mt-1">Conectando con el almacén central de LeoFit</p>
+            </div>
+          ) : productos.length === 0 ? (
             <div className="py-16 text-center px-4">
               <span className="material-icons text-slate-300 text-5xl sm:text-6xl block mb-3">inventory_2</span>
-              <p className="text-base font-bold text-slate-700">Sin productos registrados</p>
+              <p className="text-base font-bold text-slate-700">Sin productos registrados en el catálogo</p>
+              {errorProductos && (
+                <p className="text-xs text-amber-700 font-medium mt-1 mb-4 bg-amber-50 py-1.5 px-3 rounded-xl border border-amber-200 inline-block">
+                  Aviso: {errorProductos}
+                </p>
+              )}
+              <div className="mt-3">
+                <button
+                  type="button"
+                  onClick={cargarCatalogoLocal}
+                  className="px-4 py-2.5 bg-[#0F223D] hover:bg-slate-800 text-white text-xs sm:text-sm font-bold rounded-2xl transition-all shadow-md active:scale-95"
+                >
+                  Cargar Catálogo Local de Contingencia
+                </button>
+              </div>
             </div>
           ) : (
             <>
               {/* VISTA MÓVIL (<640px): Cards legibles */}
               <div className="block sm:hidden divide-y divide-slate-100">
-                {productos.map((prod) => (
-                  <div key={prod.id} className="p-3.5 space-y-2.5">
-                    <div className="flex items-start justify-between gap-2">
-                      <div>
-                        <div className="text-sm font-bold text-slate-900">{prod.nombre}</div>
-                        <div className="text-xs text-slate-500 font-normal mt-0.5">
-                          Talla: <strong className="text-slate-800">{prod.talla}</strong> · Color: <strong className="text-slate-800">{prod.color}</strong>
+                {productos.map((prod) => {
+                  const safeStock = prod.stock ?? 0;
+                  const safePrice = (prod.precio ?? 0).toFixed(2);
+                  const colorBadge = categoriaColor[prod.categoria] || "bg-blue-100 text-blue-950 border-blue-300";
+                  return (
+                    <div key={prod.id} className="p-3.5 space-y-2.5">
+                      <div className="flex items-start justify-between gap-2">
+                        <div>
+                          <div className="text-sm font-bold text-slate-900">{prod.nombre}</div>
+                          <div className="text-xs text-slate-500 font-normal mt-0.5">
+                            Talla: <strong className="text-slate-800">{prod.talla}</strong> · Color: <strong className="text-slate-800">{prod.color}</strong>
+                          </div>
                         </div>
-                      </div>
-                      <span className="text-sm font-bold font-mono text-slate-900 shrink-0">
-                        S/{prod.precio.toFixed(2)}
-                      </span>
-                    </div>
-
-                    <div className="flex items-center justify-between gap-2 pt-1">
-                      <div className="flex items-center gap-1.5 flex-wrap">
-                        <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-lg uppercase tracking-wide border ${categoriaColor[prod.categoria]}`}>
-                          {prod.categoria}
-                        </span>
-                        <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[11px] font-bold border font-mono ${
-                          prod.stock <= 5
-                            ? "bg-red-100 text-red-900 border-red-300 animate-pulse"
-                            : "bg-emerald-100 text-emerald-950 border-emerald-300"
-                        }`}>
-                          {prod.stock <= 5 && <span className="material-icons" style={{ fontSize: "12px" }}>warning</span>}
-                          {prod.stock} uds
+                        <span className="text-sm font-bold font-mono text-slate-900 shrink-0">
+                          S/{safePrice}
                         </span>
                       </div>
 
-                      <div className="flex items-center gap-1.5">
-                        <button
-                          onClick={() => abrirEditar(prod)}
-                          className="p-2 rounded-xl bg-blue-50 text-blue-800 hover:bg-[#0F223D] hover:text-white transition-colors border border-blue-200"
-                          aria-label="Editar producto"
-                        >
-                          <span className="material-icons" style={{ fontSize: "16px" }}>edit</span>
-                        </button>
-                        <button
-                          onClick={() => setConfirmando(prod)}
-                          className="p-2 rounded-xl bg-red-50 text-red-700 hover:bg-red-600 hover:text-white transition-colors border border-red-200"
-                          aria-label="Eliminar producto"
-                        >
-                          <span className="material-icons" style={{ fontSize: "16px" }}>delete</span>
-                        </button>
+                      <div className="flex items-center justify-between gap-2 pt-1">
+                        <div className="flex items-center gap-1.5 flex-wrap">
+                          <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-lg uppercase tracking-wide border ${colorBadge}`}>
+                            {prod.categoria || "Deportiva"}
+                          </span>
+                          <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[11px] font-bold border font-mono ${
+                            safeStock <= 5
+                              ? "bg-red-100 text-red-900 border-red-300 animate-pulse"
+                              : "bg-emerald-100 text-emerald-950 border-emerald-300"
+                          }`}>
+                            {safeStock <= 5 && <span className="material-icons" style={{ fontSize: "12px" }}>warning</span>}
+                            {safeStock} uds
+                          </span>
+                        </div>
+
+                        {esAdmin ? (
+                          <div className="flex items-center gap-1.5">
+                            <button
+                              onClick={() => abrirEditar(prod)}
+                              className="p-2 rounded-xl bg-blue-50 text-blue-800 hover:bg-[#0F223D] hover:text-white transition-colors border border-blue-200"
+                              aria-label="Editar producto"
+                            >
+                              <span className="material-icons" style={{ fontSize: "16px" }}>edit</span>
+                            </button>
+                            <button
+                              onClick={() => setConfirmando(prod)}
+                              className="p-2 rounded-xl bg-red-50 text-red-700 hover:bg-red-600 hover:text-white transition-colors border border-red-200"
+                              aria-label="Eliminar producto"
+                            >
+                              <span className="material-icons" style={{ fontSize: "16px" }}>delete</span>
+                            </button>
+                          </div>
+                        ) : (
+                          <span className="text-[10px] font-semibold text-slate-500 bg-slate-100 px-2 py-1 rounded-lg border border-slate-200 flex items-center gap-1">
+                            <span className="material-icons text-slate-400" style={{ fontSize: "12px" }}>lock</span>
+                            Consulta
+                          </span>
+                        )}
                       </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
 
               {/* VISTA TABLET/DESKTOP (>=640px): Tabla completa */}
@@ -169,61 +240,75 @@ export default function ProductosGestion() {
                       <th className="px-4 py-3.5 text-left text-xs font-semibold uppercase tracking-wider">Cat.</th>
                       <th className="px-4 py-3.5 text-right text-xs font-semibold uppercase tracking-wider">Precio</th>
                       <th className="px-4 py-3.5 text-center text-xs font-semibold uppercase tracking-wider">Stock</th>
-                      <th className="px-4 py-3.5 text-center text-xs font-semibold uppercase tracking-wider">Acción</th>
+                      <th className="px-4 py-3.5 text-center text-xs font-semibold uppercase tracking-wider">{esAdmin ? "Acción" : "Permiso"}</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {productos.map((prod, i) => (
-                      <tr
-                        key={prod.id}
-                        className={`transition-colors hover:bg-blue-50/40 ${i < productos.length - 1 ? "border-b border-slate-200" : ""}`}
-                      >
-                        <td className="px-4 py-4">
-                          <div className="text-sm sm:text-base font-semibold text-slate-900">{prod.nombre}</div>
-                          <div className="text-xs font-normal text-slate-600 mt-0.5">
-                            Talla: <span className="text-slate-800 font-semibold">{prod.talla}</span> · Color: <span className="text-slate-800 font-semibold">{prod.color}</span>
-                          </div>
-                        </td>
-                        <td className="px-4 py-4">
-                          <span className={`text-xs font-semibold px-2.5 py-1 rounded-xl uppercase tracking-wide border ${categoriaColor[prod.categoria]}`}>
-                            {prod.categoria}
-                          </span>
-                        </td>
-                        <td className="px-4 py-4 text-right">
-                          <span className="text-sm sm:text-base font-bold font-mono text-slate-900">S/{prod.precio.toFixed(2)}</span>
-                        </td>
-                        <td className="px-4 py-4 text-center">
-                          <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-xl text-xs font-bold border font-mono ${
-                            prod.stock <= 5
-                              ? "bg-red-100 text-red-900 border-red-300 animate-pulse"
-                              : "bg-emerald-100 text-emerald-950 border-emerald-300"
-                          }`}>
-                            {prod.stock <= 5 && <span className="material-icons" style={{ fontSize: "14px" }}>warning</span>}
-                            {prod.stock} uds
-                          </span>
-                        </td>
-                        <td className="px-4 py-4">
-                          <div className="flex items-center justify-center gap-2">
-                            <button
-                              onClick={() => abrirEditar(prod)}
-                              className="p-2.5 rounded-xl bg-blue-50 text-blue-800 hover:bg-[#0F223D] hover:text-white transition-colors border border-blue-200"
-                              aria-label="Editar producto"
-                              title="Editar prenda"
-                            >
-                              <span className="material-icons" style={{ fontSize: "18px" }}>edit</span>
-                            </button>
-                            <button
-                              onClick={() => setConfirmando(prod)}
-                              className="p-2.5 rounded-xl bg-red-50 text-red-700 hover:bg-red-600 hover:text-white transition-colors border border-red-200"
-                              aria-label="Eliminar producto"
-                              title="Eliminar prenda"
-                            >
-                              <span className="material-icons" style={{ fontSize: "18px" }}>delete</span>
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
+                    {productos.map((prod, i) => {
+                      const safeStock = prod.stock ?? 0;
+                      const safePrice = (prod.precio ?? 0).toFixed(2);
+                      const colorBadge = categoriaColor[prod.categoria] || "bg-blue-100 text-blue-950 border-blue-300";
+                      return (
+                        <tr
+                          key={prod.id}
+                          className={`transition-colors hover:bg-blue-50/40 ${i < productos.length - 1 ? "border-b border-slate-200" : ""}`}
+                        >
+                          <td className="px-4 py-4">
+                            <div className="text-sm sm:text-base font-semibold text-slate-900">{prod.nombre}</div>
+                            <div className="text-xs font-normal text-slate-600 mt-0.5">
+                              Talla: <span className="text-slate-800 font-semibold">{prod.talla}</span> · Color: <span className="text-slate-800 font-semibold">{prod.color}</span>
+                            </div>
+                          </td>
+                          <td className="px-4 py-4">
+                            <span className={`text-xs font-semibold px-2.5 py-1 rounded-xl uppercase tracking-wide border ${colorBadge}`}>
+                              {prod.categoria || "Deportiva"}
+                            </span>
+                          </td>
+                          <td className="px-4 py-4 text-right">
+                            <span className="text-sm sm:text-base font-bold font-mono text-slate-900">S/{safePrice}</span>
+                          </td>
+                          <td className="px-4 py-4 text-center">
+                            <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-xl text-xs font-bold border font-mono ${
+                              safeStock <= 5
+                                ? "bg-red-100 text-red-900 border-red-300 animate-pulse"
+                                : "bg-emerald-100 text-emerald-950 border-emerald-300"
+                            }`}>
+                              {safeStock <= 5 && <span className="material-icons" style={{ fontSize: "14px" }}>warning</span>}
+                              {safeStock} uds
+                            </span>
+                          </td>
+                          <td className="px-4 py-4">
+                            {esAdmin ? (
+                              <div className="flex items-center justify-center gap-2">
+                                <button
+                                  onClick={() => abrirEditar(prod)}
+                                  className="p-2.5 rounded-xl bg-blue-50 text-blue-800 hover:bg-[#0F223D] hover:text-white transition-colors border border-blue-200"
+                                  aria-label="Editar producto"
+                                  title="Editar prenda"
+                                >
+                                  <span className="material-icons" style={{ fontSize: "18px" }}>edit</span>
+                                </button>
+                                <button
+                                  onClick={() => setConfirmando(prod)}
+                                  className="p-2.5 rounded-xl bg-red-50 text-red-700 hover:bg-red-600 hover:text-white transition-colors border border-red-200"
+                                  aria-label="Eliminar producto"
+                                  title="Eliminar prenda"
+                                >
+                                  <span className="material-icons" style={{ fontSize: "18px" }}>delete</span>
+                                </button>
+                              </div>
+                            ) : (
+                              <div className="flex items-center justify-center">
+                                <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-xl border border-slate-200">
+                                  <span className="material-icons text-slate-400" style={{ fontSize: "14px" }}>lock</span>
+                                  Solo Lectura
+                                </span>
+                              </div>
+                            )}
+                          </td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
               </div>
