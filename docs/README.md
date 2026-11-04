@@ -23,6 +23,7 @@ Las carpetas dentro de `docs/` están numeradas del **`01` al `07`** para que al
 | **05** | **[`05_operaciones_respaldo_drp/`](./05_operaciones_respaldo_drp/)** | **Protocolo y Simulacro de Recuperación ante Desastres (Backup & Restore DRP)** | [**`BACKUP_RESTORE_DRILL.md`**](./05_operaciones_respaldo_drp/BACKUP_RESTORE_DRILL.md) |
 | **06** | **[`06_historial_entregas_anteriores_apf1_apf2/`](./06_historial_entregas_anteriores_apf1_apf2/)** | **Entregas Pasadas (APF1 y APF2):** Archivadas por separado para no confundirlas con el entregable final APF3 | [**`INFORME_FINAL_APF2_LEOFIT.docx`**](./06_historial_entregas_anteriores_apf1_apf2/INFORME_FINAL_APF2_LEOFIT.docx) |
 | **07** | **[`07_material_referencia_curso_utp/`](./07_material_referencia_curso_utp/)** | **Material Institucional de la UTP:** Clases Teóricas (Semanas 01 a 18), Rúbricas de Evaluación y Sílabo | [**`rubricas_evaluacion_utp/`**](./07_material_referencia_curso_utp/rubricas_evaluacion_utp/) |
+| **DOCS** | **Documentos Oficiales del Docente Asesor (Ing. Enrique Lee)** | **Libro de Estudio ISO 25010 (Sem 10-11)**, **Manual Integral Unidad 3 (Sem 10-13)** y **Plantilla Oficial UTP** | [**`Libro_Estudio_ISO25010_Semanas10_11_Enrique_Lee.pdf`**](./Libro_Estudio_ISO25010_Semanas10_11_Enrique_Lee.pdf) <br> [**`Manual_Integral_ISO25010_Unidad3_UTP_Enrique_Lee.pdf`**](./Manual_Integral_ISO25010_Unidad3_UTP_Enrique_Lee.pdf) <br> [**`UTP_Plantilla_Informe_ISO25010_Semanas10_11.docx`**](./UTP_Plantilla_Informe_ISO25010_Semanas10_11.docx) |
 
 ---
 
@@ -31,6 +32,9 @@ Las carpetas dentro de `docs/` están numeradas del **`01` al `07`** para que al
 ```text
 docs/
 ├── README.md                                                    # Este Portal Maestro de Navegación Rápida
+├── Libro_Estudio_ISO25010_Semanas10_11_Enrique_Lee.pdf          # Libro Oficial del Asesor (ISO 25010 Sem 10-11, 37 págs)
+├── Manual_Integral_ISO25010_Unidad3_UTP_Enrique_Lee.pdf        # Manual Integral Unidad 3 del Asesor (Sem 10-13, 52 págs)
+├── UTP_Plantilla_Informe_ISO25010_Semanas10_11.docx             # Plantilla Word Oficial del Asesor (Completada en carpeta 02)
 │
 ├── 01_entregable_final_apf3/                                    # ENTREGABLE FINAL AL PROFESOR (APF3)
 │   ├── INFORME_FINAL_APF3_LEOFIT.docx                           # Informe Final Editable Word (77 págs, 21 diagramas)
