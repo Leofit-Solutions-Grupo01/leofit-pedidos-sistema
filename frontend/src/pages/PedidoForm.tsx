@@ -598,6 +598,7 @@ export default function PedidoForm() {
           ) : (
             <div className="flex flex-col sm:flex-row gap-2.5 mb-4 max-w-full">
               <select
+                aria-label="Seleccionar producto"
                 value={productoSeleccionado}
                 onChange={(e) => setProductoSeleccionado(e.target.value)}
                 className="w-full sm:flex-1 min-w-0 max-w-full text-[11px] sm:text-base border-2 border-slate-300 rounded-2xl px-2 sm:px-4 py-2.5 sm:py-3 focus:outline-none focus:border-[#0F223D] bg-slate-50 font-semibold text-slate-900 truncate"
@@ -615,6 +616,7 @@ export default function PedidoForm() {
               <div className="flex flex-row gap-2 w-full sm:w-auto">
                 <input
                   type="number"
+                  aria-label="Cantidad del producto"
                   min="1"
                   value={cantidad}
                   onChange={(e) => setCantidad(Math.max(1, parseInt(e.target.value) || 1))}
@@ -764,7 +766,7 @@ export default function PedidoForm() {
             </div>
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 sm:gap-0 text-xs sm:text-sm font-semibold text-slate-700">
               <label>{tipoEnvio === "Nacional" ? "Costo Encomienda (S/)" : "Costo Delivery Local (S/)"}</label>
-              <input
+              <input aria-label="Costo de envío (S/)"
                 type="number"
                 min="0"
                 step="1"
@@ -781,7 +783,7 @@ export default function PedidoForm() {
             )}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 sm:gap-0 text-xs sm:text-sm font-semibold text-slate-700">
               <label>Descuento Adicional Manual (S/)</label>
-              <input
+              <input aria-label="Descuento adicional manual (S/)"
                 type="number"
                 min="0"
                 step="1"

@@ -58,7 +58,8 @@ export async function createOrReuseCulqiCheckout(order: CulqiCheckoutParams): Pr
   let body: any;
 
   if (secretKey && secretKey.startsWith('sk_')) {
-    const res = await fetch('https://api.culqi.com/v2/orders', {
+    const culqiBase = (process.env.CULQI_API_URL || 'https://api.culqi.com').replace(/\/+$/, '');
+    const res = await fetch(`${culqiBase}/v2/orders`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${secretKey}`,
