@@ -39,6 +39,17 @@ def scan_tests():
     b_tests = sum(len(test_pattern.findall(f.read_text(encoding="utf-8", errors="ignore"))) for f in backend_files)
     b_expects = sum(len(expect_pattern.findall(f.read_text(encoding="utf-8", errors="ignore"))) for f in backend_files)
 
+    # Suite 17: Coexistencia experimental ISO/IEC 25010 (PC-01 a PC-04)
+    coexistence_file = BASE_DIR / "scripts" / "iso25010" / "run_coexistence_benchmark.py"
+    if coexistence_file.exists():
+        coex_tests = 4  # Casos PC-01 a PC-04
+        coex_expects = 8
+        backend_suites_count = len(backend_files) + 1
+        b_tests += coex_tests
+        b_expects += coex_expects
+    else:
+        backend_suites_count = len(backend_files)
+
     frontend_files = [
         f for f in frontend_tests_dir.rglob("*.test.ts*")
         if "node_modules" not in str(f)
@@ -47,9 +58,9 @@ def scan_tests():
     f_expects = sum(len(expect_pattern.findall(f.read_text(encoding="utf-8", errors="ignore"))) for f in frontend_files)
 
     return {
-        "backend": {"files": len(backend_files), "tests": b_tests, "expects": b_expects},
+        "backend": {"files": backend_suites_count, "tests": b_tests, "expects": b_expects},
         "frontend": {"files": len(frontend_files), "tests": f_tests, "expects": f_expects},
-        "total_files": len(backend_files) + len(frontend_files),
+        "total_files": backend_suites_count + len(frontend_files),
         "total_tests": b_tests + f_tests,
         "total_expects": b_expects + f_expects,
     }

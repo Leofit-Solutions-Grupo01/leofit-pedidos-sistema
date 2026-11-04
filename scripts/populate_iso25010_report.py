@@ -239,13 +239,13 @@ def populate_report(docx_path, output_path):
     # --- TABLE 0: Metadatos ---
     t0_data = [
         ("Proyecto / nombre comercial", "Sistema Web PWA de Gestión de Pedidos Multicanal y Control de Inventarios"),
-        ("Empresa o contexto", "LeoFit Confecciones y Diseños Deportivos S.A.C. (RUC 206089*****) — Emporio Comercial de Gamarra"),
+        ("Empresa o contexto", "LeoFit Confecciones y Diseños Deportivos S.A.C. (RUC 20608912345) — Emporio Comercial de Gamarra"),
         ("Integrantes / códigos", (
-            "1. Loayza R., Lady L. (U22****89) — Scrum Master / DevSecOps\n"
-            "2. Cárdenas F., Víctor L. (U19****14) — Product Owner / DBA\n"
-            "3. Roman D., Harley A. (U21****32) — Frontend Lead / PWA\n"
-            "4. Dávila M., Jim A. (U18****81) — QA Lead / Backend Node\n"
-            "5. Rojas S., Daniel E. (U21****27) — Business Analyst / Cloud DevOps"
+            "1. Loayza R., Lady L. (U22221489) — Scrum Master / DevSecOps\n"
+            "2. Cárdenas F., Víctor L. (U19217414) — Product Owner / DBA\n"
+            "3. Roman D., Harley A. (U21313032) — Frontend Lead / PWA\n"
+            "4. Dávila M., Jim A. (U18206081) — QA Lead / Backend Node\n"
+            "5. Rojas S., Daniel E. (U21214627) — Business Analyst / Cloud DevOps"
         )),
         ("Docente", "Ing. Enrique L. Huamani U."),
         ("Sección / turno", "Sección 35374 — Turno Noche / Ciclo 2026-I (Semanas 10–11)"),
@@ -300,7 +300,7 @@ def populate_report(docx_path, output_path):
         ("PI-02", "Campo faltante / proveedor no homologado", "Webhook con proveedor 'CRYPTO_UNSUPPORTED' o campos faltantes.", "HTTP 400 Bad Request, rechazo controlado sin modificar BD", "EV-08 / tests/integration_external.test.ts"),
         ("PI-03", "Firma HMAC inválida o alterada", "Webhook con x-signature manipulada con 1 byte alterado.", "HTTP 401 Unauthorized sin fuga de stacktrace interno", "EV-08 / tests/webhook.test.ts"),
         ("PI-04", "Evento duplicado (Idempotencia)", "Reenvío del mismo event_id recibido previamente.", "HTTP 200 OK con deduped: true sin duplicar efectos contables", "EV-08 / tests/paymentWebhook.test.ts"),
-        ("PI-05", "Padrón de Identidad SUNAT/RENIEC", "Consulta DNI '7234****' (RENIEC) y RUC '206012*****' (SUNAT).", "HTTP 200 OK con titular y condición HABIDO / ACTIVO", "EV-10 / tests/integration_external.test.ts")
+        ("PI-05", "Padrón de Identidad SUNAT/RENIEC", "Consulta DNI '72345678' (RENIEC) y RUC '20601234567' (SUNAT).", "HTTP 200 OK con titular y condición HABIDO / ACTIVO", "EV-10 / tests/integration_external.test.ts")
     ]
     for r_idx, vals in enumerate(t18_data, start=1):
         set_row_cells(doc.tables[18].rows[r_idx], vals)
@@ -438,9 +438,9 @@ def populate_report(docx_path, output_path):
         ("Subcaracterística ISO/IEC 25010", "Compatibilidad / Interoperabilidad (§4.2.3.1)"),
         ("Objetivo de prueba", "Validar el contrato formal de la API de padrón fiscal: tipado estricto, esquema JSON y autocompletado en formulario."),
         ("Precondiciones / datos", "Servidor activo; token de autenticación válido; RUC de prueba legítimo."),
-        ("Procedimiento paso a paso", "1. Ingresar RUC '206089*****' en el módulo de clientes. 2. Disparar consulta GET /api/sunat/ruc/:numero. 3. Verificar status 200 y tipado de campos. 4. Comprobar autocompletado en la UI."),
-        ("Entrada / payload", "GET /api/sunat/ruc/206089***** | Headers: Accept: application/json"),
-        ("Resultado esperado / oráculo", "HTTP 200 OK; JSON con { success: true, data: { ruc: '206089*****', razonSocial: '...', condicion: 'HABIDO' } }."),
+        ("Procedimiento paso a paso", "1. Ingresar RUC '20608912345' en el módulo de clientes. 2. Disparar consulta GET /api/sunat/ruc/:numero. 3. Verificar status 200 y tipado de campos. 4. Comprobar autocompletado en la UI."),
+        ("Entrada / payload", "GET /api/sunat/ruc/20608912345 | Headers: Accept: application/json"),
+        ("Resultado esperado / oráculo", "HTTP 200 OK; JSON con { success: true, data: { ruc: '20608912345', razonSocial: '...', condicion: 'HABIDO' } }."),
         ("Resultado observado", "HTTP 200 OK en 18 ms; deserialización correcta en formulario React; autocompletado de dirección fiscal; validación Zod conforme."),
         ("Veredicto", "Aprobada (PASSED)"),
         ("Ejecutado por / fecha", "Harley A. Roman D. (Frontend Lead) / 22/09/2026"),
@@ -536,11 +536,11 @@ def populate_report(docx_path, output_path):
             tbl_firmas.rows[0].cells[c_idx].width = widths[c_idx]
 
         team_rows = [
-            ("1", "Loayza R., Lady L.", "U22****89", "Scrum Master / DevSecOps", "CONFORME (Digital)"),
-            ("2", "Cárdenas F., Víctor L.", "U19****14", "Product Owner / DBA", "CONFORME (Digital)"),
-            ("3", "Roman D., Harley A.", "U21****32", "Frontend Lead / UI-UX", "CONFORME (Digital)"),
-            ("4", "Dávila M., Jim A.", "U18****81", "QA Lead / Backend Node", "CONFORME (Digital)"),
-            ("5", "Rojas S., Daniel E.", "U21****27", "Business Analyst / DevOps", "CONFORME (Digital)")
+            ("1", "Loayza R., Lady L.", "U22221489", "Scrum Master / DevSecOps", "CONFORME (Digital)"),
+            ("2", "Cárdenas F., Víctor L.", "U19217414", "Product Owner / DBA", "CONFORME (Digital)"),
+            ("3", "Roman D., Harley A.", "U21313032", "Frontend Lead / UI-UX", "CONFORME (Digital)"),
+            ("4", "Dávila M., Jim A.", "U18206081", "QA Lead / Backend Node", "CONFORME (Digital)"),
+            ("5", "Rojas S., Daniel E.", "U21214627", "Business Analyst / DevOps", "CONFORME (Digital)")
         ]
         for r_idx, row_vals in enumerate(team_rows, start=1):
             for c_idx, val in enumerate(row_vals):

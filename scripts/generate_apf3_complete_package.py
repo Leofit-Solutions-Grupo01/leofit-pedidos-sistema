@@ -44,17 +44,17 @@ def build_preliminares(b):
 
     b.p("INFORME TÉCNICO FINAL DE INGENIERÍA DE SOFTWARE (ENTREGABLE APF3)", align="center", size=13, after=50)
 
-    b.p("**Empresa Beneficiaria:** LeoFit Confecciones y Diseños Deportivos S.A.C. (RUC 206089*****)\n"
+    b.p("**Empresa Beneficiaria:** LeoFit Confecciones y Diseños Deportivos S.A.C. (RUC 20608912345)\n"
         "**Representante Legal:** Víctor L. Cárdenas F.\n"
         "**Ubicación:** Emporio Comercial de Gamarra, La Victoria, Lima, Perú (Dirección exacta reservada)\n"
         "**Docente Asesor:** Ing. Enrique L. Huamani U.", align="center", size=10, after=40)
 
     b.p("**Equipo de Ingeniería y Desarrollo (Grupo 01):**\n"
-        "Lady L. Loayza R. (U22****89) — Scrum Master / DevSecOps Engineer\n"
-        "Víctor L. Cárdenas F. (U19****14) — Product Owner / Database Administrator (DBA)\n"
-        "Harley A. Roman D. (U21****32) — Frontend Lead / PWA & UI-UX Engineer\n"
-        "Jim A. Dávila M. (U18****81) — QA Lead / Backend Node-TypeScript Engineer\n"
-        "Daniel E. Rojas S. (U21****27) — Business Analyst / Cloud DevOps Engineer",
+        "Lady L. Loayza R. (U22221489) — Scrum Master / DevSecOps Engineer\n"
+        "Víctor L. Cárdenas F. (U19217414) — Product Owner / Database Administrator (DBA)\n"
+        "Harley A. Roman D. (U21313032) — Frontend Lead / PWA & UI-UX Engineer\n"
+        "Jim A. Dávila M. (U18206081) — QA Lead / Backend Node-TypeScript Engineer\n"
+        "Daniel E. Rojas S. (U21214627) — Business Analyst / Cloud DevOps Engineer",
         align="center", size=9.5, after=40)
 
     b.p("Lima, Perú\nOctubre de 2026", align="center", size=11, after=0)
@@ -81,7 +81,7 @@ def build_preliminares(b):
     b.sec("Ficha Técnica del Proyecto", annex=False)
     b.p("• **Denominación del Sistema:** LeoFit Pedidos Sistema (Plataforma Web PWA y API REST)\n"
         "• **Organización Patrocinadora:** LeoFit Confecciones y Diseños Deportivos S.A.C.\n"
-        "• **RUC de la Empresa:** 206089*****\n"
+        "• **RUC de la Empresa:** 20608912345\n"
         "• **Sector Productivo:** Manufactura textil y comercialización deportiva en el Emporio Comercial de Gamarra\n"
         "• **Institución Académica:** Universidad Tecnológica del Perú (UTP) — Campus Lima Centro\n"
         "• **Facultad y Programa:** Facultad de Ingeniería de Sistemas e Informática — Ingeniería de Sistemas e Informática\n"
@@ -221,7 +221,7 @@ def build_parte_1(b):
     b.sec("Contexto y Realidad Problemática de la Empresa LeoFit")
     b.p("El Emporio Comercial de Gamarra, ubicado en el distrito de La Victoria en Lima, representa el complejo textil y confeccionista "
         "más relevante del Perú, concentrando a miles de micro y pequeñas empresas que dinamizan la economía nacional. Dentro de este ecosistema "
-        "comercial opera **LeoFit Confecciones y Diseños Deportivos S.A.C.** (RUC 206089*****), una empresa especializada en el diseño, confección "
+        "comercial opera **LeoFit Confecciones y Diseños Deportivos S.A.C.** (RUC 20608912345), una empresa especializada en el diseño, confección "
         "y comercialización de indumentaria deportiva de alto rendimiento, tales como camisetas técnicas, shorts de compresión, joggers deportivos "
         "y accesorios de entrenamiento.")
     b.p("A pesar de la alta demanda de sus productos y del posicionamiento de la marca en redes sociales (principalmente Instagram y Facebook), "
@@ -274,7 +274,7 @@ def build_parte_1(b):
     # CAPÍTULO 2
     b.chapter("Diagnóstico Organizacional y Modelado de Procesos de Negocio")
     b.sec("Perfil Corporativo de LeoFit")
-    b.p("**LeoFit Confecciones y Diseños Deportivos S.A.C.** es una empresa peruana constituida formalmente con RUC 206089*****, con sede de operaciones "
+    b.p("**LeoFit Confecciones y Diseños Deportivos S.A.C.** es una empresa peruana constituida formalmente con RUC 20608912345, con sede de operaciones "
         "en el Emporio Comercial de Gamarra, en el distrito de La Victoria, Lima (Dirección exacta reservada). Su modelo de negocio combina la fabricación propia de prendas "
         "deportivas con la comercialización minorista y mayorista a nivel nacional.")
     b.p("La empresa se caracteriza por la innovación en telas tecnológicas (dry-fit, elastano y microfibra transpirable) adaptadas a la anatomía "
@@ -1364,11 +1364,11 @@ def build_anexos(b):
         "A continuación se presenta la matriz de trazabilidad por integrante y rama en la Tabla 31:")
     git_headers = ["Integrante (Formato Corporativo)", "Código UTP", "Rama de Especialidad Sincronizada", "Rol Principal", "Área de Contribución Verificada"]
     git_rows = [
-        ["Loayza R., Lady L. (@LadyyLuz)", "U22****89", "`origin/lady-devsecops`", "Scrum Master / DevSecOps", "Arquitectura, CI/CD, seguridad JWT/HMAC, idempotencia y documentación."],
-        ["Cárdenas F., Víctor L. (@VictorCardenas)", "U19****14", "`origin/victor-dba`", "Product Owner / DBA", "Modelado de base de datos relacional PostgreSQL 16, SQL, triggers y BCNF."],
-        ["Roman D., Harley A. (@HarleyRoman)", "U21****32", "`origin/harley-frontend`", "Frontend Lead / UI-UX", "Diseño PWA React 19, Tailwind CSS 4, accesibilidad WCAG y componentes UI."],
-        ["Dávila M., Jim A. (@JimDavila)", "U18****81", "`origin/jim-qa-backend`", "QA Lead / Backend", "Controladores Express/TS, facturación SUNAT y suite de 194 pruebas automatizadas."],
-        ["Rojas S., Daniel E. (@DanielRojas)", "U21****27", "`origin/daniel-cloud`", "Business Analyst / Cloud", "Despliegue Render Cloud, GitHub Pages CDN, benchmark ISO 25010 y simulacro DRP."],
+        ["Loayza R., Lady L. (@LadyyLuz)", "U22221489", "`origin/lady-devsecops`", "Scrum Master / DevSecOps", "Arquitectura, CI/CD, seguridad JWT/HMAC, idempotencia y documentación."],
+        ["Cárdenas F., Víctor L. (@VictorCardenas)", "U19217414", "`origin/victor-dba`", "Product Owner / DBA", "Modelado de base de datos relacional PostgreSQL 16, SQL, triggers y BCNF."],
+        ["Roman D., Harley A. (@HarleyRoman)", "U21313032", "`origin/harley-frontend`", "Frontend Lead / UI-UX", "Diseño PWA React 19, Tailwind CSS 4, accesibilidad WCAG y componentes UI."],
+        ["Dávila M., Jim A. (@JimDavila)", "U18206081", "`origin/jim-qa-backend`", "QA Lead / Backend", "Controladores Express/TS, facturación SUNAT y suite de 194 pruebas automatizadas."],
+        ["Rojas S., Daniel E. (@DanielRojas)", "U21214627", "`origin/daniel-cloud`", "Business Analyst / Cloud", "Despliegue Render Cloud, GitHub Pages CDN, benchmark ISO 25010 y simulacro DRP."],
         ["Dependabot (@dependabot[bot])", "N/A", "`origin/main`", "Bot de Seguridad SAST", "Actualización automatizada de dependencias npm (0 vulnerabilidades)."]
     ]
     b.table(git_headers, git_rows, "Trazabilidad de contribuciones y ramas sincronizadas en el repositorio Git", [2.4, 1.1, 2.1, 1.8, 3.6])

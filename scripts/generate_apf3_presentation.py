@@ -234,15 +234,15 @@ SLIDES = [
 
 **Curso:** Curso Integrador II: Software (100000S12F) — Sección 35374 — Ciclo 2026-I  
 **Institución:** Universidad Tecnológica del Perú (UTP)  
-**Organización Beneficiaria:** LeoFit Confecciones y Diseños Deportivos S.A.C. (RUC 206089*****)  
+**Organización Beneficiaria:** LeoFit Confecciones y Diseños Deportivos S.A.C. (RUC 20608912345)  
 **Docente Asesor:** Ing. Enrique L. Huamani U.  
 
 **Equipo de Ingeniería de Software (Grupo 01):**
-* **Lady L. Loayza R.** (U22****89) — Scrum Master / DevSecOps Engineer
-* **Víctor L. Cárdenas F.** (U19****14) — Product Owner / Database Administrator (DBA)
-* **Harley A. Roman D.** (U21****32) — Frontend Lead / PWA & UI-UX Engineer
-* **Jim A. Dávila M.** (U18****81) — QA Lead / Backend Node-TypeScript Engineer
-* **Daniel E. Rojas S.** (U21****27) — Business Analyst / Cloud DevOps Engineer
+* **Lady L. Loayza R.** (U22221489) — Scrum Master / DevSecOps Engineer
+* **Víctor L. Cárdenas F.** (U19217414) — Product Owner / Database Administrator (DBA)
+* **Harley A. Roman D.** (U21313032) — Frontend Lead / PWA & UI-UX Engineer
+* **Jim A. Dávila M.** (U18206081) — QA Lead / Backend Node-TypeScript Engineer
+* **Daniel E. Rojas S.** (U21214627) — Business Analyst / Cloud DevOps Engineer
 
 <!--
 Expositor: Lady L. Loayza R. (Scrum Master)

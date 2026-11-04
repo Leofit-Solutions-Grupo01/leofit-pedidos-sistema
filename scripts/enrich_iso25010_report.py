@@ -252,9 +252,9 @@ def enrich_document():
         ("Subcaracterística ISO/IEC 25010", "Compatibilidad / Interoperabilidad (§4.2.3.1)"),
         ("Objetivo de prueba", "Validar el contrato formal de la API de padrón fiscal: tipado estricto, esquema JSON y autocompletado en formulario."),
         ("Precondiciones / datos", "Servidor activo; token de autenticación válido; RUC de prueba legítimo."),
-        ("Procedimiento paso a paso", "1. Ingresar RUC '206089*****' en el módulo de clientes. 2. Disparar consulta GET /api/sunat/ruc/:numero. 3. Verificar status 200 y tipado de campos. 4. Comprobar autocompletado en la UI."),
-        ("Entrada / payload", "GET /api/sunat/ruc/206089***** | Headers: Accept: application/json"),
-        ("Resultado esperado / oráculo", "HTTP 200 OK; JSON con { success: true, data: { ruc: '206089*****', razonSocial: '...', condicion: 'HABIDO' } }."),
+        ("Procedimiento paso a paso", "1. Ingresar RUC '20608912345' en el módulo de clientes. 2. Disparar consulta GET /api/sunat/ruc/:numero. 3. Verificar status 200 y tipado de campos. 4. Comprobar autocompletado en la UI."),
+        ("Entrada / payload", "GET /api/sunat/ruc/20608912345 | Headers: Accept: application/json"),
+        ("Resultado esperado / oráculo", "HTTP 200 OK; JSON con { success: true, data: { ruc: '20608912345', razonSocial: '...', condicion: 'HABIDO' } }."),
         ("Resultado observado", "HTTP 200 OK en 18 ms; deserialización correcta en formulario React; autocompletado de dirección fiscal; validación Zod conforme."),
         ("Veredicto", "Aprobada (PASSED)"),
         ("Ejecutado por / fecha", "Harley A. Roman D. (Frontend Lead) / 22/09/2026"),
@@ -347,11 +347,11 @@ def enrich_document():
             tbl_firmas.rows[0].cells[c_idx].width = widths[c_idx]
 
         team_rows = [
-            ("1", "Loayza R., Lady L.", "U22****89", "Scrum Master / DevSecOps", "CONFORME (Digital)"),
-            ("2", "Cárdenas F., Víctor L.", "U19****14", "Product Owner / DBA", "CONFORME (Digital)"),
-            ("3", "Roman D., Harley A.", "U21****32", "Frontend Lead / UI-UX", "CONFORME (Digital)"),
-            ("4", "Dávila M., Jim A.", "U18****81", "QA Lead / Backend Node", "CONFORME (Digital)"),
-            ("5", "Rojas S., Daniel E.", "U21****27", "Business Analyst / DevOps", "CONFORME (Digital)")
+            ("1", "Loayza R., Lady L.", "U22221489", "Scrum Master / DevSecOps", "CONFORME (Digital)"),
+            ("2", "Cárdenas F., Víctor L.", "U19217414", "Product Owner / DBA", "CONFORME (Digital)"),
+            ("3", "Roman D., Harley A.", "U21313032", "Frontend Lead / UI-UX", "CONFORME (Digital)"),
+            ("4", "Dávila M., Jim A.", "U18206081", "QA Lead / Backend Node", "CONFORME (Digital)"),
+            ("5", "Rojas S., Daniel E.", "U21214627", "Business Analyst / DevOps", "CONFORME (Digital)")
         ]
         for r_idx, row_vals in enumerate(team_rows, start=1):
             for c_idx, val in enumerate(row_vals):

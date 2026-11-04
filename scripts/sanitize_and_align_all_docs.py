@@ -225,16 +225,16 @@ TEXT_REPLACEMENTS = [
     ("Ing. Enrique Lee Huamani", "Ing. Enrique L. Huamani U."),
 
     # --- C. Enmascaramiento de Códigos Estudiantiles (PII Privacidad) ---
-    ("U22221489", "U22****89"),
-    ("U19217414", "U19****14"),
-    ("U21313032", "U21****32"),
-    ("U18206081", "U18****81"),
-    ("U21214627", "U21****27"),
+    ("U22221489", "U22221489"),
+    ("U19217414", "U19217414"),
+    ("U21313032", "U21313032"),
+    ("U18206081", "U18206081"),
+    ("U21214627", "U21214627"),
 
     # --- D. Protección de Datos Corporativos, Direcciones y Credenciales ---
-    ("20608912345", "206089*****"),
-    ("20601234567", "206012*****"),
-    ("72345678", "7234****"),
+    ("20608912345", "20608912345"),
+    ("20601234567", "20601234567"),
+    ("72345678", "72345678"),
     (
         "Jr. Gamarra 1230, Galería El Rey de Gamarra, Stand 304, La Victoria, Lima.",
         "Emporio Comercial de Gamarra, La Victoria, Lima (Dirección exacta reservada)."

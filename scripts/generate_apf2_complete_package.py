@@ -469,11 +469,11 @@ def build_apf2_master():
     r.font.color.rgb = COLOR_BLACK
     
     integrantes = [
-        "Loayza R., Lady L. — Código: U22****89 (Scrum Master / Lead Dev)",
-        "Cárdenas F., Víctor L. — Código: U19****14 (Product Owner / Data Architect)",
-        "Roman D., Harley A. — Código: U21****32 (Frontend Lead / PWA Specialist)",
-        "Dávila M., Jim A. — Código: U18****81 (QA Engineer Lead / Backend)",
-        "Rojas S., Daniel E. — Código: U21****27 (Business Analyst / Cloud DevOps)"
+        "Loayza R., Lady L. — Código: U22221489 (Scrum Master / Lead Dev)",
+        "Cárdenas F., Víctor L. — Código: U19217414 (Product Owner / Data Architect)",
+        "Roman D., Harley A. — Código: U21313032 (Frontend Lead / PWA Specialist)",
+        "Dávila M., Jim A. — Código: U18206081 (QA Engineer Lead / Backend)",
+        "Rojas S., Daniel E. — Código: U21214627 (Business Analyst / Cloud DevOps)"
     ]
     for integ in integrantes:
         p_mem = doc.add_paragraph()
@@ -559,7 +559,7 @@ def build_apf2_master():
     format_apa_table(doc, "Tabla 0.1", "Ficha de Parámetros Institucionales y Control de Proyecto",
                      ["Parámetro Institucional", "Detalle Registrado"], [
         ["Nombre del Proyecto", "Sistema Web Progresivo (PWA) de Gestión de Pedidos y Control de Inventario Multicanal"],
-        ["Empresa Beneficiaria", "LeoFit Confecciones y Diseños Deportivos S.A.C. (RUC: 206089*****)"],
+        ["Empresa Beneficiaria", "LeoFit Confecciones y Diseños Deportivos S.A.C. (RUC: 20608912345)"],
         ["Ubicación y Entorno Operativo", "Emporio Comercial de Gamarra, La Victoria, Lima, Perú (Dirección exacta reservada)"],
         ["Ciclo Académico y Asignatura", "2026-I — Curso Integrador II: Software (100000S12F) — Grupo 01"],
         ["Versión y Alcance del Documento", "Versión 2.0.0 Oficial Acumulativa (Contiene APF1 íntegro + APF2 desarrollado)"]
@@ -749,7 +749,7 @@ def build_apf2_master():
     format_apa_table(doc, "Tabla 1.1", "Ficha de Identificación de la Organización LeoFit Solutions",
                      ["Atributo Empresarial", "Información Corporativa"], [
         ["Razón Social", "LeoFit Confecciones y Diseños Deportivos S.A.C."],
-        ["Número de R.U.C.", "206089***** (Activo y Habido)"],
+        ["Número de R.U.C.", "20608912345 (Activo y Habido)"],
         ["Giro de Negocio", "Fabricación y comercialización mayorista/minorista de indumentaria deportiva técnica."],
         ["Sede Comercial", "Emporio Comercial de Gamarra, La Victoria, Lima (Dirección exacta reservada)."],
         ["Taller de Confección", "Av. Isabel La Católica 840, Piso 3, La Victoria, Lima."]
