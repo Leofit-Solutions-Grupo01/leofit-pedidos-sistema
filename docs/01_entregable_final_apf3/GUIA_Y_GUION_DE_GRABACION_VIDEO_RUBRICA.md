@@ -164,3 +164,4 @@ Ten abiertas estas pestañas y ventanas para alternar con fluidez (`Alt + Tab`):
 | **Métrica SUS:** | **88.5 / 100** (Grado A - Excelente) |
 | **Coexistencia:** | Latencia **4.42 ms**, P95 **9.1 ms**, Degradación \(< 25\%\), **0.0% errores** |
 | **Comando Tests:** | `npm test --prefix frontend` y `python scripts/sync_audit_metrics.py` |
+

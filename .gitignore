@@ -199,3 +199,6 @@ docs/INFORME_FINAL_*.docx
 __pycache__/
 *.py[cod]
 *$py.class
+
+# Carpeta local consolidada para subida a Canvas (mantenida localmente en disco, no commiteada)
+docs/00_ENTREGA_OFICIAL_DOCENTE_CANVAS_APF3/
