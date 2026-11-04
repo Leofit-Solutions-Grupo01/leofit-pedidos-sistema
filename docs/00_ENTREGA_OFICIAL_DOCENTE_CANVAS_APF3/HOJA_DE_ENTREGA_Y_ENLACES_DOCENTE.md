@@ -97,3 +97,4 @@ npm test --prefix frontend
 # 4. Sincronizar y auditar el Excel con el código:
 python scripts/sync_audit_metrics.py
 ```
+
