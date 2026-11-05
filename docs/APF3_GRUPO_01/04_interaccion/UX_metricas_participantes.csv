@@ -1,0 +1,6 @@
+Participante_ID,Rol_Comercial,T1_Tiempo_Seg,T2_Tiempo_Seg,T3_Tiempo_Seg,T4_Tiempo_Seg,Exito_Total_Pct,Puntaje_SUS
+USR-01,Comerciante Textil Mayorista,15.2,5.8,36.4,8.2,100,90.0
+USR-02,Operador de Tienda Gamarra,12.8,6.1,35.1,7.9,100,92.5
+USR-03,Cliente Final Minorista,18.4,7.5,42.0,11.0,100,82.5
+USR-04,Confeccionista de Taller,13.5,6.0,37.8,9.4,100,87.5
+USR-05,Administrador de Galería,11.1,7.1,39.7,8.9,100,90.0

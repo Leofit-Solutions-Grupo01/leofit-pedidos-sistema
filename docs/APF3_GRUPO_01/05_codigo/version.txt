@@ -1,0 +1,9 @@
+PRODUCTO: LeoFit Solutions PWA
+VERSION: 2.0.0
+RELEASE_TAG: v2.0.0-apf3
+COMMIT_HASH: e35e32b8f877d9c12a0f8812c3b5d
+FECHA_DESPLIEGUE: 2026-11-04
+ENTORNO_FRONTEND: GitHub Pages Edge CDN (HTTPS TLS 1.3)
+ENTORNO_BACKEND: Render Cloud Platform PaaS (Node.js 20 LTS en contenedor)
+BASE_DE_DATOS: Clúster Serverless PostgreSQL 16 en Neon Cloud (SSL Obligatorio)
+ESTADO_OPERATIVO: PRODUCCIÓN ACTIVA (HTTP 200 OK)
