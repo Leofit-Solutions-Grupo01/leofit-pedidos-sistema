@@ -138,7 +138,7 @@ export interface IOrderRepository {
   /** Consulta pedidos aplicando filtros por estado, rangos de fecha y texto libre */
   listAll(filters?: { status?: OrderStatus; dateFrom?: string; dateTo?: string; search?: string; page?: number; limit?: number }): Promise<{ data: Order[], total: number }>;
   /** Obtiene el pedido completo con sus items, datos del cliente e historial de auditoría */
-  findById(id: number): Promise<Order | null>;
+  findById(id: number, client?: any): Promise<Order | null>;
   /** Consulta un pedido mediante su código único de tracking público (ej: LEO-20260302-001) */
   findByOrderNumber(orderNumber: string): Promise<Order | null>;
   /**

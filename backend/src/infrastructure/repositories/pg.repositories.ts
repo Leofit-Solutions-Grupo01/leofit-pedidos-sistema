@@ -465,8 +465,9 @@ export class PgOrderRepository implements IOrderRepository {
     return { data: orders, total };
   }
 
-  async findById(id: number): Promise<Order | null> {
-    const res = await this.pool.query(
+  async findById(id: number, existingClient?: any): Promise<Order | null> {
+    const db = existingClient || this.pool;
+    const res = await db.query(
       `SELECT o.*, c.full_name as client_name, c.phone as client_phone, c.address as client_address, d.name as client_district, c.reference as client_reference,
               u.name as user_name, pm.code as payment_method
        FROM orders o
@@ -480,9 +481,9 @@ export class PgOrderRepository implements IOrderRepository {
     if (res.rows.length === 0) return null;
     const row = res.rows[0];
 
-    const itemsRes = await this.pool.query(`${ORDER_ITEM_SELECT} WHERE oi.order_id = $1 ORDER BY oi.id ASC`, [id]);
+    const itemsRes = await db.query(`${ORDER_ITEM_SELECT} WHERE oi.order_id = $1 ORDER BY oi.id ASC`, [id]);
 
-    const histRes = await this.pool.query(
+    const histRes = await db.query(
       `SELECT osh.*, u.name as user_name
        FROM order_status_history osh
        LEFT JOIN users u ON osh.user_id = u.id
@@ -631,8 +632,8 @@ export class PgOrderRepository implements IOrderRepository {
           await client.query('COMMIT');
         }
         
-        // Retornar la orden construida sin cerrar la transacción externa
-        const createdOrder = await this.findById(orderId);
+        // Retornar la orden construida sin cerrar la transacción externa (usando client para ver datos uncommitted en la misma tx)
+        const createdOrder = await this.findById(orderId, client);
         return createdOrder as Order;
       } catch (e: any) {
         if (!isExternalClient) {

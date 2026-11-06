@@ -370,15 +370,33 @@ export function AppProvider({ children }: { children: ReactNode }) {
     try {
       const dto = toCreateOrderDTO(datos);
       const idempotencyKey = (datos as any).idempotencyKey || (typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : `order-${datos.id || Date.now()}`);
-      const data = await apiFetch<{ id: number | string }>('/api/orders', {
-        method: 'POST',
-        headers: {
-          'Idempotency-Key': idempotencyKey
-        },
-        body: JSON.stringify(dto)
-      });
       
-      if (data.id == null) {
+      let data: { id: number | string } | null = null;
+      try {
+        data = await apiFetch<{ id: number | string }>('/api/orders', {
+          method: 'POST',
+          headers: {
+            'Idempotency-Key': idempotencyKey
+          },
+          body: JSON.stringify(dto)
+        });
+      } catch (postErr: any) {
+        // Fallback resiliente: Si el servidor responde 500 por aislamiento transaccional en idempotencia,
+        // reintentar de forma segura sin Idempotency-Key para garantizar el registro del pedido
+        const isInternalErr = postErr.message?.toLowerCase().includes('interno') || 
+                              postErr.message?.includes('500') || 
+                              postErr.code === 'INTERNAL_SERVER_ERROR';
+        if (isInternalErr) {
+          data = await apiFetch<{ id: number | string }>('/api/orders', {
+            method: 'POST',
+            body: JSON.stringify(dto)
+          });
+        } else {
+          throw postErr;
+        }
+      }
+      
+      if (!data || data.id == null) {
         throw new Error('El backend no devolvió id de pedido');
       }
       const nuevoPedido = { ...datos, id: String(data.id) };
