@@ -85,6 +85,10 @@ DIAGRAM_METADATA = {
         {
             "title": "Topología de Red y Segmentación de Seguridad Multi-AZ en AWS",
             "note": "Estructura de aislamiento de red en Virtual Private Cloud (VPC) distribuida en zonas de disponibilidad us-east-1a y us-east-1b, con subredes públicas, privadas de aplicación y aisladas de datos, orquestadas mediante Security Groups y NAT Gateways."
+        },
+        {
+            "title": "Flujo de Emisión de CPE, Almacenamiento Seguro en S3 y Custodia Legal a 5 Años",
+            "note": "Diagrama de secuencia de la arquitectura objetivo que desacopla la custodia de comprobantes (XML UBL 2.1, CDR y PDF con QR) hacia Amazon S3 Standard con regla de ciclo de vida automática hacia S3 Glacier Flexible Retrieval a los 36 meses, conforme al Artículo 87 del Código Tributario (ADR-002)."
         }
     ],
     "03_CUMPLIMIENTO_SUNAT_CPE": [

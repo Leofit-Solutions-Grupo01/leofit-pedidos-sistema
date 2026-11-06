@@ -152,7 +152,52 @@ Un error recurrente en proyectos empresariales es pretender que AWS resuelva tod
 
 ---
 
-## 5. Alineación con los 6 Pilares del AWS Well-Architected Framework
+## 5. Estrategia de Almacenamiento Legal CPE a 5 Años y Resiliencia DRP
+
+### 5.1. Cumplimiento de Resiliencia y Continuidad Operativa (RTO / RPO)
+El destino de migración de base de datos relacional (**Amazon Aurora PostgreSQL Multi-AZ** o **Amazon RDS PostgreSQL Multi-AZ**) satisface de forma nativa los objetivos del Protocolo de Simulacro de Respaldo y Restauración (DRP) institucional de LeoFit (`docs/02_CALIDAD_Y_AUDITORIA/05_operaciones_respaldo_drp/BACKUP_RESTORE_DRILL.md`):
+- **Recovery Point Objective (RPO):** `0 Pérdida de Datos (RPO = 0)` garantizado mediante almacenamiento distribuido en 6 copias a través de 3 Zonas de Disponibilidad (Multi-AZ) con replicación síncrona continua de registros WAL (*Write-Ahead Logging*).
+- **Recovery Time Objective (RTO):** Conmutación por error automática (*failover*) en **menos de 30 segundos** sin intervención humana ante caída total de la instancia primaria en `us-east-1a`, superando holgadamente la meta comprometida de RTO < 300 segundos (5 minutos) demostrada en 3.2 segundos en las pruebas de homologación.
+
+### 5.2. Almacenamiento Fiscal CPE Desacoplado con Lifecycle en Amazon S3
+En cumplimiento del Artículo 87 del Código Tributario del Perú y conforme al dimensionamiento cuantitativo modelado en la **Sección 10 del ADR-001** (`docs/adr/ADR-001_ELECCION_RENDER_NEON_VS_AWS.md`, volumen acumulado de **28.5 GB** para 360,000 comprobantes a 5 años), la arquitectura objetivo AWS desacopla de manera absoluta la custodia de archivos binarios de la base de datos transaccional:
+- La tabla `invoices` en Aurora PostgreSQL almacena únicamente metadatos de control (UUID, serie, correlativo, hash SHA-256, estado de CDR y URI del objeto).
+- Los artefactos pesados (XML UBL 2.1, CDR de SUNAT y representación impresa PDF con QR) son transferidos hacia un bucket privado en **Amazon S3** (`s3://leofit-cpe-compliance-prod/`) con cifrado en reposo SSE-KMS y control de versiones activado.
+- **Regla de Ciclo de Vida Automatizada (S3 Lifecycle Policy):**
+  1. **Día 1 al Día 1,095 (Años 1 al 3):** Clase *S3 Standard* o *S3 Standard-Infrequent Access (S3 Standard-IA)* para consulta inmediata de clientes y reenvío de tickets.
+  2. **Día 1,096 al Día 1,825 (Años 4 y 5):** Transición automática sin intervención operativa hacia *Amazon S3 Glacier Flexible Retrieval* ($0.0036 USD/GB/mes), reduciendo el costo mensual de custodia de todo el repositorio histórico a menos de $0.15 USD/mes.
+  3. **Posterior al Día 1,825 (> 5 Años):** Expiración o traslado a almacenamiento de archivo profundo según dictamine la política legal del negocio.
+
+### 5.3. Diagrama de Flujo: Emisión, Almacenamiento en S3 y Custodia a 5 Años
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Cliente as Cliente / Checkout
+    participant Backend as API Backend (ECS Fargate)
+    participant BD as BD Transaccional (Aurora PG)
+    participant OSE as OSE Homologado (Nubefact)
+    participant S3 as Amazon S3 (Bucket CPE Seguro)
+    participant Glacier as S3 Glacier (Custodia Fiscal)
+
+    Cliente->>Backend: Confirma orden de compra y solicita CPE
+    Backend->>BD: Registra orden y crea metadata en tabla invoices
+    Backend->>OSE: Envia JSON fiscal para emision y firma digital
+    OSE->>OSE: Compila XML UBL 2.1 y firma con Certificado INDECOPI
+    OSE->>Backend: Retorna CDR aceptado, XML firmado y PDF con QR
+    Backend->>S3: Persiste XML, CDR y PDF en S3 Standard (Cifrado KMS)
+    Backend->>BD: Actualiza invoices con S3 URI, hash SHA-256 y CDR
+    Backend-->>Cliente: Entrega confirmacion con enlace presignado seguro
+    
+    rect rgb(240, 248, 255)
+        note over S3, Glacier: Ciclo de Vida Automatizado (Regla S3 a 5 Anos)
+        S3->>Glacier: Transicion automatica a los 36 meses (Anos 4 y 5 en archivo frio)
+    end
+```
+
+---
+
+## 6. Alineación con los 6 Pilares del AWS Well-Architected Framework
 
 | Pilar | Estrategia de Diseño en la Arquitectura LeoFit | Evidencia de Diseño / Servicio |
 | :--- | :--- | :--- |
@@ -165,7 +210,7 @@ Un error recurrente en proyectos empresariales es pretender que AWS resuelva tod
 
 ---
 
-## 6. Estimación de Costo Mensual en AWS (Arquitectura Objetivo)
+## 7. Estimación de Costo Mensual en AWS (Arquitectura Objetivo)
 
 | Capa / Servicio | Especificación Base | Costo Estimado (USD/mes) | Fuente / Observación |
 | :--- | :--- | :--- | :--- |
@@ -182,7 +227,7 @@ Un error recurrente en proyectos empresariales es pretender que AWS resuelva tod
 
 ---
 
-## 7. Fuentes y Referencias Técnicas
+## 8. Fuentes y Referencias Técnicas
 
 1. Amazon Web Services, "AWS Well-Architected Framework: Reliability and Security Pillars", [https://aws.amazon.com/architecture/well-architected/](https://aws.amazon.com/architecture/well-architected/), consultado en noviembre de 2026.
 2. AWS Pricing Documentation, "Amazon Elastic Container Service, Aurora Serverless and Application Load Balancer Pricing", [https://aws.amazon.com/pricing/](https://aws.amazon.com/pricing/), consultado en noviembre de 2026.
