@@ -12,7 +12,7 @@
 ---
 
 > [!NOTE]
-> **Nota de Evaluación:** El material del Proyecto Final (Semana 18) se encuentra fuera de este repositorio por política de evaluación. La documentación visible en este repositorio corresponde a la entrega evaluada de **Avance de Proyecto Final 3 (APF3)**, calidad ISO/IEC 25010, catálogo de diagramas y material de referencia institucional.
+> **Alcance de la Entrega:** La documentación de este repositorio corresponde a la entrega oficial del **Avance de Proyecto Final 3 (APF3)**, calidad ISO/IEC 25010, catálogo de diagramas de arquitectura y material de referencia institucional.
 
 ---
 

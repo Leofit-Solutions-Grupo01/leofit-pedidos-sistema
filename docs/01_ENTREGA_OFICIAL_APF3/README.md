@@ -28,3 +28,4 @@ Esta carpeta consolida la entrega académica y técnica oficial del Avance de Pr
 * **Frontend Web PWA:** [https://leofit-solutions-grupo01.github.io/leofit-pedidos-sistema/](https://leofit-solutions-grupo01.github.io/leofit-pedidos-sistema/)
 * **Backend API REST:** [https://leofit-backend-api.onrender.com/api/health](https://leofit-backend-api.onrender.com/api/health)
 * **Documentación OpenAPI / Swagger:** [https://leofit-backend-api.onrender.com/api/docs](https://leofit-backend-api.onrender.com/api/docs)
+

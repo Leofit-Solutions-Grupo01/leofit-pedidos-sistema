@@ -8,8 +8,8 @@ $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $baseDir = Resolve-Path "$scriptDir\..\.."
 $proyectoFinalDir = Join-Path $baseDir "_PROYECTO_FINAL_LOCAL"
 
-if (-not (Test-Path $proyectoFinalDir)) {
-    Write-Host "  [ERROR] _PROYECTO_FINAL_LOCAL/ no encontrado. Ejecutar solo en maquina de desarrollo con los anexos presentes." -ForegroundColor Red
+if (-not (Test-Path "$baseDir\_PROYECTO_FINAL_LOCAL\02_ENTREGABLES_UTP")) {
+    Write-Host "[ERROR] _PROYECTO_FINAL_LOCAL/ no existe. Ver scripts/proyecto_final/README.md" -ForegroundColor Red
     exit 1
 }
 
