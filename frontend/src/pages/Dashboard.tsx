@@ -10,6 +10,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useApp } from "../context/AppContext";
 import Badge from "../components/common/Badge";
 import { EstadoPedido, Pedido, estaEnRiesgo, calcularIngresos } from "../data/mockData";
+import { getLimaDateToday } from "../utils/dateUtils";
 import MontoPrivado from "../components/common/MontoPrivado";
 import RecentActivity from "../components/dashboard/RecentActivity";
 import PerformanceCharts from "../components/dashboard/PerformanceCharts";
@@ -164,7 +165,7 @@ export default function Dashboard() {
     }
   }, []);
 
-  const HOY = ahora.toISOString().split("T")[0];
+  const HOY = getLimaDateToday();
   const pedidosHoy = pedidos.filter((p) => p.fecha === HOY && p.estado !== "Cancelado");
   const pedidosActivos = pedidos.filter((p) => p.estado !== "Cancelado");
   const pedidosEnRiesgo = pedidos.filter(estaEnRiesgo);

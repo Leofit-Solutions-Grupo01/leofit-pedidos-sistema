@@ -26,6 +26,7 @@ import {
   CreateOrderDTO,
   IsolationLevel
 } from '../../domain/repositories/interfaces';
+import { getLimaDateStr } from '../../utils/date.utils';
 
 // -----------------------------------------------------------------------------
 // FRAGMENTOS SQL COMPARTIDOS — alineados con el esquema normalizado (BCNF)
@@ -584,8 +585,8 @@ export class PgOrderRepository implements IOrderRepository {
           subtotal += item.unitPrice * item.quantity;
         }
 
-        // 3. Create Order
-        const dateStr = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+        // 3. Create Order con fecha localizada en Perú (America/Lima)
+        const dateStr = getLimaDateStr();
         const seqRes = await client.query("SELECT nextval('order_number_seq') AS seq");
         const seq = parseInt(seqRes.rows[0].seq, 10).toString().padStart(6, '0');
         const orderNumber = `LEO-${dateStr}-${seq}`;

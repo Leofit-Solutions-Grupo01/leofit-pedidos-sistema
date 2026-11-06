@@ -16,6 +16,7 @@ import crypto from 'node:crypto';
 import type { PoolClient } from 'pg';
 import { logger } from '../../utils/logger';
 import { splitIgv } from '../../utils/igv';
+import { getLimaIsoDate } from '../../utils/date.utils';
 
 export interface RucValidationResult {
   valid: boolean;
@@ -212,7 +213,7 @@ export class NubefactService {
         cliente_denominacion: params.clienteDenominacion,
         cliente_direccion: params.clienteDireccion || 'Lima, Perú',
         cliente_email: params.clienteEmail || 'comprobantes@leofit.pe',
-        fecha_de_emision: new Date().toISOString().split('T')[0],
+        fecha_de_emision: getLimaIsoDate(),
         moneda: 1, // 1 = Soles (PEN)
         porcentaje_de_igv: 18.0,
         total_gravada: subtotal,

@@ -261,7 +261,7 @@ export const pedidosIniciales: Pedido[] = [
 
 // Helper: un pedido está "en riesgo" si es Recibido/Preparación y tiene más de 24h sin atender
 export function estaEnRiesgo(pedido: Pedido): boolean {
-  const HOY = new Date().toISOString().split("T")[0];
+  const HOY = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Lima', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
   return (pedido.estado === "Recibido" || pedido.estado === "Preparación") && pedido.fecha < HOY;
 }
 

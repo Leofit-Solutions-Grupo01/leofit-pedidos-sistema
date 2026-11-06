@@ -8,6 +8,9 @@
 -- MOTOR   : PostgreSQL 16+
 -- =============================================================================
 
+-- Configuración regional: Huso horario oficial de Lima, Perú (America/Lima, UTC-5)
+SET timezone = 'America/Lima';
+
 -- Limpiar objetos previos (orden correcto por FK)
 DROP TABLE IF EXISTS order_status_history CASCADE;
 DROP TABLE IF EXISTS order_items         CASCADE;

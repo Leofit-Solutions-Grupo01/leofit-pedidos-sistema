@@ -25,6 +25,7 @@ import {
   CreateOrderDTO,
   IsolationLevel
 } from '../../domain/repositories/interfaces';
+import { getLimaDateStr } from '../../utils/date.utils';
 import { PasswordHasher } from '../security/password.utils';
 
 // In-memory data store with predefined initial seeds
@@ -525,8 +526,8 @@ export class MemoryOrderRepository implements IOrderRepository {
       });
     }
 
-    // 4. Crear Cabecera del Pedido
-    const dateStr = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+    // 4. Crear Cabecera del Pedido con fecha localizada Perú (America/Lima)
+    const dateStr = getLimaDateStr();
     const countSeq = (InMemoryDataStore.orders.length + 1).toString().padStart(3, '0');
     const orderNumber = `LEO-${dateStr}-${countSeq}`;
     const totalAmount = subtotal + dto.shippingCost;

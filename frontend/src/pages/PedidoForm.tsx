@@ -10,6 +10,7 @@ import { useState, useEffect, useRef } from "react";
 import { useApp } from "../context/AppContext";
 import ReciboModal from "../components/common/ReciboModal";
 import { Pedido, TipoEnvio, AgenciaEncomienda, MetodoPago, CUPONES_VALIDOS } from "../data/mockData";
+import { getLimaDisplayDate, getLimaDateToday } from "../utils/dateUtils";
 
 const CANALES = ["WhatsApp", "Llamada", "Sistema"] as const;
 const AGENCIAS: AgenciaEncomienda[] = ["Shalom", "Olva Courier", "Marvisur", "Flores Hermanos", "Otra"];
@@ -67,7 +68,7 @@ export default function PedidoForm() {
   const [errorApi, setErrorApi] = useState<string | null>(null);
   const borradorPedidoRef = useRef<{ id: string; numero: string } | null>(null);
 
-  const fechaHoy = new Date().toLocaleDateString("es-PE", { day: "2-digit", month: "2-digit", year: "numeric" });
+  const fechaHoy = getLimaDisplayDate();
 
   /**
    * Genera el siguiente número correlativo unívoco de orden (`LFT-XXX`).
@@ -238,7 +239,7 @@ export default function PedidoForm() {
       metodoPago,
       numeroOperacion: numeroOperacion.trim() || undefined,
       estado: "Recibido",
-      fecha: new Date().toISOString().split("T")[0],
+      fecha: getLimaDateToday(),
       notas: notas.trim() || undefined,
     };
 

@@ -8,6 +8,9 @@
 -- MOTOR   : PostgreSQL 16+
 -- =============================================================================
 
+-- Configuración regional: Huso horario oficial de Lima, Perú (America/Lima, UTC-5)
+SET timezone = 'America/Lima';
+
 -- Deshabilitar triggers de FK
 -- SET session_replication_role = replica;
 

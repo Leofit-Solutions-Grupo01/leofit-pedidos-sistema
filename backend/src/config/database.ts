@@ -44,6 +44,13 @@ const poolConfig: PoolConfig = normalizedConnectionString
 
 export const dbPool = new Pool(poolConfig);
 
+// Configuración de zona horaria local Perú (America/Lima - UTC-5) para cada conexión del pool
+dbPool.on('connect', (client) => {
+  client.query("SET timezone = 'America/Lima'").catch((err) => {
+    console.warn('⚠️ No se pudo establecer timezone America/Lima:', err.message);
+  });
+});
+
 let isPgConnected = false;
 
 // Evita caídas del proceso si la instancia de PostgreSQL (ej. Render Free Tier / Neon Serverless) cierra conexiones inactivas
