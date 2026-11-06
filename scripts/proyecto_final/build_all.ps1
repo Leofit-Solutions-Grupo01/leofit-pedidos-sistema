@@ -14,6 +14,7 @@ if (-not (Test-Path "$baseDir\_PROYECTO_FINAL_LOCAL\02_ENTREGABLES_UTP")) {
 }
 
 $entregablesDir = Join-Path $proyectoFinalDir "02_ENTREGABLES_UTP"
+$htmlDir = "$entregablesDir\00_HTML"
 $docxDir = "$entregablesDir\01_DOCX"
 $pptxDir = "$entregablesDir\02_PPTX"
 $xlsxDir = "$entregablesDir\03_XLSX"
@@ -46,12 +47,12 @@ Write-Host "  [OK] Python Packages (docx, pptx, openpyxl, pypandoc) disponibles.
 Write-Host ""
 
 # ------------------------------------------------------------------------------
-# 2. GENERACION DE DOCUMENTOS DOCX
+# 2. GENERACION DE DOCUMENTOS HTML Y DOCX
 # ------------------------------------------------------------------------------
-Write-Host "[2/5] Generando documentos Word (.docx) con diagramas Mermaid integrados..." -ForegroundColor Yellow
+Write-Host "[2/5] Generando documentos HTML estilizados y Word (.docx) editables..." -ForegroundColor Yellow
 python "$scriptDir\export_markdown_to_docx.py"
 if ($LASTEXITCODE -ne 0) {
-    Write-Host "  [ERROR] Fallo la exportacion a DOCX." -ForegroundColor Red
+    Write-Host "  [ERROR] Fallo la exportacion a HTML y DOCX." -ForegroundColor Red
     exit 1
 }
 Write-Host ""
@@ -95,7 +96,7 @@ Write-Host "====================================================================
 Write-Host "INVENTARIO OFICIAL DE ENTREGABLES GENERADOS Y TAMANOS EN DISCO" -ForegroundColor Green
 Write-Host "======================================================================" -ForegroundColor Green
 
-$allGenerated = Get-ChildItem -Path "$entregablesDir\01_DOCX", "$entregablesDir\02_PPTX", "$entregablesDir\03_XLSX" -File
+$allGenerated = Get-ChildItem -Path "$entregablesDir\00_HTML", "$entregablesDir\01_DOCX", "$entregablesDir\02_PPTX", "$entregablesDir\03_XLSX" -File
 $tableReport = @()
 
 foreach ($f in $allGenerated) {

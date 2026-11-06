@@ -26,7 +26,7 @@ Si usted ha clonado este repositorio en una máquina nueva y no dispone de la ca
 | Script | Lenguaje / Entorno | Propósito y Responsabilidad |
 | :--- | :--- | :--- |
 | **`build_all.ps1`** | PowerShell (`pwsh`) | **Orquestador Maestro.** Verifica dependencias del sistema (`pandoc`, `mmdc`, paquetes Python), ejecuta la exportación DOCX, genera la presentación PPTX, compila el libro XLSX y ejecuta la validación rigurosa de integridad. |
-| **`export_markdown_to_docx.py`** | Python 3 + Pandoc + python-docx | Procesa los 6 anexos técnicos Markdown, compila los bloques Mermaid a imágenes PNG vectoriales mediante `mmdc` y genera 9 documentos Word normalizados con estilos corporativos LeoFit. |
+| **`export_markdown_to_docx.py`** | Python 3 + Pandoc + python-docx | Compila la documentación técnica a una versión HTML formal, ejecutiva y estilizada (`00_HTML/`) y posteriormente la convierte a documentos Word completamente editables (`01_DOCX/`), aplicando paleta corporativa Navy LeoFit, tablas con cabecera oscura y filas alternadas. |
 | **`generate_sustentacion_pptx.py`** | Python 3 + python-pptx | Genera la presentación ejecutiva de sustentación de **20 diapositivas** en formato widescreen 16:9 con paleta institucional Navy/Blue/Accent, contraste WCAG AAA y notas de orador integradas en cada lámina. |
 | **`generate_audit_xlsx.py`** | Python 3 + openpyxl | Genera el libro Excel de auditoría y trazabilidad con 4 pestañas formateadas: `Matriz_Trazabilidad_Jurado`, `Inventario_Servicios_Cloud`, `Auditoria_Codigo_ISO25010` y `Gap_Analysis_SUNAT_CPE`. |
 | **`validate_deliverables.py`** | Python 3 | Verifica que todos los archivos DOCX, PPTX y XLSX se abran sin errores, confirma el conteo mínimo de párrafos, tablas, 20 diapositivas con notas de orador y certifica la ausencia de emojis residuales. |
@@ -59,4 +59,4 @@ powershell -ExecutionPolicy Bypass -File scripts\proyecto_final\build_all.ps1
 ## 4. Política de Control de Versiones
 
 > [!WARNING]
-> Todos los artefactos generados en `_PROYECTO_FINAL_LOCAL/02_ENTREGABLES_UTP/` (`01_DOCX/`, `02_PPTX/`, `03_XLSX/`, `.cache_diagrams/`) quedan **estrictamente ignorados por Git**. Únicamente los scripts fuente de este directorio forman parte del control de versiones principal.
+> Todos los artefactos generados en `_PROYECTO_FINAL_LOCAL/02_ENTREGABLES_UTP/` (`00_HTML/`, `01_DOCX/`, `02_PPTX/`, `03_XLSX/`) quedan **estrictamente ignorados por Git**. Únicamente los scripts fuente de este directorio forman parte del control de versiones principal.
