@@ -52,3 +52,4 @@ catch {
     Write-Host "Repositorio restaurado al commit $previousCommit." -ForegroundColor Yellow
     exit 1
 }
+
