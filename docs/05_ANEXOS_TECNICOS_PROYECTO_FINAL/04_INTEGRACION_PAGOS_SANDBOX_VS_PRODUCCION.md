@@ -59,11 +59,11 @@ sequenceDiagram
     CulqiJS-->>Checkout: Recibe token de pago
     Checkout->>Backend: POST /api/payments/process { order_id, token, email }
     
-    alt Llave Real de Sandbox (CULQI_SECRET_KEY)
-        Backend->>CulqiAPI: POST https://api.culqi.com/v2/charges { amount, currency: PEN, source_id: token }
-        CulqiAPI-->>Backend: HTTP 201 Created { id: chr_test_..., outcome: { type: venta_exitosa } }
-    else Modo Local Simulado (Fallback)
-        Backend->>Backend: Genera cargo simulado (chr_mock_...)
+    alt Llave Real de Sandbox CULQI_SECRET_KEY
+        Backend->>CulqiAPI: POST api.culqi.com charges (token, amount, PEN)
+        CulqiAPI-->>Backend: HTTP 201 Created venta exitosa (id: chr_test)
+    else Modo Local Simulado Fallback
+        Backend->>Backend: Genera cargo simulado local (chr_mock)
     end
 
     Backend->>BD: UPDATE orders SET payment_status = 'PAGADO', status = 'CONFIRMADO' WHERE id = order_id

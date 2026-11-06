@@ -67,15 +67,15 @@ graph TD
     WebAdmin --> CF
     ClientePublico --> CF
     CF --> WAF
-    CF -->|Rutas Estáticas /| S3_Frontend
-    CF -->|Rutas API /api/*| ALB
+    CF -->|Rutas Estaticas Frontend| S3_Frontend
+    CF -->|Rutas Dinamicas API| ALB
 
     ALB --> Task_1
     ALB --> Task_2
     
     Task_1 --> Aurora_Primary
     Task_2 --> Aurora_Primary
-    Aurora_Primary -.->|Replicacion sincrona storage| Aurora_Replica
+    Aurora_Primary -->|Replicacion sincrona storage| Aurora_Replica
     
     Task_1 --> ElastiCache
     Task_2 --> ElastiCache
@@ -94,17 +94,17 @@ graph TD
 
 ```mermaid
 graph LR
-    subgraph VPC ["Amazon VPC: 10.0.0.0/16"]
-        subgraph AZ_A ["Availability Zone: us-east-1a"]
-            Pub_Subnet_A["Subred Pública A (10.0.1.0/24)<br/>• ALB Endpoint A<br/>• NAT Gateway A"]
-            Priv_App_A["Subred Privada App A (10.0.10.0/24)<br/>• ECS Fargate Task A"]
-            Priv_Data_A["Subred Privada Datos A (10.0.20.0/24)<br/>• Aurora Primary<br/>• Redis Node A"]
+    subgraph VPC ["Amazon VPC 10.0.0.0/16"]
+        subgraph AZ_A ["Availability Zone us-east-1a"]
+            Pub_Subnet_A["Subred Publica A 10.0.1.0/24<br/>- ALB Endpoint A<br/>- NAT Gateway A"]
+            Priv_App_A["Subred Privada App A 10.0.10.0/24<br/>- ECS Fargate Task A"]
+            Priv_Data_A["Subred Privada Datos A 10.0.20.0/24<br/>- Aurora Primary<br/>- Redis Node A"]
         end
 
-        subgraph AZ_B ["Availability Zone: us-east-1b"]
-            Pub_Subnet_B["Subred Pública B (10.0.2.0/24)<br/>• ALB Endpoint B<br/>• NAT Gateway B"]
-            Priv_App_B["Subred Privada App B (10.0.11.0/24)<br/>• ECS Fargate Task B"]
-            Priv_Data_B["Subred Privada Datos B (10.0.21.0/24)<br/>• Aurora Read Replica<br/>• Redis Node B"]
+        subgraph AZ_B ["Availability Zone us-east-1b"]
+            Pub_Subnet_B["Subred Publica B 10.0.2.0/24<br/>- ALB Endpoint B<br/>- NAT Gateway B"]
+            Priv_App_B["Subred Privada App B 10.0.11.0/24<br/>- ECS Fargate Task B"]
+            Priv_Data_B["Subred Privada Datos B 10.0.21.0/24<br/>- Aurora Read Replica<br/>- Redis Node B"]
         end
 
         IGW["Internet Gateway"]

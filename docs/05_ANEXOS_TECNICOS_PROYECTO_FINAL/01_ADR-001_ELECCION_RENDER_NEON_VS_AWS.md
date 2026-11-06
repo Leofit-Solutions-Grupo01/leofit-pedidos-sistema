@@ -72,16 +72,16 @@ El equipo no mantendrá Render y Neon de manera indefinida si el negocio supera 
 
 ```mermaid
 graph TD
-    A["Evaluacion de Requerimientos LeoFit"] --> B{"¿Fase del Proyecto?"}
-    B -->|"Validacion MVP / Sustentacion"| C{"¿Presupuesto de Infraestructura?"}
-    B -->|"Produccion Corporativa Alta Demanda"| D["Adoptar Arquitectura Nativa AWS (ADR-002)"]
+    A["Evaluacion de Requerimientos LeoFit"] --> B{"Fase del Proyecto"}
+    B -->|Validacion MVP y Sustentacion| C{"Presupuesto de Infraestructura"}
+    B -->|Produccion Corporativa Alta Demanda| D["Adoptar Arquitectura Nativa AWS ADR-002"]
     
-    C -->|"< 30 USD/mes"| E["Adoptar Render + Neon Serverless"]
-    C -->|"> 150 USD/mes"| D
+    C -->|Menor a 30 USD mes| E["Adoptar Render y Neon Serverless"]
+    C -->|Mayor a 150 USD mes| D
     
-    E --> F{"¿Cumple Umbrales de Migracion?"}
-    F -->|"No: < 5,000 DAU y SLA 99.9%"| G["Mantener Render + Neon con backups PITR"]
-    F -->|"Si: Trafico > 50 RPS o requisito PCI/SOC2"| H["Ejecutar Roadmap de Migracion hacia AWS"]
+    E --> F{"Cumple Umbrales de Migracion"}
+    F -->|No: Menos de 5000 DAU y SLA 99.9%| G["Mantener Render y Neon con backups PITR"]
+    F -->|Si: Trafico mayor a 50 RPS o requisito PCI| H["Ejecutar Roadmap de Migracion hacia AWS"]
     H --> D
 ```
 
@@ -89,31 +89,40 @@ graph TD
 
 ```mermaid
 stateDiagram-v2
-    [*] --> Estado_1_MVP_PaaS: Fase Actual (Validacion UTP)
+    [*] --> Estado_1_MVP_PaaS: Fase Actual Validacion
     
     state Estado_1_MVP_PaaS {
         Frontend_GitHubPages --> Backend_Render_Docker
         Backend_Render_Docker --> BD_Neon_PostgreSQL_Serverless
-        note right of BD_Neon_PostgreSQL_Serverless: Costo: 0 a 14 USD/mes\nDeploy: Git push automatico
     }
+    note right of Estado_1_MVP_PaaS
+        Costo 0 a 14 USD mes
+        Despliegue git push automatico
+    end note
     
-    Estado_1_MVP_PaaS --> Estado_2_Hibrido: Gatillo: Trafico > 20 RPS o saturacion de pool de conexiones
+    Estado_1_MVP_PaaS --> Estado_2_Hibrido: Gatillo Trafico mayor a 20 RPS
     
     state Estado_2_Hibrido {
         Frontend_CloudFront_S3 --> Backend_Render_Scale
         Backend_Render_Scale --> BD_AWS_RDS_PostgreSQL
-        note right of BD_AWS_RDS_PostgreSQL: BD migrada a VPC privada AWS\nComputo agil en Render
     }
+    note right of Estado_2_Hibrido
+        BD en VPC privada AWS
+        Computo agil en Render
+    end note
     
-    Estado_2_Hibrido --> Estado_3_AWS_Full: Gatillo: > 5,000 DAU / Requisito WAF y PrivateLink
+    Estado_2_Hibrido --> Estado_3_AWS_Full: Gatillo Mayor a 5000 DAU
     
     state Estado_3_AWS_Full {
         AWS_WAF_CloudFront --> AWS_ALB
         AWS_ALB --> ECS_Fargate_MultiAZ
         ECS_Fargate_MultiAZ --> Aurora_PostgreSQL_MultiAZ
         ECS_Fargate_MultiAZ --> ElastiCache_Redis
-        note right of ECS_Fargate_MultiAZ: Alta disponibilidad 99.99%\nCumplimiento corporativo total
     }
+    note right of Estado_3_AWS_Full
+        Alta disponibilidad 99.99 por ciento
+        Cumplimiento corporativo total
+    end note
 ```
 
 ---

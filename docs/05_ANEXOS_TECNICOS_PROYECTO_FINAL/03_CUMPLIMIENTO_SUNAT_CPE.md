@@ -53,9 +53,9 @@ sequenceDiagram
         alt NUBEFACT_URL configurado en produccion
             OSE->>OSE: Genera XML UBL 2.1 y firma con Certificado Digital INDECOPI
             OSE->>SUNAT: Valida y transmite XML a SUNAT
-            SUNAT-->>OSE: Retorna CDR (Constancia de Recepcion con codigo 0 = Aceptado)
-            OSE-->>Backend: Retorna { codigo_hash, enlace_pdf, enlace_xml, cdr_base64 }
-        else Modo Demostracion / Sin credenciales (Simulacion Academica)
+            SUNAT-->>OSE: Retorna CDR con codigo 0 Aceptado
+            OSE-->>Backend: Retorna datos fiscales (hash, enlace PDF, enlace XML, CDR)
+        else Modo Demostracion Local
             Backend->>Backend: Genera hash SHA-256 simulado y enlace de previsualizacion
         end
     end

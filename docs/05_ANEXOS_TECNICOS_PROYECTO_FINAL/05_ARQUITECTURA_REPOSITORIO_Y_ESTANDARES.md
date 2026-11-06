@@ -20,10 +20,10 @@ graph TD
         Cliente["Cliente Final (Consulta de Rastreo)"]
     end
 
-    subgraph Frontera_Sistema ["Sistema de Pedidos LeoFit (Repositorio Actual)"]
-        SPA["Frontend SPA<br/>[React 18 + Vite + TailwindCSS]<br/>(Alojado en GitHub Pages / Local Vite :5173)"]
-        API["Backend API REST<br/>[Node.js 20 + Express + TypeScript]<br/>(Alojado en Render Docker / Local :3001)"]
-        BD["Base de Datos Relacional<br/>[PostgreSQL 16 en Neon Serverless]<br/>(Pool con soporte timezone America/Lima)"]
+    subgraph Frontera_Sistema ["Sistema de Pedidos LeoFit - Repositorio Actual"]
+        SPA["Frontend SPA - React 18, Vite, TailwindCSS<br/>Alojado en GitHub Pages o Local Vite :5173"]
+        API["Backend API REST - Node.js 20, Express, TypeScript<br/>Alojado en Render Docker o Local :3001"]
+        BD["Base de Datos Relacional - PostgreSQL 16 Neon<br/>Pool de conexiones con timezone America/Lima"]
     end
 
     subgraph Proveedores_Externos ["Servicios de Terceros Integrados"]
