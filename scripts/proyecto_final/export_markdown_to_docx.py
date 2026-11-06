@@ -370,33 +370,33 @@ def generate_formal_html(doc_info, processed_md):
       </div>
       <div class="doc-hero">
         <div class="doc-badge-pill">{doc_info['category']} &bull; {doc_info['id']}</div>
-        <h1 class="doc-hero-title">{doc_info['title']}</h1>
-        <div class="doc-hero-subtitle">{doc_info['subtitle']}</div>
+        <h1 class="doc-main-title">{doc_info['title']}</h1>
+        <div class="doc-subtitle">{doc_info['subtitle']}</div>
       </div>
       <div class="metadata-grid">
-        <div class="meta-card">
-          <div class="meta-label">PROYECTO</div>
-          <div class="meta-value">LeoFit - Gestión de Pedidos Multicanal</div>
+        <div class="metadata-item">
+          <div class="metadata-label">PROYECTO</div>
+          <div class="metadata-value">LeoFit - Gestión de Pedidos Multicanal</div>
         </div>
-        <div class="meta-card">
-          <div class="meta-label">LÍDER DE ARQUITECTURA</div>
-          <div class="meta-value">Lady Luz Loayza Rodríguez (Lead Architect)</div>
+        <div class="metadata-item">
+          <div class="metadata-label">LÍDER DE ARQUITECTURA</div>
+          <div class="metadata-value">Lady Luz Loayza Rodríguez (Lead Architect)</div>
         </div>
-        <div class="meta-card">
-          <div class="meta-label">EQUIPO DE INGENIERÍA</div>
-          <div class="meta-value">Grupo 01 (Loayza, Cárdenas, Roman, Dávila, Rojas)</div>
+        <div class="metadata-item">
+          <div class="metadata-label">EQUIPO DE INGENIERÍA</div>
+          <div class="metadata-value">Grupo 01 (Loayza, Cárdenas, Roman, Dávila, Rojas)</div>
         </div>
-        <div class="meta-card">
-          <div class="meta-label">DOCENTE ASESOR EVALUADOR</div>
-          <div class="meta-value">Ing. Enrique Lee Huamani Uriarte</div>
+        <div class="metadata-item">
+          <div class="metadata-label">DOCENTE ASESOR EVALUADOR</div>
+          <div class="metadata-value">Ing. Enrique Lee Huamani Uriarte</div>
         </div>
-        <div class="meta-card">
-          <div class="meta-label">VERSIÓN / FECHA</div>
-          <div class="meta-value">{doc_info['version']} &bull; {doc_info['date']}</div>
+        <div class="metadata-item">
+          <div class="metadata-label">VERSIÓN / FECHA</div>
+          <div class="metadata-value">{doc_info['version']} &bull; {doc_info['date']}</div>
         </div>
-        <div class="meta-card">
-          <div class="meta-label">ESTÁNDAR EDITORIAL</div>
-          <div class="meta-value">Normas APA 7ma Edición (Oficial UTP)</div>
+        <div class="metadata-item">
+          <div class="metadata-label">ESTÁNDAR EDITORIAL</div>
+          <div class="metadata-value">Normas APA 7ma Edición (Oficial UTP)</div>
         </div>
       </div>
     </div>
@@ -448,125 +448,293 @@ def apply_table_cell_margins(table, top_dxa=100, bottom_dxa=100, left_dxa=140, r
 
 def insert_apa7_title_page(doc, doc_info):
     """
-    Construye la Portada Académica y Profesional Oficial bajo Normas APA 7ma Edición (Página 1).
+    Construye la Portada Académica y Profesional Oficial bajo Normas APA 7ma Edición (Página 1):
+    1. Banner institucional superior con los dos tonos de la UTP (#0F172A y #2563EB).
+    2. Badge pill estilizado con categoría documental y código identificador.
+    3. Título del Proyecto empresarial (LeoFit Solutions) y Título Principal en negrita y alto contraste.
+    4. Subtítulo técnico formal y línea divisoria decorativa Cobalt.
+    5. Tarjeta ejecutiva de metadatos del proyecto y autores (Grupo 01) con roles y docente asesor.
+    6. Pie de página institucional formal con ubicación geográfica ("Lima, Perú") y fecha oficial.
+    7. Salto de página y Ficha Técnica de Control Documental al inicio de la Página 2.
     """
     if not doc.paragraphs:
         doc.add_paragraph()
     p_first = doc.paragraphs[0]
 
-    # 1. Espaciador inicial de 3 líneas simples
-    p_sp0 = p_first.insert_paragraph_before("")
-    p_sp0.paragraph_format.space_before = Pt(36)
-    p_sp0.paragraph_format.space_after = Pt(0)
+    # --- 1. BANNER INSTITUCIONAL SUPERIOR UTP ---
+    tbl_inst = doc.add_table(rows=2, cols=2)
+    tbl_inst.alignment = WD_TABLE_ALIGNMENT.CENTER
+    apply_table_cell_margins(tbl_inst, top_dxa=40, bottom_dxa=40, left_dxa=60, right_dxa=60)
+    tbl_inst._tbl.tblPr.append(parse_xml(r'<w:tblLayout {} w:type="fixed"/>'.format(nsdecls('w'))))
+    col_w_inst = [Inches(4.5), Inches(2.0)]
+    tbl_inst._tbl.append(parse_xml(r'<w:tblGrid {}><w:gridCol w:w="6480"/><w:gridCol w:w="2880"/></w:tblGrid>'.format(nsdecls('w'))))
 
-    # 2. Título Principal en Negrita (APA 7: Centrado, Negrita, 17 pt, Title Case)
+    r0 = tbl_inst.rows[0]
+    r0._tr.get_or_add_trPr().append(parse_xml(r'<w:cantSplit {}/>'.format(nsdecls('w'))))
+    c00, c01 = r0.cells[0], r0.cells[1]
+    c00.width = col_w_inst[0]
+    c01.width = col_w_inst[1]
+
+    # Sin bordes exteriores en fila de texto
+    bdr_none = parse_xml(r'''
+        <w:tcBorders {} >
+            <w:top w:val="none"/>
+            <w:left w:val="none"/>
+            <w:bottom w:val="none"/>
+            <w:right w:val="none"/>
+        </w:tcBorders>
+    '''.format(nsdecls('w')))
+    c00._tc.get_or_add_tcPr().append(bdr_none)
+    c01._tc.get_or_add_tcPr().append(parse_xml(r'''
+        <w:tcBorders {} >
+            <w:top w:val="none"/>
+            <w:left w:val="none"/>
+            <w:bottom w:val="none"/>
+            <w:right w:val="none"/>
+        </w:tcBorders>
+    '''.format(nsdecls('w'))))
+
+    p00 = c00.paragraphs[0]
+    p00.paragraph_format.space_before = Pt(0)
+    p00.paragraph_format.space_after = Pt(2)
+    p00.paragraph_format.line_spacing = 1.15
+    r_u1 = p00.add_run("UNIVERSIDAD TECNOLÓGICA DEL PERÚ\n")
+    r_u1.font.name = "Calibri"
+    r_u1.font.size = Pt(11)
+    r_u1.font.bold = True
+    r_u1.font.color.rgb = RGBColor(15, 23, 42)
+    r_u2 = p00.add_run("FACULTAD DE INGENIERÍA\n")
+    r_u2.font.name = "Calibri"
+    r_u2.font.size = Pt(9.5)
+    r_u2.font.bold = True
+    r_u2.font.color.rgb = RGBColor(71, 85, 105)
+    r_u3 = p00.add_run("Carrera Profesional de Ingeniería de Sistemas e Informática")
+    r_u3.font.name = "Calibri"
+    r_u3.font.size = Pt(8.5)
+    r_u3.font.color.rgb = RGBColor(100, 116, 139)
+
+    p01 = c01.paragraphs[0]
+    p01.alignment = WD_ALIGN_PARAGRAPH.RIGHT
+    p01.paragraph_format.space_before = Pt(0)
+    p01.paragraph_format.space_after = Pt(2)
+    p01.paragraph_format.line_spacing = 1.15
+    r_c1 = p01.add_run("CURSO INTEGRADOR II\n")
+    r_c1.font.name = "Calibri"
+    r_c1.font.size = Pt(9.5)
+    r_c1.font.bold = True
+    r_c1.font.color.rgb = RGBColor(30, 64, 175)
+    r_c2 = p01.add_run("SISTEMAS DE INFORMACIÓN\n")
+    r_c2.font.name = "Calibri"
+    r_c2.font.size = Pt(8.5)
+    r_c2.font.bold = True
+    r_c2.font.color.rgb = RGBColor(71, 85, 105)
+    r_c3 = p01.add_run("Sección 35374 — Ciclo 2026-I")
+    r_c3.font.name = "Calibri"
+    r_c3.font.size = Pt(8)
+    r_c3.font.color.rgb = RGBColor(100, 116, 139)
+
+    # Fila 1: Línea decorativa dual institucional (Navy + Cobalt)
+    r1 = tbl_inst.rows[1]
+    r1._tr.get_or_add_trPr().append(parse_xml(r'<w:cantSplit {}/>'.format(nsdecls('w'))))
+    r1._tr.get_or_add_trPr().append(parse_xml(r'<w:trHeight {} w:val="30" w:hRule="exact"/>'.format(nsdecls('w'))))
+    c10, c11 = r1.cells[0], r1.cells[1]
+    c10.width = col_w_inst[0]
+    c11.width = col_w_inst[1]
+    c10._tc.get_or_add_tcPr().append(parse_xml(r'<w:shd {} w:fill="0F172A"/>'.format(nsdecls('w'))))
+    c11._tc.get_or_add_tcPr().append(parse_xml(r'<w:shd {} w:fill="2563EB"/>'.format(nsdecls('w'))))
+    c10.paragraphs[0].paragraph_format.space_before = Pt(0)
+    c10.paragraphs[0].paragraph_format.space_after = Pt(0)
+    c11.paragraphs[0].paragraph_format.space_before = Pt(0)
+    c11.paragraphs[0].paragraph_format.space_after = Pt(0)
+
+    p_first._p.addprevious(tbl_inst._tbl)
+
+    # --- 2. ESPACIADOR ---
+    p_sp1 = p_first.insert_paragraph_before("")
+    p_sp1.paragraph_format.space_before = Pt(14)
+    p_sp1.paragraph_format.space_after = Pt(0)
+
+    # --- 3. BADGE PILL (IDENTIFICADOR DEL DOCUMENTO) ---
+    tbl_pill = doc.add_table(rows=1, cols=1)
+    tbl_pill.alignment = WD_TABLE_ALIGNMENT.CENTER
+    apply_table_cell_margins(tbl_pill, top_dxa=40, bottom_dxa=40, left_dxa=90, right_dxa=90)
+    tbl_pill._tbl.tblPr.append(parse_xml(r'<w:tblLayout {} w:type="fixed"/>'.format(nsdecls('w'))))
+    tbl_pill._tbl.append(parse_xml(r'<w:tblGrid {}><w:gridCol w:w="7920"/></w:tblGrid>'.format(nsdecls('w'))))
+    cpill = tbl_pill.rows[0].cells[0]
+    cpill.width = Inches(5.5)
+    cpill._tc.get_or_add_tcPr().append(parse_xml(r'<w:shd {} w:fill="EFF6FF"/>'.format(nsdecls('w'))))
+    bdr_pill = parse_xml(r'''
+        <w:tcBorders {} >
+            <w:top w:val="single" w:sz="4" w:space="0" w:color="93C5FD"/>
+            <w:left w:val="single" w:sz="4" w:space="0" w:color="93C5FD"/>
+            <w:bottom w:val="single" w:sz="4" w:space="0" w:color="93C5FD"/>
+            <w:right w:val="single" w:sz="4" w:space="0" w:color="93C5FD"/>
+        </w:tcBorders>
+    '''.format(nsdecls('w')))
+    cpill._tc.get_or_add_tcPr().append(bdr_pill)
+    ppill = cpill.paragraphs[0]
+    ppill.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    ppill.paragraph_format.space_before = Pt(0)
+    ppill.paragraph_format.space_after = Pt(0)
+    rp = ppill.add_run(f"PROYECTO FINAL  |  {doc_info.get('category', 'ENTREGABLE OFICIAL')}  |  {doc_info['id']}")
+    rp.font.name = "Calibri"
+    rp.font.size = Pt(8.5)
+    rp.font.bold = True
+    rp.font.color.rgb = RGBColor(30, 64, 175)
+
+    p_first._p.addprevious(tbl_pill._tbl)
+
+    # --- 4. ESPACIADOR ---
+    p_sp2 = p_first.insert_paragraph_before("")
+    p_sp2.paragraph_format.space_before = Pt(16)
+    p_sp2.paragraph_format.space_after = Pt(0)
+
+    # --- 5. OVERTITLE (NOMBRE DEL PROYECTO) ---
+    p_over = p_first.insert_paragraph_before("SISTEMA DE GESTIÓN DE PEDIDOS MULTICANAL — LEOFIT SOLUTIONS")
+    p_over.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    p_over.paragraph_format.space_before = Pt(0)
+    p_over.paragraph_format.space_after = Pt(6)
+    ro = p_over.runs[0]
+    ro.font.name = "Calibri"
+    ro.font.size = Pt(10)
+    ro.font.bold = True
+    ro.font.color.rgb = RGBColor(30, 58, 138)
+
+    # --- 6. TÍTULO PRINCIPAL DEL DOCUMENTO ---
     p_title = p_first.insert_paragraph_before(doc_info["title"])
     p_title.alignment = WD_ALIGN_PARAGRAPH.CENTER
     p_title.paragraph_format.space_before = Pt(0)
-    p_title.paragraph_format.space_after = Pt(8)
-    p_title.paragraph_format.line_spacing = 1.2
+    p_title.paragraph_format.space_after = Pt(6)
+    p_title.paragraph_format.line_spacing = 1.15
     rt = p_title.runs[0]
     rt.font.name = "Calibri"
-    rt.font.size = Pt(17)
+    rt.font.size = Pt(19)
     rt.font.bold = True
     rt.font.color.rgb = RGBColor(15, 23, 42)
 
-    # 3. Subtítulo en Cursiva (Centrado, 11.5 pt, Cursiva)
+    # --- 7. SUBTÍTULO ---
     p_sub = p_first.insert_paragraph_before(doc_info["subtitle"])
     p_sub.alignment = WD_ALIGN_PARAGRAPH.CENTER
     p_sub.paragraph_format.space_before = Pt(0)
-    p_sub.paragraph_format.space_after = Pt(36)
+    p_sub.paragraph_format.space_after = Pt(14)
     rsub = p_sub.runs[0]
     rsub.font.name = "Calibri"
-    rsub.font.size = Pt(11.5)
+    rsub.font.size = Pt(11)
     rsub.font.italic = True
     rsub.font.color.rgb = RGBColor(71, 85, 105)
 
-    # 4. Línea decorativa sutil Cobalt
+    # --- 8. LÍNEA DIVISORIA COBALT ---
     rule_tbl = doc.add_table(rows=1, cols=1)
     rule_tbl.alignment = WD_TABLE_ALIGNMENT.CENTER
     rcell = rule_tbl.rows[0].cells[0]
-    rcell.width = Inches(4.5)
-    rshd = parse_xml(r'<w:shd {} w:fill="2563EB"/>'.format(nsdecls('w')))
-    rcell._tc.get_or_add_tcPr().append(rshd)
-    r_tr = rule_tbl.rows[0]._tr.get_or_add_trPr()
-    r_tr.append(parse_xml(r'<w:trHeight {} w:val="20" w:hRule="exact"/>'.format(nsdecls('w'))))
+    rcell.width = Inches(3.2)
+    rcell._tc.get_or_add_tcPr().append(parse_xml(r'<w:shd {} w:fill="2563EB"/>'.format(nsdecls('w'))))
+    rule_tbl.rows[0]._tr.get_or_add_trPr().append(parse_xml(r'<w:trHeight {} w:val="25" w:hRule="exact"/>'.format(nsdecls('w'))))
+    rcell.paragraphs[0].paragraph_format.space_before = Pt(0)
+    rcell.paragraphs[0].paragraph_format.space_after = Pt(0)
     p_first._p.addprevious(rule_tbl._tbl)
 
-    # 5. Espaciador
-    p_sp1 = p_first.insert_paragraph_before("")
-    p_sp1.paragraph_format.space_before = Pt(28)
-    p_sp1.paragraph_format.space_after = Pt(0)
+    # --- 9. ESPACIADOR ANTES DE LA TARJETA ---
+    p_sp3 = p_first.insert_paragraph_before("")
+    p_sp3.paragraph_format.space_before = Pt(18)
+    p_sp3.paragraph_format.space_after = Pt(0)
 
-    # 6. Autores del Proyecto (Grupo 01)
-    p_autores_label = p_first.insert_paragraph_before("Equipo de Ingeniería de Software (Grupo 01):")
-    p_autores_label.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    p_autores_label.paragraph_format.space_before = Pt(0)
-    p_autores_label.paragraph_format.space_after = Pt(4)
-    ra_lbl = p_autores_label.runs[0]
-    ra_lbl.font.name = "Calibri"
-    ra_lbl.font.size = Pt(10)
-    ra_lbl.font.bold = True
-    ra_lbl.font.color.rgb = RGBColor(15, 23, 42)
+    # --- 10. TARJETA EJECUTIVA DE METADATOS Y AUTORES ---
+    card_tbl = doc.add_table(rows=3, cols=2)
+    card_tbl.alignment = WD_TABLE_ALIGNMENT.CENTER
+    apply_table_cell_margins(card_tbl, top_dxa=60, bottom_dxa=60, left_dxa=110, right_dxa=110)
+    card_tbl._tbl.tblPr.append(parse_xml(r'<w:tblLayout {} w:type="fixed"/>'.format(nsdecls('w'))))
+    card_tbl._tbl.append(parse_xml(r'<w:tblGrid {}><w:gridCol w:w="3312"/><w:gridCol w:w="6048"/></w:tblGrid>'.format(nsdecls('w'))))
 
-    autores_text = (
-        "Lady Luz Loayza Rodríguez (Scrum Master / DevSecOps Lead)\n"
-        "Víctor Leandro Cárdenas Fernández (Product Owner / DBA Lead)\n"
-        "Harley Anthony Roman Delgado (Frontend Lead / UI-UX)\n"
-        "Jim Alessandro Dávila Morales (QA Engineer Lead / Backend)\n"
-        "Daniel Enrique Rojas Sánchez (Business Analyst / Cloud DevOps)"
-    )
-    p_autores = p_first.insert_paragraph_before(autores_text)
-    p_autores.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    p_autores.paragraph_format.space_before = Pt(0)
-    p_autores.paragraph_format.space_after = Pt(28)
-    p_autores.paragraph_format.line_spacing = 1.3
-    ra = p_autores.runs[0]
-    ra.font.name = "Calibri"
-    ra.font.size = Pt(9.5)
-    ra.font.color.rgb = RGBColor(51, 65, 85)
+    card_widths = [Inches(2.3), Inches(4.2)]
+    card_data = [
+        (
+            [("AUTORES / GRUPO 01", True, 7.5, RGBColor(100, 116, 139)),
+             ("Equipo de Ingeniería de Software", True, 9, RGBColor(15, 23, 42)),
+             ("Facultad de Ingeniería — UTP", False, 8, RGBColor(100, 116, 139))],
+            [("INTEGRANTES Y ROLES ASIGNADOS:", True, 7.5, RGBColor(100, 116, 139)),
+             ("• Lady Luz Loayza Rodríguez — Scrum Master & DevSecOps Lead\n"
+              "• Víctor Leandro Cárdenas Fernández — Product Owner & DBA Lead\n"
+              "• Harley Anthony Roman Delgado — Frontend Lead & UI/UX Specialist\n"
+              "• Jim Alessandro Dávila Morales — QA Lead & Backend Developer\n"
+              "• Daniel Enrique Rojas Sánchez — Business Analyst & Cloud DevOps", False, 8.5, RGBColor(30, 41, 59))]
+        ),
+        (
+            [("DOCENTE ASESOR EVALUADOR", True, 7.5, RGBColor(100, 116, 139)),
+             ("Ing. Enrique Lee Huamani Uriarte", True, 9, RGBColor(15, 23, 42)),
+             ("Docente Titular del Curso", False, 8, RGBColor(100, 116, 139))],
+            [("INFORMACIÓN ACADÉMICA Y TÉCNICA:", True, 7.5, RGBColor(100, 116, 139)),
+             (f"• Asignatura: Curso Integrador II — Sistemas de Información (100000S12F)\n"
+              f"• Código Documental: {doc_info['id']} | Versión Evaluada: {doc_info['version']}\n"
+              f"• Tipo de Documento: {doc_info.get('doc_type', 'Especificación Técnica')}", False, 8.5, RGBColor(30, 41, 59))]
+        ),
+        (
+            [("ENTORNO EMPRESARIAL", True, 7.5, RGBColor(100, 116, 139)),
+             ("LeoFit Solutions S.A.C.", True, 9, RGBColor(15, 23, 42)),
+             ("Gestión de Pedidos Multicanal", False, 8, RGBColor(100, 116, 139))],
+            [("ESTÁNDAR EDITORIAL Y EVALUACIÓN:", True, 7.5, RGBColor(100, 116, 139)),
+             ("• Estándar Editorial: Normas APA 7ma Edición (Estándar Académico UTP)\n"
+              "• Estado del Entregable: Aprobado para Sustentación Final de Arquitectura", False, 8.5, RGBColor(30, 41, 59))]
+        )
+    ]
 
-    # 7. Afiliación Institucional
-    p_inst = p_first.insert_paragraph_before(
-        "Facultad de Ingeniería\n"
-        "Carrera Profesional de Ingeniería de Sistemas e Informática\n"
-        "Universidad Tecnológica del Perú"
-    )
-    p_inst.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    p_inst.paragraph_format.space_before = Pt(0)
-    p_inst.paragraph_format.space_after = Pt(20)
-    p_inst.paragraph_format.line_spacing = 1.2
-    ri = p_inst.runs[0]
-    ri.font.name = "Calibri"
-    ri.font.size = Pt(10)
-    ri.font.color.rgb = RGBColor(30, 41, 59)
+    for row_idx, row_content in enumerate(card_data):
+        row = card_tbl.rows[row_idx]
+        row._tr.get_or_add_trPr().append(parse_xml(r'<w:cantSplit {}/>'.format(nsdecls('w'))))
+        for col_idx in range(2):
+            cell = row.cells[col_idx]
+            cell.width = card_widths[col_idx]
+            cell._tc.get_or_add_tcPr().append(parse_xml(r'<w:shd {} w:fill="F8FAFC"/>'.format(nsdecls('w'))))
+            bdr = parse_xml(r'''
+                <w:tcBorders {} >
+                    <w:top w:val="single" w:sz="4" w:space="0" w:color="E2E8F0"/>
+                    <w:left w:val="{}" w:sz="6" w:space="0" w:color="CBD5E1"/>
+                    <w:bottom w:val="single" w:sz="4" w:space="0" w:color="E2E8F0"/>
+                    <w:right w:val="{}" w:sz="6" w:space="0" w:color="CBD5E1"/>
+                </w:tcBorders>
+            '''.format(nsdecls('w'), "single" if col_idx == 0 else "none", "single" if col_idx == 1 else "none"))
+            cell._tc.get_or_add_tcPr().append(bdr)
 
-    # 8. Asignatura y Docente Asesor
-    p_curso = p_first.insert_paragraph_before(
-        "Curso Integrador II: Sistemas de Información (Código: 100000S12F — Sección 35374)\n"
-        "Docente Asesor Evaluador: Ing. Enrique Lee Huamani Uriarte"
-    )
-    p_curso.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    p_curso.paragraph_format.space_before = Pt(0)
-    p_curso.paragraph_format.space_after = Pt(20)
-    p_curso.paragraph_format.line_spacing = 1.2
-    rc = p_curso.runs[0]
+            p = cell.paragraphs[0]
+            p.paragraph_format.space_before = Pt(1)
+            p.paragraph_format.space_after = Pt(1)
+            p.paragraph_format.line_spacing = 1.15
+            items = row_content[col_idx]
+            for text, is_bold, sz, color in items:
+                r_item = p.add_run(text + "\n" if text != items[-1][0] else text)
+                r_item.font.name = "Calibri"
+                r_item.font.size = Pt(sz)
+                r_item.font.bold = is_bold
+                r_item.font.color.rgb = color
+
+    p_first._p.addprevious(card_tbl._tbl)
+
+    # --- 11. ESPACIADOR ---
+    p_sp4 = p_first.insert_paragraph_before("")
+    p_sp4.paragraph_format.space_before = Pt(16)
+    p_sp4.paragraph_format.space_after = Pt(0)
+
+    # --- 12. FECHA Y CIUDAD ---
+    p_city = p_first.insert_paragraph_before("Lima, Perú  —  Noviembre de 2026")
+    p_city.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    p_city.paragraph_format.space_before = Pt(0)
+    p_city.paragraph_format.space_after = Pt(2)
+    rc = p_city.runs[0]
     rc.font.name = "Calibri"
     rc.font.size = Pt(9.5)
-    rc.font.color.rgb = RGBColor(71, 85, 105)
+    rc.font.bold = True
+    rc.font.color.rgb = RGBColor(15, 23, 42)
 
-    # 9. Fecha Oficial
-    p_date = p_first.insert_paragraph_before(f"Lima, Perú  —  {doc_info['date']}")
-    p_date.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    p_date.paragraph_format.space_before = Pt(0)
-    p_date.paragraph_format.space_after = Pt(0)
-    rd = p_date.runs[0]
-    rd.font.name = "Calibri"
-    rd.font.size = Pt(9.5)
-    rd.font.bold = True
-    rd.font.color.rgb = RGBColor(15, 23, 42)
+    p_subcity = p_first.insert_paragraph_before("Sustentación de Proyecto Final de Carrera  •  Semana 18")
+    p_subcity.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    p_subcity.paragraph_format.space_before = Pt(0)
+    p_subcity.paragraph_format.space_after = Pt(0)
+    rsc = p_subcity.runs[0]
+    rsc.font.name = "Calibri"
+    rsc.font.size = Pt(8)
+    rsc.font.color.rgb = RGBColor(100, 116, 139)
 
-    # 10. Salto de Página Formal de Portada (Termina Página 1)
+    # --- 13. SALTO DE PÁGINA FORMAL DE PORTADA (TERMINA PÁGINA 1) ---
     p_break = p_first.insert_paragraph_before()
     p_break.paragraph_format.space_before = Pt(0)
     p_break.paragraph_format.space_after = Pt(0)
@@ -628,9 +796,9 @@ def insert_apa7_title_page(doc, doc_info):
     p_first._p.addprevious(f_tbl._tbl)
 
     # Espaciador antes de la Sección 1
-    p_sp3 = p_first.insert_paragraph_before("")
-    p_sp3.paragraph_format.space_before = Pt(16)
-    p_sp3.paragraph_format.space_after = Pt(0)
+    p_sp_sec = p_first.insert_paragraph_before("")
+    p_sp_sec.paragraph_format.space_before = Pt(16)
+    p_sp_sec.paragraph_format.space_after = Pt(0)
 
     # Limpiar p_first si quedó como párrafo en blanco
     if not p_first.text.strip():
@@ -639,9 +807,25 @@ def insert_apa7_title_page(doc, doc_info):
 def setup_apa7_headers_and_footers(section, doc_info):
     """
     Configura encabezados y pies de página conforme a APA 7ma Edición:
-    - Cornisa (Running head) a la izquierda en mayúsculas sostenidas.
+    - Portada aislada (different_first_page_header_footer = True) sin cornisa ni pie.
+    - Cornisa (Running head) a la izquierda en mayúsculas sostenidas desde la Página 2.
     - Paginación dinámica en la esquina superior derecha (Página X de Y).
+    - Pie de página formal confidencial UTP en páginas interiores.
     """
+    section.different_first_page_header_footer = True
+
+    # 1. Limpiar encabezado y pie de página en la primera página (Portada formal sin cornisa ni paginación)
+    first_h = section.first_page_header
+    first_h.is_linked_to_previous = False
+    for p in first_h.paragraphs:
+        p.text = ""
+
+    first_f = section.first_page_footer
+    first_f.is_linked_to_previous = False
+    for p in first_f.paragraphs:
+        p.text = ""
+
+    # 2. Encabezado a partir de la Página 2
     header = section.header
     header.is_linked_to_previous = False
     hp = header.paragraphs[0]
@@ -655,13 +839,13 @@ def setup_apa7_headers_and_footers(section, doc_info):
 
     bdr_h = parse_xml(r'''
         <w:tcBorders {} >
-            <w:bottom w:val="single" w:sz="4" w:space="0" w:color="E2E8F0"/>
+            <w:bottom w:val="single" w:sz="4" w:space="0" w:color="CBD5E1"/>
         </w:tcBorders>
     '''.format(nsdecls('w')))
     c_hl._tc.get_or_add_tcPr().append(bdr_h)
     c_hr._tc.get_or_add_tcPr().append(parse_xml(r'''
         <w:tcBorders {} >
-            <w:bottom w:val="single" w:sz="4" w:space="0" w:color="E2E8F0"/>
+            <w:bottom w:val="single" w:sz="4" w:space="0" w:color="CBD5E1"/>
         </w:tcBorders>
     '''.format(nsdecls('w'))))
 
@@ -705,6 +889,7 @@ def setup_apa7_headers_and_footers(section, doc_info):
     p_hr._p.append(fld5)
     p_hr._p.append(fld6)
 
+    # 3. Pie de página en páginas interiores
     footer = section.footer
     footer.is_linked_to_previous = False
     fp = footer.paragraphs[0]
@@ -736,7 +921,13 @@ def format_apa7_tables(doc):
 
         first_cell_text = table.rows[0].cells[0].text.strip()
         # Omitir tablas que forman parte de la portada o ficha técnica
-        if first_cell_text in ["UNIVERSIDAD TECNOLÓGICA DEL PERÚ", "PROYECTO:", "CÓDIGO OFICIAL", "Equipo de Ingeniería"]:
+        if (
+            "UNIVERSIDAD TECNOLÓGICA DEL PERÚ" in first_cell_text
+            or "PROYECTO FINAL" in first_cell_text
+            or "CÓDIGO OFICIAL" in first_cell_text
+            or "AUTORES" in first_cell_text
+            or (len(table.rows) == 1 and len(table.columns) == 1)
+        ):
             continue
 
         col_count = len(table.columns)
@@ -933,6 +1124,10 @@ def polish_apa7_document_elements(doc, doc_info):
 
         # Párrafos regulares
         else:
+            # Omitir párrafos especiales de portada si se detectaran
+            if txt in [doc_info.get("title", ""), doc_info.get("subtitle", "")] or "LEOFIT SOLUTIONS" in txt or "Lima, Perú" in txt:
+                continue
+
             if len(p._p.xpath('.//w:drawing')) > 0:
                 p.alignment = WD_ALIGN_PARAGRAPH.CENTER
                 p.paragraph_format.space_before = Pt(6)
@@ -983,8 +1178,8 @@ def main():
             sec.right_margin = Inches(1.0)
 
             setup_apa7_headers_and_footers(sec, doc_info)
-            insert_apa7_title_page(doc, doc_info)
             polish_apa7_document_elements(doc, doc_info)
+            insert_apa7_title_page(doc, doc_info)
             format_apa7_tables(doc)
 
             doc.save(docx_path)
