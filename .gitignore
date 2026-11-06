@@ -200,16 +200,14 @@ tmp_diagrams/
 docs/**/.cache_diagrams/
 
 # Carpetas de consolidacion para subida local a Canvas (no se commitean binarios pesados)
+docs/01_ENTREGA_OFICIAL_APF3/**/00_ENTREGA_OFICIAL_CANVAS/
 docs/99_HISTORICO_ENTREGAS_ANTERIORES/**/00_ENTREGA_OFICIAL_CANVAS/
-docs/01_PROYECTO_FINAL_SEMANA_18/*.zip
-docs/01_PROYECTO_FINAL_SEMANA_18/*.rar
-docs/01_PROYECTO_FINAL_SEMANA_18/*.mp4
+
+# Proyecto Final Semana 18 - reservado en entorno local
+_PROYECTO_FINAL_LOCAL/
+docs/01_PROYECTO_FINAL_SEMANA_18/
 
 # REGLA DE EXCEPCION EXPLICITA (WHITELISTING):
-# Asegurar que las hojas de entrega y anexos tecnicos en Markdown NUNCA se ignoren
-!docs/01_PROYECTO_FINAL_SEMANA_18/*.md
-!docs/01_PROYECTO_FINAL_SEMANA_18/01_ANEXOS_TECNICOS/
-!docs/01_PROYECTO_FINAL_SEMANA_18/01_ANEXOS_TECNICOS/*.md
 !docs/adr/
 !docs/adr/*.md
 

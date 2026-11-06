@@ -12,8 +12,13 @@ import docx
 import pptx
 import openpyxl
 
-SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-ENTREGABLES_DIR = os.path.abspath(os.path.join(SCRIPT_DIR, ".."))
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+PROYECTO_FINAL_DIR = os.path.join(BASE_DIR, "_PROYECTO_FINAL_LOCAL")
+
+if not os.path.exists(PROYECTO_FINAL_DIR):
+    raise FileNotFoundError("_PROYECTO_FINAL_LOCAL/ no encontrado. Ejecutar solo en maquina de desarrollo con los anexos presentes.")
+
+ENTREGABLES_DIR = os.path.join(PROYECTO_FINAL_DIR, "02_ENTREGABLES_UTP")
 
 def validate():
     print("  --- Validando archivos Word (.docx) ---")

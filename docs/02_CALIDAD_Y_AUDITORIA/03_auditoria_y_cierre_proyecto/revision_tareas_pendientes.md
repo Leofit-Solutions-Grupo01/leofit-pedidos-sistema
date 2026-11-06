@@ -13,13 +13,13 @@ El código, las configuraciones y los documentos respaldan al 100% el cierre de 
 * **#15 `test(iso25010)`:** Pruebas automatizadas de Calidad Funcional y Coexistencia ISO/IEC 25010 (194 pruebas aprobadas en 27 suites con 0 fallos).
 * **#16 `test(usability)`:** Pruebas automatizadas de Usabilidad y Facilidad de Aprendizaje (`usability_iso25010.test.ts` aprobado con 9 casos y puntaje SUS de 88.5/100).
 * **#17 `feat(interop)`:** Pruebas de Interoperabilidad y Pasarelas (`integration_external.test.ts` comprobando WhatsApp API, Yape/Plin con HMAC-SHA256 y RENIEC/SUNAT).
-* **#18 `docs(apf3)`:** Informe Oficial APF3 y Manuales de Calidad ISO/IEC 25000 completos en `docs/99_HISTORICO_ENTREGAS_ANTERIORES/APF3/01_DESARROLLO_Y_CALIDAD/` y `docs/02_CALIDAD_Y_AUDITORIA/02_calidad_iso25010_semanas_10_11/`.
+* **#18 `docs(apf3)`:** Informe Oficial APF3 y Manuales de Calidad ISO/IEC 25000 completos en `docs/01_ENTREGA_OFICIAL_APF3/01_DESARROLLO_Y_CALIDAD/` y `docs/02_CALIDAD_Y_AUDITORIA/02_calidad_iso25010_semanas_10_11/`.
 * **#19 `ops(production)`:** Despliegue Cloud v2 (`render.yaml`, GitHub Pages CDN y `docker-compose.yml`).
 
 ### TAREAS DE SUSTENTACIÓN Y CIERRE FINAL (Sprint 5 — 100% Completado)
 * **#20 `docs(final)`: Sustentación Integral del Proyecto Final, Pitch Comercial y Memoria Técnica.**
   * **Evidencias Completadas y Verificadas:**
-    1. **Diapositivas Oficiales:** Disponibles en `docs/99_HISTORICO_ENTREGAS_ANTERIORES/APF3/01_DESARROLLO_Y_CALIDAD/presentacion_sustentacion/` en formatos `APF3_LEOFIT_Presentacion.pdf`, `APF3_LEOFIT_Presentacion.pptx` y versión interactiva web `APF3_LEOFIT_Presentacion.html` / `APF3_LEOFIT_Presentacion.md`.
+    1. **Diapositivas Oficiales:** Disponibles en `docs/01_ENTREGA_OFICIAL_APF3/01_DESARROLLO_Y_CALIDAD/presentacion_sustentacion/` en formatos `APF3_LEOFIT_Presentacion.pdf`, `APF3_LEOFIT_Presentacion.pptx` y versión interactiva web `APF3_LEOFIT_Presentacion.html` / `APF3_LEOFIT_Presentacion.md`.
     2. **Guion Técnico y Pitch Comercial:** Tiempos por expositor y guion de demostración en vivo integrados en las notas de la presentación.
     3. **Manuales de Calidad ISO/IEC 25000:** Disponibles en `docs/02_CALIDAD_Y_AUDITORIA/02_calidad_iso25010_semanas_10_11/` en versión Ejecutiva y Técnica con 6 diagramas accesibles incrustados.
 

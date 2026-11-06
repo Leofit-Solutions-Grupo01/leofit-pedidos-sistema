@@ -189,7 +189,7 @@ La empresa se caracteriza por la innovación en telas tecnológicas (dry-fit, el
 
 El análisis del flujo de trabajo inicial reveló un proceso fragmentado, vulnerable a errores humanos y altamente demandante de tiempo manual. En la Figura 1 se detalla el modelado BPMN del estado AS-IS:
 
-![Figura 1. Diagrama BPMN del Proceso Operativo Actual (AS-IS) de LeoFit](../../../03_ARQUITECTURA_Y_DIAGRAMAS/01_BPMN_AS-IS.png)
+![Figura 1. Diagrama BPMN del Proceso Operativo Actual (AS-IS) de LeoFit](../../03_ARQUITECTURA_Y_DIAGRAMAS/01_BPMN_AS-IS.png)
 *Figura 1. Diagrama BPMN del Proceso Operativo Actual (AS-IS) de LeoFit*
 
 Las principales deficiencias observadas en este flujo incluyen:
@@ -202,7 +202,7 @@ Las principales deficiencias observadas en este flujo incluyen:
 
 El proceso rediseñado TO-BE aprovecha la arquitectura digital de LeoFit para transformar una cadena manual en un flujo continuo, sincronizado y automatizado, tal como se ilustra en la Figura 2:
 
-![Figura 2. Diagrama BPMN del Proceso Optimizado Propuesto (TO-BE) de LeoFit](../../../03_ARQUITECTURA_Y_DIAGRAMAS/01_BPMN_TO-BE.png)
+![Figura 2. Diagrama BPMN del Proceso Optimizado Propuesto (TO-BE) de LeoFit](../../03_ARQUITECTURA_Y_DIAGRAMAS/01_BPMN_TO-BE.png)
 *Figura 2. Diagrama BPMN del Proceso Optimizado Propuesto (TO-BE) de LeoFit*
 
 En el nuevo modelo:
@@ -216,7 +216,7 @@ En el nuevo modelo:
 
 Para alinear la solución tecnológica con la sostenibilidad comercial de la empresa, se estructuró el lienzo Lean Canvas expuesto en la Figura 3:
 
-![Figura 3. Lienzo Lean Canvas del Sistema LeoFit Pedidos](../../../03_ARQUITECTURA_Y_DIAGRAMAS/06_Lean_Canvas.png)
+![Figura 3. Lienzo Lean Canvas del Sistema LeoFit Pedidos](../../03_ARQUITECTURA_Y_DIAGRAMAS/06_Lean_Canvas.png)
 *Figura 3. Lienzo Lean Canvas del Sistema LeoFit Pedidos*
 
 Los elementos clave del modelo de negocio comprenden:
@@ -275,7 +275,7 @@ El desarrollo se condujo bajo el marco de trabajo **Scrum**, adaptado a ciclos d
 
 Para controlar el flujo de desarrollo continuo y evitar la sobrecarga de tareas concurrentes, se operó un tablero Kanban con límites estrictos de Trabajo en Progreso (WIP Limits), como se ilustra en la Figura 4:
 
-![Figura 4. Tablero Kanban de Flujo de Trabajo con Límites WIP](../../../03_ARQUITECTURA_Y_DIAGRAMAS/08_Tablero_Kanban.png)
+![Figura 4. Tablero Kanban de Flujo de Trabajo con Límites WIP](../../03_ARQUITECTURA_Y_DIAGRAMAS/08_Tablero_Kanban.png)
 *Figura 4. Tablero Kanban de Flujo de Trabajo con Límites WIP*
 
 El tablero operó bajo cinco estados estandarizados: *Backlog* (sin límite), *To Do* (límite 8), *In Progress* (límite 4), *Code Review / QA* (límite 3) y *Done* (sujeto a la Definición de Terminado o DoD). Cada incremento de código requirió la aprobación de pruebas automáticas y revisión por pares (*pull request review*) antes de su integración a la rama principal.
@@ -406,14 +406,14 @@ Dado que el personal de LeoFit opera habitualmente de pie en el almacén o atend
 
 En la Figura 5 se detalla el diagrama de flujo de navegación e interacción del sistema:
 
-![Figura 5. Diagrama de Flujo de Navegación e Interacción del Sistema (User Flow)](../../../03_ARQUITECTURA_Y_DIAGRAMAS/10_User_Flow_Navegacion.png)
+![Figura 5. Diagrama de Flujo de Navegación e Interacción del Sistema (User Flow)](../../03_ARQUITECTURA_Y_DIAGRAMAS/10_User_Flow_Navegacion.png)
 *Figura 5. Diagrama de Flujo de Navegación e Interacción del Sistema (User Flow)*
 
 ### 5.2 Prototipado y Wireframes de Baja Fidelidad
 
 La conceptualización inicial de la interfaz se desarrolló mediante bocetos y wireframes de baja fidelidad que validaron la disposición estructural de los componentes antes de escribir código frontend, tal como se muestra en la Figura 6:
 
-![Figura 6. Wireframes de Baja Fidelidad de los Módulos Principales](../../../03_ARQUITECTURA_Y_DIAGRAMAS/09_Wireframes_Baja_Fidelidad.png)
+![Figura 6. Wireframes de Baja Fidelidad de los Módulos Principales](../../03_ARQUITECTURA_Y_DIAGRAMAS/09_Wireframes_Baja_Fidelidad.png)
 *Figura 6. Wireframes de Baja Fidelidad de los Módulos Principales*
 
 ### 5.3 Evaluación Heurística de Jakob Nielsen (10 Heurísticas)
@@ -435,10 +435,10 @@ El diseño final de la PWA fue sometido a una auditoría técnica contra las 10 
 
 Las Figuras 7 y 8 evidencian la materialización del sistema en producción, reflejando el módulo de inicio de sesión y el panel de control operativo:
 
-![Figura 7. Interfaz del Módulo de Autenticación y Control de Acceso (PWA)](../../../02_CALIDAD_Y_AUDITORIA/03_auditoria_y_cierre_proyecto/fig_1_auth.png)
+![Figura 7. Interfaz del Módulo de Autenticación y Control de Acceso (PWA)](../../02_CALIDAD_Y_AUDITORIA/03_auditoria_y_cierre_proyecto/fig_1_auth.png)
 *Figura 7. Interfaz del Módulo de Autenticación y Control de Acceso (PWA)*
 
-![Figura 8. Panel de Control Operativo (Dashboard PWA) en Dispositivo Móvil](../../../02_CALIDAD_Y_AUDITORIA/03_auditoria_y_cierre_proyecto/fig_4_pwa.png)
+![Figura 8. Panel de Control Operativo (Dashboard PWA) en Dispositivo Móvil](../../02_CALIDAD_Y_AUDITORIA/03_auditoria_y_cierre_proyecto/fig_4_pwa.png)
 *Figura 8. Panel de Control Operativo (Dashboard PWA) en Dispositivo Móvil*
 
 ### 5.5 Accesibilidad Universal (WCAG 2.1 Nivel AA/AAA) y Modo Alta Legibilidad
@@ -464,7 +464,7 @@ El sistema LeoFit se diseñó siguiendo los principios de la **Arquitectura Limp
 
 En la Figura 9 se ilustra la arquitectura lógica global de tres capas que gobierna el sistema:
 
-![Figura 9. Arquitectura Lógica del Sistema LeoFit (Presentación, Aplicación y Datos)](../../../03_ARQUITECTURA_Y_DIAGRAMAS/apf3/fig_arquitectura_logica.png)
+![Figura 9. Arquitectura Lógica del Sistema LeoFit (Presentación, Aplicación y Datos)](../../03_ARQUITECTURA_Y_DIAGRAMAS/apf3/fig_arquitectura_logica.png)
 *Figura 9. Arquitectura Lógica del Sistema LeoFit (Presentación, Aplicación y Datos)*
 
 La estructura de capas se organiza de la siguiente manera:
@@ -477,7 +477,7 @@ La estructura de capas se organiza de la siguiente manera:
 
 Para desacoplar el código de negocio del motor de base de datos específico y permitir pruebas automatizadas sin dependencias externas obligatorias, se aplicó el patrón **Repository** complementado por una fábrica abstracta (**RepositoryFactory**), como se representa en la Figura 10:
 
-![Figura 10. Patrón Repository y RepositoryFactory para Desacoplamiento de Persistencia](../../../03_ARQUITECTURA_Y_DIAGRAMAS/apf3/fig_repositorio_factory.png)
+![Figura 10. Patrón Repository y RepositoryFactory para Desacoplamiento de Persistencia](../../03_ARQUITECTURA_Y_DIAGRAMAS/apf3/fig_repositorio_factory.png)
 *Figura 10. Patrón Repository y RepositoryFactory para Desacoplamiento de Persistencia*
 
 La fábrica evalúa dinámicamente la configuración del entorno:
@@ -533,7 +533,7 @@ Cada tabla posee una clave primaria simple o compuesta irreductible, y todas las
 
 En la Figura 11 se presenta el diagrama físico completo de la base de datos:
 
-![Figura 11. Diagrama Físico de Base de Datos Relacional (PostgreSQL 16 - Tablas Transaccionales, Fiscal y Auditoría)](../../../03_ARQUITECTURA_Y_DIAGRAMAS/13_Modelo_Fisico_BD.png)
+![Figura 11. Diagrama Físico de Base de Datos Relacional (PostgreSQL 16 - Tablas Transaccionales, Fiscal y Auditoría)](../../03_ARQUITECTURA_Y_DIAGRAMAS/13_Modelo_Fisico_BD.png)
 *Figura 11. Diagrama Físico de Base de Datos Relacional (PostgreSQL 16 - Tablas Transaccionales, Fiscal y Auditoría)*
 
 ### 7.2 Diccionario de Datos y Estructura de Tablas
@@ -587,7 +587,7 @@ FOR EACH ROW EXECUTE FUNCTION fn_decrement_stock_on_order();
 
 En la Figura 12 se representa la secuencia técnica de ejecución durante la creación de una orden:
 
-![Figura 12. Diagrama de Secuencia de Creación Atómica de Pedido](../../../03_ARQUITECTURA_Y_DIAGRAMAS/apf3/fig_secuencia_pedido.png)
+![Figura 12. Diagrama de Secuencia de Creación Atómica de Pedido](../../03_ARQUITECTURA_Y_DIAGRAMAS/apf3/fig_secuencia_pedido.png)
 *Figura 12. Diagrama de Secuencia de Creación Atómica de Pedido*
 
 El repositorio `PgOrderRepository` opera bajo un bloque transaccional con adquisición pesimista de filas:
@@ -602,7 +602,7 @@ El repositorio `PgOrderRepository` opera bajo un bloque transaccional con adquis
 
 Cada pedido transita por una máquina de estados estrictamente secuencial, gobernada por el tipo `order_status_enum` e ilustrada en la Figura 13:
 
-![Figura 13. Máquina de Estados del Pedido y Transiciones Autorizadas](../../../03_ARQUITECTURA_Y_DIAGRAMAS/apf3/fig_estados_pedido.png)
+![Figura 13. Máquina de Estados del Pedido y Transiciones Autorizadas](../../03_ARQUITECTURA_Y_DIAGRAMAS/apf3/fig_estados_pedido.png)
 *Figura 13. Máquina de Estados del Pedido y Transiciones Autorizadas*
 
 Las transiciones permitidas son:
@@ -618,7 +618,7 @@ Las transiciones permitidas son:
 
 El backend de LeoFit fue implementado con **Node.js 20 LTS** y **Express 4.19**, compilado mediante **TypeScript 5.4**. La arquitectura del servidor prioriza el rendimiento asíncrono no bloqueante, la seguridad en capas, la idempotencia transaccional y la estricta validación de esquemas con **Zod**. En la Figura 14 se detalla la estructura interna de componentes del backend:
 
-![Figura 14. Arquitectura Interna de Capas, Controladores, Casos de Uso y Seguridad de la API Backend v2.0.0](../../../03_ARQUITECTURA_Y_DIAGRAMAS/03_backend.png)
+![Figura 14. Arquitectura Interna de Capas, Controladores, Casos de Uso y Seguridad de la API Backend v2.0.0](../../03_ARQUITECTURA_Y_DIAGRAMAS/03_backend.png)
 *Figura 14. Arquitectura Interna de Capas, Controladores, Casos de Uso y Seguridad de la API Backend v2.0.0*
 
 ### 8.2 Catálogo Exhaustivo de Endpoints RESTful v2.0.0
@@ -693,10 +693,10 @@ La plataforma cuenta con un archivo `manifest.json` completamente configurado co
 
 Las Figuras 15 y 16 muestran las pantallas de administración de pedidos y analítica/rastreo público:
 
-![Figura 15. Módulo de Gestión Centralizada de Pedidos y Cambio de Estados](../../../02_CALIDAD_Y_AUDITORIA/03_auditoria_y_cierre_proyecto/fig_10_crm.png)
+![Figura 15. Módulo de Gestión Centralizada de Pedidos y Cambio de Estados](../../02_CALIDAD_Y_AUDITORIA/03_auditoria_y_cierre_proyecto/fig_10_crm.png)
 *Figura 15. Módulo de Gestión Centralizada de Pedidos y Cambio de Estados*
 
-![Figura 16. Portal Público de Consulta y Analítica Operativa de Pedidos](../../../02_CALIDAD_Y_AUDITORIA/03_auditoria_y_cierre_proyecto/fig_analytics.png)
+![Figura 16. Portal Público de Consulta y Analítica Operativa de Pedidos](../../02_CALIDAD_Y_AUDITORIA/03_auditoria_y_cierre_proyecto/fig_analytics.png)
 *Figura 16. Portal Público de Consulta y Analítica Operativa de Pedidos*
 
 ## Capítulo 10. Seguridad Integral, Criptografía y Control de Acceso
@@ -778,7 +778,7 @@ if (signatureBuffer.length !== expectedBuffer.length ||
 
 El aseguramiento de la calidad se fundamentó en una **Pirámide de Pruebas** equilibrada, priorizando pruebas unitarias rápidas y pruebas de integración de API sobre interfaces simuladas, complementadas con pruebas automatizadas de componentes, coexistencia y usabilidad en el cliente. En la Figura 17 se representa la distribución en niveles de la estrategia:
 
-![Figura 17. Pirámide y Estrategia de Pruebas en Niveles del Sistema LeoFit (194 Pruebas)](../../../03_ARQUITECTURA_Y_DIAGRAMAS/apf3/fig_estrategia_pruebas.png)
+![Figura 17. Pirámide y Estrategia de Pruebas en Niveles del Sistema LeoFit (194 Pruebas)](../../03_ARQUITECTURA_Y_DIAGRAMAS/apf3/fig_estrategia_pruebas.png)
 *Figura 17. Pirámide y Estrategia de Pruebas en Niveles del Sistema LeoFit (194 Pruebas)*
 
 ### 11.2 Batería de Pruebas Automatizadas del Backend (Jest, Supertest y Benchmark ISO)
@@ -828,7 +828,7 @@ En el frontend se implementaron **10 suites de prueba en Vitest** con entorno si
 
 La Figura 18 resume comparativamente el volumen de pruebas exitosas por cada suite en ambas capas:
 
-![Figura 18. Distribución de Casos de Prueba Aprobados por Suite (194 Pruebas: 125 Backend + 69 Frontend)](../../../03_ARQUITECTURA_Y_DIAGRAMAS/apf3/fig_pruebas_por_suite.png)
+![Figura 18. Distribución de Casos de Prueba Aprobados por Suite (194 Pruebas: 125 Backend + 69 Frontend)](../../03_ARQUITECTURA_Y_DIAGRAMAS/apf3/fig_pruebas_por_suite.png)
 *Figura 18. Distribución de Casos de Prueba Aprobados por Suite (194 Pruebas: 125 Backend + 69 Frontend)*
 
 ### 11.4 Balance Global de Pruebas y Cobertura de Código
@@ -844,7 +844,7 @@ El análisis riguroso de cobertura de código en el backend arrojó los siguient
 
 En la Figura 19 se detalla visualmente la cobertura de líneas por módulo:
 
-![Figura 19. Porcentaje de Cobertura de Líneas por Módulo en el Backend](../../../03_ARQUITECTURA_Y_DIAGRAMAS/apf3/fig_cobertura_modulos.png)
+![Figura 19. Porcentaje de Cobertura de Líneas por Módulo en el Backend](../../03_ARQUITECTURA_Y_DIAGRAMAS/apf3/fig_cobertura_modulos.png)
 *Figura 19. Porcentaje de Cobertura de Líneas por Módulo en el Backend*
 
 ## Capítulo 12. Interoperabilidad y Pruebas de Integración con Servicios Externos
@@ -876,7 +876,7 @@ Para optimizar la emisión de rótulos de despacho y comprobantes tributarios el
 
 Conforme a los requerimientos de calidad de software de la norma **ISO/IEC 25010:2023 (§4.2.3.2 - Coexistencia)** y la familia **ISO/IEC 25000 (SQuaRE)** (Figura 20), el equipo diseñó y ejecutó un protocolo experimental reproducible para evaluar la degradación de rendimiento cuando el servicio backend (Node.js 20 / Express), el motor relacional (PostgreSQL 16) y procesos competidores de CPU/I-O coexisten dentro del mismo host compartido y límites de contenedorización (cgroups de 512 MB RAM / 1 vCPU en Render Cloud).
 
-![Figura 20. Arquitectura del Modelo de Calidad ISO/IEC 25000 (SQuaRE) Aplicado a LeoFit](../../../02_CALIDAD_Y_AUDITORIA/02_calidad_iso25010_semanas_10_11/fig_arquitectura_calidad_iso25000.png)
+![Figura 20. Arquitectura del Modelo de Calidad ISO/IEC 25000 (SQuaRE) Aplicado a LeoFit](../../02_CALIDAD_Y_AUDITORIA/02_calidad_iso25010_semanas_10_11/fig_arquitectura_calidad_iso25000.png)
 *Figura 20. Arquitectura del Modelo de Calidad ISO/IEC 25000 (SQuaRE) Aplicado a LeoFit*
 
 El protocolo midió la latencia media de lectura (`GET /api/products`), la latencia de escritura transaccional (`POST /api/orders`), el percentil 95 ($P_{95}$), la tasa de error HTTP y el uso pico de memoria/CPU, contrastando la línea base aislada frente a una carga concurrente de 520 solicitudes ($c=10$ y $c=25$), cuyos resultados se presentan en la Tabla 20 y en las Figuras 21 y 22:
@@ -890,10 +890,10 @@ El protocolo midió la latencia media de lectura (`GET /api/products`), la laten
 | PC-03: Tasa de Errores HTTP | 0.0 % (0/520) | 0.0 % (0/520) | 0.0 % | <= 0.5 % | APROBADA |
 | PC-04: Consumo Pico CPU / RAM | 12% / 92 MB | 90.6% / 191 MB | +78.6% CPU / +99 MB | < 95% / < 450 MB | APROBADA |
 
-![Figura 21. Comparativa de Latencias Medias: Línea Base Aislada vs. Coexistencia bajo Contención](../../../02_CALIDAD_Y_AUDITORIA/02_calidad_iso25010_semanas_10_11/fig_coexistencia_latencias.png)
+![Figura 21. Comparativa de Latencias Medias: Línea Base Aislada vs. Coexistencia bajo Contención](../../02_CALIDAD_Y_AUDITORIA/02_calidad_iso25010_semanas_10_11/fig_coexistencia_latencias.png)
 *Figura 21. Comparativa de Latencias Medias: Línea Base Aislada vs. Coexistencia bajo Contención*
 
-![Figura 22. Distribución de Percentiles P95 y P99 en Escenario de Coexistencia ISO/IEC 25010](../../../02_CALIDAD_Y_AUDITORIA/02_calidad_iso25010_semanas_10_11/fig_coexistencia_p95.png)
+![Figura 22. Distribución de Percentiles P95 y P99 en Escenario de Coexistencia ISO/IEC 25010](../../02_CALIDAD_Y_AUDITORIA/02_calidad_iso25010_semanas_10_11/fig_coexistencia_p95.png)
 *Figura 22. Distribución de Percentiles P95 y P99 en Escenario de Coexistencia ISO/IEC 25010*
 
 Los resultados confirman que la API REST principal mantiene una respuesta óptima bajo contención concurrente con cero errores (0/520 transacciones fallidas) y un techo de consumo de memoria de 191.4 MB, plenamente seguro para el cgroup cloud. La memoria detallada y bitácoras de este ensayo forman parte del entregable formal `INFORME_ISO25010_SEMANAS_10_11_LEOFIT.docx` almacenado en `docs/02_calidad_iso25010_semanas_10_11/`.
@@ -960,7 +960,7 @@ Para alcanzar estos niveles de eficiencia, se implementaron las siguientes técn
 
 El sistema LeoFit se encuentra desplegado y operativo bajo un esquema cloud multi-proveedor diseñado para maximizar la disponibilidad, minimizar los costos operativos y garantizar la seguridad perimetral. En la Figura 23 se detalla la topología:
 
-![Figura 23. Topología de Despliegue en Producción (GitHub Pages + Render Cloud)](../../../03_ARQUITECTURA_Y_DIAGRAMAS/apf3/fig_despliegue.png)
+![Figura 23. Topología de Despliegue en Producción (GitHub Pages + Render Cloud)](../../03_ARQUITECTURA_Y_DIAGRAMAS/apf3/fig_despliegue.png)
 *Figura 23. Topología de Despliegue en Producción (GitHub Pages + Render Cloud)*
 
 La infraestructura productiva se compone de tres piezas fundamentales:
@@ -976,7 +976,7 @@ La infraestructura productiva se compone de tres piezas fundamentales:
 
 El ciclo de vida del código se gestiona a través de flujos de trabajo automatizados en **GitHub Actions**, representados en la Figura 24:
 
-![Figura 24. Flujo de Integración y Despliegue Continuos en GitHub Actions](../../../03_ARQUITECTURA_Y_DIAGRAMAS/apf3/fig_cicd.png)
+![Figura 24. Flujo de Integración y Despliegue Continuos en GitHub Actions](../../03_ARQUITECTURA_Y_DIAGRAMAS/apf3/fig_cicd.png)
 *Figura 24. Flujo de Integración y Despliegue Continuos en GitHub Actions*
 
 Los flujos de trabajo configurados comprenden:
@@ -1031,7 +1031,7 @@ La gobernanza operativa del sistema se rige por compromisos de servicio medibles
 
 Para garantizar la continuidad del negocio ante eventuales fallos catastróficos o corrupción lógica del almacenamiento, se implementó el protocolo automatizado de respaldo y restauración (`scripts/ops/backup_restore_drill.sh`), cuyo flujo de 5 fases se ilustra en la Figura 25:
 
-![Figura 25. Flujo del Simulacro de Recuperación ante Desastres (DRP) y Verificación de Integridad (RTO = 3.2 s, RPO = 0)](../../../02_CALIDAD_Y_AUDITORIA/05_operaciones_respaldo_drp/fig_drp_backup_restore.png)
+![Figura 25. Flujo del Simulacro de Recuperación ante Desastres (DRP) y Verificación de Integridad (RTO = 3.2 s, RPO = 0)](../../02_CALIDAD_Y_AUDITORIA/05_operaciones_respaldo_drp/fig_drp_backup_restore.png)
 *Figura 25. Flujo del Simulacro de Recuperación ante Desastres (DRP) y Verificación de Integridad (RTO = 3.2 s, RPO = 0)*
 
 Los resultados auditados del simulacro de restauración en limpio (`leofit_restore_test`) se detallan en la Tabla 22:
@@ -1051,7 +1051,7 @@ Los resultados auditados del simulacro de restauración en limpio (`leofit_resto
 
 La gestión de riesgos se abordó de manera proactiva desde el inicio del proyecto, catalogando los eventos adversos potenciales en función de su Probabilidad (escala de 1 a 5) e Impacto (escala de 1 a 5). En la Figura 26 se presenta el mapa de calor resultante:
 
-![Figura 26. Matriz de Gestión de Riesgos (5x5) y Mapa de Calor del Proyecto LeoFit](../../../03_ARQUITECTURA_Y_DIAGRAMAS/02_Mapa_Riesgos.png)
+![Figura 26. Matriz de Gestión de Riesgos (5x5) y Mapa de Calor del Proyecto LeoFit](../../03_ARQUITECTURA_Y_DIAGRAMAS/02_Mapa_Riesgos.png)
 *Figura 26. Matriz de Gestión de Riesgos (5x5) y Mapa de Calor del Proyecto LeoFit*
 
 ### 17.2 Catálogo de los 8 Riesgos y Planes de Tratamiento (R1 a R8)
@@ -1091,7 +1091,7 @@ El proyecto LeoFit no surgió como un artefacto monolítico acabado, sino como r
 
 Durante el ciclo de desarrollo se identificaron, catalogaron y remediaron **10 elementos de deuda técnica (`DT-01` a `DT-10`)**, reduciendo el pasivo técnico del sistema al **0%** al cierre del Sprint 4, tal como se visualiza en la Figura 27 y se detalla en la Tabla 24:
 
-![Figura 27. Curva de Reducción de Deuda Técnica y Crecimiento de Pruebas Automatizadas (Sprints 1 al 4)](../../../02_CALIDAD_Y_AUDITORIA/03_auditoria_y_cierre_proyecto/fig_evolucion_deuda_tecnica.png)
+![Figura 27. Curva de Reducción de Deuda Técnica y Crecimiento de Pruebas Automatizadas (Sprints 1 al 4)](../../02_CALIDAD_Y_AUDITORIA/03_auditoria_y_cierre_proyecto/fig_evolucion_deuda_tecnica.png)
 *Figura 27. Curva de Reducción de Deuda Técnica y Crecimiento de Pruebas Automatizadas (Sprints 1 al 4)*
 
 **Tabla 24.** *Matriz de Trazabilidad y Saneamiento de Deuda Técnica (DT-01 a DT-10)*

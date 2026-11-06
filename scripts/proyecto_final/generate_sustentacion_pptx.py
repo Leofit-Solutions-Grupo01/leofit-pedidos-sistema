@@ -14,7 +14,13 @@ from pptx.dml.color import RGBColor
 from pptx.enum.shapes import MSO_SHAPE
 from pptx.enum.text import PP_ALIGN, MSO_ANCHOR
 
-OUT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "02_PPTX"))
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+PROYECTO_FINAL_DIR = os.path.join(BASE_DIR, "_PROYECTO_FINAL_LOCAL")
+
+if not os.path.exists(PROYECTO_FINAL_DIR):
+    raise FileNotFoundError("_PROYECTO_FINAL_LOCAL/ no encontrado. Ejecutar solo en maquina de desarrollo con los anexos presentes.")
+
+OUT_DIR = os.path.abspath(os.path.join(PROYECTO_FINAL_DIR, "02_ENTREGABLES_UTP", "02_PPTX"))
 os.makedirs(OUT_DIR, exist_ok=True)
 OUT_PPTX = os.path.join(OUT_DIR, "03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.pptx")
 
@@ -793,7 +799,7 @@ def create_deck():
     txt(s20, 2.2, 4.0, 8.933, 1.8, 
         "PANEL DE PREGUNTAS Y DEFENSA TECNICA ABIERTO:\n\n"
         "- Repositorio Oficial: github.com/Leofit-Solutions-Grupo01/leofit-pedidos-sistema\n"
-        "- Documentacion de Anexos: docs/01_PROYECTO_FINAL_SEMANA_18/01_ANEXOS_TECNICOS/\n"
+        "- Documentacion de Anexos: _PROYECTO_FINAL_LOCAL/01_ANEXOS_TECNICOS/\n"
         "- Sistema en Vivo: leofit-solutions-grupo01.github.io/leofit-pedidos-sistema/",
         size=13, color=WHITE, align="c")
 

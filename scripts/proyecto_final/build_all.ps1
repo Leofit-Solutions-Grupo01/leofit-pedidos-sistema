@@ -5,8 +5,15 @@
 $ErrorActionPreference = "Stop"
 
 $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
-$baseDir = Resolve-Path "$scriptDir\..\..\..\.."
-$entregablesDir = Resolve-Path "$scriptDir\.."
+$baseDir = Resolve-Path "$scriptDir\..\.."
+$proyectoFinalDir = Join-Path $baseDir "_PROYECTO_FINAL_LOCAL"
+
+if (-not (Test-Path $proyectoFinalDir)) {
+    Write-Host "  [ERROR] _PROYECTO_FINAL_LOCAL/ no encontrado. Ejecutar solo en maquina de desarrollo con los anexos presentes." -ForegroundColor Red
+    exit 1
+}
+
+$entregablesDir = Join-Path $proyectoFinalDir "02_ENTREGABLES_UTP"
 $docxDir = "$entregablesDir\01_DOCX"
 $pptxDir = "$entregablesDir\02_PPTX"
 $xlsxDir = "$entregablesDir\03_XLSX"
@@ -15,6 +22,7 @@ Write-Host "====================================================================
 Write-Host "INICIANDO CADENA DE CONSTRUCCION Y EXPORTACION OFICIAL (SEMANA 18)" -ForegroundColor Cyan
 Write-Host "======================================================================" -ForegroundColor Cyan
 Write-Host "Directorio Base: $baseDir" -ForegroundColor DarkGray
+Write-Host "Proyecto Final Local: $proyectoFinalDir" -ForegroundColor DarkGray
 Write-Host "Entregables UTP: $entregablesDir" -ForegroundColor DarkGray
 Write-Host ""
 

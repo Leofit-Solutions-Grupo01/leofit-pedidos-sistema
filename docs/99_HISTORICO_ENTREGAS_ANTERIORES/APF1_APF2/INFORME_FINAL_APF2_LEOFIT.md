@@ -720,7 +720,7 @@ El modelo físico se compone de **12 tablas normalizadas en BCNF**:
 
 #### Figura 9.1
 *Modelo de Control de Acceso Basado en Roles (RBAC) y Ciclo de Vida de Tokens JWT*  
-![Figura 9.1](../APF3/01_DESARROLLO_Y_CALIDAD/presentacion_sustentacion/assets/security_owasp.png)  
+![Figura 9.1](../../01_ENTREGA_OFICIAL_APF3/01_DESARROLLO_Y_CALIDAD/presentacion_sustentacion/assets/security_owasp.png)  
 *Nota.* Flujo de emisión, verificación y control de privilegios RBAC mediante tokens JWT.
 
 ### 9.c. Cifrado y Trazabilidad

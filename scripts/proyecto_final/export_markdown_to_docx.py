@@ -20,56 +20,62 @@ from docx.enum.table import WD_TABLE_ALIGNMENT
 from docx.oxml import parse_xml, OxmlElement
 from docx.oxml.ns import nsdecls, qn
 
-BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..", ".."))
-OUT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "01_DOCX"))
-CACHE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".cache_diagrams"))
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+PROYECTO_FINAL_DIR = os.path.join(BASE_DIR, "_PROYECTO_FINAL_LOCAL")
+
+if not os.path.exists(PROYECTO_FINAL_DIR):
+    raise FileNotFoundError("_PROYECTO_FINAL_LOCAL/ no encontrado. Ejecutar solo en maquina de desarrollo con los anexos presentes.")
+
+ENTREGABLES_DIR = os.path.join(PROYECTO_FINAL_DIR, "02_ENTREGABLES_UTP")
+OUT_DIR = os.path.abspath(os.path.join(ENTREGABLES_DIR, "01_DOCX"))
+CACHE_DIR = os.path.abspath(os.path.join(ENTREGABLES_DIR, ".cache_diagrams"))
 
 os.makedirs(OUT_DIR, exist_ok=True)
 os.makedirs(CACHE_DIR, exist_ok=True)
 
 DOCS_TO_EXPORT = [
     {
-        "src": os.path.join(BASE_DIR, "docs", "01_PROYECTO_FINAL_SEMANA_18", "00_HOJA_DE_ENTREGA_Y_ENLACES_PROYECTO_FINAL.md"),
+        "src": os.path.join(PROYECTO_FINAL_DIR, "00_HOJA_DE_ENTREGA_Y_ENLACES_PROYECTO_FINAL.md"),
         "dest": os.path.join(OUT_DIR, "00_HOJA_DE_ENTREGA_Y_ENLACES_PROYECTO_FINAL.docx"),
         "title": "HOJA DE ENTREGA Y ENLACES OFICIALES - PROYECTO FINAL"
     },
     {
-        "src": os.path.join(BASE_DIR, "docs", "01_PROYECTO_FINAL_SEMANA_18", "01_ANEXOS_TECNICOS", "01_ADR-001_ELECCION_RENDER_NEON_VS_AWS.md"),
+        "src": os.path.join(PROYECTO_FINAL_DIR, "01_ANEXOS_TECNICOS", "01_ADR-001_ELECCION_RENDER_NEON_VS_AWS.md"),
         "dest": os.path.join(OUT_DIR, "01_ADR-001_ELECCION_RENDER_NEON_VS_AWS.docx"),
         "title": "ADR-001: ELECCIÓN DE RENDER Y NEON VS AWS"
     },
     {
-        "src": os.path.join(BASE_DIR, "docs", "01_PROYECTO_FINAL_SEMANA_18", "01_ANEXOS_TECNICOS", "02_ADR-002_ARQUITECTURA_OBJETIVO_AWS_Y_COMPLEMENTOS.md"),
+        "src": os.path.join(PROYECTO_FINAL_DIR, "01_ANEXOS_TECNICOS", "02_ADR-002_ARQUITECTURA_OBJETIVO_AWS_Y_COMPLEMENTOS.md"),
         "dest": os.path.join(OUT_DIR, "02_ADR-002_ARQUITECTURA_OBJETIVO_AWS_Y_COMPLEMENTOS.docx"),
         "title": "ADR-002: ARQUITECTURA OBJETIVO AWS Y COMPLEMENTOS"
     },
     {
-        "src": os.path.join(BASE_DIR, "docs", "01_PROYECTO_FINAL_SEMANA_18", "01_ANEXOS_TECNICOS", "03_CUMPLIMIENTO_SUNAT_CPE.md"),
+        "src": os.path.join(PROYECTO_FINAL_DIR, "01_ANEXOS_TECNICOS", "03_CUMPLIMIENTO_SUNAT_CPE.md"),
         "dest": os.path.join(OUT_DIR, "03_CUMPLIMIENTO_SUNAT_CPE.docx"),
         "title": "CUMPLIMIENTO NORMATIVO SUNAT - COMPROBANTES DE PAGO"
     },
     {
-        "src": os.path.join(BASE_DIR, "docs", "01_PROYECTO_FINAL_SEMANA_18", "01_ANEXOS_TECNICOS", "04_INTEGRACION_PAGOS_SANDBOX_VS_PRODUCCION.md"),
+        "src": os.path.join(PROYECTO_FINAL_DIR, "01_ANEXOS_TECNICOS", "04_INTEGRACION_PAGOS_SANDBOX_VS_PRODUCCION.md"),
         "dest": os.path.join(OUT_DIR, "04_INTEGRACION_PAGOS_SANDBOX_VS_PRODUCCION.docx"),
         "title": "INTEGRACIÓN DE PAGOS: SANDBOX FRENTE A PRODUCCIÓN"
     },
     {
-        "src": os.path.join(BASE_DIR, "docs", "01_PROYECTO_FINAL_SEMANA_18", "01_ANEXOS_TECNICOS", "05_ARQUITECTURA_REPOSITORIO_Y_ESTANDARES.md"),
+        "src": os.path.join(PROYECTO_FINAL_DIR, "01_ANEXOS_TECNICOS", "05_ARQUITECTURA_REPOSITORIO_Y_ESTANDARES.md"),
         "dest": os.path.join(OUT_DIR, "05_ARQUITECTURA_REPOSITORIO_Y_ESTANDARES.docx"),
         "title": "ARQUITECTURA DEL REPOSITORIO Y ESTÁNDARES"
     },
     {
-        "src": os.path.join(BASE_DIR, "docs", "01_PROYECTO_FINAL_SEMANA_18", "01_ANEXOS_TECNICOS", "06_MATRIZ_TRAZABILIDAD_JURADO.md"),
+        "src": os.path.join(PROYECTO_FINAL_DIR, "01_ANEXOS_TECNICOS", "06_MATRIZ_TRAZABILIDAD_JURADO.md"),
         "dest": os.path.join(OUT_DIR, "06_MATRIZ_TRAZABILIDAD_JURADO.docx"),
         "title": "MATRIZ DE TRAZABILIDAD Y RESPUESTAS ANTE EL JURADO"
     },
     {
-        "src": os.path.join(BASE_DIR, "docs", "01_PROYECTO_FINAL_SEMANA_18", "01_ANEXOS_TECNICOS", "README.md"),
+        "src": os.path.join(PROYECTO_FINAL_DIR, "01_ANEXOS_TECNICOS", "README.md"),
         "dest": os.path.join(OUT_DIR, "COMPENDIO_ANEXOS_TECNICOS_LEOFIT.docx"),
         "title": "COMPENDIO GENERAL DE ANEXOS TÉCNICOS LEOFIT"
     },
     {
-        "src": os.path.join(BASE_DIR, "docs", "01_PROYECTO_FINAL_SEMANA_18", "03_AUDITORIA_READONLY", "00_INVENTARIO_REAL.md"),
+        "src": os.path.join(PROYECTO_FINAL_DIR, "03_AUDITORIA_READONLY", "00_INVENTARIO_REAL.md"),
         "dest": os.path.join(OUT_DIR, "AUDITORIA_INVENTARIO_REAL_CODIGO.docx"),
         "title": "AUDITORÍA TÉCNICA E INVENTARIO REAL DEL CÓDIGO"
     }

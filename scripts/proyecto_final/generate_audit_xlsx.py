@@ -12,7 +12,13 @@ import openpyxl
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 from openpyxl.utils import get_column_letter
 
-OUT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "03_XLSX"))
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+PROYECTO_FINAL_DIR = os.path.join(BASE_DIR, "_PROYECTO_FINAL_LOCAL")
+
+if not os.path.exists(PROYECTO_FINAL_DIR):
+    raise FileNotFoundError("_PROYECTO_FINAL_LOCAL/ no encontrado. Ejecutar solo en maquina de desarrollo con los anexos presentes.")
+
+OUT_DIR = os.path.abspath(os.path.join(PROYECTO_FINAL_DIR, "02_ENTREGABLES_UTP", "03_XLSX"))
 os.makedirs(OUT_DIR, exist_ok=True)
 OUT_XLSX = os.path.join(OUT_DIR, "04_PLAN_AUDITORIA_Y_TRAZABILIDAD_PROYECTO_FINAL.xlsx")
 
