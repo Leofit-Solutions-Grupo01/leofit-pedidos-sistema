@@ -197,6 +197,7 @@ docs/**/grabaciones/
 # Archivos de exportacion temporal y renderizado de diagramas de sustentacion
 tmp_mermaid/
 tmp_diagrams/
+docs/**/.cache_diagrams/
 
 # Carpetas de consolidacion para subida local a Canvas (no se commitean binarios pesados)
 docs/00_ENTREGA_OFICIAL_DOCENTE_CANVAS_APF3/
