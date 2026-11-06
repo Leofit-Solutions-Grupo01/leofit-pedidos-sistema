@@ -1,16 +1,30 @@
 # -*- coding: utf-8 -*-
 """
 @file export_markdown_to_docx.py
-@description Compilador Maestro de Alta Estética y Formalidad Ejecutiva (Nivel Consultoría Big 4 / Tesis de Grado):
-             1. Pre-renderiza diagramas Mermaid a PNG en alta resolución (04_IMAGENES_DIAGRAMAS/).
-             2. Procesa Markdown eliminando duplicados de encabezados y estructurando la jerarquía.
-             3. Inserta Portada de Lujo Institucional UTP dedicada en Página 1.
-             4. Inserta Ficha Técnica de Control Documental al inicio de la Página 2 (justo tras el salto de página).
-             5. Promueve secciones a Heading 1 con barra azul vertical (#1E40AF) y fondo sutil (#F8FAFC).
-             6. Aplica el Algoritmo de Ancho Proporcional Inteligente a todas las tablas (fijando w:tblGrid,
-                w:tblLayout="fixed", padding generoso de 6pt/8pt y filas alternadas).
-             7. Enmarca diagramas en tarjetas arquitectónicas ejecutivas con membrete y pie explicativo.
-             8. Configura encabezados y pies dinámicos diferenciados (Página X de Y).
+@description Compilador Maestro bajo Estándar Oficial APA 7ma Edición (American Psychological Association):
+             1. Resuelve e inserta los diagramas arquitectónicos pre-renderizados en alta resolución (04_IMAGENES_DIAGRAMAS/).
+             2. Aplica formato estricto APA 7 para Figuras:
+                - "Figura X" en Negrita (arriba a la izquierda).
+                - Título de la figura en Cursiva (Title Case).
+                - Imagen centrada y nítida (escala 2x).
+                - "Nota." descriptiva y detallada al pie con contexto técnico objetivo y fuentes.
+             3. Aplica formato estricto APA 7 para Tablas:
+                - "Tabla X" en Negrita (arriba a la izquierda).
+                - Título de la tabla en Cursiva (Title Case).
+                - CERO bordes verticales (regla estricta APA 7).
+                - Bordes horizontales superior, divisor de cabecera e inferior (1 pt #0F172A).
+                - Anchos proporcionales calculados inteligentemente (fijados con w:tblLayout="fixed" y w:tblGrid).
+                - "Nota." descriptiva y detallada al pie de la tabla.
+             4. Portada Académica y Profesional APA 7 en Página 1:
+                - Título del trabajo en Negrita, subtítulo, lista completa de autores (Grupo 01),
+                  afiliación institucional UTP, asignatura, docente asesor y fecha.
+             5. Ficha Técnica de Control Documental en la cabecera de la Página 2.
+             6. Jerarquía de Títulos APA 7:
+                - Nivel 1: Centrado, Negrita, Mayúsculas y Minúsculas.
+                - Nivel 2: Alineado a la izquierda, Negrita.
+                - Nivel 3: Alineado a la izquierda, Negrita y Cursiva.
+             7. Tipografía oficial: Calibri 11 pt (cuerpo) y márgenes de 1 pulgada (2.54 cm).
+             8. Encabezado con Cornisa (Running Head) y numeración dinámica (Página X de Y).
 @project LeoFit Pedidos Sistema - Sustentación Proyecto Final (Semana 18)
 @author Grupo 01 - UTP (Lead Architect: Lady Loayza)
 """
@@ -51,160 +65,222 @@ if os.path.exists(CSS_FILE):
     with open(CSS_FILE, "r", encoding="utf-8") as f:
         CSS_CONTENT = f.read()
 
+# Metadatos descriptivos de diagramas para formato APA 7
+DIAGRAM_METADATA = {
+    "01_ADR-001_ELECCION_RENDER_NEON_VS_AWS": [
+        {
+            "title": "Árbol de Decisión Tecnológica para la Infraestructura de Despliegue",
+            "note": "Diagrama de flujo de decisión arquitectónica que contrasta los requerimientos de la fase MVP y sustentación frente a producción corporativa, evaluando umbrales cuantitativos de presupuesto, concurrencia (RPS/DAU) y requisitos de cumplimiento normativo (ADR-001)."
+        },
+        {
+            "title": "Diagrama de Transición de Estados entre la Fase MVP y la Arquitectura AWS Plena",
+            "note": "Modelo de máquina de estados que especifica los tres estadios de infraestructura de LeoFit: Estado 1 (PaaS Render + Neon), Estado 2 (Híbrido con base de datos en VPC AWS) y Estado 3 (Cluster ECS Fargate Multi-AZ con Aurora Serverless v2 y Redis)."
+        }
+    ],
+    "02_ADR-002_ARQUITECTURA_OBJETIVO_AWS_Y_COMPLEMENTOS": [
+        {
+            "title": "Arquitectura Objetivo Empresarial en Amazon Web Services (AWS)",
+            "note": "Topología de alta disponibilidad en AWS que integra CloudFront CDN, AWS WAF, Application Load Balancer Multi-AZ, clúster ECS Fargate con contenedores Docker, Amazon Aurora Serverless v2 PostgreSQL, ElastiCache Redis y buckets S3 privados."
+        },
+        {
+            "title": "Topología de Red y Segmentación de Seguridad Multi-AZ en AWS",
+            "note": "Estructura de aislamiento de red en Virtual Private Cloud (VPC) distribuida en zonas de disponibilidad us-east-1a y us-east-1b, con subredes públicas, privadas de aplicación y aisladas de datos, orquestadas mediante Security Groups y NAT Gateways."
+        }
+    ],
+    "03_CUMPLIMIENTO_SUNAT_CPE": [
+        {
+            "title": "Flujo Operativo de Emisión, Firma Digital y Validación de CPE ante SUNAT",
+            "note": "Diagrama de secuencia del proceso de facturación electrónica conforme al estándar UBL 2.1: generación del XML, firma digital con certificado X.509, envío al Operador de Servicios Electrónicos (OSE) o SUNAT, recepción síncrona del CDR y contingencia fiscal."
+        },
+        {
+            "title": "Diagrama de Estados del Ciclo de Vida del Comprobante de Pago Electrónico",
+            "note": "Transición de estados del documento fiscal desde su generación inicial en estado Borrador, pasando por Firmado, Emitido, Aceptado por SUNAT, Rechazado o derivado a Contingencia Offline con almacenamiento en cola resiliente."
+        }
+    ],
+    "04_INTEGRACION_PAGOS_SANDBOX_VS_PRODUCCION": [
+        {
+            "title": "Flujo de Tokenización de Tarjetas y Procesamiento Seguro PCI-DSS",
+            "note": "Secuencia de interacción con las pasarelas de pago (IziPay / Culqi) mediante tokenización en el cliente. Garantiza cumplimiento PCI-DSS Nivel 1 al evitar que los datos sensibles del titular de tarjeta toquen los servidores backend de LeoFit."
+        },
+        {
+            "title": "Matriz de Transición y Segregación entre Ambientes Sandbox y Producción",
+            "note": "Arquitectura de alternancia de credenciales criptográficas, endpoints de pasarela, certificados SSL y webhooks mediante variables de entorno aisladas para desarrollo, homologación académica y producción comercial."
+        }
+    ],
+    "05_ARQUITECTURA_REPOSITORIO_Y_ESTANDARES": [
+        {
+            "title": "Diagrama de Contenedores y Capas Limpias (Clean Architecture) del Sistema LeoFit",
+            "note": "Modelo arquitectónico de arquitectura por capas que delimita el Frontend PWA (React 19 / Vite), la API Gateway / REST Backend (Node.js / Express), la capa de dominio con validación Zod, y el motor relacional PostgreSQL 16 con pool de conexiones transaccionales."
+        },
+        {
+            "title": "Flujo de Pipeline de Integración y Despliegue Continuo (CI/CD)",
+            "note": "Automatización del ciclo de vida del software con GitHub Actions: verificación de tipado TypeScript, ejecución de 190 pruebas unitarias/integración (Jest + Vitest), escaneo de seguridad OWASP y despliegue automatizado a Render y GitHub Pages."
+        }
+    ]
+}
+
 DOCUMENTS = [
     {
         "id": "ENT-OFIC-001",
-        "title": "HOJA OFICIAL DE ENTREGA ACADÉMICA Y ENLACES DEL PROYECTO FINAL",
+        "title": "Hoja Oficial de Entrega Académica y Enlaces del Proyecto Final",
         "subtitle": "Sustentación Oficial y Auditoría Técnica de Arquitectura (Semana 18)",
         "src": os.path.join(PROYECTO_FINAL_DIR, "00_HOJA_DE_ENTREGA_Y_ENLACES_PROYECTO_FINAL.md"),
         "html_dest": os.path.join(HTML_DIR, "00_HOJA_DE_ENTREGA_Y_ENLACES_PROYECTO_FINAL.html"),
         "docx_dest": os.path.join(DOCX_DIR, "00_HOJA_DE_ENTREGA_Y_ENLACES_PROYECTO_FINAL.docx"),
         "category": "ENTREGABLE OFICIAL DE SUSTENTACIÓN",
         "version": "v2.4.0",
-        "date": "Noviembre 2026",
-        "doc_type": "Hoja de Entrega y Enlaces Oficiales"
+        "date": "Noviembre de 2026",
+        "doc_type": "Hoja de Entrega y Enlaces Oficiales",
+        "running_head": "LEOFIT SOLUTIONS: HOJA OFICIAL DE ENTREGA SEMANA 18"
     },
     {
         "id": "ADR-001",
-        "title": "ADR-001: ELECCIÓN DE RENDER + NEON POSTGRESQL FRENTE A AWS",
+        "title": "ADR-001: Elección de Render + Neon PostgreSQL frente a Arquitectura AWS",
         "subtitle": "Registro de Decisión Arquitectónica para Etapa de Validación MVP y Sustentación",
         "src": os.path.join(PROYECTO_FINAL_DIR, "01_ANEXOS_TECNICOS", "01_ADR-001_ELECCION_RENDER_NEON_VS_AWS.md"),
         "html_dest": os.path.join(HTML_DIR, "01_ADR-001_ELECCION_RENDER_NEON_VS_AWS.html"),
         "docx_dest": os.path.join(DOCX_DIR, "01_ADR-001_ELECCION_RENDER_NEON_VS_AWS.docx"),
         "category": "ARQUITECTURA DE SOFTWARE (ADR)",
         "version": "v2.4.0",
-        "date": "Noviembre 2026",
-        "doc_type": "Architecture Decision Record (ADR)"
+        "date": "Noviembre de 2026",
+        "doc_type": "Architecture Decision Record (ADR)",
+        "running_head": "LEOFIT SOLUTIONS: ADR-001 RENDER Y NEON VS AWS"
     },
     {
         "id": "ADR-002",
-        "title": "ADR-002: ARQUITECTURA OBJETIVO NATIVA AWS Y COMPLEMENTOS EMPRESARIALES",
+        "title": "ADR-002: Arquitectura Objetivo Nativa AWS y Complementos Empresariales",
         "subtitle": "Diseño de Alta Disponibilidad, Escalabilidad Horizontal y Contingencia Operativa",
         "src": os.path.join(PROYECTO_FINAL_DIR, "01_ANEXOS_TECNICOS", "02_ADR-002_ARQUITECTURA_OBJETIVO_AWS_Y_COMPLEMENTOS.md"),
         "html_dest": os.path.join(HTML_DIR, "02_ADR-002_ARQUITECTURA_OBJETIVO_AWS_Y_COMPLEMENTOS.html"),
         "docx_dest": os.path.join(DOCX_DIR, "02_ADR-002_ARQUITECTURA_OBJETIVO_AWS_Y_COMPLEMENTOS.docx"),
         "category": "ARQUITECTURA DE SOFTWARE (ADR)",
         "version": "v2.4.0",
-        "date": "Noviembre 2026",
-        "doc_type": "Architecture Decision Record (ADR)"
+        "date": "Noviembre de 2026",
+        "doc_type": "Architecture Decision Record (ADR)",
+        "running_head": "LEOFIT SOLUTIONS: ADR-002 ARQUITECTURA OBJETIVO AWS"
     },
     {
         "id": "DOC-SUNAT-001",
-        "title": "ANEXO 03: CUMPLIMIENTO NORMATIVO SUNAT Y COMPROBANTES DE PAGO (CPE)",
+        "title": "Anexo 03: Cumplimiento Normativo SUNAT y Comprobantes de Pago Electrónicos (CPE)",
         "subtitle": "Estándar UBL 2.1, Flujo de Facturación Electrónica, PSE/OSE y Contingencia Fiscal",
         "src": os.path.join(PROYECTO_FINAL_DIR, "01_ANEXOS_TECNICOS", "03_CUMPLIMIENTO_SUNAT_CPE.md"),
         "html_dest": os.path.join(HTML_DIR, "03_CUMPLIMIENTO_SUNAT_CPE.html"),
         "docx_dest": os.path.join(DOCX_DIR, "03_CUMPLIMIENTO_SUNAT_CPE.docx"),
         "category": "CUMPLIMIENTO NORMATIVO Y TRIBUTARIO",
         "version": "v2.4.0",
-        "date": "Noviembre 2026",
-        "doc_type": "Especificación Técnica Normativa"
+        "date": "Noviembre de 2026",
+        "doc_type": "Especificación Técnica Normativa",
+        "running_head": "LEOFIT SOLUTIONS: CUMPLIMIENTO SUNAT CPE UBL 2.1"
     },
     {
         "id": "DOC-PAY-001",
-        "title": "ANEXO 04: INTEGRACIÓN DE PASARELA DE PAGOS Y CUMPLIMIENTO PCI-DSS",
+        "title": "Anexo 04: Integración de Pasarela de Pagos y Cumplimiento PCI-DSS",
         "subtitle": "Arquitectura de Tokenización Segura, Sandbox y Transición a Producción",
         "src": os.path.join(PROYECTO_FINAL_DIR, "01_ANEXOS_TECNICOS", "04_INTEGRACION_PAGOS_SANDBOX_VS_PRODUCCION.md"),
         "html_dest": os.path.join(HTML_DIR, "04_INTEGRACION_PAGOS_SANDBOX_VS_PRODUCCION.html"),
         "docx_dest": os.path.join(DOCX_DIR, "04_INTEGRACION_PAGOS_SANDBOX_VS_PRODUCCION.docx"),
         "category": "SEGURIDAD FINANCIERA Y PAGOS",
         "version": "v2.4.0",
-        "date": "Noviembre 2026",
-        "doc_type": "Especificación de Integración Financiera"
+        "date": "Noviembre de 2026",
+        "doc_type": "Especificación de Integración Financiera",
+        "running_head": "LEOFIT SOLUTIONS: PASARELA DE PAGOS Y PCI-DSS"
     },
     {
         "id": "DOC-ARCH-001",
-        "title": "ANEXO 05: ARQUITECTURA DEL REPOSITORIO, PATRONES Y ESTÁNDARES DE CÓDIGO",
+        "title": "Anexo 05: Arquitectura del Repositorio, Patrones y Estándares de Código",
         "subtitle": "Estructura Modular Clean Architecture, Convenciones TypeScript y Flujo CI/CD",
         "src": os.path.join(PROYECTO_FINAL_DIR, "01_ANEXOS_TECNICOS", "05_ARQUITECTURA_REPOSITORIO_Y_ESTANDARES.md"),
         "html_dest": os.path.join(HTML_DIR, "05_ARQUITECTURA_REPOSITORIO_Y_ESTANDARES.html"),
         "docx_dest": os.path.join(DOCX_DIR, "05_ARQUITECTURA_REPOSITORIO_Y_ESTANDARES.docx"),
         "category": "ESTÁNDARES DE INGENIERÍA",
         "version": "v2.4.0",
-        "date": "Noviembre 2026",
-        "doc_type": "Guía Oficial de Arquitectura y Estándares"
+        "date": "Noviembre de 2026",
+        "doc_type": "Guía Oficial de Arquitectura y Estándares",
+        "running_head": "LEOFIT SOLUTIONS: ARQUITECTURA Y ESTÁNDARES"
     },
     {
         "id": "DOC-TRAC-001",
-        "title": "ANEXO 06: MATRIZ DE TRAZABILIDAD ACADÉMICA Y RÚBRICA DE EVALUACIÓN",
+        "title": "Anexo 06: Matriz de Trazabilidad Académica y Rúbrica de Evaluación",
         "subtitle": "Mapeo Integral de Criterios del Jurado contra Evidencias Reales de Código",
         "src": os.path.join(PROYECTO_FINAL_DIR, "01_ANEXOS_TECNICOS", "06_MATRIZ_TRAZABILIDAD_JURADO.md"),
         "html_dest": os.path.join(HTML_DIR, "06_MATRIZ_TRAZABILIDAD_JURADO.html"),
         "docx_dest": os.path.join(DOCX_DIR, "06_MATRIZ_TRAZABILIDAD_JURADO.docx"),
         "category": "TRAZABILIDAD Y EVALUACIÓN",
         "version": "v2.4.0",
-        "date": "Noviembre 2026",
-        "doc_type": "Matriz de Trazabilidad Jurado UTP"
+        "date": "Noviembre de 2026",
+        "doc_type": "Matriz de Trazabilidad Jurado UTP",
+        "running_head": "LEOFIT SOLUTIONS: MATRIZ DE TRAZABILIDAD UTP"
     },
     {
         "id": "DOC-COMP-001",
-        "title": "COMPENDIO GENERAL DE ANEXOS TÉCNICOS Y ARQUITECTURA OFICIAL",
-        "subtitle": "Índice Maestro de Especificaciones de Ingeniería - Proyecto LeoFit",
+        "title": "Compendio General de Anexos Técnicos y Arquitectura Oficial",
+        "subtitle": "Índice Maestro de Especificaciones de Ingeniería — Proyecto LeoFit",
         "src": os.path.join(PROYECTO_FINAL_DIR, "01_ANEXOS_TECNICOS", "README.md"),
         "html_dest": os.path.join(HTML_DIR, "COMPENDIO_ANEXOS_TECNICOS_LEOFIT.html"),
         "docx_dest": os.path.join(DOCX_DIR, "COMPENDIO_ANEXOS_TECNICOS_LEOFIT.docx"),
         "category": "COMPENDIO MAESTRO",
         "version": "v2.4.0",
-        "date": "Noviembre 2026",
-        "doc_type": "Compendio Ejecutivo de Ingeniería"
+        "date": "Noviembre de 2026",
+        "doc_type": "Compendio Ejecutivo de Ingeniería",
+        "running_head": "LEOFIT SOLUTIONS: COMPENDIO GENERAL DE ANEXOS"
     },
     {
         "id": "AUD-REAL-001",
-        "title": "INVENTARIO REAL DEL CÓDIGO FUENTE Y AUDITORÍA DE ARQUITECTURA",
+        "title": "Inventario Real del Código Fuente y Auditoría de Arquitectura",
         "subtitle": "Auditoría Forense de Archivos, Rutas y Métricas de Calidad ISO 25010",
         "src": os.path.join(PROYECTO_FINAL_DIR, "03_AUDITORIA_READONLY", "00_INVENTARIO_REAL.md"),
         "html_dest": os.path.join(HTML_DIR, "AUDITORIA_INVENTARIO_REAL_CODIGO.html"),
         "docx_dest": os.path.join(DOCX_DIR, "AUDITORIA_INVENTARIO_REAL_CODIGO.docx"),
         "category": "AUDITORÍA FORENSE DE SOFTWARE",
         "version": "v2.4.0",
-        "date": "Noviembre 2026",
-        "doc_type": "Reporte de Auditoría Forense"
+        "date": "Noviembre de 2026",
+        "doc_type": "Reporte de Auditoría Forense",
+        "running_head": "LEOFIT SOLUTIONS: AUDITORÍA REAL DE CÓDIGO"
     }
 ]
 
-def render_mermaid_diagram(code_text, doc_id, index):
+def find_diagram_png(src_path, doc_id, index, code_text):
     """
-    Renderiza un bloque Mermaid a PNG en alta resolución (escala 2x, fondo blanco).
+    Busca el archivo PNG pre-renderizado del diagrama probando ambas convenciones de nombres.
     """
-    clean_code = code_text.strip()
-    h = hashlib.md5(clean_code.encode("utf-8")).hexdigest()[:8]
-    png_filename = f"{doc_id}_diag_{index+1}_{h}.png"
-    png_path = os.path.join(DIAG_DIR, png_filename)
+    base_name = os.path.splitext(os.path.basename(src_path))[0]
+    h = hashlib.md5(code_text.strip().encode("utf-8")).hexdigest()[:8]
 
-    if os.path.exists(png_path) and os.path.getsize(png_path) > 1000:
-        return png_path
+    candidate1 = os.path.join(DIAG_DIR, f"{base_name}_diag_{index+1}_{h}.png")
+    if os.path.exists(candidate1) and os.path.getsize(candidate1) > 1000:
+        return candidate1
 
-    temp_mmd = os.path.join(DIAG_DIR, f"temp_{doc_id}_{index}.mmd")
-    with open(temp_mmd, "w", encoding="utf-8") as tf:
-        tf.write(clean_code)
+    candidate2 = os.path.join(DIAG_DIR, f"{doc_id}_diag_{index+1}_{h}.png")
+    if os.path.exists(candidate2) and os.path.getsize(candidate2) > 1000:
+        return candidate2
 
-    cmd = ["mmdc.cmd", "-i", temp_mmd, "-o", png_path, "-b", "white", "-s", "2"]
-    try:
-        res = subprocess.run(cmd, capture_output=True, text=True, timeout=35)
-        if os.path.exists(temp_mmd):
-            os.remove(temp_mmd)
-        if res.returncode == 0 and os.path.exists(png_path):
-            return png_path
-    except Exception:
-        if os.path.exists(temp_mmd):
-            os.remove(temp_mmd)
+    for f in os.listdir(DIAG_DIR):
+        if (f.startswith(f"{base_name}_diag_{index+1}_") or f.startswith(f"{doc_id}_diag_{index+1}_")) and f.endswith(".png"):
+            fp = os.path.join(DIAG_DIR, f)
+            if os.path.getsize(fp) > 1000:
+                return fp
+
     return None
 
-def clean_and_restructure_markdown(src_path, doc_info):
+def preprocess_markdown_apa7(src_path, doc_info):
     """
-    Preprocesa el Markdown fuente:
-    1. Reemplaza bloques Mermaid por imágenes PNG vectorizadas con marco formal.
-    2. Elimina el encabezado principal repetido (título `# ...` y metadatos sueltos iniciales)
-       ya que estos vivirán en la Portada (Pág 1) y en la Ficha Técnica (Pág 2).
-    3. Promueve los títulos de sección (`## 1. ...` -> `# 1. ...`) para que Pandoc
-       los interprete como Heading 1 principales.
+    Preprocesa el Markdown para dar cumplimiento estricto a las Normas APA 7ma Edición:
+    1. Reemplaza bloques Mermaid por la estructura formal APA 7:
+       - **Figura X**
+       - *Título de la Figura*
+       - Imagen centrada
+       - *Nota.* Explicación técnica objetiva y detallada
+    2. Elimina títulos redundantes al inicio del cuerpo para respetar la Portada APA 7.
+    3. Normaliza las secciones a Heading 1 (# 1.) y subsecciones a Heading 2 (## 1.1).
     """
     with open(src_path, "r", encoding="utf-8") as f:
         content = f.read()
 
     doc_id = doc_info["id"]
+    base_name = os.path.splitext(os.path.basename(src_path))[0]
+    diag_list = DIAGRAM_METADATA.get(base_name, [])
 
-    # 1. Reemplazo de Mermaid por PNG con pie formal
+    # 1. Sustitución de bloques Mermaid con estructura formal APA 7
     blocks = list(re.finditer(r"```mermaid(.*?)```", content, re.DOTALL))
     if blocks:
         new_content = ""
@@ -212,44 +288,48 @@ def clean_and_restructure_markdown(src_path, doc_info):
         for idx, match in enumerate(blocks):
             start, end = match.span()
             new_content += content[last_end:start]
-            mermaid_code = match.group(1)
-            png_path = render_mermaid_diagram(mermaid_code, doc_id, idx)
+            code_text = match.group(1)
+            png_path = find_diagram_png(src_path, doc_id, idx, code_text)
+
+            meta = diag_list[idx] if idx < len(diag_list) else {
+                "title": f"Diagrama Arquitectónico del Módulo {doc_id}",
+                "note": f"Diagrama técnico oficial del sistema LeoFit Solutions conforme al entregable {doc_id} (2026)."
+            }
 
             if png_path and os.path.exists(png_path):
                 norm_png = png_path.replace("\\", "/")
-                card_markup = (
+                apa_figure_block = (
                     f"\n\n"
-                    f"**DIAGRAMA ARQUITECTÓNICO OFICIAL | FIGURA {idx+1}**\n\n"
-                    f"![Figura {idx+1}: Diagrama Arquitectónico Oficial]({norm_png})\n\n"
-                    f"*Figura {idx+1}: Especificación visual y flujo de componentes técnicos del sistema LeoFit ({doc_id}).*\n\n"
+                    f"**Figura {idx+1}**\n\n"
+                    f"*{meta['title']}*\n\n"
+                    f"![{meta['title']}]({norm_png})\n\n"
+                    f"*Nota.* {meta['note']}\n\n"
                 )
-                new_content += card_markup
+                new_content += apa_figure_block
             else:
                 new_content += f"\n\n```text\n[Diagrama Arquitectónico {doc_id} #{idx+1}]\n```\n\n"
             last_end = end
         new_content += content[last_end:]
         content = new_content
 
-    # 2. Separar encabezado inicial repetido del cuerpo real
+    # 2. Eliminar encabezado inicial repetitivo previo a la Sección 1
     lines = content.splitlines()
     body_lines = []
     found_first_section = False
 
     for line in lines:
         if not found_first_section:
-            # Detectar el primer título numerado de sección (# 1., ## 1., ### 1.)
             if re.match(r"^#{1,3}\s+\d+\.", line):
                 found_first_section = True
                 body_lines.append(line)
             else:
-                # Omitir metadatos sueltos, líneas divisoras o encabezados repetitivos
                 continue
         else:
             body_lines.append(line)
 
     restructured_text = "\n".join(body_lines)
 
-    # 3. Promover títulos de sección (## 1. -> # 1. y ### 1.1 -> ## 1.1)
+    # 3. Normalizar niveles de encabezado
     restructured_text = re.sub(r"^#{2,3}\s+(\d+\..*)$", r"# \1", restructured_text, flags=re.MULTILINE)
     restructured_text = re.sub(r"^#{3,4}\s+(\d+\.\d+\..*)$", r"## \1", restructured_text, flags=re.MULTILINE)
 
@@ -257,7 +337,7 @@ def clean_and_restructure_markdown(src_path, doc_info):
 
 def generate_formal_html(doc_info, processed_md):
     """
-    Compila el Markdown procesado a una versión HTML ejecutiva y visualmente elegante.
+    Compila el Markdown procesado a una versión HTML formal con maquetación APA 7.
     """
     with tempfile.NamedTemporaryFile("w", encoding="utf-8", suffix=".md", delete=False) as tf:
         tf.write(processed_md)
@@ -300,14 +380,14 @@ def generate_formal_html(doc_info, processed_md):
         </div>
         <div class="meta-card">
           <div class="meta-label">LÍDER DE ARQUITECTURA</div>
-          <div class="meta-value">Lady Loayza (Lead Architect)</div>
+          <div class="meta-value">Lady Luz Loayza Rodríguez (Lead Architect)</div>
         </div>
         <div class="meta-card">
           <div class="meta-label">EQUIPO DE INGENIERÍA</div>
-          <div class="meta-value">Grupo 01 (Sistemas e Informática)</div>
+          <div class="meta-value">Grupo 01 (Loayza, Cárdenas, Roman, Dávila, Rojas)</div>
         </div>
         <div class="meta-card">
-          <div class="meta-label">DOCENTE EVALUADOR</div>
+          <div class="meta-label">DOCENTE ASESOR EVALUADOR</div>
           <div class="meta-value">Ing. Enrique Lee Huamani Uriarte</div>
         </div>
         <div class="meta-card">
@@ -315,8 +395,8 @@ def generate_formal_html(doc_info, processed_md):
           <div class="meta-value">{doc_info['version']} &bull; {doc_info['date']}</div>
         </div>
         <div class="meta-card">
-          <div class="meta-label">CLASIFICACIÓN</div>
-          <div class="meta-value">Oficial (Confidencialidad Académica)</div>
+          <div class="meta-label">ESTÁNDAR EDITORIAL</div>
+          <div class="meta-value">Normas APA 7ma Edición (Oficial UTP)</div>
         </div>
       </div>
     </div>
@@ -334,7 +414,7 @@ def generate_formal_html(doc_info, processed_md):
 
 def convert_md_to_docx_via_pandoc(processed_md, dest_docx):
     """
-    Compila el Markdown procesado a documento Word nativo.
+    Compila el Markdown procesado a documento Word nativo vía Pandoc.
     """
     with tempfile.NamedTemporaryFile("w", encoding="utf-8", suffix=".md", delete=False) as tf:
         tf.write(processed_md)
@@ -353,8 +433,8 @@ def convert_md_to_docx_via_pandoc(processed_md, dest_docx):
         if os.path.exists(temp_md):
             os.remove(temp_md)
 
-def apply_table_cell_margins(table, top_dxa=120, bottom_dxa=120, left_dxa=160, right_dxa=160):
-    """Aplica márgenes celulares generosos (padding de 6pt arriba/abajo y 8pt a los lados)."""
+def apply_table_cell_margins(table, top_dxa=100, bottom_dxa=100, left_dxa=140, right_dxa=140):
+    """Configura márgenes celulares generosos para evitar texto pegado a los bordes."""
     tblPr = table._tbl.tblPr
     tblCellMar = parse_xml(r'''
         <w:tblCellMar {} >
@@ -366,210 +446,133 @@ def apply_table_cell_margins(table, top_dxa=120, bottom_dxa=120, left_dxa=160, r
     '''.format(nsdecls('w'), top_dxa, bottom_dxa, left_dxa, right_dxa))
     tblPr.append(tblCellMar)
 
-def insert_cover_and_brief_card(doc, doc_info):
+def insert_apa7_title_page(doc, doc_info):
     """
-    Construye de forma estricta y ordenada:
-    1. La Portada Institucional UTP de Lujo en la Página 1.
-    2. El Salto de Página Formal de Portada.
-    3. La Ficha Técnica Resumen (Card 2x4) en la cabecera de la Página 2.
-    4. Deja la primera sección del cuerpo (# 1.) inmediatamente después de la Ficha Técnica.
+    Construye la Portada Académica y Profesional Oficial bajo Normas APA 7ma Edición (Página 1).
     """
     if not doc.paragraphs:
         doc.add_paragraph()
     p_first = doc.paragraphs[0]
 
-    # --- PÁGINA 1: PORTADA DE LUJO ---
+    # 1. Espaciador inicial de 3 líneas simples
+    p_sp0 = p_first.insert_paragraph_before("")
+    p_sp0.paragraph_format.space_before = Pt(36)
+    p_sp0.paragraph_format.space_after = Pt(0)
 
-    # 1. Membrete Institucional UTP
-    p_inst1 = p_first.insert_paragraph_before("UNIVERSIDAD TECNOLÓGICA DEL PERÚ")
-    p_inst1.paragraph_format.space_before = Pt(0)
-    p_inst1.paragraph_format.space_after = Pt(2)
-    r1 = p_inst1.runs[0]
-    r1.font.name = "Calibri"
-    r1.font.size = Pt(12)
-    r1.font.bold = True
-    r1.font.color.rgb = RGBColor(15, 23, 42)
-
-    p_inst2 = p_first.insert_paragraph_before("FACULTAD DE INGENIERÍA  |  CARRERA DE INGENIERÍA DE SISTEMAS E INFORMÁTICA")
-    p_inst2.paragraph_format.space_before = Pt(0)
-    p_inst2.paragraph_format.space_after = Pt(2)
-    r2 = p_inst2.runs[0]
-    r2.font.name = "Calibri"
-    r2.font.size = Pt(9)
-    r2.font.color.rgb = RGBColor(100, 116, 139)
-
-    p_inst3 = p_first.insert_paragraph_before("CURSO INTEGRADOR II: SISTEMAS DE INFORMACIÓN (SEMANA 18 - CICLO 2026-I)")
-    p_inst3.paragraph_format.space_before = Pt(0)
-    p_inst3.paragraph_format.space_after = Pt(14)
-    r3 = p_inst3.runs[0]
-    r3.font.name = "Calibri"
-    r3.font.size = Pt(9.5)
-    r3.font.bold = True
-    r3.font.color.rgb = RGBColor(30, 64, 175)
-
-    # 2. Barra Bicolor Superior (Navy + Cobalt)
-    bar_tbl = doc.add_table(rows=1, cols=2)
-    bar_tbl.alignment = WD_TABLE_ALIGNMENT.CENTER
-    c_navy = bar_tbl.rows[0].cells[0]
-    c_blue = bar_tbl.rows[0].cells[1]
-    c_navy.width = Inches(5.2)
-    c_blue.width = Inches(1.3)
-    shd_navy = parse_xml(r'<w:shd {} w:fill="0F172A"/>'.format(nsdecls('w')))
-    shd_blue = parse_xml(r'<w:shd {} w:fill="2563EB"/>'.format(nsdecls('w')))
-    c_navy._tc.get_or_add_tcPr().append(shd_navy)
-    c_blue._tc.get_or_add_tcPr().append(shd_blue)
-    tr_pr = bar_tbl.rows[0]._tr.get_or_add_trPr()
-    tr_pr.append(parse_xml(r'<w:trHeight {} w:val="60" w:hRule="exact"/>'.format(nsdecls('w'))))
-    p_first._p.addprevious(bar_tbl._tbl)
-
-    # 3. Espaciador
-    p_sp1 = p_first.insert_paragraph_before("")
-    p_sp1.paragraph_format.space_before = Pt(24)
-    p_sp1.paragraph_format.space_after = Pt(0)
-
-    # 4. Badge Pill de Identificación Documental
-    badge_tbl = doc.add_table(rows=1, cols=1)
-    badge_tbl.alignment = WD_TABLE_ALIGNMENT.LEFT
-    b_cell = badge_tbl.rows[0].cells[0]
-    b_cell.width = Inches(5.2)
-    b_shd = parse_xml(r'<w:shd {} w:fill="EEF2FF"/>'.format(nsdecls('w')))
-    b_border = parse_xml(r'''
-        <w:tcBorders {} >
-            <w:top w:val="single" w:sz="6" w:space="0" w:color="C7D2FE"/>
-            <w:left w:val="single" w:sz="6" w:space="0" w:color="C7D2FE"/>
-            <w:bottom w:val="single" w:sz="6" w:space="0" w:color="C7D2FE"/>
-            <w:right w:val="single" w:sz="6" w:space="0" w:color="C7D2FE"/>
-        </w:tcBorders>
-    '''.format(nsdecls('w')))
-    b_cell._tc.get_or_add_tcPr().append(b_shd)
-    b_cell._tc.get_or_add_tcPr().append(b_border)
-    b_p = b_cell.paragraphs[0]
-    b_p.paragraph_format.space_before = Pt(4)
-    b_p.paragraph_format.space_after = Pt(4)
-    b_run = b_p.add_run(f"[ DOCUMENTO TÉCNICO OFICIAL  |  {doc_info['id']}  |  SUSTENTACIÓN FINAL ]")
-    b_run.font.name = "Calibri"
-    b_run.font.size = Pt(8.5)
-    b_run.font.bold = True
-    b_run.font.color.rgb = RGBColor(30, 64, 175)
-    p_first._p.addprevious(badge_tbl._tbl)
-
-    # 5. Título Principal y Subtítulo
+    # 2. Título Principal en Negrita (APA 7: Centrado, Negrita, 17 pt, Title Case)
     p_title = p_first.insert_paragraph_before(doc_info["title"])
-    p_title.paragraph_format.space_before = Pt(16)
-    p_title.paragraph_format.space_after = Pt(6)
-    p_title.paragraph_format.line_spacing = 1.15
+    p_title.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    p_title.paragraph_format.space_before = Pt(0)
+    p_title.paragraph_format.space_after = Pt(8)
+    p_title.paragraph_format.line_spacing = 1.2
     rt = p_title.runs[0]
     rt.font.name = "Calibri"
-    rt.font.size = Pt(23)
+    rt.font.size = Pt(17)
     rt.font.bold = True
     rt.font.color.rgb = RGBColor(15, 23, 42)
 
+    # 3. Subtítulo en Cursiva (Centrado, 11.5 pt, Cursiva)
     p_sub = p_first.insert_paragraph_before(doc_info["subtitle"])
+    p_sub.alignment = WD_ALIGN_PARAGRAPH.CENTER
     p_sub.paragraph_format.space_before = Pt(0)
-    p_sub.paragraph_format.space_after = Pt(16)
+    p_sub.paragraph_format.space_after = Pt(36)
     rsub = p_sub.runs[0]
     rsub.font.name = "Calibri"
-    rsub.font.size = Pt(12)
+    rsub.font.size = Pt(11.5)
+    rsub.font.italic = True
     rsub.font.color.rgb = RGBColor(71, 85, 105)
 
-    # 6. Regla Divisoria Cobalt
+    # 4. Línea decorativa sutil Cobalt
     rule_tbl = doc.add_table(rows=1, cols=1)
     rule_tbl.alignment = WD_TABLE_ALIGNMENT.CENTER
     rcell = rule_tbl.rows[0].cells[0]
-    rcell.width = Inches(6.5)
+    rcell.width = Inches(4.5)
     rshd = parse_xml(r'<w:shd {} w:fill="2563EB"/>'.format(nsdecls('w')))
     rcell._tc.get_or_add_tcPr().append(rshd)
     r_tr = rule_tbl.rows[0]._tr.get_or_add_trPr()
-    r_tr.append(parse_xml(r'<w:trHeight {} w:val="24" w:hRule="exact"/>'.format(nsdecls('w'))))
+    r_tr.append(parse_xml(r'<w:trHeight {} w:val="20" w:hRule="exact"/>'.format(nsdecls('w'))))
     p_first._p.addprevious(rule_tbl._tbl)
 
-    # 7. Espaciador
-    p_sp2 = p_first.insert_paragraph_before("")
-    p_sp2.paragraph_format.space_before = Pt(16)
-    p_sp2.paragraph_format.space_after = Pt(0)
+    # 5. Espaciador
+    p_sp1 = p_first.insert_paragraph_before("")
+    p_sp1.paragraph_format.space_before = Pt(28)
+    p_sp1.paragraph_format.space_after = Pt(0)
 
-    # 8. Matriz Institucional de Metadatos (Card 2x7)
-    meta_tbl = doc.add_table(rows=7, cols=2)
-    meta_tbl.alignment = WD_TABLE_ALIGNMENT.CENTER
-    apply_table_cell_margins(meta_tbl, top_dxa=90, bottom_dxa=90, left_dxa=160, right_dxa=160)
+    # 6. Autores del Proyecto (Grupo 01)
+    p_autores_label = p_first.insert_paragraph_before("Equipo de Ingeniería de Software (Grupo 01):")
+    p_autores_label.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    p_autores_label.paragraph_format.space_before = Pt(0)
+    p_autores_label.paragraph_format.space_after = Pt(4)
+    ra_lbl = p_autores_label.runs[0]
+    ra_lbl.font.name = "Calibri"
+    ra_lbl.font.size = Pt(10)
+    ra_lbl.font.bold = True
+    ra_lbl.font.color.rgb = RGBColor(15, 23, 42)
 
-    metadata_rows = [
-        ("PROYECTO:", "Sistema de Gestión de Pedidos y Despacho Multicanal (LeoFit Solutions)"),
-        ("DOCUMENTO TÉCNICO:", f"{doc_info['id']} — {doc_info['doc_type']}"),
-        ("LÍDER DE ARQUITECTURA:", "Lady Luz Loayza Rodríguez (Scrum Master / DevSecOps Lead)"),
-        ("EQUIPO DE INGENIERÍA:", "Grupo 01 (Loayza, Cárdenas, Roman, Dávila, Rojas)"),
-        ("DOCENTE EVALUADOR:", "Ing. Enrique Lee Huamani Uriarte (Docente Asesor Evaluador)"),
-        ("FECHA DE EMISIÓN / VERSIÓN:", f"{doc_info['date']}  |  Versión Oficial {doc_info['version']}"),
-        ("CLASIFICACIÓN ACADÉMICA:", "OFICIAL — Sustentación de Proyecto Final (Confidencialidad Académica)")
-    ]
+    autores_text = (
+        "Lady Luz Loayza Rodríguez (Scrum Master / DevSecOps Lead)\n"
+        "Víctor Leandro Cárdenas Fernández (Product Owner / DBA Lead)\n"
+        "Harley Anthony Roman Delgado (Frontend Lead / UI-UX)\n"
+        "Jim Alessandro Dávila Morales (QA Engineer Lead / Backend)\n"
+        "Daniel Enrique Rojas Sánchez (Business Analyst / Cloud DevOps)"
+    )
+    p_autores = p_first.insert_paragraph_before(autores_text)
+    p_autores.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    p_autores.paragraph_format.space_before = Pt(0)
+    p_autores.paragraph_format.space_after = Pt(28)
+    p_autores.paragraph_format.line_spacing = 1.3
+    ra = p_autores.runs[0]
+    ra.font.name = "Calibri"
+    ra.font.size = Pt(9.5)
+    ra.font.color.rgb = RGBColor(51, 65, 85)
 
-    for idx, (label, val) in enumerate(metadata_rows):
-        row = meta_tbl.rows[idx]
-        row._tr.get_or_add_trPr().append(parse_xml(r'<w:cantSplit {}/>'.format(nsdecls('w'))))
-        c1, c2 = row.cells[0], row.cells[1]
-        c1.width = Inches(2.2)
-        c2.width = Inches(4.3)
+    # 7. Afiliación Institucional
+    p_inst = p_first.insert_paragraph_before(
+        "Facultad de Ingeniería\n"
+        "Carrera Profesional de Ingeniería de Sistemas e Informática\n"
+        "Universidad Tecnológica del Perú"
+    )
+    p_inst.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    p_inst.paragraph_format.space_before = Pt(0)
+    p_inst.paragraph_format.space_after = Pt(20)
+    p_inst.paragraph_format.line_spacing = 1.2
+    ri = p_inst.runs[0]
+    ri.font.name = "Calibri"
+    ri.font.size = Pt(10)
+    ri.font.color.rgb = RGBColor(30, 41, 59)
 
-        shd1 = parse_xml(r'<w:shd {} w:fill="F1F5F9"/>'.format(nsdecls('w')))
-        shd2 = parse_xml(r'<w:shd {} w:fill="FFFFFF"/>'.format(nsdecls('w')))
-        c1._tc.get_or_add_tcPr().append(shd1)
-        c2._tc.get_or_add_tcPr().append(shd2)
+    # 8. Asignatura y Docente Asesor
+    p_curso = p_first.insert_paragraph_before(
+        "Curso Integrador II: Sistemas de Información (Código: 100000S12F — Sección 35374)\n"
+        "Docente Asesor Evaluador: Ing. Enrique Lee Huamani Uriarte"
+    )
+    p_curso.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    p_curso.paragraph_format.space_before = Pt(0)
+    p_curso.paragraph_format.space_after = Pt(20)
+    p_curso.paragraph_format.line_spacing = 1.2
+    rc = p_curso.runs[0]
+    rc.font.name = "Calibri"
+    rc.font.size = Pt(9.5)
+    rc.font.color.rgb = RGBColor(71, 85, 105)
 
-        bdr1 = parse_xml(r'''
-            <w:tcBorders {} >
-                <w:top w:val="single" w:sz="4" w:space="0" w:color="CBD5E1"/>
-                <w:left w:val="single" w:sz="4" w:space="0" w:color="CBD5E1"/>
-                <w:bottom w:val="single" w:sz="4" w:space="0" w:color="CBD5E1"/>
-                <w:right w:val="single" w:sz="4" w:space="0" w:color="CBD5E1"/>
-            </w:tcBorders>
-        '''.format(nsdecls('w')))
-        bdr2 = parse_xml(r'''
-            <w:tcBorders {} >
-                <w:top w:val="single" w:sz="4" w:space="0" w:color="CBD5E1"/>
-                <w:left w:val="single" w:sz="4" w:space="0" w:color="CBD5E1"/>
-                <w:bottom w:val="single" w:sz="4" w:space="0" w:color="CBD5E1"/>
-                <w:right w:val="single" w:sz="4" w:space="0" w:color="CBD5E1"/>
-            </w:tcBorders>
-        '''.format(nsdecls('w')))
-        c1._tc.get_or_add_tcPr().append(bdr1)
-        c2._tc.get_or_add_tcPr().append(bdr2)
+    # 9. Fecha Oficial
+    p_date = p_first.insert_paragraph_before(f"Lima, Perú  —  {doc_info['date']}")
+    p_date.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    p_date.paragraph_format.space_before = Pt(0)
+    p_date.paragraph_format.space_after = Pt(0)
+    rd = p_date.runs[0]
+    rd.font.name = "Calibri"
+    rd.font.size = Pt(9.5)
+    rd.font.bold = True
+    rd.font.color.rgb = RGBColor(15, 23, 42)
 
-        p_c1 = c1.paragraphs[0]
-        p_c1.paragraph_format.space_before = Pt(2)
-        p_c1.paragraph_format.space_after = Pt(2)
-        r_c1 = p_c1.add_run(label)
-        r_c1.font.name = "Calibri"
-        r_c1.font.size = Pt(8.5)
-        r_c1.font.bold = True
-        r_c1.font.color.rgb = RGBColor(51, 65, 85)
-
-        p_c2 = c2.paragraphs[0]
-        p_c2.paragraph_format.space_before = Pt(2)
-        p_c2.paragraph_format.space_after = Pt(2)
-        r_c2 = p_c2.add_run(val)
-        r_c2.font.name = "Calibri"
-        r_c2.font.size = Pt(8.5)
-        r_c2.font.color.rgb = RGBColor(15, 23, 42)
-
-    p_first._p.addprevious(meta_tbl._tbl)
-
-    # 9. Pie Institucional de Portada
-    p_foot = p_first.insert_paragraph_before("Lima, Perú  —  Ciclo Académico 2026-I  —  Sustentación de Proyecto Final")
-    p_foot.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    p_foot.paragraph_format.space_before = Pt(24)
-    p_foot.paragraph_format.space_after = Pt(0)
-    rf = p_foot.runs[0]
-    rf.font.name = "Calibri"
-    rf.font.size = Pt(8.5)
-    rf.font.color.rgb = RGBColor(148, 163, 184)
-
-    # 10. Salto de Página Formal (Termina Página 1)
+    # 10. Salto de Página Formal de Portada (Termina Página 1)
     p_break = p_first.insert_paragraph_before()
     p_break.paragraph_format.space_before = Pt(0)
     p_break.paragraph_format.space_after = Pt(0)
     p_break.add_run().add_break(WD_BREAK.PAGE)
 
-    # --- PÁGINA 2: FICHA TÉCNICA RESUMEN AL INICIO ---
+    # --- PÁGINA 2: FICHA TÉCNICA DE CONTROL DOCUMENTAL APA 7 ---
     f_tbl = doc.add_table(rows=2, cols=4)
     f_tbl.alignment = WD_TABLE_ALIGNMENT.CENTER
     apply_table_cell_margins(f_tbl, top_dxa=70, bottom_dxa=70, left_dxa=100, right_dxa=100)
@@ -606,14 +609,12 @@ def insert_cover_and_brief_card(doc, doc_info):
         cell.width = col_widths[idx]
         cell._tc.get_or_add_tcPr().append(parse_xml(r'<w:tcW {} w:w="2340" w:type="dxa"/>'.format(nsdecls('w'))))
         cell._tc.get_or_add_tcPr().append(parse_xml(r'<w:shd {} w:fill="F8FAFC"/>'.format(nsdecls('w'))))
-        cell._tc.get_or_add_tcPr().append(parse_xml(r'''
+        bdr = parse_xml(r'''
             <w:tcBorders {} >
-                <w:top w:val="single" w:sz="4" w:space="0" w:color="CBD5E1"/>
-                <w:left w:val="single" w:sz="4" w:space="0" w:color="CBD5E1"/>
-                <w:bottom w:val="single" w:sz="4" w:space="0" w:color="CBD5E1"/>
-                <w:right w:val="single" w:sz="4" w:space="0" w:color="CBD5E1"/>
+                <w:bottom w:val="single" w:sz="8" w:space="0" w:color="0F172A"/>
             </w:tcBorders>
-        '''.format(nsdecls('w'))))
+        '''.format(nsdecls('w')))
+        cell._tc.get_or_add_tcPr().append(bdr)
         p = cell.paragraphs[0]
         p.alignment = WD_ALIGN_PARAGRAPH.CENTER
         p.paragraph_format.space_before = Pt(3)
@@ -628,20 +629,19 @@ def insert_cover_and_brief_card(doc, doc_info):
 
     # Espaciador antes de la Sección 1
     p_sp3 = p_first.insert_paragraph_before("")
-    p_sp3.paragraph_format.space_before = Pt(14)
+    p_sp3.paragraph_format.space_before = Pt(16)
     p_sp3.paragraph_format.space_after = Pt(0)
 
-    # Si p_first quedó vacío como separador previo, limpiarlo
+    # Limpiar p_first si quedó como párrafo en blanco
     if not p_first.text.strip():
         p_first._p.getparent().remove(p_first._p)
 
-def setup_headers_and_footers(section, doc_info):
+def setup_apa7_headers_and_footers(section, doc_info):
     """
-    Configura encabezados y pies dinámicos diferenciados (Página 1 sin numeración).
+    Configura encabezados y pies de página conforme a APA 7ma Edición:
+    - Cornisa (Running head) a la izquierda en mayúsculas sostenidas.
+    - Paginación dinámica en la esquina superior derecha (Página X de Y).
     """
-    section.different_first_page_header_footer = True
-
-    # 1. ENCABEZADO PÁGINAS 2+
     header = section.header
     header.is_linked_to_previous = False
     hp = header.paragraphs[0]
@@ -650,107 +650,82 @@ def setup_headers_and_footers(section, doc_info):
     tbl_h = header.add_table(rows=1, cols=2, width=Inches(6.5))
     tbl_h.alignment = WD_TABLE_ALIGNMENT.CENTER
     c_hl, c_hr = tbl_h.rows[0].cells[0], tbl_h.rows[0].cells[1]
-    c_hl.width = Inches(4.5)
-    c_hr.width = Inches(2.0)
+    c_hl.width = Inches(4.8)
+    c_hr.width = Inches(1.7)
 
     bdr_h = parse_xml(r'''
         <w:tcBorders {} >
-            <w:bottom w:val="single" w:sz="4" w:space="0" w:color="CBD5E1"/>
+            <w:bottom w:val="single" w:sz="4" w:space="0" w:color="E2E8F0"/>
         </w:tcBorders>
     '''.format(nsdecls('w')))
     c_hl._tc.get_or_add_tcPr().append(bdr_h)
     c_hr._tc.get_or_add_tcPr().append(parse_xml(r'''
         <w:tcBorders {} >
-            <w:bottom w:val="single" w:sz="4" w:space="0" w:color="CBD5E1"/>
+            <w:bottom w:val="single" w:sz="4" w:space="0" w:color="E2E8F0"/>
         </w:tcBorders>
     '''.format(nsdecls('w'))))
 
     p_hl = c_hl.paragraphs[0]
     p_hl.paragraph_format.space_before = Pt(0)
-    p_hl.paragraph_format.space_after = Pt(4)
-    r_hl = p_hl.add_run(f"LEOFIT SOLUTIONS  |  {doc_info['id']}")
+    p_hl.paragraph_format.space_after = Pt(3)
+    r_hl = p_hl.add_run(doc_info.get("running_head", f"LEOFIT SOLUTIONS: {doc_info['id']}"))
     r_hl.font.name = "Calibri"
-    r_hl.font.size = Pt(8)
-    r_hl.font.bold = True
+    r_hl.font.size = Pt(8.5)
     r_hl.font.color.rgb = RGBColor(100, 116, 139)
 
     p_hr = c_hr.paragraphs[0]
     p_hr.alignment = WD_ALIGN_PARAGRAPH.RIGHT
     p_hr.paragraph_format.space_before = Pt(0)
-    p_hr.paragraph_format.space_after = Pt(4)
-    r_hr = p_hr.add_run("SEMANA 18 — PROYECTO FINAL")
-    r_hr.font.name = "Calibri"
-    r_hr.font.size = Pt(8)
-    r_hr.font.color.rgb = RGBColor(100, 116, 139)
-
-    # 2. PIE DE PÁGINA PÁGINAS 2+
-    footer = section.footer
-    footer.is_linked_to_previous = False
-    fp = footer.paragraphs[0]
-    fp.text = ""
-
-    tbl_f = footer.add_table(rows=1, cols=2, width=Inches(6.5))
-    tbl_f.alignment = WD_TABLE_ALIGNMENT.CENTER
-    c_fl, c_fr = tbl_f.rows[0].cells[0], tbl_f.rows[0].cells[1]
-    c_fl.width = Inches(4.5)
-    c_fr.width = Inches(2.0)
-
-    bdr_f = parse_xml(r'''
-        <w:tcBorders {} >
-            <w:top w:val="single" w:sz="4" w:space="0" w:color="CBD5E1"/>
-        </w:tcBorders>
-    '''.format(nsdecls('w')))
-    c_fl._tc.get_or_add_tcPr().append(bdr_f)
-    c_fr._tc.get_or_add_tcPr().append(parse_xml(r'''
-        <w:tcBorders {} >
-            <w:top w:val="single" w:sz="4" w:space="0" w:color="CBD5E1"/>
-        </w:tcBorders>
-    '''.format(nsdecls('w'))))
-
-    p_fl = c_fl.paragraphs[0]
-    p_fl.paragraph_format.space_before = Pt(4)
-    p_fl.paragraph_format.space_after = Pt(0)
-    r_fl = p_fl.add_run("Confidencial — Material Oficial de Sustentación Académica UTP")
-    r_fl.font.name = "Calibri"
-    r_fl.font.size = Pt(8)
-    r_fl.font.color.rgb = RGBColor(148, 163, 184)
-
-    p_fr = c_fr.paragraphs[0]
-    p_fr.alignment = WD_ALIGN_PARAGRAPH.RIGHT
-    p_fr.paragraph_format.space_before = Pt(4)
-    p_fr.paragraph_format.space_after = Pt(0)
-    r_fr_pre = p_fr.add_run("Página ")
-    r_fr_pre.font.name = "Calibri"
-    r_fr_pre.font.size = Pt(8)
-    r_fr_pre.font.color.rgb = RGBColor(100, 116, 139)
+    p_hr.paragraph_format.space_after = Pt(3)
+    r_hr_pre = p_hr.add_run("Página ")
+    r_hr_pre.font.name = "Calibri"
+    r_hr_pre.font.size = Pt(8.5)
+    r_hr_pre.font.color.rgb = RGBColor(100, 116, 139)
 
     fld1 = parse_xml(r'<w:fldChar {} w:fldCharType="begin"/>'.format(nsdecls('w')))
     instr1 = parse_xml(r'<w:instrText {} xml:space="preserve"> PAGE </w:instrText>'.format(nsdecls('w')))
     fld2 = parse_xml(r'<w:fldChar {} w:fldCharType="separate"/>'.format(nsdecls('w')))
     fld3 = parse_xml(r'<w:fldChar {} w:fldCharType="end"/>'.format(nsdecls('w')))
-    p_fr._p.append(fld1)
-    p_fr._p.append(instr1)
-    p_fr._p.append(fld2)
-    p_fr._p.append(fld3)
+    p_hr._p.append(fld1)
+    p_hr._p.append(instr1)
+    p_hr._p.append(fld2)
+    p_hr._p.append(fld3)
 
-    r_fr_mid = p_fr.add_run(" de ")
-    r_fr_mid.font.name = "Calibri"
-    r_fr_mid.font.size = Pt(8)
-    r_fr_mid.font.color.rgb = RGBColor(100, 116, 139)
+    r_hr_mid = p_hr.add_run(" de ")
+    r_hr_mid.font.name = "Calibri"
+    r_hr_mid.font.size = Pt(8.5)
+    r_hr_mid.font.color.rgb = RGBColor(100, 116, 139)
 
     fld4 = parse_xml(r'<w:fldChar {} w:fldCharType="begin"/>'.format(nsdecls('w')))
     instr2 = parse_xml(r'<w:instrText {} xml:space="preserve"> NUMPAGES </w:instrText>'.format(nsdecls('w')))
     fld5 = parse_xml(r'<w:fldChar {} w:fldCharType="separate"/>'.format(nsdecls('w')))
     fld6 = parse_xml(r'<w:fldChar {} w:fldCharType="end"/>'.format(nsdecls('w')))
-    p_fr._p.append(fld4)
-    p_fr._p.append(instr2)
-    p_fr._p.append(fld5)
-    p_fr._p.append(fld6)
+    p_hr._p.append(fld4)
+    p_hr._p.append(instr2)
+    p_hr._p.append(fld5)
+    p_hr._p.append(fld6)
 
-def format_all_tables_with_intelligent_widths(doc):
+    footer = section.footer
+    footer.is_linked_to_previous = False
+    fp = footer.paragraphs[0]
+    fp.text = ""
+    fp.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    fp.paragraph_format.space_before = Pt(4)
+    fp.paragraph_format.space_after = Pt(0)
+    rf = fp.add_run("Universidad Tecnológica del Perú  |  Sustentación de Proyecto Final (Semana 18)  |  Confidencial")
+    rf.font.name = "Calibri"
+    rf.font.size = Pt(8)
+    rf.font.color.rgb = RGBColor(148, 163, 184)
+
+def format_apa7_tables(doc):
     """
-    Aplica el Algoritmo de Ancho Proporcional Inteligente a todas las tablas del cuerpo,
-    fijando el layout, configurando márgenes celulares generosos y eliminando texto apretado.
+    Aplica el formato estricto de tablas de las Normas APA 7ma Edición:
+    1. CERO bordes verticales.
+    2. Borde horizontal superior sólido de 1.0 pt (#0F172A).
+    3. Borde horizontal inferior en la fila de cabecera de 1.0 pt (#0F172A).
+    4. Borde horizontal inferior al final de la tabla de 1.0 pt (#0F172A).
+    5. Bordes horizontales interiores sutiles (#E2E8F0) para delimitar filas.
+    6. Distribución de anchos proporcionales inteligentes (fijo a 6.5 pulgadas / 9,360 dxa).
     """
     total_table_inches = 6.5
 
@@ -761,16 +736,14 @@ def format_all_tables_with_intelligent_widths(doc):
 
         first_cell_text = table.rows[0].cells[0].text.strip()
         # Omitir tablas que forman parte de la portada o ficha técnica
-        if first_cell_text in ["UNIVERSIDAD TECNOLÓGICA DEL PERÚ", "PROYECTO:", "CÓDIGO OFICIAL", "LEOFIT SOLUTIONS"]:
-            continue
-        if "DOCUMENTO TÉCNICO OFICIAL" in first_cell_text:
+        if first_cell_text in ["UNIVERSIDAD TECNOLÓGICA DEL PERÚ", "PROYECTO:", "CÓDIGO OFICIAL", "Equipo de Ingeniería"]:
             continue
 
         col_count = len(table.columns)
         if col_count == 0:
             continue
 
-        # 1. Analizar longitud de caracteres por columna
+        # 1. Calcular anchos proporcionales inteligentes
         cols_lengths = [[] for _ in range(col_count)]
         for row in table.rows:
             for c_idx, cell in enumerate(row.cells):
@@ -783,7 +756,6 @@ def format_all_tables_with_intelligent_widths(doc):
             if lens:
                 avg_len = sum(lens) / len(lens)
                 max_len = max(lens)
-                # Fórmula de ponderación: raíz cuadrada de max_len + longitud promedio suavizada
                 w = math.sqrt(max(1, max_len)) + (avg_len ** 0.55)
             else:
                 w = 1.0
@@ -793,12 +765,11 @@ def format_all_tables_with_intelligent_widths(doc):
         col_widths_in = [round((w / sum_w) * total_table_inches, 2) for w in weights]
         diff = total_table_inches - sum(col_widths_in)
         col_widths_in[-1] += round(diff, 2)
-
         col_widths_dxa = [int(w * 1440) for w in col_widths_in]
 
         # 2. Configurar layout de tabla fijo
         table.alignment = WD_TABLE_ALIGNMENT.CENTER
-        apply_table_cell_margins(table, top_dxa=110, bottom_dxa=110, left_dxa=150, right_dxa=150)
+        apply_table_cell_margins(table, top_dxa=100, bottom_dxa=100, left_dxa=140, right_dxa=140)
 
         tblPr = table._tbl.tblPr
         tblPr.append(parse_xml(r'<w:tblLayout {} w:type="fixed"/>'.format(nsdecls('w'))))
@@ -806,7 +777,20 @@ def format_all_tables_with_intelligent_widths(doc):
         grid_cols_xml = ''.join([r'<w:gridCol {} w:w="{}"/>'.format(nsdecls('w'), w) for w in col_widths_dxa])
         table._tbl.append(parse_xml(r'<w:tblGrid {}>{}</w:tblGrid>'.format(nsdecls('w'), grid_cols_xml)))
 
-        # 3. Fila 0: Cabecera Ejecutiva Navy (#0F172A)
+        # BORDES APA 7: Superior e inferior sólidos, CERO bordes verticales
+        tblBorders = parse_xml(r'''
+            <w:tblBorders {} >
+                <w:top w:val="single" w:sz="8" w:space="0" w:color="0F172A"/>
+                <w:bottom w:val="single" w:sz="8" w:space="0" w:color="0F172A"/>
+                <w:left w:val="none"/>
+                <w:right w:val="none"/>
+                <w:insideH w:val="single" w:sz="4" w:space="0" w:color="E2E8F0"/>
+                <w:insideV w:val="none"/>
+            </w:tblBorders>
+        '''.format(nsdecls('w')))
+        tblPr.append(tblBorders)
+
+        # 3. Fila de Cabecera APA 7
         hdr_row = table.rows[0]
         hdr_row._tr.get_or_add_trPr().append(parse_xml(r'<w:tblHeader {}/>'.format(nsdecls('w'))))
         hdr_row._tr.get_or_add_trPr().append(parse_xml(r'<w:cantSplit {}/>'.format(nsdecls('w'))))
@@ -814,13 +798,12 @@ def format_all_tables_with_intelligent_widths(doc):
         for c_idx, cell in enumerate(hdr_row.cells):
             cell.width = Inches(col_widths_in[c_idx])
             cell._tc.get_or_add_tcPr().append(parse_xml(r'<w:tcW {} w:w="{}" w:type="dxa"/>'.format(nsdecls('w'), col_widths_dxa[c_idx])))
-            cell._tc.get_or_add_tcPr().append(parse_xml(r'<w:shd {} w:fill="0F172A"/>'.format(nsdecls('w'))))
+            cell._tc.get_or_add_tcPr().append(parse_xml(r'<w:shd {} w:fill="F8FAFC"/>'.format(nsdecls('w'))))
             bdr = parse_xml(r'''
                 <w:tcBorders {} >
-                    <w:top w:val="single" w:sz="4" w:space="0" w:color="334155"/>
-                    <w:left w:val="single" w:sz="4" w:space="0" w:color="334155"/>
-                    <w:bottom w:val="single" w:sz="8" w:space="0" w:color="1E293B"/>
-                    <w:right w:val="single" w:sz="4" w:space="0" w:color="334155"/>
+                    <w:bottom w:val="single" w:sz="8" w:space="0" w:color="0F172A"/>
+                    <w:left w:val="none"/>
+                    <w:right w:val="none"/>
                 </w:tcBorders>
             '''.format(nsdecls('w')))
             cell._tc.get_or_add_tcPr().append(bdr)
@@ -830,30 +813,25 @@ def format_all_tables_with_intelligent_widths(doc):
                 p.paragraph_format.space_after = Pt(3)
                 for r in p.runs:
                     r.font.name = "Calibri"
-                    r.font.size = Pt(9)
+                    r.font.size = Pt(9.5)
                     r.font.bold = True
-                    r.font.color.rgb = RGBColor(255, 255, 255)
+                    r.font.color.rgb = RGBColor(15, 23, 42)
 
-        # 4. Filas de Datos (Cebra y Bordes Sutiles)
+        # 4. Filas de Datos APA 7
         for r_idx in range(1, row_count):
             row = table.rows[r_idx]
             row._tr.get_or_add_trPr().append(parse_xml(r'<w:cantSplit {}/>'.format(nsdecls('w'))))
-            is_even = (r_idx % 2 == 0)
-            fill_color = "F8FAFC" if is_even else "FFFFFF"
 
             for c_idx, cell in enumerate(row.cells):
                 cell.width = Inches(col_widths_in[c_idx])
                 cell._tc.get_or_add_tcPr().append(parse_xml(r'<w:tcW {} w:w="{}" w:type="dxa"/>'.format(nsdecls('w'), col_widths_dxa[c_idx])))
-                cell._tc.get_or_add_tcPr().append(parse_xml(r'<w:shd {} w:fill="{}"/>'.format(nsdecls('w'), fill_color)))
-                bdr = parse_xml(r'''
+                bdr_cell = parse_xml(r'''
                     <w:tcBorders {} >
-                        <w:top w:val="single" w:sz="4" w:space="0" w:color="E2E8F0"/>
-                        <w:left w:val="single" w:sz="4" w:space="0" w:color="E2E8F0"/>
-                        <w:bottom w:val="single" w:sz="4" w:space="0" w:color="E2E8F0"/>
-                        <w:right w:val="single" w:sz="4" w:space="0" w:color="E2E8F0"/>
+                        <w:left w:val="none"/>
+                        <w:right w:val="none"/>
                     </w:tcBorders>
                 '''.format(nsdecls('w')))
-                cell._tc.get_or_add_tcPr().append(bdr)
+                cell._tc.get_or_add_tcPr().append(bdr_cell)
 
                 for p in cell.paragraphs:
                     p.paragraph_format.space_before = Pt(2)
@@ -864,108 +842,100 @@ def format_all_tables_with_intelligent_widths(doc):
                         r.font.size = Pt(9)
                         r.font.color.rgb = RGBColor(30, 41, 59)
 
-def polish_document_elements(doc, doc_info):
+def polish_apa7_document_elements(doc, doc_info):
     """
-    Aplica jerarquía de títulos de alta presencia (H1 con barra azul lateral y fondo tenue),
-    párrafos justificados con interlineado 1.15 y cajas de figuras centradas.
+    Aplica la jerarquía formal de títulos APA 7, figuras y párrafos:
+    - Nivel 1: Centrado, Negrita, Mayúsculas y Minúsculas.
+    - Nivel 2: Alineado a la izquierda, Negrita.
+    - Nivel 3: Alineado a la izquierda, Negrita y Cursiva.
+    - Figuras: Centradas, con 'Figura X' en negrita (izquierda) y 'Nota.' descriptiva.
+    - Párrafos: Calibri 11 pt, interlineado 1.15, alineación justificada.
     """
     for p in doc.paragraphs:
         txt = p.text.strip()
         style_name = p.style.name if p.style else ""
 
-        # Heading 1 (Secciones Principales: 1. Contexto, 2. Decisión...)
+        # Heading 1 (APA 7 Nivel 1: Centrado, Negrita, Mayúsculas y Minúsculas)
         if style_name.startswith("Heading 1"):
+            p.alignment = WD_ALIGN_PARAGRAPH.CENTER
             p.paragraph_format.space_before = Pt(20)
-            p.paragraph_format.space_after = Pt(6)
+            p.paragraph_format.space_after = Pt(8)
             p.paragraph_format.keep_with_next = True
-            
-            pPr = p._p.get_or_add_pPr()
-            # Barra lateral azul Cobalt #1E40AF sólida de 3.5pt con 8pt de padding
-            pBdr = parse_xml(r'''
-                <w:pBdr {} >
-                    <w:left w:val="single" w:sz="28" w:space="8" w:color="1E40AF"/>
-                </w:pBdr>
-            '''.format(nsdecls('w')))
-            pPr.append(pBdr)
-            shd = parse_xml(r'<w:shd {} w:fill="F8FAFC"/>'.format(nsdecls('w')))
-            pPr.append(shd)
 
             for r in p.runs:
                 r.font.name = "Calibri"
-                r.font.size = Pt(14)
+                r.font.size = Pt(13.5)
                 r.font.bold = True
                 r.font.color.rgb = RGBColor(15, 23, 42)
 
-        # Heading 2 (Subsecciones: 6.1, 6.2...)
+        # Heading 2 (APA 7 Nivel 2: Alineado a la izquierda, Negrita)
         elif style_name.startswith("Heading 2"):
+            p.alignment = WD_ALIGN_PARAGRAPH.LEFT
             p.paragraph_format.space_before = Pt(14)
             p.paragraph_format.space_after = Pt(4)
             p.paragraph_format.keep_with_next = True
             for r in p.runs:
                 r.font.name = "Calibri"
-                r.font.size = Pt(12)
+                r.font.size = Pt(11.5)
                 r.font.bold = True
                 r.font.color.rgb = RGBColor(30, 64, 175)
 
-        # Heading 3
+        # Heading 3 (APA 7 Nivel 3: Alineado a la izquierda, Negrita y Cursiva)
         elif style_name.startswith("Heading 3"):
+            p.alignment = WD_ALIGN_PARAGRAPH.LEFT
             p.paragraph_format.space_before = Pt(10)
             p.paragraph_format.space_after = Pt(3)
             p.paragraph_format.keep_with_next = True
             for r in p.runs:
                 r.font.name = "Calibri"
-                r.font.size = Pt(10.5)
+                r.font.size = Pt(11)
                 r.font.bold = True
+                r.font.italic = True
                 r.font.color.rgb = RGBColor(51, 65, 85)
 
-        # Encabezado de diagramas
-        elif "DIAGRAMA ARQUITECTÓNICO OFICIAL" in txt:
-            p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-            p.paragraph_format.space_before = Pt(14)
+        # Número de Figura y Título APA 7 (Inicia con "Figura " o "**Figura ")
+        elif txt.startswith("Figura ") or txt.startswith("**Figura ") or re.match(r"^\*?\*?Figura\s+\d+", txt):
+            p.alignment = WD_ALIGN_PARAGRAPH.LEFT
+            p.paragraph_format.space_before = Pt(16)
             p.paragraph_format.space_after = Pt(4)
-            pPr = p._p.get_or_add_pPr()
-            shd = parse_xml(r'<w:shd {} w:fill="EEF2FF"/>'.format(nsdecls('w')))
-            pPr.append(shd)
+            p.paragraph_format.keep_with_next = True
             for r in p.runs:
                 r.font.name = "Calibri"
-                r.font.size = Pt(8.5)
-                r.font.bold = True
-                r.font.color.rgb = RGBColor(30, 64, 175)
+                r.font.color.rgb = RGBColor(15, 23, 42)
+                if "Figura " in r.text or "Figura" in r.text:
+                    r.font.size = Pt(10)
+                    r.font.bold = True
+                else:
+                    r.font.size = Pt(10)
+                    r.font.italic = True
 
-        # Leyendas de figuras
-        elif txt.startswith("Figura ") or txt.startswith("*Figura "):
-            p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        # Nota de Figura o Tabla APA 7 (Inicia con "Nota." o "*Nota.")
+        elif txt.startswith("Nota.") or txt.startswith("*Nota."):
+            p.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
             p.paragraph_format.space_before = Pt(4)
-            p.paragraph_format.space_after = Pt(16)
+            p.paragraph_format.space_after = Pt(18)
+            p.paragraph_format.line_spacing = 1.15
             for r in p.runs:
                 r.font.name = "Calibri"
                 r.font.size = Pt(8.5)
-                r.font.italic = True
-                r.font.color.rgb = RGBColor(100, 116, 139)
+                r.font.color.rgb = RGBColor(71, 85, 105)
 
-        # Citas / Callouts
+        # Citas y Callouts de texto
         elif style_name in ["Quote", "Block Text"]:
             p.paragraph_format.space_before = Pt(6)
             p.paragraph_format.space_after = Pt(6)
-            pPr = p._p.get_or_add_pPr()
-            pBdr = parse_xml(r'''
-                <w:pBdr {} >
-                    <w:left w:val="single" w:sz="24" w:space="8" w:color="2563EB"/>
-                </w:pBdr>
-            '''.format(nsdecls('w')))
-            pPr.append(pBdr)
-            shd = parse_xml(r'<w:shd {} w:fill="F8FAFC"/>'.format(nsdecls('w')))
-            pPr.append(shd)
+            p.paragraph_format.left_indent = Inches(0.5)
+            p.paragraph_format.line_spacing = 1.15
             for r in p.runs:
                 r.font.name = "Calibri"
-                r.font.size = Pt(9.5)
+                r.font.size = Pt(10)
                 r.font.color.rgb = RGBColor(30, 41, 59)
 
         # Párrafos regulares
         else:
-            if "drawing" in p._p.xml:
+            if len(p._p.xpath('.//w:drawing')) > 0:
                 p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-                p.paragraph_format.space_before = Pt(8)
+                p.paragraph_format.space_before = Pt(6)
                 p.paragraph_format.space_after = Pt(4)
             else:
                 p.paragraph_format.space_before = Pt(0)
@@ -974,12 +944,12 @@ def polish_document_elements(doc, doc_info):
                 p.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
                 for r in p.runs:
                     r.font.name = "Calibri"
-                    r.font.size = Pt(10)
+                    r.font.size = Pt(11)
                     r.font.color.rgb = RGBColor(30, 41, 59)
 
 def main():
     print("======================================================================")
-    print("COMPILADOR EJECUTIVO DE ENTREGABLES OFICIALES (CALIDAD BIG 4 / UTP)")
+    print("COMPILADOR MAESTRO APA 7ma EDICIÓN — ENTREGABLES OFICIALES UTP")
     print("======================================================================")
     print(f"Directorio HTML: {HTML_DIR}")
     print(f"Directorio DOCX: {DOCX_DIR}")
@@ -996,19 +966,15 @@ def main():
         print(f"Procesando [{doc_id}]: {os.path.basename(doc_info['src'])}")
 
         try:
-            # 1. Limpieza de duplicados y reestructuración de jerarquías Markdown
-            processed_md = clean_and_restructure_markdown(doc_info["src"], doc_info)
+            processed_md = preprocess_markdown_apa7(doc_info["src"], doc_info)
 
-            # 2. Generación de versión HTML corporativa
             html_path = generate_formal_html(doc_info, processed_md)
             html_size_kb = os.path.getsize(html_path) / 1024.0
             print(f"  [OK] HTML formal generado: {html_name} ({html_size_kb:.1f} KB)")
 
-            # 3. Compilación a DOCX base mediante Pandoc
             docx_path = doc_info["docx_dest"]
             convert_md_to_docx_via_pandoc(processed_md, docx_path)
 
-            # 4. Enriquecimiento tipográfico y estructural de lujo en python-docx
             doc = docx.Document(docx_path)
             sec = doc.sections[0]
             sec.top_margin = Inches(1.0)
@@ -1016,26 +982,18 @@ def main():
             sec.left_margin = Inches(1.0)
             sec.right_margin = Inches(1.0)
 
-            # Configurar encabezados/pies dinámicos diferenciados
-            setup_headers_and_footers(sec, doc_info)
+            setup_apa7_headers_and_footers(sec, doc_info)
+            insert_apa7_title_page(doc, doc_info)
+            polish_apa7_document_elements(doc, doc_info)
+            format_apa7_tables(doc)
 
-            # Insertar Portada de Lujo (Pág 1) y Ficha Técnica (Pág 2) en orden estricto
-            insert_cover_and_brief_card(doc, doc_info)
-
-            # Aplicar formato de alta presencia a títulos y párrafos
-            polish_document_elements(doc, doc_info)
-
-            # Aplicar Algoritmo de Ancho Proporcional Inteligente a todas las tablas
-            format_all_tables_with_intelligent_widths(doc)
-
-            # Guardar documento final
             doc.save(docx_path)
             docx_size_kb = os.path.getsize(docx_path) / 1024.0
-            print(f"  [OK] Word (.docx) ejecutiva finalizada: {doc_name} ({docx_size_kb:.1f} KB)")
+            print(f"  [OK] Word (.docx) APA 7 finalizada: {doc_name} ({docx_size_kb:.1f} KB)")
 
-            # Validación de integridad de apertura
             v = docx.Document(docx_path)
-            print(f"  [OK] Integridad verificada: {len(v.paragraphs)} párrafos, {len(v.tables)} tablas.\n")
+            img_count = sum(1 for p in v.paragraphs if len(p._p.xpath('.//w:drawing')) > 0)
+            print(f"  [OK] Integridad verificada: {len(v.paragraphs)} párrafos, {len(v.tables)} tablas, {img_count} diagramas insertados.\n")
             success_count += 1
 
         except Exception as e:
@@ -1046,7 +1004,7 @@ def main():
 
     print("======================================================================")
     print(f"EXPORTACION COMPLETADA EXITOSAMENTE: {success_count}/{total} DOCUMENTOS")
-    print("Versiones HTML visuales y Word ejecutivas listas en _PROYECTO_FINAL_LOCAL.")
+    print("Versiones Word bajo Normas APA 7ma Edición listas en _PROYECTO_FINAL_LOCAL.")
     print("======================================================================")
 
 if __name__ == "__main__":
