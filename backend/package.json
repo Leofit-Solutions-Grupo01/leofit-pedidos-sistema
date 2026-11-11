@@ -11,6 +11,7 @@
     "test": "jest --runInBand --forceExit",
     "test:integration": "cross-env RUN_INTEGRATION_TESTS=true jest --runInBand --forceExit",
     "test:coverage": "jest --coverage --runInBand --forceExit",
+    "test:cloud": "jest tests/cloud_smoke.test.ts --runInBand --forceExit",
     "lint": "tsc --noEmit"
   },
   "keywords": [
