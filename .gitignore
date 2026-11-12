@@ -245,3 +245,8 @@ test_apa.docx
 
 # Redundant root docs outputs (official deliverables are in docs/gestion_academica/entregas/)
 docs/INFORME_FINAL_*.docx
+
+# Intermediate raw generator artifacts
+temp_raw_*.pdf
+leofit_raw_*.pdf
+

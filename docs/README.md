@@ -29,6 +29,7 @@ docs/
 │   └── 02_ESTRUCTURA_ACADEMICA/       (Estructura de 7 carpetas según rúbrica UTP)
 │
 ├── 02_CALIDAD_Y_AUDITORIA/            [CALIDAD E INGENIERÍA]
+│   ├── 01_plan_de_pruebas_iso29119/    (Plan Maestro de Pruebas ISO/IEC/IEEE 29119-3/4)
 │   ├── 02_calidad_iso25010_semanas_10_11/ (Informe de Calidad ISO 25010 y Coexistencia)
 │   ├── 03_auditoria_y_cierre_proyecto/    (Dashboard Excel ISO 29119 y Deuda Técnica)
 │   └── 05_operaciones_respaldo_drp/       (Protocolo de Continuidad y Simulacro DRP)
@@ -68,7 +69,7 @@ docs/
 | Módulo / Bucket | Contenido Principal | Acceso Directo |
 | :--- | :--- | :--- |
 | **01. Entrega Oficial APF3** | Informe Maestro (77 págs), Diapositivas, Paquete Canvas y Estructura Académica. | [**`01_ENTREGA_OFICIAL_APF3/`**](./01_ENTREGA_OFICIAL_APF3/README.md) |
-| **02. Calidad y Auditoría** | Evaluación ISO 25010 (SUS 88.5/100, WCAG 2.1), Coexistencia Docker y Protocolo DRP. | [**`02_CALIDAD_Y_AUDITORIA/`**](./02_CALIDAD_Y_AUDITORIA/) |
+| **02. Calidad y Auditoría** | Plan de Pruebas ISO 29119 (194 tests), Calidad ISO 25010, Coexistencia y DRP. | [**`02_CALIDAD_Y_AUDITORIA/`**](./02_CALIDAD_Y_AUDITORIA/01_plan_de_pruebas_iso29119/README.md) |
 | **03. Arquitectura y Diagramas** | Catálogo oficial de 25+ diagramas BPMN AS-IS/TO-BE, C4 Nivel 2 y 3FN. | [**`03_ARQUITECTURA_Y_DIAGRAMAS/`**](./03_ARQUITECTURA_Y_DIAGRAMAS/README.md) |
 | **04. Referencia Curso UTP** | Manuales del docente Enrique Lee, rúbricas de evaluación institucional y sílabo. | [**`04_REFERENCIA_CURSO_UTP/`**](./04_REFERENCIA_CURSO_UTP/) |
 | **ADR Canónico** | Registros de Decisiones Arquitectónicas según estándar MADR. | [**`adr/`**](./adr/) |

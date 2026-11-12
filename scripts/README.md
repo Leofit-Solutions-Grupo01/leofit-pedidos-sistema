@@ -16,6 +16,7 @@
 scripts/
 │
 ├── build_apf3_grupo_xx_structure.py  # Ensamblador de la estructura APF3_GRUPO_01 (Cap. 14 Pág. 35 del manual)
+├── build_infographic_test_plan.py    # Generador del Plan de Pruebas ISO 29119-3/4 (DOCX, PDF 3 págs A4, HTML)
 ├── export_and_render_slides.py       # Compilador PowerPoint COM a PDF y renderizador de diapositivas a PNG
 ├── export_docx_to_pdf_word_com.py    # Compilador Word COM de informes a PDF de alta resolución
 ├── sync_audit_metrics.py             # Sincronizador en vivo entre código fuente (194 tests) y Excel
