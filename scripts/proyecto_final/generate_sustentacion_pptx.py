@@ -1108,6 +1108,10 @@ def create_deck():
         "la base de datos o las decisiones de arquitectura presentadas. Muchas gracias.")
 
     prs.save(OUT_PPTX)
+    DOCS_PPTX_DIR = os.path.join(BASE_DIR, "docs", "05_SUSTENTACION_PROYECTO_FINAL_SEMANA_18")
+    os.makedirs(DOCS_PPTX_DIR, exist_ok=True)
+    DOCS_PPTX = os.path.join(DOCS_PPTX_DIR, "03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.pptx")
+    prs.save(DOCS_PPTX)
     size_kb = os.path.getsize(OUT_PPTX) / 1024.0
     print(f"[OK] Presentacion PPTX generada con exito:")
     print(f"     Ruta: {OUT_PPTX}")

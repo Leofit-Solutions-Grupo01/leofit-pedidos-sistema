@@ -5,9 +5,9 @@
 
 ---
 
-[![Sustentación Final](https://img.shields.io/badge/Sustentaci%C3%B3n%20Final%20S18-25%20Slides%20%2B%20Notas%20Completas-0F172A.svg)](docs/03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.pptx)
-[![Informe Continuación S14-S15](https://img.shields.io/badge/Informe%20Continuaci%C3%B3n-Semanas%2014%20y%2015%20(ISO%2025010)-1665D8.svg)](docs/INFORME_CONTINUACION_S14_S15_PROYECTO_FINAL_LEOFIT.docx)
-[![Calidad ISO 25010](https://img.shields.io/badge/ISO%2FIEC%2025010-Rendimiento%20%7C%20Flexibilidad%20%7C%20Mantenibilidad-15803D.svg)](docs/INFORME_CONTINUACION_S14_S15_PROYECTO_FINAL_LEOFIT.md)
+[![Sustentación Final](https://img.shields.io/badge/Sustentaci%C3%B3n%20Final%20S18-25%20Slides%20%2B%20Notas%20Completas-0F172A.svg)](docs/05_SUSTENTACION_PROYECTO_FINAL_SEMANA_18/03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.pptx)
+[![Informe Continuación S14-S15](https://img.shields.io/badge/Informe%20Continuaci%C3%B3n-Semanas%2014%20y%2015%20(ISO%2025010)-1665D8.svg)](docs/02_CALIDAD_Y_AUDITORIA/04_calidad_iso25010_semanas_14_15/INFORME_CONTINUACION_S14_S15_PROYECTO_FINAL_LEOFIT.docx)
+[![Calidad ISO 25010](https://img.shields.io/badge/ISO%2FIEC%2025010-Rendimiento%20%7C%20Flexibilidad%20%7C%20Mantenibilidad-15803D.svg)](docs/02_CALIDAD_Y_AUDITORIA/04_calidad_iso25010_semanas_14_15/INFORME_CONTINUACION_S14_S15_PROYECTO_FINAL_LEOFIT.md)
 [![Pruebas Automatizadas](https://img.shields.io/badge/Tests%20Automatizados-194%20Passing%20(125%20BE%20%2B%2069%20FE)-1E3A8A.svg)](docs/03_ARQUITECTURA_Y_DIAGRAMAS/README.md)
 [![Arquitectura](https://img.shields.io/badge/Architecture-Clean%20Architecture%20%2B%203FN%2FBCNF-0F172A.svg)](docs/adr/ADR-001_ELECCION_RENDER_NEON_VS_AWS.md)
 [![Seguridad](https://img.shields.io/badge/Security-OWASP%20%7C%20JWT%20%7C%20HMAC%20%7C%20RFC%208785-C2410C.svg)](SECURITY.md)
@@ -21,10 +21,10 @@ Para facilitar la revisión académica, toda la documentación oficial, informes
 
 | Hito / Evaluación | Entregable Principal | Formatos Disponibles | Descripción Técnica |
 | :--- | :--- | :--- | :--- |
-| **Sustentación Final (Semana 18)** | **Presentación Oficial de Sustentación** | [**`Descargar PPTX`**](docs/03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.pptx) <br> [**`Visor Web Interactivo HTML`**](docs/03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.html) <br> [**`Guion Markdown`**](docs/03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.md) | Deck de **25 diapositivas ejecutivas** widescreen 16:9 con notas de orador completas, paleta Navy/Cobalt/Terracotta WCAG AAA y cero emojis. |
-| **Continuación Semanas 14 y 15 (Unidad 4)** | **Informe Acumulativo de Calidad ISO 25010** | [**`Informe Word DOCX`**](docs/INFORME_CONTINUACION_S14_S15_PROYECTO_FINAL_LEOFIT.docx) <br> [**`Memoria Markdown`**](docs/INFORME_CONTINUACION_S14_S15_PROYECTO_FINAL_LEOFIT.md) | Informe acumulativo completo (APF1+APF2+APF3 + Unidad 4): Rendimiento (k6 p50/p95), Flexibilidad (Adaptabilidad/Escalabilidad) y Mantenibilidad (TDD). |
+| **Sustentación Final (Semana 18)** | **Presentación Oficial de Sustentación** | [**`Descargar PPTX`**](docs/05_SUSTENTACION_PROYECTO_FINAL_SEMANA_18/03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.pptx) <br> [**`Visor Web Interactivo HTML`**](docs/05_SUSTENTACION_PROYECTO_FINAL_SEMANA_18/03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.html) <br> [**`Guion Markdown`**](docs/05_SUSTENTACION_PROYECTO_FINAL_SEMANA_18/03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.md) | Deck de **25 diapositivas ejecutivas** widescreen 16:9 con notas de orador completas, paleta Navy/Cobalt/Terracotta WCAG AAA y cero emojis. |
+| **Continuación Semanas 14 y 15 (Unidad 4)** | **Informe Acumulativo de Calidad ISO 25010** | [**`Informe Word DOCX`**](docs/02_CALIDAD_Y_AUDITORIA/04_calidad_iso25010_semanas_14_15/INFORME_CONTINUACION_S14_S15_PROYECTO_FINAL_LEOFIT.docx) <br> [**`Memoria Markdown`**](docs/02_CALIDAD_Y_AUDITORIA/04_calidad_iso25010_semanas_14_15/INFORME_CONTINUACION_S14_S15_PROYECTO_FINAL_LEOFIT.md) | Informe acumulativo completo (APF1+APF2+APF3 + Unidad 4): Rendimiento (k6 p50/p95), Flexibilidad (Adaptabilidad/Escalabilidad) y Mantenibilidad (TDD). |
 | **Avance Final APF3 (Semana 13)** | **Memoria Técnica APF3 (77 págs)** | [**`Informe Maestro DOCX`**](docs/01_ENTREGA_OFICIAL_APF3/01_DESARROLLO_Y_CALIDAD/INFORME_FINAL_APF3_LEOFIT.docx) <br> [**`Presentación APF3 PPTX`**](docs/01_ENTREGA_OFICIAL_APF3/00_ENTREGA_OFICIAL_CANVAS/03_PRESENTACION_OFICIAL_SUSTENTACION_LEOFIT.pptx) | Adecuación funcional 100%, compatibilidad Docker, usabilidad SUS 88.5/100, DRP simulado y despliegue V2. |
-| **Material del Docente (UTP)** | **Guías y Plantillas de la Asignatura** | [**`Guía Libro Semanas 14-15`**](docs/Guia_Libro_Semanas_14_15_Curso_Integrador_II_UTP.pdf) <br> [**`PPT Breve Semanas 14-15`**](docs/PPT_Breve_Semanas_14_15_Curso_Integrador_II_UTP.pdf) <br> [**`Plantilla Informe DOCX`**](docs/Plantilla_Informe_Continuacion_S14_S15_UTP.docx) | Material pedagógico y criterios de evaluación proporcionados por el Ing. Enrique Lee Huamani. |
+| **Material del Docente (UTP)** | **Guías y Plantillas de la Asignatura** | [**`Guía Libro Semanas 14-15`**](docs/04_REFERENCIA_CURSO_UTP/manuales_docente_enrique_lee/Guia_Libro_Semanas_14_15_Curso_Integrador_II_UTP.pdf) <br> [**`PPT Breve Semanas 14-15`**](docs/04_REFERENCIA_CURSO_UTP/manuales_docente_enrique_lee/PPT_Breve_Semanas_14_15_Curso_Integrador_II_UTP.pdf) <br> [**`Plantilla Informe DOCX`**](docs/04_REFERENCIA_CURSO_UTP/silabo_y_plantillas_utp/Plantilla_Informe_Continuacion_S14_S15_UTP.docx) | Material pedagógico y criterios de evaluación proporcionados por el Ing. Enrique Lee Huamani. |
 | **Decisiones de Arquitectura (ADR)** | **Registro Canónico MADR** | [**`ADR-001 (Render+Neon vs AWS)`**](docs/adr/ADR-001_ELECCION_RENDER_NEON_VS_AWS.md) <br> [**`ADR-002 (Arquitectura AWS)`**](docs/adr/ADR-002_ARQUITECTURA_OBJETIVO_AWS.md) | Justificación técnica-económica, análisis de costos cloud y arquitectura destino VPC Multi-AZ. |
 | **Índice Unificado** | **Guía de Navegación Rápida** | [**`00_INDICE_MAESTRO_ENTREGABLES_DOCENTE.md`**](docs/00_INDICE_MAESTRO_ENTREGABLES_DOCENTE.md) | Acceso directo y trazabilidad integral a cada evidencia del proyecto. |
 
@@ -68,10 +68,9 @@ leofit-pedidos-sistema/
 │   ├── 02_CALIDAD_Y_AUDITORIA/   # Evaluaciones ISO 25010, deuda técnica y simulacros DRP
 │   ├── 03_ARQUITECTURA_Y_DIAGRAMAS/ # Catálogo de 25 diagramas C4, BPMN y BCNF
 │   ├── 04_REFERENCIA_CURSO_UTP/  # Rúbricas y manuales oficiales del docente
+│   ├── 05_SUSTENTACION_PROYECTO_FINAL_SEMANA_18/ # Presentación oficial 25 slides y visor
 │   ├── adr/                      # Architecture Decision Records (ADR-001, ADR-002)
-│   ├── INFORME_CONTINUACION_S14_S15_PROYECTO_FINAL_LEOFIT.docx  # Informe acumulativo Word
-│   ├── INFORME_CONTINUACION_S14_S15_PROYECTO_FINAL_LEOFIT.md    # Memoria técnica Markdown
-│   └── 03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.pptx # Presentación oficial 25 slides
+│   └── 99_HISTORICO_ENTREGAS_ANTERIORES/ # Archivo histórico APF1 y APF2
 │
 ├── scripts/                   # Cadena de herramientas y automatización
 │   ├── generators/            # Generadores de diagramas y reportes
