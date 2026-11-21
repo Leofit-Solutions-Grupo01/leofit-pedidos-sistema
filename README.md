@@ -26,8 +26,7 @@ Para facilitar la revisión académica, toda la documentación oficial, informes
 | Hito / Evaluación                                 | Entregable Principal                               | Formatos Disponibles                                                                                                                                                                                                                                                                                                                                                                                                                                         | Descripción Técnica                                                                                                                                                                                                                                         |
 | :------------------------------------------------- | :------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | **Sustentación Final (Semana 18)**          | **Presentación Oficial de Sustentación**   | [**`Descargar PPTX`**](docs/05_SUSTENTACION_PROYECTO_FINAL_SEMANA_18/03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.pptx)  [**`Visor Web Interactivo HTML`**](docs/05_SUSTENTACION_PROYECTO_FINAL_SEMANA_18/03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.html)  [**`Guion Markdown`**](docs/05_SUSTENTACION_PROYECTO_FINAL_SEMANA_18/03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.md)                                | Deck de **25 diapositivas ejecutivas** widescreen 16:9 con notas de orador completas, paleta Navy/Cobalt/Terracotta WCAG AAA y cero emojis.                                                                                                             |
-| **Continuación Semanas 14 y 15 (Unidad 4)** | **Informe Acumulativo de Calidad ISO 25010** | [**`Informe Word DOCX`**](docs/02_CALIDAD_Y_AUDITORIA/04_calidad_iso25010_semanas_14_15/INFORME_CONTINUACION_S14_S15_PROYECTO_FINAL_LEOFIT.docx)  [**`Memoria Markdown`**](docs/02_CALIDAD_Y_AUDITORIA/04_calidad_iso25010_semanas_14_15/INFORME_CONTINUACION_S14_S15_PROYECTO_FINAL_LEOFIT.md)                                                                                                                                                | Informe acumulativo completo (APF1+APF2+APF3 + Unidad 4): Rendimiento (k6 p50/p95), Flexibilidad (Adaptabilidad/Escalabilidad) y Mantenibilidad (TDD).                                                                                                        |
-| **Continuación Semanas 14 y 15 (Unidad 4)** | **Informe Acumulativo de Calidad ISO 25010** | [**`Informe Word DOCX`**](docs/02_CALIDAD_Y_AUDITORIA/04_calidad_iso25010_semanas_14_15/INFORME_CONTINUACION_S14_S15_PROYECTO_FINAL_LEOFIT.docx)  [**`Memoria Markdown`**](docs/02_CALIDAD_Y_AUDITORIA/04_calidad_iso25010_semanas_14_15/INFORME_CONTINUACION_S14_S15_PROYECTO_FINAL_LEOFIT.md)                                                                                                                                                | Informe acumulativo completo: Rendimiento (k6 p50/p95/p99 y 4 Señales Doradas SRE), Flexibilidad (ISO/IEC 25010:2023 Adaptabilidad/Escalabilidad, Circuit Breaker, Bulkhead) y Mantenibilidad (Clean Architecture, Complejidad Ciclomática 1-3, 194 tests). |
+| **Continuación Semanas 14 y 15 (Unidad 4)** | **Informe Acumulativo de Calidad ISO 9126 e ISO 25010** | [**`Informe Word DOCX`**](docs/02_CALIDAD_Y_AUDITORIA/04_calidad_iso25010_semanas_14_15/INFORME_CONTINUACION_S14_S15_PROYECTO_FINAL_LEOFIT.docx) <br> [**`Memoria Markdown`**](docs/02_CALIDAD_Y_AUDITORIA/04_calidad_iso25010_semanas_14_15/INFORME_CONTINUACION_S14_S15_PROYECTO_FINAL_LEOFIT.md) | Informe acumulativo completo: Modelo ISO 9126 (partes 1-4, fórmulas $X=1-A/B$, $X=A/B$), ISO/IEC 25010:2023 (9 características), Rendimiento SRE p50/p95/p99, Saturación, Clean Architecture y 194 pruebas. |
 | **Avance Final APF3 (Semana 13)**            | **Memoria Técnica APF3 (77 págs)**         | [**`Informe Maestro DOCX`**](docs/01_ENTREGA_OFICIAL_APF3/01_DESARROLLO_Y_CALIDAD/INFORME_FINAL_APF3_LEOFIT.docx)  [**`Presentación APF3 PPTX`**](docs/01_ENTREGA_OFICIAL_APF3/00_ENTREGA_OFICIAL_CANVAS/03_PRESENTACION_OFICIAL_SUSTENTACION_LEOFIT.pptx)                                                                                                                                                                                    | Adecuación funcional 100%, compatibilidad Docker, usabilidad SUS 88.5/100, DRP simulado y despliegue V2.                                                                                                                                                     |
 | **Material del Docente (UTP)**               | **Guías y Plantillas de la Asignatura**     | [**`Guía Libro Semanas 14-15`**](docs/04_REFERENCIA_CURSO_UTP/manuales_docente_enrique_lee/Guia_Libro_Semanas_14_15_Curso_Integrador_II_UTP.pdf)  [**`PPT Breve Semanas 14-15`**](docs/04_REFERENCIA_CURSO_UTP/manuales_docente_enrique_lee/PPT_Breve_Semanas_14_15_Curso_Integrador_II_UTP.pdf)  [**`Plantilla Informe DOCX`**](docs/04_REFERENCIA_CURSO_UTP/silabo_y_plantillas_utp/Plantilla_Informe_Continuacion_S14_S15_UTP.docx) | Material pedagógico y criterios de evaluación proporcionados por el Ing. Enrique Lee Huamani.                                                                                                                                                               |
 | **Decisiones de Arquitectura (ADR)**         | **Registro Canónico MADR**                  | [**`ADR-001 (Render+Neon vs AWS)`**](docs/adr/ADR-001_ELECCION_RENDER_NEON_VS_AWS.md)  [**`ADR-002 (Arquitectura AWS)`**](docs/adr/ADR-002_ARQUITECTURA_OBJETIVO_AWS.md)                                                                                                                                                                                                                                                                       | Justificación técnica-económica, análisis de costos cloud y arquitectura destino VPC Multi-AZ.                                                                                                                                                            |
@@ -91,34 +90,25 @@ leofit-pedidos-sistema/
 
 ---
 
-## 3. Calidad de Software ISO/IEC 25010:2023 (Unidad 4)
+## 3. Calidad de Software: Fundamentos ISO 9126 e ISO/IEC 25010:2023 (Unidad 4)
 
-El software ha sido sometido a verificación empírica y cuantitativa bajo el estándar internacional **ISO/IEC 25010:2023**:
-El software ha sido sometido a verificación empírica y cuantitativa bajo el estándar internacional vigente **ISO/IEC 25010:2023** (9 características, incorporando *Safety* e integrando *Scalability* formalmente en *Flexibility*):
+El software ha sido sometido a verificación empírica y cuantitativa bajo el modelo fundacional **ISO/IEC 9126** (partes 1 a 4, métricas internas, externas y en uso) y el estándar internacional vigente **ISO/IEC 25010:2023** (9 características, incorporando *Safety* e integrando *Scalability* formalmente en *Flexibility*):
 
 ```mermaid
 flowchart LR
-    subgraph S14["SEMANA 14 · RENDIMIENTO Y FLEXIBILIDAD"]
-        R1["Tiempo de Respuesta:<br/>POST /api/orders<br/>p95 = 280ms (1 VU)<br/>p95 = 480ms (10 VU)"]
-        R2["Recursos & Capacidad:<br/>CPU < 25%, RAM < 185MB<br/>Throughput 45 req/s"]
-        F1["Adaptabilidad:<br/>Clean Architecture<br/>Variables de Entorno"]
-        F2["Escalabilidad:<br/>Auto Scaling Elástico<br/>Índices B-Tree en BD"]
+    subgraph S14["SEMANA 14 · RENDIMIENTO Y FLEXIBILIDAD (ISO 9126-2 / ISO 25010)"]
         R1["Tiempo de Respuesta:<br/>POST /api/orders<br/>p50=120ms | p95=280ms (1 VU)<br/>p50=240ms | p95=480ms (10 VU)<br/>p99=720ms (Cola larga)"]
         R2["Recursos & Capacidad:<br/>SRE Saturación CPU < 25%<br/>RAM < 185MB | Throughput 45 RPS<br/>Tasa de Errores: 0.00% (< 0.1%)"]
         F1["Adaptabilidad & Resiliencia:<br/>Circuit Breaker | Bulkhead<br/>Retry + Backoff & Jitter<br/>Rate Limiting (100 req/min)"]
         F2["Escalabilidad Elástica:<br/>Auto-scaling (>70% CPU, 42s)<br/>Índices B-Tree en PostgreSQL"]
     end
-    subgraph S15["SEMANA 15 · MANTENIBILIDAD"]
-        M1["Modularidad:<br/>Rutas / Servicios / Repos"]
-        M2["Reusabilidad:<br/>RBAC, Idempotencia, PDF"]
-        M3["Modificabilidad:<br/>Cambio de regla + Git"]
-        M4["Testabilidad:<br/>TDD (190 Tests 100% OK)"]
+    subgraph S15["SEMANA 15 · MANTENIBILIDAD (ISO 9126-3 / ISO 25010)"]
         M1["Modularidad & Clean Arch:<br/>Dominio <- Aplicación <- Infra<br/>Desacoplamiento Estricto"]
         M2["Reusabilidad:<br/>RBAC, Idempotencia RFC 8785<br/>Generador PDF, Cliente HTTP"]
         M3["Modificabilidad & Blast Radius:<br/>Complejidad Ciclomática 1-3 (<=4)<br/>Cambio de regla: 2 archivos"]
         M4["Testabilidad & Pirámide:<br/>TDD (194 Tests 100% OK)<br/>125 Backend + 69 Frontend"]
     end
-    subgraph S16["SEMANA 16 · CONFIABILIDAD"]
+    subgraph S16["SEMANA 16 · CONFIABILIDAD (ISO 9126-1 / ISO 25010)"]
         C1["HA vs HPC:<br/>HA 24/7 (Uptime 99.9%)"]
         C2["Tolerancia a Fallos:<br/>PWA Modo Offline"]
         C3["Respaldo PITR:<br/>RPO < 5 min, RTO < 15 min"]
@@ -126,21 +116,18 @@ flowchart LR
     S14 --> S15 --> S16
 ```
 
-### Síntesis de Métricas de Rendimiento (POST /api/orders con k6)
-
-- **1 Usuario Virtual (Línea Base):** Mediana $p50 = 120\text{ ms}$, **Percentil $p95 = 280\text{ ms}$**, Errores: $0.0\%$, CPU: $8\%$, RAM: $145\text{ MB}$ $\to$ **CUMPLE SLA (< 700 ms)**.
-- **10 Usuarios Virtuales (Carga Nominal):** Mediana $p50 = 240\text{ ms}$, **Percentil $p95 = 480\text{ ms}$**, Errores: $0.0\%$, CPU: $24\%$, RAM: $185\text{ MB}$ $\to$ **CUMPLE SLA (< 700 ms)**.
-- **30 Usuarios Virtuales (Carga Pico / Estrés):** Mediana $p50 = 620\text{ ms}$, **Percentil $p95 = 1,400\text{ ms}$**, Errores: $0.0\%$, CPU: $58\%$, RAM: $230\text{ MB}$ $\to$ Optimización de índices B-Tree en PostgreSQL redujo costo en **64.2%**.
-
-### Síntesis de Métricas de Rendimiento (POST /api/orders con k6) y 4 Señales Doradas SRE
-
-- **1 Usuario Virtual (Línea Base):** Mediana $p50 = 120\text{ ms}$, **Percentil $p95 = 280\text{ ms}$**, $p99 = 410\text{ ms}$, Errores: $0.0\%$, CPU: $8\%$, RAM: $145\text{ MB}$ $\to$ **CUMPLE SLA (< 700 ms)**.
-- **10 Usuarios Virtuales (Carga Nominal):** Mediana $p50 = 240\text{ ms}$, **Percentil $p95 = 480\text{ ms}$**, $p99 = 720\text{ ms}$, Errores: $0.0\%$, CPU: $24\%$, RAM: $185\text{ MB}$ $\to$ **CUMPLE SLA (< 700 ms)**.
-- **30 Usuarios Virtuales (Carga Pico / Estrés):** Mediana $p50 = 620\text{ ms}$, **Percentil $p95 = 1,400\text{ ms}$**, $p99 = 1,950\text{ ms}$, Errores: $0.0\%$, CPU: $58\%$, RAM: $230\text{ MB}$ $\to$ Optimización de índices B-Tree en PostgreSQL redujo costo de ejecución en **64.2%**.
+### Síntesis de Métricas de Calidad ISO 9126 / ISO 25010
+- **Adecuación Funcional (ISO 9126-1 / Diapo 17):** $X = 1 - (A/B) = 1 - (0/10) = 1.0 \implies 100\%$ de funciones requeridas implementadas y verificadas.
+- **Madurez de Fiabilidad (ISO 9126-1 / Diapo 19):** $X = A/B = 194/194 = 1.0 \implies 100\%$ de casos de prueba automatizados aprobados (0 defectos abiertos).
+- **Métricas Dinámicas de Rendimiento (POST /api/orders con k6 y Google SRE):**
+  - **1 Usuario Virtual (Línea Base):** Mediana $p50 = 120\text{ ms}$, **Percentil $p95 = 280\text{ ms}$**, $p99 = 410\text{ ms}$, Errores: $0.0\%$, CPU: $8\%$, RAM: $145\text{ MB}$ $\to$ **CUMPLE SLA (< 700 ms)**.
+  - **10 Usuarios Virtuales (Carga Nominal):** Mediana $p50 = 240\text{ ms}$, **Percentil $p95 = 480\text{ ms}$**, $p99 = 720\text{ ms}$, Errores: $0.0\%$, CPU: $24\%$, RAM: $185\text{ MB}$ $\to$ **CUMPLE SLA (< 700 ms)**.
+  - **30 Usuarios Virtuales (Carga Pico / Estrés):** Mediana $p50 = 620\text{ ms}$, **Percentil $p95 = 1,400\text{ ms}$**, $p99 = 1,950\text{ ms}$, Errores: $0.0\%$, CPU: $58\%$, RAM: $230\text{ MB}$ $\to$ Optimización de índices B-Tree en PostgreSQL redujo costo de ejecución en **64.2%**.
 - **Cuatro Señales Doradas de Google SRE:** Latencia ($p95 \le 480\text{ ms}$ en operación nominal), Tráfico ($45\text{ RPS}$ sostenidos), Errores ($0.00\%$, margen $< 0.1\%$) y Saturación (CPU $24\%$, RAM $36\%$, dentro del límite seguro $< 70\%$).
 - **Tipología de Pruebas de Carga k6:** *Ramp-up* (búsqueda de punto de quiebre), *Steady-state* (30 min a carga nominal), *Spike* (pico súbito de 35 VU) y *Soak* (4 horas para descartar fugas de memoria).
 - **Patrones de Resiliencia Cloud (Flexibilidad):** *Circuit Breaker* (fail-fast), *Bulkhead* (aislamiento de conexiones de BD), *Retry con Exponential Backoff y Jitter* (anti-thundering herd), *Rate Limiting / Load Shedding* (100 req/min, descarte selectivo si CPU $> 75\%$) y *Observabilidad* (OpenTelemetry, Prometheus, Winston).
-- **Mantenibilidad Comprobada:** Arquitectura Hexagonal / Clean Architecture, Complejidad Ciclomática McCabe de **1 a 3** (rango óptimo $\le 4$), Cobertura de pruebas unitarias/integración del **100% en 194 pruebas automatizadas** y Radio de Impacto (*Blast Radius*) mínimo (CHG-01 modificó solo 2 archivos).
+- **Mantenibilidad Comprobada (Métricas Internas ISO 9126-3):** Arquitectura Hexagonal / Clean Architecture, Complejidad Ciclomática McCabe de **1 a 3** (rango óptimo $\le 4$), Cobertura de pruebas unitarias/integración del **100% en 194 pruebas automatizadas** y Radio de Impacto (*Blast Radius*) mínimo (CHG-01 modificó solo 2 archivos).
+- **Calidad en Uso (ISO 9126-4):** Evaluación SUS con 5 participantes obteniendo **88.5 / 100** (Grado A, Percentil 96%) y reducción del tiempo de registro en un **87.6%** (de 310s a 38.2s).
 
 ---
 

@@ -33,7 +33,17 @@ Cada gráfico responde a una pregunta concreta de auditoría técnica del evalua
 
 ---
 
-## 2. Resumen Técnico de los Criterios Evaluados (ISO/IEC 25010:2023)
+## 2. Resumen Técnico de los Criterios Evaluados (ISO 9126 e ISO/IEC 25010:2023)
+
+### 2.0. Fundamento Normativo: Estructura ISO/IEC 9126 (Partes 1 a 4) y Fórmulas
+- **ISO 9126-1:** Modelo conceptual de calidad con 6 características (Funcionalidad, Fiabilidad, Usabilidad, Eficiencia, Mantenibilidad, Portabilidad).
+- **ISO 9126-2 (Métricas Externas):** Software en ejecución dinámica (latencia k6 $p95=480\text{ ms}$, CPU $24\%$, throughput $45\text{ RPS}$, 0% errores).
+- **ISO 9126-3 (Métricas Internas):** Software sin ejecución estática (complejidad ciclomática McCabe de $1$ a $3$, 194 pruebas automatizadas, TypeScript estricto).
+- **ISO 9126-4 (Calidad en Uso):** Software en producción comercial (System Usability Scale SUS $88.5/100$, reducción de tiempos de registro de 310s a 38.2s).
+- **Fórmulas Matemáticas de Clase:**
+  - *Adecuación Funcional (Diapo 17):* $X = 1 - (A/B) = 1 - (0/10) = 1.0 \implies 100\%$ de funciones requeridas verificadas ($A=0$ deficientes, $B=10$ requeridas).
+  - *Madurez de Fiabilidad (Diapo 19):* $X = A/B = 194/194 = 1.0 \implies 100\%$ de pruebas aprobadas ($A=194$ aprobadas, $B=194$ requeridas).
+- **Transición a ISO/IEC 25010:2023:** Expansión a 9 características, elevación de Seguridad a primer nivel independiente, incorporación formal de *Safety* (seguridad funcional ante pérdidas de stock), evolución de Usabilidad a *Interaction Capability* e integración de Portabilidad en *Flexibility* (formalizando *Scalability*).
 
 ### 2.1. Eficiencia de Desempeño / Rendimiento (Semana 14)
 Pruebas escalonadas de carga automatizadas ejecutadas con **Grafana k6** sobre el endpoint transaccional crítico `POST /api/orders` (creación de pedido, validación de stock y emisión de comprobante preliminar):

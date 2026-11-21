@@ -432,17 +432,19 @@ def create_deck():
         "   - Trafico entrante restringido exclusivamente al Security Group del ALB (Puerto 3001).\n"
         "\n"
         "3. SUBREDES PRIVADAS DE DATOS (10.0.20.0/24 y 10.0.21.0/24):\n"
-        "   - Alojan la base de datos Aurora PostgreSQL y los nodos de ElastiCache Redis.\n"
+        "   - Alojan la base de datos Aurora PostgreSQL 16 (BCNF, 11 tablas) y nodos ElastiCache Redis.\n"
         "   - Totalmente aisladas: SIN ruta a internet ni asignacion de IPs publicas.\n"
-        "   - Trafico entrante admitido unicamente desde el Security Group de Fargate en el puerto 5432.",
+        "   - Trafico entrante admitido unicamente desde el Security Group de Fargate en el puerto 5432.\n"
+        "   - Pool configurado con 'SET timezone = America/Lima' para consistencia fiscal SUNAT.",
         size=11, font=FONT_CODE, color=DARK)
 
     add_notes(s8,
-        "NOTAS DEL ORADOR (SLIDE 8 - RED VPC):\n"
+        "NOTAS DEL ORADOR (SLIDE 8 - RED VPC Y DATOS):\n"
         "La seguridad de red se diseno bajo el principio de defensa en profundidad. "
         "Dividimos la VPC en tres niveles de subredes a traves de dos zonas de disponibilidad (us-east-1a y us-east-1b). "
-        "Las tareas de Fargate nunca tienen direcciones IP publicas, y la base de datos se encuentra en subredes de datos "
-        "sin salida a internet ni ruta al exterior, eliminando vectores de ataque directo por red.")
+        "Las tareas de Fargate nunca tienen direcciones IP publicas, y la base de datos PostgreSQL 16 estructurada en BCNF "
+        "se encuentra en subredes de datos sin salida a internet ni ruta al exterior. "
+        "El pool inyecta obligatoriamente la zona horaria America/Lima para asegurar consistencia contable con SUNAT.")
 
     # =========================================================================
     # SLIDE 9: LO QUE AWS NO CONVIENE CONSTRUIR
@@ -628,38 +630,57 @@ def create_deck():
         "mediante crypto.timingSafeEqual, neutralizando ataques de temporizacion.")
 
     # =========================================================================
-    # SLIDE 14: MODELO DE DATOS Y TIMEZONE LIMA
+    # SLIDE 14: MARCO DE CALIDAD ISO 9126 Y EVOLUCIÓN A ISO/IEC 25010:2023
     # =========================================================================
     s14 = prs.slides.add_slide(BLANK)
-    add_header(s14, "Modelo Relacional (BCNF) y Resolucion de Zona Horaria", "7. BASE DE DATOS Y PERSISTENCIA")
+    add_header(s14, "Marco de Calidad: Fundamentos ISO 9126 y Transicion a ISO/IEC 25010:2023", "7. MARCO DE CALIDAD DE SOFTWARE")
 
-    box(s14, 0.5, 1.4, 5.9, 5.4, fill=LGRAY, line=GRAY)
-    txt(s14, 0.8, 1.6, 5.3, 0.4, "Normalizacion y Consistencia ACID", size=16, bold=True, color=NAVY)
-    txt(s14, 0.8, 2.1, 5.3, 4.4, 
-        "- Tercera Forma Normal (3FN / BCNF): Esquema relacional con 11 tablas maestras y de transaccion.\n"
-        "- Tablas Clave: products, product_variants, orders, order_items, payments, invoices, audit_logs.\n"
-        "- Integridad Referencial: Claves foraneas con eliminacion restringida (ON DELETE RESTRICT).\n"
-        "- Bloqueo Pesimista (SELECT FOR UPDATE): Evita carreras criticas (race conditions) en compras concurrentes.\n"
-        "- Migraciones Versionables: 11 migraciones secuenciales en TypeScript reproducibles en CI/CD.",
-        size=13, color=DARK)
+    # Columna Izquierda: Estructura ISO 9126 y Fórmulas
+    box(s14, 0.5, 1.4, 5.8, 5.4, fill=WHITE, line=BLUE)
+    txt(s14, 0.8, 1.6, 5.2, 0.35, "Norma ISO/IEC 9126: Estructura y Metricas", size=15, bold=True, color=BLUE)
+    txt(s14, 0.8, 2.05, 5.2, 4.6, 
+        "- Estructura Cuatripartita de la Norma:\n"
+        "  * ISO 9126-1: Modelo de calidad (interna, externa y en uso).\n"
+        "  * ISO 9126-2 (Metricas Externas): Software en ejecucion (k6 latencia p95=480ms, 0% fallas).\n"
+        "  * ISO 9126-3 (Metricas Internas): Software estatico (McCabe 1-3, 194 pruebas unitarias, TypeScript).\n"
+        "  * ISO 9126-4 (Calidad en Uso): Software en produccion comercial (SUS 88.5/100, WCAG AAA).\n\n"
+        "- Formulación Matemática de Clase:\n"
+        "  * Adecuacion Funcional (Diapo 17):\n"
+        "    X = 1 - (A / B) = 1 - (0 / 10) = 1.0 (100% de adecuacion)\n"
+        "    (A = 0 funciones deficientes | B = 10 funciones requeridas)\n"
+        "  * Madurez de Fiabilidad (Diapo 19):\n"
+        "    X = A / B = 194 / 194 = 1.0 (100% de madurez)\n"
+        "    (A = 194 pruebas aprobadas | B = 194 pruebas requeridas)",
+        size=10.5, color=DARK)
 
-    box(s14, 6.9, 1.4, 5.9, 5.4, fill=LBLUE, line=BLUE)
-    txt(s14, 7.2, 1.6, 5.3, 0.4, "Configuracion de Zona Horaria 'America/Lima'", size=16, bold=True, color=BLUE)
-    txt(s14, 7.2, 2.1, 5.3, 4.4, 
-        "- Problematica: En servidores cloud (Render/Neon en US-East), la hora por defecto es UTC (+00:00).\n"
-        "- Impacto: Pedidos nocturnos en Lima se registraban con la fecha del dia siguiente, alterando auditorias y reportes contables.\n"
-        "- Solucion en backend/src/config/database.ts: Inyeccion obligatoria de timezone al inicializar el pool:\n"
-        "  client.query(\"SET timezone = 'America/Lima'\")\n"
-        "- Garantia: 100% de marcas de tiempo (created_at) persisten en horario oficial peruano (UTC-5).",
-        size=13, color=DARK)
+    # Columna Derecha: Las 6 Características y Evolución
+    box(s14, 6.5, 1.4, 6.3, 5.4, fill=LGRAY, line=GRAY)
+    txt(s14, 6.8, 1.6, 5.7, 0.35, "Las 6 Caracteristicas ISO 9126 vs ISO 25010:2023", size=15, bold=True, color=NAVY)
+    txt(s14, 6.8, 2.05, 5.7, 4.6, 
+        "- Taxonomia Original ISO 9126-1 (6 Caracteristicas):\n"
+        "  1. Funcionalidad: Adecuacion (100%), Exactitud (Decimal.js), Interoperabilidad (SUNAT/WhatsApp), Seguridad y Conformidad.\n"
+        "  2. Fiabilidad: Madurez (X=A/B), Tolerancia a fallos (PWA offline, FOR UPDATE) y Recuperabilidad (PITR 3.2s).\n"
+        "  3. Usabilidad: Entendimiento, Aprendizaje, Operabilidad, Atraccion.\n"
+        "  4. Eficiencia: Comportamiento temporal (p50=120ms) y Recursos.\n"
+        "  5. Mantenibilidad: Capacidad de analisis, Cambiabilidad (CHG-01 en 2 archivos), Estabilidad y Testabilidad (TDD).\n"
+        "  6. Portabilidad: Adaptabilidad (Clean Arch), Instalacion, Coexistencia.\n\n"
+        "- Evolucion Normativa hacia ISO/IEC 25010:2023 (9 Caracteristicas):\n"
+        "  * Seguridad: Pasa de subcaracteristica a caracteristica de 1° nivel.\n"
+        "  * Safety (Seguridad Funcional): Nueva caracteristica (ACID).\n"
+        "  * Portabilidad: Absorbida en Flexibility (formalizando Scalability).\n"
+        "  * Usabilidad: Evoluciona a Interaction Capability (WCAG 2.1 AAA).",
+        size=10.5, color=DARK)
 
     add_notes(s14,
-        "NOTAS DEL ORADOR (SLIDE 14 - BASE DE DATOS):\n"
-        "En la base de datos PostgreSQL 16 aplicamos estricta normalizacion en Forma Normal de Boyce-Codd. "
-        "Un aporte tecnico critico que resolvimos fue la discrepancia de zona horaria: al estar los servidores de Neon en Estados Unidos, "
-        "los pedidos se registraban en horario UTC, lo que causaba que pedidos hechos despues de las 7 pm tuvieran la fecha del dia siguiente. "
-        "Configuramos el pool de conexiones para que cada sesion ejecute obligatoriamente 'SET timezone = America/Lima', "
-        "garantizando concordancia contable con la SUNAT.")
+        "NOTAS DEL ORADOR (SLIDE 14 - MARCO DE CALIDAD ISO 9126):\n"
+        "Iniciamos el bloque de calidad fundamentando la evolucion teorica desde la norma ISO/IEC 9126. "
+        "El docente explico en clase que la ISO 9126 se divide en 4 partes: la parte 1 con el modelo conceptual de 6 caracteristicas, "
+        "la parte 2 para metricas externas en ejecucion con pruebas de carga k6, la parte 3 para metricas internas estaticas de codigo como McCabe y pruebas unitarias, "
+        "y la parte 4 para calidad en uso evaluada con la escala SUS. "
+        "En LeoFit aplicamos rigurosamente las formulas de la clase: en adecuacion de la diapositiva 17, X = 1 - (A/B) alcanza 1.0 (100%) al cumplir los 10 requisitos funcionales; "
+        "y en madurez de la diapositiva 19, X = A/B logra 194 pruebas aprobadas sobre 194 requeridas sin defectos abiertos. "
+        "Mostramos ademas la genealogia hacia la ISO/IEC 25010:2023 vigente, donde la seguridad se independiza, la portabilidad se integra en flexibilidad formalizando la escalabilidad, "
+        "y se incorpora la seguridad funcional Safety para garantizar que ninguna falla corrompa el inventario textil.")
 
     # =========================================================================
         # =========================================================================

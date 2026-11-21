@@ -152,40 +152,146 @@ Se aplicó el instrumento estandarizado **SUS** a 5 usuarios reales en el stand 
 
 ## 5. Calidad de Software: Unidad 4 · Semanas 14 y 15 (NUEVO OBLIGATORIO)
 
-Esta sección constituye el núcleo formativo y técnico de la Unidad 4, estructurada con rigurosidad matemática, empírica y metodológica bajo la norma **ISO/IEC 25010:2023** y orientada a los lineamientos expuestos por el docente Ing. Enrique Lee Huamani.
+Esta sección constituye el núcleo formativo y técnico de la Unidad 4, estructurada con rigurosidad matemática, empírica y metodológica, fundamentada en los modelos internacionales de calidad de producto **ISO/IEC 9126** e **ISO/IEC 25010:2023**, orientada estrictamente a los lineamientos expuestos por el docente evaluador **Ing. Enrique Lee Huamani**.
 
 ---
 
-### 5.0 Marco Normativo y Evolución: De ISO/IEC 25010:2011 a ISO/IEC 25010:2023
+### 5.0 Marco Normativo Fundamental: Del Modelo ISO/IEC 9126 a la Norma Vigente ISO/IEC 25010:2023
 
-En la ingeniería de software profesional es imprescindible fundamentar las evaluaciones sobre la versión vigente de los estándares internacionales. La norma **ISO/IEC 25010:2023** (*Systems and software engineering — Systems and software Quality Requirements and Evaluation - SQuaRE — Product quality model*) introdujo transformaciones estructurales respecto a su predecesora del año 2011:
+En la ingeniería de software profesional es imprescindible comprender la evolución genealógica de los estándares de calidad: la familia **ISO/IEC 9126** sentó las bases universales de evaluación y medición de software, las cuales fueron posteriormente consolidadas y refinadas por la serie SQuaRE (**ISO/IEC 25000**), culminando en el estándar internacional vigente **ISO/IEC 25010:2023**.
 
-**Tabla 5.0.** *Comparativa estructural entre ISO/IEC 25010:2011 e ISO/IEC 25010:2023*
+#### 5.0.1 La Estructura de la Norma ISO/IEC 9126 (Partes 1 a 4)
+La norma ISO/IEC 9126 se estructura de manera sistemática en cuatro partes complementarias que abarcan todo el ciclo de vida del software:
 
-| Criterio de Comparación | ISO/IEC 25010:2011 | ISO/IEC 25010:2023 (Vigente) | Justificación e Impacto en LeoFit Solutions |
-| :--- | :--- | :--- | :--- |
-| **Total de Características** | 8 características | **9 características** de primer nivel | Se incorpora formalmente **Safety (Seguridad Funcional)** como característica independiente. |
-| **Seguridad de la Información vs Funcional** | *Security* agrupaba aspectos de confidencialidad y control | **Security** y **Safety** separadas | *Security* vela por confidencialidad e integridad (JWT/Bcrypt); *Safety* previene pérdidas operativas y financieras por inconsistencias de inventario. |
-| **Calidad de la Interacción** | *Usability* (Usabilidad) | **Interaction Capability** | Se trasciende la facilidad de uso para evaluar la capacidad integral de interacción persona-sistema, estética, inclusión y accesibilidad (WCAG 2.1). |
-| **Tratamiento de Portabilidad** | *Portability* era característica independiente | Integrada en **Flexibility** | Portability es absorbida por Flexibility, que ahora unifica Adaptabilidad, Escalabilidad, Instalabilidad y Reemplazabilidad. |
-| **Estatus de la Escalabilidad** | Concepto difuso asociado a rendimiento | **Scalability** es subcaracterística formal de **Flexibility** | Respalda normativamente el análisis de escalabilidad elástica: **“ISO/IEC 25010:2023 — Flexibility — Adaptability / Scalability”**. |
+1. **ISO/IEC 9126-1 (Modelo de Calidad):** Establece el modelo conceptual que clasifica la calidad del producto software en dos niveles:
+   - *Calidad Interna y Externa:* Descompuesta en 6 características maestras y 27 subcaracterísticas.
+   - *Calidad en Uso:* Enfocada en la experiencia final del usuario en su contexto real de operación.
+2. **ISO/IEC 9126-2 (Métricas Externas — Software en Ejecución Dinámica):** Define las métricas cuantitativas aplicables al software cuando se encuentra en funcionamiento (runtime). Mide el comportamiento dinámico del código en servidores de prueba o producción: tiempos de respuesta en milisegundos, throughput (solicitudes por segundo), consumo de memoria RAM en ejecución y tasa de errores de red o base de datos.
+3. **ISO/IEC 9126-3 (Métricas Internas — Software sin Ejecución Estática):** Proporciona métricas cuantitativas que evalúan las propiedades intrínsecas de los artefactos de software (código fuente, diagramas, esquemas DDL) sin requerir su ejecución. Cuantifica aspectos de diseño como la complejidad ciclomática de McCabe, líneas de código (LOC), adherencia estricta de tipado, cohesión de clases y grado de acoplamiento eferente/aferente.
+4. **ISO/IEC 9126-4 (Métricas de Calidad en Uso — Software en Producción):** Evalúa el impacto real del software en el entorno operativo del negocio, midiendo el grado en que el sistema permite a usuarios específicos alcanzar objetivos comerciales con eficacia, productividad, seguridad operativa y satisfacción subjetiva.
+
+**Tabla 5.0.1.** *Matriz de aplicación de las cuatro partes de ISO/IEC 9126 en LeoFit Solutions*
+
+| Parte de la Norma | Objeto de Medición | Estado del Software | Enfoque de Evaluación | Herramienta / Técnica en LeoFit | Métrica Verificable Obtenida |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **ISO 9126-1** | Modelo Conceptual | Ciclo de vida completo | Taxonomía de Calidad Interna, Externa y en Uso | Matriz de trazabilidad y RNF | 6 características y 27 subcaracterísticas mapeadas |
+| **ISO 9126-2** | Métricas Externas | Software en Ejecución (Runtime) | Rendimiento, latencia, errores y concurrencia | Grafana k6 + Express APM | Mediana $p50 = 120\text{ ms}$, **$p95 = 480\text{ ms}$**, 0.0% errores |
+| **ISO 9126-3** | Métricas Internas | Software sin Ejecución (Estático) | Mantenibilidad, modularidad y complejidad | ESLint, TypeScript Compiler, McCabe | Complejidad McCabe **1 a 3** ($\le 4$), 194 pruebas unitarias |
+| **ISO 9126-4** | Calidad en Uso | Software en Producción Comercial | Eficacia, satisfacción y productividad humana | System Usability Scale (SUS) | **Puntaje SUS 88.5 / 100**, tiempo de registro reducido 87.6% |
+
+---
+
+#### 5.0.2 Las 6 Características de Calidad Interna y Externa (ISO 9126-1) aplicadas a LeoFit
+
+Para ilustrar de forma tangible y didáctica cada una de las 6 características de la norma ISO/IEC 9126-1, se presenta su correspondencia técnica con la plataforma LeoFit Solutions, incorporando las fórmulas matemáticas enseñadas en clase por el docente:
+
+##### 1. FUNCIONALIDAD (¿El software hace lo que debe hacer?)
+Evalúa el conjunto de funciones que satisfacen las necesidades explícitas e implícitas del negocio textil bajo condiciones operativas:
+- **Adecuación / Adecuidad:** Capacidad del software para proporcionar un conjunto apropiado de funciones para tareas específicas.  
+  *Métrica Formal de Clase (Diapositiva 17):*
+  $$X = 1 - \left(\frac{A}{B}\right)$$
+  Donde:
+  - $A =$ Número de funciones requeridas por el negocio que presentan deficiencias o no han sido implementadas ($A = 0$ en LeoFit).
+  - $B =$ Total de funciones comerciales formalmente especificadas en el catálogo de requisitos funcionales ($B = 10$).
+  $$X = 1 - \left(\frac{0}{10}\right) = 1.0 \implies 100\%\text{ de Adecuación Funcional}$$
+  *Forma complementaria de cobertura funcional:*
+  $$X = \frac{\text{Funciones Implementadas y Verificadas}}{\text{Funciones Comerciales Requeridas}} = \frac{10}{10} = 1.0 \implies 100\%$$
+- **Exactitud:** Capacidad para generar resultados o efectos acordes a lo esperado con precisión matemática. En LeoFit, los cálculos monetarios de compras, descuentos textiles por volumen (10%) y desglose tributario de IGV (18%) se ejecutan con la biblioteca `Decimal.js` para erradicar errores de redondeo de punto flotante binario de JavaScript (IEEE 754), asegurando que un pedido de S/ 100.00 liquide y facture con una precisión exacta de dos decimales sin pérdida de céntimos.
+- **Interoperabilidad:** Capacidad de interactuar y comunicarse fluidamente con uno o más sistemas externos especificados. LeoFit se interconecta con la **SUNAT** emitiendo comprobantes en XML UBL 2.1 vía OSE, con la **WhatsApp Cloud API** despachando códigos de tracking de agencias, con **Pasarelas de Pago Digitales (Yape, Plin y tarjetas)** mediante webhooks firmados con HMAC-SHA256, y genera exportaciones de reportes comerciales en formato PDF vectorial y libros Excel.
+- **Seguridad:** Capacidad para prevenir el acceso no autorizado accidental o deliberado a programas y datos. Se implementa derivación de claves con **Bcrypt** (10 salt rounds), autenticación sin estado mediante **JSON Web Tokens (JWT HS256)** con expiración estricta, control de acceso basado en roles (**RBAC** con middlewares independientes para admin y cajero), y consultas SQL 100% parametrizadas para inmunizar al sistema contra inyecciones SQL.
+- **Conformidad de la funcionalidad:** Adherencia a normas legales, estándares tributarios y convenciones vigentes. Cumplimiento estricto del estándar de comprobantes de pago electrónicos de la SUNAT y la **Ley N° 29733 (Ley de Protección de Datos Personales del Perú)**.
+
+##### 2. FIABILIDAD / CONFIABILIDAD (¿Es estable y no se cae?)
+Capacidad del software para mantener su nivel de rendimiento bajo condiciones establecidas durante un período de tiempo:
+- **Madurez:** Frecuencia con la que el software presenta fallas debido a defectos latentes.  
+  *Métrica Formal de Clase (Diapositiva 19):*
+  $$X = \frac{A}{B}$$
+  Donde:
+  - $A =$ Número de casos de prueba ejecutados y aprobados satisfactoriamente ($A = 194$ pruebas automatizadas).
+  - $B =$ Número total de casos de prueba planificados y requeridos en el plan de calidad ($B = 194$).
+  $$X = \frac{194}{194} = 1.0 \implies 100\%\text{ de Madurez (Cero Defectos Abiertos)}$$
+  *En pruebas dinámicas de carga masiva k6:*
+  $$\text{Tasa de Solicitudes Fallidas} = \frac{\text{Solicitudes HTTP 5xx Fallidas}}{\text{Total de Solicitudes Procesadas}} = \frac{0}{34,200} = 0.00\%$$
+- **Tolerancia a fallos:** Capacidad de mantener un nivel especificado de prestaciones ante fallos del software o de la infraestructura externa. Si un operador pierde la señal de internet móvil en las galerías de Gamarra, la Progressive Web App (PWA) activa sus Service Workers y caché en IndexedDB para no interrumpir la consulta de stock. En la base de datos, compras concurrentes sobre la última prenda bloquean la fila con `SELECT ... FOR UPDATE` y aplican claves de idempotencia (RFC 8785), impidiendo transacciones dobles o cobros duplicados.
+- **Recuperabilidad:** Capacidad para restablecer el nivel de prestaciones y recuperar los datos afectados directamente tras un fallo del sistema. Neon PostgreSQL mantiene respaldos continuos basados en Write-Ahead Logs (WAL) que posibilitan la restauración puntual en el tiempo (**Point-in-Time Restore - PITR**), alcanzando un RTO (*Recovery Time Objective*) comprobado de **3.2 segundos** y un RPO (*Recovery Point Objective*) de **0 segundos** (cero pérdida de datos comerciales).
+- **Conformidad de la fiabilidad:** Cumplimiento de los acuerdos contractuales de disponibilidad. LeoFit garantiza una arquitectura de **Alta Disponibilidad (HA 24/7)** con un SLA objetivo del 99.9% anual.
+
+##### 3. USABILIDAD (¿Es fácil de entender, aprender y operar?)
+- **Entendimiento:** Facilidad para que el usuario reconozca si el software es idóneo para su flujo de trabajo comercial.
+- **Aprendizaje:** Facilidad con la que cajeros y vendedores dominan la creación de pedidos en menos de 10 minutos de inducción.
+- **Operabilidad:** Facilidad con que los usuarios operan y controlan la aplicación mediante pantallas táctiles o teclado.
+- **Atracción:** Diseño estético, limpio y profesional adaptado a la identidad corporativa de LeoFit (WCAG AAA).
+- **Conformidad de usabilidad:** Cumplimiento de las directrices internacionales de accesibilidad web **WCAG 2.1 Nivel AA/AAA**.
+
+##### 4. EFICIENCIA (¿Responde rápido y optimiza recursos?)
+- **Comportamiento de tiempos:** Tiempos de respuesta y throughput sub-segundo: mediana $p50 = 120\text{ ms}$ y percentil $p95 = 480\text{ ms}$ en carga nominal con k6.
+- **Utilización de recursos:** Uso prudente de CPU ($24\%$) y memoria RAM ($185\text{ MB}$), manteniéndose por debajo del límite seguro de Google SRE ($< 70\%$).
+- **Conformidad de eficiencia:** Cumplimiento riguroso del requisito de tiempo de respuesta contractual ($p95 < 700\text{ ms}$).
+
+##### 5. CAPACIDAD DE MANTENIMIENTO (¿Es fácil de modificar y probar?)
+- **Capacidad de ser analizado:** Facilidad para diagnosticar deficiencias o identificar componentes a modificar (Clean Architecture).
+- **Cambiabilidad:** Facilidad para que una modificación de regla comercial sea implementada con éxito. Caso real **CHG-01** (descuento del 10% por volumen textil) modificó únicamente 2 archivos (`order.service.ts` y su suite de prueba unitaria), sin tocar controladores ni esquemas de base de datos.
+- **Estabilidad:** Resistencia frente a efectos no intencionados o regresiones al modificar el software.
+- **Facilidad de prueba (Testabilidad):** Diseño concebido para TDD con funciones puras aisladas, dependencias inyectadas y complejidad ciclomática de McCabe entre **1 y 3** (rango óptimo $\le 4$).
+- **Conformidad de mantenimiento:** Estándar de cobertura superior al 80% en lógica comercial pura.
+
+##### 6. PORTABILIDAD (¿Se puede mover a otros entornos?)
+- **Adaptabilidad:** Facilidad de ejecución en Local (Docker Compose), Staging Cloud (Render + Neon) y Producción (AWS ECS Fargate) sin modificar código fuente, sustentada en variables de entorno (Twelve-Factor App).
+- **Facilidad de instalación:** Despliegue en un único comando mediante `docker-compose up -d`.
+- **Coexistencia:** Benchmark de contenedores concurrentes que comparten recursos sin interferencia mutua.
+- **Reemplazabilidad:** Capacidad de sustituir servicios externos (ej. conmutación entre pasarelas o simulación de SUNAT) mediante contratos de interfaz TypeScript.
+- **Conformidad de portabilidad:** Adherencia a los estándares OCI (Open Container Initiative).
+
+---
+
+#### 5.0.3 Genealogía y Evolución Normativa: De ISO 9126 a ISO/IEC 25010:2023
+
+En la ingeniería de software profesional es imprescindible fundamentar cómo la norma histórica **ISO/IEC 9126** fue absorbida y evolucionada por el estándar **ISO/IEC 25010** en sus versiones 2011 y 2023:
+
+**Tabla 5.0.2.** *Comparativa estructural y evolutiva entre ISO/IEC 9126, ISO/IEC 25010:2011 e ISO/IEC 25010:2023*
+
+| Dimensión de Análisis | ISO/IEC 9126:2001 (Histórica) | ISO/IEC 25010:2011 (Predecesora) | ISO/IEC 25010:2023 (Vigente) | Transformación Técnica Aplicada en LeoFit Solutions |
+| :--- | :--- | :--- | :--- | :--- |
+| **Total de Características** | 6 características | 8 características | **9 características** de primer nivel | El modelo se vuelve más granular y riguroso. |
+| **Seguridad de la Información** | Subcaracterística dentro de *Funcionalidad* | Característica independiente (*Security*) | Característica independiente (*Security*) | Se eleva a primer nivel; en LeoFit gobierna JWT, Bcrypt, HMAC y RBAC. |
+| **Seguridad Funcional / Ausencia de Daño** | No contemplada de forma explícita | Implícita en Confiabilidad | **Safety** (Característica independiente de 1° nivel) | Se separa formalmente de Security: *Safety* previene pérdidas de inventario o quiebras comerciales por inconsistencias de stock (ACID). |
+| **Calidad de la Interacción Humana** | *Usability* (Usabilidad) | *Usability* (Usabilidad) | **Interaction Capability** | Pasa de evaluar facilidad de uso a la capacidad integral de interacción, estética, inclusión y accesibilidad (WCAG 2.1 AAA). |
+| **Tratamiento de la Portabilidad** | Característica independiente (*Portability*) | Característica independiente (*Portability*) | Absorbida dentro de **Flexibility** | Portability se integra con Adaptabilidad, Instalabilidad, Reemplazabilidad y Escalabilidad. |
+| **Estatus de la Escalabilidad** | Concepto difuso ligado a eficiencia | Subcaracterística emergente | **Scalability** formal dentro de **Flexibility** | Respalda normativamente la escalabilidad elástica y el auto-scaling cloud: **“ISO/IEC 25010:2023 — Flexibility — Adaptability / Scalability”**. |
+| **Compatibilidad** | Dispersa en Portabilidad (Coexistencia) | Característica independiente (*Compatibility*) | Característica independiente (*Compatibility*) | Formaliza la interoperabilidad y coexistencia en contenedores Docker y servicios cloud. |
 
 ```mermaid
 flowchart TD
-    subgraph ISO["MODELO DE CALIDAD DE PRODUCTO · ISO/IEC 25010:2023 (9 CARACTERÍSTICAS)"]
-        C1["1. Functional Suitability<br/>(Adecuación Funcional)"]
-        C2["2. Performance Efficiency<br/>(Eficiencia de Desempeño)"]
-        C3["3. Compatibility<br/>(Compatibilidad)"]
-        C4["4. Interaction Capability<br/>(Capacidad de Interacción)"]
-        C5["5. Reliability<br/>(Confiabilidad)"]
-        C6["6. Security<br/>(Seguridad de la Información)"]
-        C7["7. Maintainability<br/>(Mantenibilidad)"]
-        C8["8. Flexibility<br/>(Adaptability + Scalability)"]
-        C9["9. Safety<br/>(Seguridad Funcional / Operativa)"]
+    subgraph ISO9126["NORMA HISTÓRICA: ISO/IEC 9126 (6 CARACTERÍSTICAS)"]
+        F["1. Funcionalidad (Adecuación, Exactitud, Interoperabilidad, Seguridad)"]
+        R["2. Fiabilidad (Madurez, Tolerancia a fallos, Recuperabilidad)"]
+        U["3. Usabilidad (Entendimiento, Aprendizaje, Operabilidad)"]
+        E["4. Eficiencia (Tiempos, Recursos)"]
+        M["5. Mantenibilidad (Análisis, Cambio, Estabilidad, Pruebas)"]
+        P["6. Portabilidad (Adaptabilidad, Instalación, Coexistencia)"]
     end
-    C2 -.->|"Evaluado S14"| S14_Perf["p50 / p95 / p99 & SRE Golden Signals"]
-    C8 -.->|"Evaluado S14"| S14_Flex["Clean Architecture & Resiliencia Cloud"]
-    C7 -.->|"Evaluado S15"| S15_Maint["Modularidad, Modificabilidad & TDD"]
+
+    subgraph ISO2023["ESTÁNDAR VIGENTE: ISO/IEC 25010:2023 (9 CARACTERÍSTICAS)"]
+        C1["1. Functional Suitability (Adecuación Funcional)"]
+        C2["2. Performance Efficiency (Eficiencia de Desempeño)"]
+        C3["3. Compatibility (Interoperabilidad + Coexistencia)"]
+        C4["4. Interaction Capability (Accesibilidad WCAG + SUS)"]
+        C5["5. Reliability (Confiabilidad HA + DRP PITR)"]
+        C6["6. Security (Confidencialidad JWT + HMAC + RBAC)"]
+        C7["7. Maintainability (Clean Arch + McCabe 1-3 + TDD)"]
+        C8["8. Flexibility (Adaptabilidad Twelve-Factor + Escalabilidad)"]
+        C9["9. Safety (Seguridad Funcional / Cero Sobreventas ACID)"]
+    end
+
+    F -->|"Seguridad se independiza"| C6
+    F -->|"Adecuación formal"| C1
+    F -->|"Integridad operativa"| C9
+    R --> C5
+    U -->|"Evoluciona a Interacción"| C4
+    E --> C2
+    M --> C7
+    P -->|"Portabilidad + Coexistencia"| C3
+    P -->|"Portabilidad absorbida en Flexibilidad"| C8
 ```
 
 **Figura 5.0.** *Perfil Radial de Calidad ISO/IEC 25010:2023 (9 Características) y Medidor Sintético Global de LeoFit Solutions*
@@ -530,16 +636,17 @@ En concordancia con las directivas pedagógicas del docente en la sesión de cla
 
 ## Referencias Normativas y Bibliográficas
 
-1. **ISO/IEC (2023).** *ISO/IEC 25010:2023 Systems and software engineering — Systems and software Quality Requirements and Evaluation (SQuaRE) — Product quality model.* International Organization for Standardization, Geneva, Switzerland.
-2. **ISO/IEC/IEEE (2021).** *ISO/IEC/IEEE 29119 Software Testing (Parts 1-4).* IEEE Computer Society.
-3. **Beyer, B., Jones, C., Petoff, J., & Murphy, N. R. (2016).** *Site Reliability Engineering: How Google Runs Production Systems.* O'Reilly Media.
-4. **Martin, R. C. (2017).** *Clean Architecture: A Craftsman's Guide to Software Structure and Design.* Prentice Hall.
-5. **Wiggins, A. (2017).** *The Twelve-Factor App.* `https://12factor.net/`
-6. **McCabe, T. J. (1976).** *A Complexity Measure.* IEEE Transactions on Software Engineering, SE-2(4), 308-320.
-7. **Nygard, M. T. (2018).** *Release It!: Design and Deploy Production-Ready Software (2nd ed.).* Pragmatic Bookshelf.
-8. **SUNAT (2024).** *Manual del Sistema de Emisión Electrónica CPE — Estándar UBL 2.1.* Lima, Perú.
-9. **Grafana Labs (2024).** *k6 Documentation: Modern load testing for engineering teams.*
-10. **PostgreSQL Global Development Group (2024).** *PostgreSQL 16.4 Documentation: Concurrency Control and Indexing.*
+1. **ISO/IEC (2001).** *ISO/IEC 9126 Software engineering — Product quality (Part 1: Quality model; Part 2: External metrics; Part 3: Internal metrics; Part 4: Quality in use metrics).* International Organization for Standardization, Geneva, Switzerland.
+2. **ISO/IEC (2023).** *ISO/IEC 25010:2023 Systems and software engineering — Systems and software Quality Requirements and Evaluation (SQuaRE) — Product quality model.* International Organization for Standardization, Geneva, Switzerland.
+3. **ISO/IEC/IEEE (2021).** *ISO/IEC/IEEE 29119 Software Testing (Parts 1-4).* IEEE Computer Society.
+4. **Beyer, B., Jones, C., Petoff, J., & Murphy, N. R. (2016).** *Site Reliability Engineering: How Google Runs Production Systems.* O'Reilly Media.
+5. **Martin, R. C. (2017).** *Clean Architecture: A Craftsman's Guide to Software Structure and Design.* Prentice Hall.
+6. **Wiggins, A. (2017).** *The Twelve-Factor App.* `https://12factor.net/`
+7. **McCabe, T. J. (1976).** *A Complexity Measure.* IEEE Transactions on Software Engineering, SE-2(4), 308-320.
+8. **Nygard, M. T. (2018).** *Release It!: Design and Deploy Production-Ready Software (2nd ed.).* Pragmatic Bookshelf.
+9. **SUNAT (2024).** *Manual del Sistema de Emisión Electrónica CPE — Estándar UBL 2.1.* Lima, Perú.
+10. **Grafana Labs (2024).** *k6 Documentation: Modern load testing for engineering teams.*
+11. **PostgreSQL Global Development Group (2024).** *PostgreSQL 16.4 Documentation: Concurrency Control and Indexing.*
 
 ---
 

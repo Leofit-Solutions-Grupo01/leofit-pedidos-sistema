@@ -260,13 +260,14 @@ TOPOLOGIA DE RED EN 2 AVAILABILITY ZONES (AZ-a y AZ-b):
    - Trafico entrante restringido exclusivamente al Security Group del ALB (Puerto 3001).  
   
 3. SUBREDES PRIVADAS DE DATOS (10.0.20.0/24 y 10.0.21.0/24):  
-   - Alojan la base de datos Aurora PostgreSQL y los nodos de ElastiCache Redis.  
+   - Alojan la base de datos Aurora PostgreSQL 16 (BCNF, 11 tablas) y nodos ElastiCache Redis.  
    - Totalmente aisladas: SIN ruta a internet ni asignacion de IPs publicas.  
    - Trafico entrante admitido unicamente desde el Security Group de Fargate en el puerto 5432.  
+   - Pool configurado con 'SET timezone = America/Lima' para consistencia fiscal SUNAT.  
 
 > **Notas del Orador:**  
-> NOTAS DEL ORADOR (SLIDE 8 - RED VPC):  
-> La seguridad de red se diseno bajo el principio de defensa en profundidad. Dividimos la VPC en tres niveles de subredes a traves de dos zonas de disponibilidad (us-east-1a y us-east-1b). Las tareas de Fargate nunca tienen direcciones IP publicas, y la base de datos se encuentra en subredes de datos sin salida a internet ni ruta al exterior, eliminando vectores de ataque directo por red.  
+> NOTAS DEL ORADOR (SLIDE 8 - RED VPC Y DATOS):  
+> La seguridad de red se diseno bajo el principio de defensa en profundidad. Dividimos la VPC en tres niveles de subredes a traves de dos zonas de disponibilidad (us-east-1a y us-east-1b). Las tareas de Fargate nunca tienen direcciones IP publicas, y la base de datos PostgreSQL 16 estructurada en BCNF se encuentra en subredes de datos sin salida a internet ni ruta al exterior. El pool inyecta obligatoriamente la zona horaria America/Lima para asegurar consistencia contable con SUNAT.  
 
 ---
 
@@ -439,33 +440,49 @@ Persistencia Tributaria   | Art. 87 Codigo Tribut.   | Tabla 'invoices' registra
 ---
 
 ## Diapositiva 14
-### 7. BASE DE DATOS Y PERSISTENCIA
+### 7. MARCO DE CALIDAD DE SOFTWARE
 
-### Modelo Relacional (BCNF) y Resolucion de Zona Horaria
+### Marco de Calidad: Fundamentos ISO 9126 y Transicion a ISO/IEC 25010:2023
 
 ### LeoFit Solutions - Grupo 01 | UTP Curso Integrador II
 
 ### Sustentacion Semana 18
 
-### Normalizacion y Consistencia ACID
+### Norma ISO/IEC 9126: Estructura y Metricas
 
-- Tercera Forma Normal (3FN / BCNF): Esquema relacional con 11 tablas maestras y de transaccion.
-- Tablas Clave: products, product_variants, orders, order_items, payments, invoices, audit_logs.
-- Integridad Referencial: Claves foraneas con eliminacion restringida (ON DELETE RESTRICT).
-- Bloqueo Pesimista (SELECT FOR UPDATE): Evita carreras criticas (race conditions) en compras concurrentes.
-- Migraciones Versionables: 11 migraciones secuenciales en TypeScript reproducibles en CI/CD.
+- Estructura Cuatripartita de la Norma:
+  * ISO 9126-1: Modelo de calidad (interna, externa y en uso).  
+  * ISO 9126-2 (Metricas Externas): Software en ejecucion (k6 latencia p95=480ms, 0% fallas).  
+  * ISO 9126-3 (Metricas Internas): Software estatico (McCabe 1-3, 194 pruebas unitarias, TypeScript).  
+  * ISO 9126-4 (Calidad en Uso): Software en produccion comercial (SUS 88.5/100, WCAG AAA).  
+  
+- Formulación Matemática de Clase:
+  * Adecuacion Funcional (Diapo 17):  
+    X = 1 - (A / B) = 1 - (0 / 10) = 1.0 (100% de adecuacion)  
+    (A = 0 funciones deficientes | B = 10 funciones requeridas)  
+  * Madurez de Fiabilidad (Diapo 19):  
+    X = A / B = 194 / 194 = 1.0 (100% de madurez)  
+    (A = 194 pruebas aprobadas | B = 194 pruebas requeridas)  
 
-### Configuracion de Zona Horaria 'America/Lima'
+### Las 6 Caracteristicas ISO 9126 vs ISO 25010:2023
 
-- Problematica: En servidores cloud (Render/Neon en US-East), la hora por defecto es UTC (+00:00).
-- Impacto: Pedidos nocturnos en Lima se registraban con la fecha del dia siguiente, alterando auditorias y reportes contables.
-- Solucion en backend/src/config/database.ts: Inyeccion obligatoria de timezone al inicializar el pool:
-  client.query("SET timezone = 'America/Lima'")  
-- Garantia: 100% de marcas de tiempo (created_at) persisten en horario oficial peruano (UTC-5).
+- Taxonomia Original ISO 9126-1 (6 Caracteristicas):
+  1. Funcionalidad: Adecuacion (100%), Exactitud (Decimal.js), Interoperabilidad (SUNAT/WhatsApp), Seguridad y Conformidad.  
+  2. Fiabilidad: Madurez (X=A/B), Tolerancia a fallos (PWA offline, FOR UPDATE) y Recuperabilidad (PITR 3.2s).  
+  3. Usabilidad: Entendimiento, Aprendizaje, Operabilidad, Atraccion.  
+  4. Eficiencia: Comportamiento temporal (p50=120ms) y Recursos.  
+  5. Mantenibilidad: Capacidad de analisis, Cambiabilidad (CHG-01 en 2 archivos), Estabilidad y Testabilidad (TDD).  
+  6. Portabilidad: Adaptabilidad (Clean Arch), Instalacion, Coexistencia.  
+  
+- Evolucion Normativa hacia ISO/IEC 25010:2023 (9 Caracteristicas):
+  * Seguridad: Pasa de subcaracteristica a caracteristica de 1° nivel.  
+  * Safety (Seguridad Funcional): Nueva caracteristica (ACID).  
+  * Portabilidad: Absorbida en Flexibility (formalizando Scalability).  
+  * Usabilidad: Evoluciona a Interaction Capability (WCAG 2.1 AAA).  
 
 > **Notas del Orador:**  
-> NOTAS DEL ORADOR (SLIDE 14 - BASE DE DATOS):  
-> En la base de datos PostgreSQL 16 aplicamos estricta normalizacion en Forma Normal de Boyce-Codd. Un aporte tecnico critico que resolvimos fue la discrepancia de zona horaria: al estar los servidores de Neon en Estados Unidos, los pedidos se registraban en horario UTC, lo que causaba que pedidos hechos despues de las 7 pm tuvieran la fecha del dia siguiente. Configuramos el pool de conexiones para que cada sesion ejecute obligatoriamente 'SET timezone = America/Lima', garantizando concordancia contable con la SUNAT.  
+> NOTAS DEL ORADOR (SLIDE 14 - MARCO DE CALIDAD ISO 9126):  
+> Iniciamos el bloque de calidad fundamentando la evolucion teorica desde la norma ISO/IEC 9126. El docente explico en clase que la ISO 9126 se divide en 4 partes: la parte 1 con el modelo conceptual de 6 caracteristicas, la parte 2 para metricas externas en ejecucion con pruebas de carga k6, la parte 3 para metricas internas estaticas de codigo como McCabe y pruebas unitarias, y la parte 4 para calidad en uso evaluada con la escala SUS. En LeoFit aplicamos rigurosamente las formulas de la clase: en adecuacion de la diapositiva 17, X = 1 - (A/B) alcanza 1.0 (100%) al cumplir los 10 requisitos funcionales; y en madurez de la diapositiva 19, X = A/B logra 194 pruebas aprobadas sobre 194 requeridas sin defectos abiertos. Mostramos ademas la genealogia hacia la ISO/IEC 25010:2023 vigente, donde la seguridad se independiza, la portabilidad se integra en flexibilidad formalizando la escalabilidad, y se incorpora la seguridad funcional Safety para garantizar que ninguna falla corrompa el inventario textil.  
 
 ---
 
