@@ -448,15 +448,15 @@ Persistencia Tributaria   | Art. 87 Codigo Tribut.   | Tabla 'invoices' registra
 
 ### Sustentacion Semana 18
 
-### Norma ISO/IEC 9126: Estructura y Metricas
+### Norma ISO/IEC 9126: Estructura y Metricas de Clase
 
-- Estructura Cuatripartita de la Norma:
+- Estructura Cuatripartita de la Norma ISO 9126:
   * ISO 9126-1: Modelo de calidad (interna, externa y en uso).  
-  * ISO 9126-2 (Metricas Externas): Software en ejecucion (k6 latencia p95=480ms, 0% fallas).  
-  * ISO 9126-3 (Metricas Internas): Software estatico (McCabe 1-3, 194 pruebas unitarias, TypeScript).  
-  * ISO 9126-4 (Calidad en Uso): Software en produccion comercial (SUS 88.5/100, WCAG AAA).  
+  * ISO 9126-2 (Metricas Externas - Runtime): Cobertura 100%, Tiempo analisis 8.5m, Exito causas 100%, Confiabilidad 100% (p95=480ms, 0% fallas k6).  
+  * ISO 9126-3 (Metricas Internas - Estatico): Completitud 100%, Suficiencia de pruebas 129% (194 tests), UI evidente 100%, McCabe 1-3, Trazabilidad 100%.  
+  * ISO 9126-4 (Calidad en Uso): Efectividad 100%, Productividad 8.2x (38.2s vs 310s), Dano Economico S/ 0.00, SUS 88.5/100.  
   
-- Formulación Matemática de Clase:
+- Formulacion Matematica de Clase:
   * Adecuacion Funcional (Diapo 17):  
     X = 1 - (A / B) = 1 - (0 / 10) = 1.0 (100% de adecuacion)  
     (A = 0 funciones deficientes | B = 10 funciones requeridas)  
@@ -482,7 +482,7 @@ Persistencia Tributaria   | Art. 87 Codigo Tribut.   | Tabla 'invoices' registra
 
 > **Notas del Orador:**  
 > NOTAS DEL ORADOR (SLIDE 14 - MARCO DE CALIDAD ISO 9126):  
-> Iniciamos el bloque de calidad fundamentando la evolucion teorica desde la norma ISO/IEC 9126. El docente explico en clase que la ISO 9126 se divide en 4 partes: la parte 1 con el modelo conceptual de 6 caracteristicas, la parte 2 para metricas externas en ejecucion con pruebas de carga k6, la parte 3 para metricas internas estaticas de codigo como McCabe y pruebas unitarias, y la parte 4 para calidad en uso evaluada con la escala SUS. En LeoFit aplicamos rigurosamente las formulas de la clase: en adecuacion de la diapositiva 17, X = 1 - (A/B) alcanza 1.0 (100%) al cumplir los 10 requisitos funcionales; y en madurez de la diapositiva 19, X = A/B logra 194 pruebas aprobadas sobre 194 requeridas sin defectos abiertos. Mostramos ademas la genealogia hacia la ISO/IEC 25010:2023 vigente, donde la seguridad se independiza, la portabilidad se integra en flexibilidad formalizando la escalabilidad, y se incorpora la seguridad funcional Safety para garantizar que ninguna falla corrompa el inventario textil.  
+> Iniciamos el bloque de calidad fundamentando la evolucion teorica desde la norma ISO/IEC 9126. El docente explico en clase que la ISO 9126 se divide en 4 partes fundamentales: la parte 1 con el modelo conceptual de 6 caracteristicas maestras y 27 subcaracteristicas; la parte 2 de metricas externas en ejecucion, cuyos 3 objetivos son validar cumplimiento externo, predecir calidad en uso y describir respuesta ante requisitos, logrando 100% de cobertura y 8.5 minutos en diagnostico; la parte 3 de metricas internas estaticas de codigo sin ejecucion, midiendo completitud (100%), suficiencia de pruebas (129% con 194 tests) y complejidad McCabe de 1 a 3; y la parte 4 para calidad en uso en produccion, abarcando efectividad, productividad, seguridad física y económica con S/ 0.00 de daño, y satisfaccion SUS. En LeoFit aplicamos rigurosamente las formulas de la clase: en adecuacion de la diapositiva 17, X = 1 - (A/B) alcanza 1.0 (100%) al cumplir los 10 requisitos funcionales; y en madurez de la diapositiva 19, X = A/B logra 194 pruebas aprobadas sobre 194 requeridas sin defectos abiertos. Mostramos ademas la genealogia hacia la ISO/IEC 25010:2023 vigente con sus 9 caracteristicas.  
 
 ---
 
@@ -715,33 +715,32 @@ Persistencia Tributaria   | Art. 87 Codigo Tribut.   | Tabla 'invoices' registra
 ## Diapositiva 21
 ### 11. TESTING Y CALIDAD (QA)
 
-### Evaluacion Integral de Calidad ISO/IEC 25010:2023 y Usabilidad
+### Evaluacion Integral ISO/IEC 25010:2023 y Calidad en Uso (ISO 9126-4)
 
 ### LeoFit Solutions - Grupo 01 | UTP Curso Integrador II
 
 ### Sustentacion Semana 18
 
-### Perfil de Calidad Global y Accesibilidad
+### Perfil de Calidad Global y Calidad en Uso
 
 - Modelo ISO/IEC 25010:2023 (9 Caracteristicas):
-  * Adecuacion Funcional: 98.0% (10 de 10 RF verificados).  
-  * Eficiencia de Desempeno: 94.0% (p95 = 480 ms en carga nominal).  
-  * Seguridad de la Informacion: 97.0% (Bcrypt, JWT, HMAC).  
-  * Mantenibilidad: 95.5% (McCabe 1-3, 194 pruebas automatizadas).  
-  * Confiabilidad: 96.5% (PWA offline, PITR RPO < 5 min).  
-  * Seguridad Funcional (Safety): 91.0% (Cero sobreventas ACID).  
+  * Adecuacion Funcional: 98.0% | Desempeno (p95=480ms): 94.0%  
+  * Seguridad Informacion: 97.0% | Mantenibilidad (McCabe 1-3): 95.5%  
+  * Confiabilidad: 96.5% | Safety (Cero sobreventas ACID): 91.0%  
+  * Puntaje Sintetico Global: 94.6 / 100 (Nivel Sobresaliente).  
   
-- Puntaje Sintetico Global: 94.6 / 100 (Nivel Sobresaliente).
-  
-- Estudio de Usabilidad (System Usability Scale):
-  * Puntaje SUS: 88.5 / 100 (Grado A, Percentil 96% de excelencia).  
-  * Tiempo de registro reducido de 310s a 38.2s (-87.6%).  
+- Calidad en Uso (ISO 9126-4) y Metricas de Clase:
+  * Efectividad: 100% tareas completas, 0.08 errores/tarea.  
+  * Productividad: 38.2s vs 310s (-87.6%), 1.57 ped/min (8.2x),  
+    costo $0.0056 USD (S/ 0.021)/pedido, 92.4% tiempo productivo.  
+  * Seguridad y Dano Economico: S/ 0.00 soles perdidos en inventario.  
+  * Satisfaccion: SUS 88.5 / 100 (Grado A, Percentil 96%).  
   
 - Accesibilidad WCAG 2.1 AA/AAA: Contrastes de hasta 17.8:1.
 
 > **Notas del Orador:**  
-> NOTAS DEL ORADOR (SLIDE 21 - ISO 25010):  
-> Para cerrar la evaluacion de calidad, a la derecha presentamos el grafico radial de las 9 caracteristicas de la norma ISO/IEC 25010:2023. El poligono demuestra un sistema altamente equilibrado, superando en todas las dimensiones el 90% y alcanzando un puntaje sintetico global de 94.6 sobre 100. En la parte humana, certificamos una usabilidad de 88.5 puntos SUS en el percentil 96 y accesibilidad web de contraste AAA.  
+> NOTAS DEL ORADOR (SLIDE 21 - ISO 25010 Y CALIDAD EN USO ISO 9126-4):  
+> Para cerrar el bloque de calidad presentamos la sintesis entre el estandar vigente ISO/IEC 25010:2023 y la calidad en uso de ISO 9126-4. A la derecha observan el grafico radial con las 9 caracteristicas tecnicas, superando holgadamente el 90% con un puntaje global de 94.6 sobre 100. En cuanto a calidad en uso segun la norma ISO 9126-4 explicada por el profesor: en efectividad logramos 100% de tareas completadas; en productividad reducimos el tiempo operativo de 310 segundos a 38.2 segundos, multiplicando la velocidad por 8.2x y elevando el tiempo comercial activo al 92.4%; en seguridad fisica y operativa prevenimos el riesgo de dano con S/ 0.00 soles de perdida economica gracias a la concurrencia ACID con FOR UPDATE; y en satisfaccion alcanzamos 88.5 puntos SUS en el percentil 96 con accesibilidad universal WCAG 2.1 AAA.  
 
 ---
 

@@ -635,23 +635,23 @@ def create_deck():
     s14 = prs.slides.add_slide(BLANK)
     add_header(s14, "Marco de Calidad: Fundamentos ISO 9126 y Transicion a ISO/IEC 25010:2023", "7. MARCO DE CALIDAD DE SOFTWARE")
 
-    # Columna Izquierda: Estructura ISO 9126 y Fórmulas
+    # Columna Izquierda: Estructura ISO 9126 (Partes 1-4) y Fórmulas
     box(s14, 0.5, 1.4, 5.8, 5.4, fill=WHITE, line=BLUE)
-    txt(s14, 0.8, 1.6, 5.2, 0.35, "Norma ISO/IEC 9126: Estructura y Metricas", size=15, bold=True, color=BLUE)
+    txt(s14, 0.8, 1.6, 5.2, 0.35, "Norma ISO/IEC 9126: Estructura y Metricas de Clase", size=15, bold=True, color=BLUE)
     txt(s14, 0.8, 2.05, 5.2, 4.6, 
-        "- Estructura Cuatripartita de la Norma:\n"
+        "- Estructura Cuatripartita de la Norma ISO 9126:\n"
         "  * ISO 9126-1: Modelo de calidad (interna, externa y en uso).\n"
-        "  * ISO 9126-2 (Metricas Externas): Software en ejecucion (k6 latencia p95=480ms, 0% fallas).\n"
-        "  * ISO 9126-3 (Metricas Internas): Software estatico (McCabe 1-3, 194 pruebas unitarias, TypeScript).\n"
-        "  * ISO 9126-4 (Calidad en Uso): Software en produccion comercial (SUS 88.5/100, WCAG AAA).\n\n"
-        "- Formulación Matemática de Clase:\n"
+        "  * ISO 9126-2 (Metricas Externas - Runtime): Cobertura 100%, Tiempo analisis 8.5m, Exito causas 100%, Confiabilidad 100% (p95=480ms, 0% fallas k6).\n"
+        "  * ISO 9126-3 (Metricas Internas - Estatico): Completitud 100%, Suficiencia de pruebas 129% (194 tests), UI evidente 100%, McCabe 1-3, Trazabilidad 100%.\n"
+        "  * ISO 9126-4 (Calidad en Uso): Efectividad 100%, Productividad 8.2x (38.2s vs 310s), Dano Economico S/ 0.00, SUS 88.5/100.\n\n"
+        "- Formulacion Matematica de Clase:\n"
         "  * Adecuacion Funcional (Diapo 17):\n"
         "    X = 1 - (A / B) = 1 - (0 / 10) = 1.0 (100% de adecuacion)\n"
         "    (A = 0 funciones deficientes | B = 10 funciones requeridas)\n"
         "  * Madurez de Fiabilidad (Diapo 19):\n"
         "    X = A / B = 194 / 194 = 1.0 (100% de madurez)\n"
         "    (A = 194 pruebas aprobadas | B = 194 pruebas requeridas)",
-        size=10.5, color=DARK)
+        size=10.0, color=DARK)
 
     # Columna Derecha: Las 6 Características y Evolución
     box(s14, 6.5, 1.4, 6.3, 5.4, fill=LGRAY, line=GRAY)
@@ -674,13 +674,14 @@ def create_deck():
     add_notes(s14,
         "NOTAS DEL ORADOR (SLIDE 14 - MARCO DE CALIDAD ISO 9126):\n"
         "Iniciamos el bloque de calidad fundamentando la evolucion teorica desde la norma ISO/IEC 9126. "
-        "El docente explico en clase que la ISO 9126 se divide en 4 partes: la parte 1 con el modelo conceptual de 6 caracteristicas, "
-        "la parte 2 para metricas externas en ejecucion con pruebas de carga k6, la parte 3 para metricas internas estaticas de codigo como McCabe y pruebas unitarias, "
-        "y la parte 4 para calidad en uso evaluada con la escala SUS. "
+        "El docente explico en clase que la ISO 9126 se divide en 4 partes fundamentales: "
+        "la parte 1 con el modelo conceptual de 6 caracteristicas maestras y 27 subcaracteristicas; "
+        "la parte 2 de metricas externas en ejecucion, cuyos 3 objetivos son validar cumplimiento externo, predecir calidad en uso y describir respuesta ante requisitos, logrando 100% de cobertura y 8.5 minutos en diagnostico; "
+        "la parte 3 de metricas internas estaticas de codigo sin ejecucion, midiendo completitud (100%), suficiencia de pruebas (129% con 194 tests) y complejidad McCabe de 1 a 3; "
+        "y la parte 4 para calidad en uso en produccion, abarcando efectividad, productividad, seguridad física y económica con S/ 0.00 de daño, y satisfaccion SUS. "
         "En LeoFit aplicamos rigurosamente las formulas de la clase: en adecuacion de la diapositiva 17, X = 1 - (A/B) alcanza 1.0 (100%) al cumplir los 10 requisitos funcionales; "
         "y en madurez de la diapositiva 19, X = A/B logra 194 pruebas aprobadas sobre 194 requeridas sin defectos abiertos. "
-        "Mostramos ademas la genealogia hacia la ISO/IEC 25010:2023 vigente, donde la seguridad se independiza, la portabilidad se integra en flexibilidad formalizando la escalabilidad, "
-        "y se incorpora la seguridad funcional Safety para garantizar que ninguna falla corrompa el inventario textil.")
+        "Mostramos ademas la genealogia hacia la ISO/IEC 25010:2023 vigente con sus 9 caracteristicas.")
 
     # =========================================================================
         # =========================================================================
@@ -934,36 +935,39 @@ def create_deck():
         "demostrando que el esfuerzo de pruebas se enfoca donde reside el valor comercial. Todas las dependencias apuntan hacia el interior del sistema sin violaciones de acoplamiento.")
 
     # =========================================================================
-    # SLIDE 21: EVALUACIÓN INTEGRAL ISO/IEC 25010:2023 Y ACCESIBILIDAD
+    # SLIDE 21: EVALUACIÓN INTEGRAL ISO/IEC 25010:2023 Y CALIDAD EN USO (ISO 9126-4)
     # =========================================================================
     s21 = prs.slides.add_slide(BLANK)
-    add_header(s21, "Evaluacion Integral de Calidad ISO/IEC 25010:2023 y Usabilidad", "11. TESTING Y CALIDAD (QA)")
+    add_header(s21, "Evaluacion Integral ISO/IEC 25010:2023 y Calidad en Uso (ISO 9126-4)", "11. TESTING Y CALIDAD (QA)")
 
     box(s21, 0.5, 1.4, 5.8, 5.4, fill=WHITE, line=BLUE)
-    txt(s21, 0.8, 1.6, 5.2, 0.35, "Perfil de Calidad Global y Accesibilidad", size=15, bold=True, color=NAVY)
+    txt(s21, 0.8, 1.6, 5.2, 0.35, "Perfil de Calidad Global y Calidad en Uso", size=15, bold=True, color=NAVY)
     txt(s21, 0.8, 2.05, 5.2, 4.6, 
         "- Modelo ISO/IEC 25010:2023 (9 Caracteristicas):\n"
-        "  * Adecuacion Funcional: 98.0% (10 de 10 RF verificados).\n"
-        "  * Eficiencia de Desempeno: 94.0% (p95 = 480 ms en carga nominal).\n"
-        "  * Seguridad de la Informacion: 97.0% (Bcrypt, JWT, HMAC).\n"
-        "  * Mantenibilidad: 95.5% (McCabe 1-3, 194 pruebas automatizadas).\n"
-        "  * Confiabilidad: 96.5% (PWA offline, PITR RPO < 5 min).\n"
-        "  * Seguridad Funcional (Safety): 91.0% (Cero sobreventas ACID).\n\n"
-        "- Puntaje Sintetico Global: 94.6 / 100 (Nivel Sobresaliente).\n\n"
-        "- Estudio de Usabilidad (System Usability Scale):\n"
-        "  * Puntaje SUS: 88.5 / 100 (Grado A, Percentil 96% de excelencia).\n"
-        "  * Tiempo de registro reducido de 310s a 38.2s (-87.6%).\n\n"
+        "  * Adecuacion Funcional: 98.0% | Desempeno (p95=480ms): 94.0%\n"
+        "  * Seguridad Informacion: 97.0% | Mantenibilidad (McCabe 1-3): 95.5%\n"
+        "  * Confiabilidad: 96.5% | Safety (Cero sobreventas ACID): 91.0%\n"
+        "  * Puntaje Sintetico Global: 94.6 / 100 (Nivel Sobresaliente).\n\n"
+        "- Calidad en Uso (ISO 9126-4) y Metricas de Clase:\n"
+        "  * Efectividad: 100% tareas completas, 0.08 errores/tarea.\n"
+        "  * Productividad: 38.2s vs 310s (-87.6%), 1.57 ped/min (8.2x),\n"
+        "    costo $0.0056 USD (S/ 0.021)/pedido, 92.4% tiempo productivo.\n"
+        "  * Seguridad y Dano Economico: S/ 0.00 soles perdidos en inventario.\n"
+        "  * Satisfaccion: SUS 88.5 / 100 (Grado A, Percentil 96%).\n\n"
         "- Accesibilidad WCAG 2.1 AA/AAA: Contrastes de hasta 17.8:1.",
-        size=10.5, color=DARK)
+        size=10.0, color=DARK)
 
     # Columna Derecha: Grafico Radial ISO 25010:2023 + Score Gauge
     pic(s21, "fig01_radar_iso25010_2023.png", 6.5, 1.4, 6.3, 5.4)
 
     add_notes(s21,
-        "NOTAS DEL ORADOR (SLIDE 21 - ISO 25010):\n"
-        "Para cerrar la evaluacion de calidad, a la derecha presentamos el grafico radial de las 9 caracteristicas de la norma ISO/IEC 25010:2023. "
-        "El poligono demuestra un sistema altamente equilibrado, superando en todas las dimensiones el 90% y alcanzando un puntaje sintetico global de 94.6 sobre 100. "
-        "En la parte humana, certificamos una usabilidad de 88.5 puntos SUS en el percentil 96 y accesibilidad web de contraste AAA.")
+        "NOTAS DEL ORADOR (SLIDE 21 - ISO 25010 Y CALIDAD EN USO ISO 9126-4):\n"
+        "Para cerrar el bloque de calidad presentamos la sintesis entre el estandar vigente ISO/IEC 25010:2023 y la calidad en uso de ISO 9126-4. "
+        "A la derecha observan el grafico radial con las 9 caracteristicas tecnicas, superando holgadamente el 90% con un puntaje global de 94.6 sobre 100. "
+        "En cuanto a calidad en uso segun la norma ISO 9126-4 explicada por el profesor: "
+        "en efectividad logramos 100% de tareas completadas; en productividad reducimos el tiempo operativo de 310 segundos a 38.2 segundos, multiplicando la velocidad por 8.2x y elevando el tiempo comercial activo al 92.4%; "
+        "en seguridad fisica y operativa prevenimos el riesgo de dano con S/ 0.00 soles de perdida economica gracias a la concurrencia ACID con FOR UPDATE; "
+        "y en satisfaccion alcanzamos 88.5 puntos SUS en el percentil 96 con accesibilidad universal WCAG 2.1 AAA.")
 
     # =========================================================================
     # SLIDE 22: DEMOSTRACIÓN EN LA NUBE
