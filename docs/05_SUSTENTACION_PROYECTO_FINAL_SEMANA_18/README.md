@@ -19,7 +19,7 @@ Esta carpeta consolida la presentación oficial de defensa del proyecto final an
 
 | Recurso / Archivo | Formato | Especificaciones Técnicas | Propósito y Audiencia |
 | :--- | :--- | :--- | :--- |
-| [**`03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.pptx`**](./03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.pptx) | PowerPoint (.pptx) | Widescreen 16:9, **25 diapositivas ejecutivas**, tablas nativas, paleta institucional Navy/Cobalt/Terracotta WCAG AAA, notas de orador en el 100% de las diapositivas | **Entregable Oficial de Sustentación.** Archivo ejecutable de presentación formal para el jurado evaluador con alta densidad técnica y visual. |
+| [**`03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.pptx`**](./03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.pptx) | PowerPoint (.pptx) | Widescreen 16:9, **25 diapositivas ejecutivas**, tablas dinámicas nativas, paleta institucional Navy/Cobalt/Terracotta WCAG AAA, notas de orador en el 100% de las láminas | **Entregable Oficial de Sustentación.** Archivo ejecutable de presentación formal para el jurado evaluador con alta densidad técnica y visual. |
 | [**`03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.html`**](./03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.html) | HTML5 Responsivo Standalone | Visor web interactivo con atajos de teclado (`<-` / `->`), modo pantalla completa y panel lateral de notas de orador (tecla `N`) | Visualización interactiva en cualquier navegador sin necesidad de suite ofimática instalada. |
 | [**`03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.md`**](./03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.md) | Markdown Canónico | Transcripción estructurada diapositiva por diapositiva con textos, tablas y notas completas | Guion técnico de lectura y ensayo coordinado para los 5 integrantes del equipo. |
 
@@ -30,42 +30,42 @@ Esta carpeta consolida la presentación oficial de defensa del proyecto final an
 La presentación está organizada en 6 bloques metodológicos alineados a la ingeniería de software y a las directivas del docente Ing. Enrique Lee Huamani:
 
 ```text
-BLOQUE I: CONTEXTO Y PROBLEMÁTICA (Slides 1 - 5)
-  ├─ Slide 01: Carátula Oficial Institucional UTP
-  ├─ Slide 02: Agenda Ejecutiva de Sustentación (6 Bloques)
-  ├─ Slide 03: Empresa Patrocinadora: LeoFit Confecciones y Diseños Deportivos S.A.C.
-  ├─ Slide 04: Problemática Empresarial y Cuantificación de Pérdidas Operativas
-  └─ Slide 05: Objetivos del Proyecto y Matriz de Alineamiento Estratégico
+BLOQUE I: CONTEXTO, PROBLEMÁTICA Y ARQUITECTURA BASE (Slides 1 - 3)
+  ├─ Slide 01: Portada Oficial Institucional UTP y Equipo de Ingeniería Grupo 01
+  ├─ Slide 02: Contexto Operativo Textil y Cuantificación de Pérdidas Comerciales
+  └─ Slide 03: Arquitectura Lógica del Sistema (C4 Modelo - Nivel 2 Contenedores)
 
-BLOQUE II: ARQUITECTURA Y DISEÑO TÉCNICO (Slides 6 - 9)
-  ├─ Slide 06: Arquitectura de Software C4 (Nivel 1 Contexto y Nivel 2 Contenedores)
-  ├─ Slide 07: Proceso de Negocio BPMN (AS-IS Manual vs TO-BE Automatizado)
-  ├─ Slide 08: Modelo de Datos Relacional PostgreSQL 16 en Boyce-Codd (BCNF)
-  └─ Slide 09: Decisiones de Arquitectura Cloud (ADR-001 Render/Neon y ADR-002 AWS)
+BLOQUE II: DECISIONES DE ARQUITECTURA CLOUD - ADRs (Slides 4 - 9)
+  ├─ Slide 04: ADR-001: Elección de Render Cloud + Neon PostgreSQL vs AWS
+  ├─ Slide 05: Comparativa Técnica y Financiera (Ahorro de $153/mes en Staging)
+  ├─ Slide 06: Umbrales Cuantitativos de Migración (80 VU, $1,200 MRR, 15 GB)
+  ├─ Slide 07: ADR-002: Arquitectura Objetivo en AWS (ECS Fargate + RDS Multi-AZ)
+  ├─ Slide 08: Topología de Red VPC, Seguridad en Capas y Resiliencia
+  └─ Slide 09: Lo que AWS NO Conviene Construir (Evitar Sobre-Ingeniería)
 
-BLOQUE III: DESARROLLO, SEGURIDAD Y DEMO EN VIVO (Slides 10 - 13)
-  ├─ Slide 10: Stack Tecnológico de Ingeniería (Frontend, Backend, DB, DevOps)
-  ├─ Slide 11: Seguridad Defensiva en Profundidad (OWASP Top 10, JWT, HMAC, RBAC)
-  ├─ Slide 12: Demostración en Vivo del Sistema PWA (Flujo de Pedido e Inventario)
-  └─ Slide 13: Experiencia de Usuario y Accesibilidad (SUS 88.5/100, WCAG 2.1 AA)
+BLOQUE III: FACTURACIÓN SUNAT, PAGOS Y SEGURIDAD (Slides 10 - 14)
+  ├─ Slide 10: Cumplimiento SUNAT CPE (Esquema XML UBL 2.1 y Firma Criptográfica)
+  ├─ Slide 11: Flujo Técnico de Emisión y Contingencias Tributarias
+  ├─ Slide 12: Pasarela de Pagos Móviles: Modo Sandbox vs Producción
+  ├─ Slide 13: Seguridad Criptográfica, PCI-DSS (SAQ A) y HMAC-SHA256
+  └─ Slide 14: Modelo de Datos Relacional (BCNF) y Configuración de Zona Horaria Lima
 
-BLOQUE IV: CALIDAD DE SOFTWARE ISO/IEC 25010:2023 (Slides 14 - 17)
-  ├─ Slide 14: Marco de Calidad ISO 25010: Eficiencia, Flexibilidad y Mantenibilidad
-  ├─ Slide 15: Pruebas de Rendimiento k6 (p50/p95, CPU, RAM y Optimización B-Tree)
-  ├─ Slide 16: Flexibilidad Arquitectónica (Clean Architecture y Escalabilidad Elástica)
-  └─ Slide 17: Mantenibilidad y Pirámide de Pruebas (TDD, 194 Tests 100% OK)
+BLOQUE IV: CALIDAD DE SOFTWARE ISO/IEC 25010:2023 (Slides 15 - 18)
+  ├─ Slide 15: Rendimiento k6 (Percentiles p50/p95/p99, SRE Golden Signals, B-Tree)
+  ├─ Slide 16: Flexibilidad (Adaptabilidad Twelve-Factor y Resiliencia Cloud)
+  ├─ Slide 17: Mantenibilidad (Clean Architecture, Inversión de Dependencias y DRY)
+  └─ Slide 18: Modificabilidad (Blast Radius mínimo), Complejidad Ciclomática y TDD
 
-BLOQUE V: CONTINUIDAD OPERATIVA Y RESILIENCIA (Slides 18 - 20)
-  ├─ Slide 18: Alta Disponibilidad (HA 24/7 Uptime 99.9% vs Computación HPC)
-  ├─ Slide 19: Plan de Recuperación ante Desastres DRP (Simulacro RTO 3.2s, RPO 0s)
-  └─ Slide 20: Estrategia de Respaldo PITR, Snapshots y Monitoreo Proactivo
+BLOQUE V: CONFIABILIDAD, TESTING Y OPERACIÓN CLOUD (Slides 19 - 22)
+  ├─ Slide 19: Confiabilidad: Alta Disponibilidad (HA 24/7 vs HPC), PWA y DRP
+  ├─ Slide 20: Batería QA de 194 Pruebas Automatizadas (125 Backend + 69 Frontend)
+  ├─ Slide 21: Marco Integral ISO/IEC 25010:2023 (9 Características) y SUS 88.5/100
+  └─ Slide 22: Demostración y Validación en Vivo en la Nube (Cloud Staging)
 
-BLOQUE VI: GESTIÓN, AUDITORÍA Y CONCLUSIONES (Slides 21 - 25)
-  ├─ Slide 21: Auditoría de Calidad y Matriz de Deuda Técnica (ISO 29119)
-  ├─ Slide 22: Análisis de Retorno de Inversión (ROI 243%, VAN S/ 86,400, Payback 4.8m)
-  ├─ Slide 23: Cumplimiento de Rúbrica Institucional UTP y Cronograma
+BLOQUE VI: TRAZABILIDAD, CONCLUSIONES Y CIERRE (Slides 23 - 25)
+  ├─ Slide 23: Matriz de Trazabilidad ante el Jurado Evaluador UTP
   ├─ Slide 24: Conclusiones de Ingeniería y Recomendaciones Operativas
-  └─ Slide 25: Agradecimientos y Panel de Defensa Técnica Abierto
+  └─ Slide 25: Cierre, Agradecimientos y Panel de Defensa Técnica Abierto
 ```
 
 ---
