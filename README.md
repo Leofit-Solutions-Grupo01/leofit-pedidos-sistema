@@ -1,14 +1,18 @@
+to e
+
 # LeoFit Solutions — Sistema Web PWA de Gestión de Pedidos, Facturación y Control de Inventario Multicanal (`v2.4.0`)
+
 ## Universidad Tecnológica del Perú (UTP) — Curso Integrador II: Software (`100000S12F`)
-**Docente Asesor:** Ing. Enrique Lee Huamani Uriarte | **Sección:** 35374 (Turno Noche) | **Grupo:** 01  
+
+**Docente Asesor:** Ing. Enrique Lee Huamani Uriarte | **Sección:** 35374 (Turno Noche) | **Grupo:** 01
 **Organización GitHub:** [`Leofit-Solutions-Grupo01`](https://github.com/Leofit-Solutions-Grupo01) | **Repositorio:** [`leofit-pedidos-sistema`](https://github.com/Leofit-Solutions-Grupo01/leofit-pedidos-sistema)
 
 ---
 
 [![Sustentación Final](https://img.shields.io/badge/Sustentaci%C3%B3n%20Final%20S18-25%20Slides%20%2B%20Notas%20Completas-0F172A.svg)](docs/05_SUSTENTACION_PROYECTO_FINAL_SEMANA_18/03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.pptx)
-[![Informe Continuación S14-S15](https://img.shields.io/badge/Informe%20Continuaci%C3%B3n-Semanas%2014%20y%2015%20(ISO%2025010)-1665D8.svg)](docs/02_CALIDAD_Y_AUDITORIA/04_calidad_iso25010_semanas_14_15/INFORME_CONTINUACION_S14_S15_PROYECTO_FINAL_LEOFIT.docx)
+[![Informe Continuación S14-S15](https://img.shields.io/badge/Informe%20Continuaci%C3%B3n-Semanas%2014%20y%2015%20%28ISO%2025010%29-1665D8.svg)](docs/02_CALIDAD_Y_AUDITORIA/04_calidad_iso25010_semanas_14_15/INFORME_CONTINUACION_S14_S15_PROYECTO_FINAL_LEOFIT.docx)
 [![Calidad ISO 25010](https://img.shields.io/badge/ISO%2FIEC%2025010-Rendimiento%20%7C%20Flexibilidad%20%7C%20Mantenibilidad-15803D.svg)](docs/02_CALIDAD_Y_AUDITORIA/04_calidad_iso25010_semanas_14_15/INFORME_CONTINUACION_S14_S15_PROYECTO_FINAL_LEOFIT.md)
-[![Pruebas Automatizadas](https://img.shields.io/badge/Tests%20Automatizados-194%20Passing%20(125%20BE%20%2B%2069%20FE)-1E3A8A.svg)](docs/03_ARQUITECTURA_Y_DIAGRAMAS/README.md)
+[![Pruebas Automatizadas](https://img.shields.io/badge/Tests%20Automatizados-194%20Passing%20%28125%20BE%20%2B%2069%20FE%29-1E3A8A.svg)](docs/03_ARQUITECTURA_Y_DIAGRAMAS/README.md)
 [![Arquitectura](https://img.shields.io/badge/Architecture-Clean%20Architecture%20%2B%203FN%2FBCNF-0F172A.svg)](docs/adr/ADR-001_ELECCION_RENDER_NEON_VS_AWS.md)
 [![Seguridad](https://img.shields.io/badge/Security-OWASP%20%7C%20JWT%20%7C%20HMAC%20%7C%20RFC%208785-C2410C.svg)](SECURITY.md)
 [![Demo PWA](https://img.shields.io/badge/Demo%20Live-PWA%20Online-15803D.svg)](https://leofit-solutions-grupo01.github.io/leofit-pedidos-sistema/)
@@ -19,14 +23,15 @@
 
 Para facilitar la revisión académica, toda la documentación oficial, informes acumulativos y presentaciones ejecutivas se encuentran organizados y enlazados a continuación:
 
-| Hito / Evaluación | Entregable Principal | Formatos Disponibles | Descripción Técnica |
-| :--- | :--- | :--- | :--- |
-| **Sustentación Final (Semana 18)** | **Presentación Oficial de Sustentación** | [**`Descargar PPTX`**](docs/05_SUSTENTACION_PROYECTO_FINAL_SEMANA_18/03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.pptx) <br> [**`Visor Web Interactivo HTML`**](docs/05_SUSTENTACION_PROYECTO_FINAL_SEMANA_18/03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.html) <br> [**`Guion Markdown`**](docs/05_SUSTENTACION_PROYECTO_FINAL_SEMANA_18/03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.md) | Deck de **25 diapositivas ejecutivas** widescreen 16:9 con notas de orador completas, paleta Navy/Cobalt/Terracotta WCAG AAA y cero emojis. |
-| **Continuación Semanas 14 y 15 (Unidad 4)** | **Informe Acumulativo de Calidad ISO 25010** | [**`Informe Word DOCX`**](docs/02_CALIDAD_Y_AUDITORIA/04_calidad_iso25010_semanas_14_15/INFORME_CONTINUACION_S14_S15_PROYECTO_FINAL_LEOFIT.docx) <br> [**`Memoria Markdown`**](docs/02_CALIDAD_Y_AUDITORIA/04_calidad_iso25010_semanas_14_15/INFORME_CONTINUACION_S14_S15_PROYECTO_FINAL_LEOFIT.md) | Informe acumulativo completo: Rendimiento (k6 p50/p95/p99 y 4 Señales Doradas SRE), Flexibilidad (ISO/IEC 25010:2023 Adaptabilidad/Escalabilidad, Circuit Breaker, Bulkhead) y Mantenibilidad (Clean Architecture, Complejidad Ciclomática 1-3, 194 tests). |
-| **Avance Final APF3 (Semana 13)** | **Memoria Técnica APF3 (77 págs)** | [**`Informe Maestro DOCX`**](docs/01_ENTREGA_OFICIAL_APF3/01_DESARROLLO_Y_CALIDAD/INFORME_FINAL_APF3_LEOFIT.docx) <br> [**`Presentación APF3 PPTX`**](docs/01_ENTREGA_OFICIAL_APF3/00_ENTREGA_OFICIAL_CANVAS/03_PRESENTACION_OFICIAL_SUSTENTACION_LEOFIT.pptx) | Adecuación funcional 100%, compatibilidad Docker, usabilidad SUS 88.5/100, DRP simulado y despliegue V2. |
-| **Material del Docente (UTP)** | **Guías y Plantillas de la Asignatura** | [**`Guía Libro Semanas 14-15`**](docs/04_REFERENCIA_CURSO_UTP/manuales_docente_enrique_lee/Guia_Libro_Semanas_14_15_Curso_Integrador_II_UTP.pdf) <br> [**`PPT Breve Semanas 14-15`**](docs/04_REFERENCIA_CURSO_UTP/manuales_docente_enrique_lee/PPT_Breve_Semanas_14_15_Curso_Integrador_II_UTP.pdf) <br> [**`Plantilla Informe DOCX`**](docs/04_REFERENCIA_CURSO_UTP/silabo_y_plantillas_utp/Plantilla_Informe_Continuacion_S14_S15_UTP.docx) | Material pedagógico y criterios de evaluación proporcionados por el Ing. Enrique Lee Huamani. |
-| **Decisiones de Arquitectura (ADR)** | **Registro Canónico MADR** | [**`ADR-001 (Render+Neon vs AWS)`**](docs/adr/ADR-001_ELECCION_RENDER_NEON_VS_AWS.md) <br> [**`ADR-002 (Arquitectura AWS)`**](docs/adr/ADR-002_ARQUITECTURA_OBJETIVO_AWS.md) | Justificación técnica-económica, análisis de costos cloud y arquitectura destino VPC Multi-AZ. |
-| **Índice Unificado** | **Guía de Navegación Rápida** | [**`00_INDICE_MAESTRO_ENTREGABLES_DOCENTE.md`**](docs/00_INDICE_MAESTRO_ENTREGABLES_DOCENTE.md) | Acceso directo y trazabilidad integral a cada evidencia del proyecto. |
+| Hito / Evaluación                                 | Entregable Principal                               | Formatos Disponibles                                                                                                                                                                                                                                                                                                                                                                                                                                         | Descripción Técnica                                                                                                                                                                                                                                         |
+| :------------------------------------------------- | :------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Sustentación Final (Semana 18)**          | **Presentación Oficial de Sustentación**   | [**`Descargar PPTX`**](docs/05_SUSTENTACION_PROYECTO_FINAL_SEMANA_18/03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.pptx)  [**`Visor Web Interactivo HTML`**](docs/05_SUSTENTACION_PROYECTO_FINAL_SEMANA_18/03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.html)  [**`Guion Markdown`**](docs/05_SUSTENTACION_PROYECTO_FINAL_SEMANA_18/03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.md)                                | Deck de **25 diapositivas ejecutivas** widescreen 16:9 con notas de orador completas, paleta Navy/Cobalt/Terracotta WCAG AAA y cero emojis.                                                                                                             |
+| **Continuación Semanas 14 y 15 (Unidad 4)** | **Informe Acumulativo de Calidad ISO 25010** | [**`Informe Word DOCX`**](docs/02_CALIDAD_Y_AUDITORIA/04_calidad_iso25010_semanas_14_15/INFORME_CONTINUACION_S14_S15_PROYECTO_FINAL_LEOFIT.docx)  [**`Memoria Markdown`**](docs/02_CALIDAD_Y_AUDITORIA/04_calidad_iso25010_semanas_14_15/INFORME_CONTINUACION_S14_S15_PROYECTO_FINAL_LEOFIT.md)                                                                                                                                                | Informe acumulativo completo (APF1+APF2+APF3 + Unidad 4): Rendimiento (k6 p50/p95), Flexibilidad (Adaptabilidad/Escalabilidad) y Mantenibilidad (TDD).                                                                                                        |
+| **Continuación Semanas 14 y 15 (Unidad 4)** | **Informe Acumulativo de Calidad ISO 25010** | [**`Informe Word DOCX`**](docs/02_CALIDAD_Y_AUDITORIA/04_calidad_iso25010_semanas_14_15/INFORME_CONTINUACION_S14_S15_PROYECTO_FINAL_LEOFIT.docx)  [**`Memoria Markdown`**](docs/02_CALIDAD_Y_AUDITORIA/04_calidad_iso25010_semanas_14_15/INFORME_CONTINUACION_S14_S15_PROYECTO_FINAL_LEOFIT.md)                                                                                                                                                | Informe acumulativo completo: Rendimiento (k6 p50/p95/p99 y 4 Señales Doradas SRE), Flexibilidad (ISO/IEC 25010:2023 Adaptabilidad/Escalabilidad, Circuit Breaker, Bulkhead) y Mantenibilidad (Clean Architecture, Complejidad Ciclomática 1-3, 194 tests). |
+| **Avance Final APF3 (Semana 13)**            | **Memoria Técnica APF3 (77 págs)**         | [**`Informe Maestro DOCX`**](docs/01_ENTREGA_OFICIAL_APF3/01_DESARROLLO_Y_CALIDAD/INFORME_FINAL_APF3_LEOFIT.docx)  [**`Presentación APF3 PPTX`**](docs/01_ENTREGA_OFICIAL_APF3/00_ENTREGA_OFICIAL_CANVAS/03_PRESENTACION_OFICIAL_SUSTENTACION_LEOFIT.pptx)                                                                                                                                                                                    | Adecuación funcional 100%, compatibilidad Docker, usabilidad SUS 88.5/100, DRP simulado y despliegue V2.                                                                                                                                                     |
+| **Material del Docente (UTP)**               | **Guías y Plantillas de la Asignatura**     | [**`Guía Libro Semanas 14-15`**](docs/04_REFERENCIA_CURSO_UTP/manuales_docente_enrique_lee/Guia_Libro_Semanas_14_15_Curso_Integrador_II_UTP.pdf)  [**`PPT Breve Semanas 14-15`**](docs/04_REFERENCIA_CURSO_UTP/manuales_docente_enrique_lee/PPT_Breve_Semanas_14_15_Curso_Integrador_II_UTP.pdf)  [**`Plantilla Informe DOCX`**](docs/04_REFERENCIA_CURSO_UTP/silabo_y_plantillas_utp/Plantilla_Informe_Continuacion_S14_S15_UTP.docx) | Material pedagógico y criterios de evaluación proporcionados por el Ing. Enrique Lee Huamani.                                                                                                                                                               |
+| **Decisiones de Arquitectura (ADR)**         | **Registro Canónico MADR**                  | [**`ADR-001 (Render+Neon vs AWS)`**](docs/adr/ADR-001_ELECCION_RENDER_NEON_VS_AWS.md)  [**`ADR-002 (Arquitectura AWS)`**](docs/adr/ADR-002_ARQUITECTURA_OBJETIVO_AWS.md)                                                                                                                                                                                                                                                                       | Justificación técnica-económica, análisis de costos cloud y arquitectura destino VPC Multi-AZ.                                                                                                                                                            |
+| **Índice Unificado**                        | **Guía de Navegación Rápida**             | [**`00_INDICE_MAESTRO_ENTREGABLES_DOCENTE.md`**](docs/00_INDICE_MAESTRO_ENTREGABLES_DOCENTE.md)                                                                                                                                                                                                                                                                                                                                                       | Acceso directo y trazabilidad integral a cada evidencia del proyecto.                                                                                                                                                                                         |
 
 ---
 
@@ -88,17 +93,26 @@ leofit-pedidos-sistema/
 
 ## 3. Calidad de Software ISO/IEC 25010:2023 (Unidad 4)
 
+El software ha sido sometido a verificación empírica y cuantitativa bajo el estándar internacional **ISO/IEC 25010:2023**:
 El software ha sido sometido a verificación empírica y cuantitativa bajo el estándar internacional vigente **ISO/IEC 25010:2023** (9 características, incorporando *Safety* e integrando *Scalability* formalmente en *Flexibility*):
 
 ```mermaid
 flowchart LR
     subgraph S14["SEMANA 14 · RENDIMIENTO Y FLEXIBILIDAD"]
+        R1["Tiempo de Respuesta:<br/>POST /api/orders<br/>p95 = 280ms (1 VU)<br/>p95 = 480ms (10 VU)"]
+        R2["Recursos & Capacidad:<br/>CPU < 25%, RAM < 185MB<br/>Throughput 45 req/s"]
+        F1["Adaptabilidad:<br/>Clean Architecture<br/>Variables de Entorno"]
+        F2["Escalabilidad:<br/>Auto Scaling Elástico<br/>Índices B-Tree en BD"]
         R1["Tiempo de Respuesta:<br/>POST /api/orders<br/>p50=120ms | p95=280ms (1 VU)<br/>p50=240ms | p95=480ms (10 VU)<br/>p99=720ms (Cola larga)"]
         R2["Recursos & Capacidad:<br/>SRE Saturación CPU < 25%<br/>RAM < 185MB | Throughput 45 RPS<br/>Tasa de Errores: 0.00% (< 0.1%)"]
         F1["Adaptabilidad & Resiliencia:<br/>Circuit Breaker | Bulkhead<br/>Retry + Backoff & Jitter<br/>Rate Limiting (100 req/min)"]
         F2["Escalabilidad Elástica:<br/>Auto-scaling (>70% CPU, 42s)<br/>Índices B-Tree en PostgreSQL"]
     end
     subgraph S15["SEMANA 15 · MANTENIBILIDAD"]
+        M1["Modularidad:<br/>Rutas / Servicios / Repos"]
+        M2["Reusabilidad:<br/>RBAC, Idempotencia, PDF"]
+        M3["Modificabilidad:<br/>Cambio de regla + Git"]
+        M4["Testabilidad:<br/>TDD (190 Tests 100% OK)"]
         M1["Modularidad & Clean Arch:<br/>Dominio <- Aplicación <- Infra<br/>Desacoplamiento Estricto"]
         M2["Reusabilidad:<br/>RBAC, Idempotencia RFC 8785<br/>Generador PDF, Cliente HTTP"]
         M3["Modificabilidad & Blast Radius:<br/>Complejidad Ciclomática 1-3 (<=4)<br/>Cambio de regla: 2 archivos"]
@@ -112,7 +126,14 @@ flowchart LR
     S14 --> S15 --> S16
 ```
 
+### Síntesis de Métricas de Rendimiento (POST /api/orders con k6)
+
+- **1 Usuario Virtual (Línea Base):** Mediana $p50 = 120\text{ ms}$, **Percentil $p95 = 280\text{ ms}$**, Errores: $0.0\%$, CPU: $8\%$, RAM: $145\text{ MB}$ $\to$ **CUMPLE SLA (< 700 ms)**.
+- **10 Usuarios Virtuales (Carga Nominal):** Mediana $p50 = 240\text{ ms}$, **Percentil $p95 = 480\text{ ms}$**, Errores: $0.0\%$, CPU: $24\%$, RAM: $185\text{ MB}$ $\to$ **CUMPLE SLA (< 700 ms)**.
+- **30 Usuarios Virtuales (Carga Pico / Estrés):** Mediana $p50 = 620\text{ ms}$, **Percentil $p95 = 1,400\text{ ms}$**, Errores: $0.0\%$, CPU: $58\%$, RAM: $230\text{ MB}$ $\to$ Optimización de índices B-Tree en PostgreSQL redujo costo en **64.2%**.
+
 ### Síntesis de Métricas de Rendimiento (POST /api/orders con k6) y 4 Señales Doradas SRE
+
 - **1 Usuario Virtual (Línea Base):** Mediana $p50 = 120\text{ ms}$, **Percentil $p95 = 280\text{ ms}$**, $p99 = 410\text{ ms}$, Errores: $0.0\%$, CPU: $8\%$, RAM: $145\text{ MB}$ $\to$ **CUMPLE SLA (< 700 ms)**.
 - **10 Usuarios Virtuales (Carga Nominal):** Mediana $p50 = 240\text{ ms}$, **Percentil $p95 = 480\text{ ms}$**, $p99 = 720\text{ ms}$, Errores: $0.0\%$, CPU: $24\%$, RAM: $185\text{ MB}$ $\to$ **CUMPLE SLA (< 700 ms)**.
 - **30 Usuarios Virtuales (Carga Pico / Estrés):** Mediana $p50 = 620\text{ ms}$, **Percentil $p95 = 1,400\text{ ms}$**, $p99 = 1,950\text{ ms}$, Errores: $0.0\%$, CPU: $58\%$, RAM: $230\text{ MB}$ $\to$ Optimización de índices B-Tree en PostgreSQL redujo costo de ejecución en **64.2%**.
@@ -125,19 +146,20 @@ flowchart LR
 
 ## 4. Integrantes del Equipo y Asignación de Roles (Grupo 01)
 
-| Integrante (Formato Corporativo) | Código UTP (Protegido) | Rol Scrum | Especialidad Técnica Principal |
-| :--- | :---: | :--- | :--- |
-| **Loayza R., Lady L.** | `U22****89` | **Scrum Master** | DevSecOps, Seguridad JWT/HMAC, Auditoría ISO 25000 y Calidad |
-| **Cárdenas F., Víctor L.** | `U19****14` | **Product Owner** | Arquitecto de Base de Datos (DBA), BCNF, Concurrencia ACID y Replicación |
-| **Roman D., Harley A.** | `U21****32` | **Frontend Lead** | Especialista PWA React 19, Accesibilidad WCAG 2.1 AA/AAA y Usabilidad SUS |
-| **Dávila M., Jim A.** | `U18****81` | **QA Engineer Lead** | Desarrollador Backend Node.js/TS, Suites de Pruebas Automatizadas (194 tests) |
-| **Rojas S., Daniel E.** | `U21****27` | **Business Analyst** | Modelado BPMN AS-IS/TO-BE, Gestión de Riesgos PMI y Despliegue Cloud |
+| Integrante (Formato Corporativo)   | Código UTP (Protegido) | Rol Scrum                  | Especialidad Técnica Principal                                               |
+| :--------------------------------- | :---------------------: | :------------------------- | :---------------------------------------------------------------------------- |
+| **Loayza R., Lady L.**       |      `U22****89`      | **Scrum Master**     | DevSecOps, Seguridad JWT/HMAC, Auditoría ISO 25000 y Calidad                 |
+| **Cárdenas F., Víctor L.** |      `U19****14`      | **Product Owner**    | Arquitecto de Base de Datos (DBA), BCNF, Concurrencia ACID y Replicación     |
+| **Roman D., Harley A.**      |      `U21****32`      | **Frontend Lead**    | Especialista PWA React 19, Accesibilidad WCAG 2.1 AA/AAA y Usabilidad SUS     |
+| **Dávila M., Jim A.**       |      `U18****81`      | **QA Engineer Lead** | Desarrollador Backend Node.js/TS, Suites de Pruebas Automatizadas (194 tests) |
+| **Rojas S., Daniel E.**      |      `U21****27`      | **Business Analyst** | Modelado BPMN AS-IS/TO-BE, Gestión de Riesgos PMI y Despliegue Cloud         |
 
 ---
 
 ## 5. Instrucciones de Compilación y Ejecución
 
 ### Opción A: Despliegue Inmediato con Docker Compose
+
 ```bash
 docker-compose up -d
 # Frontend PWA: http://localhost:5173
@@ -146,6 +168,7 @@ docker-compose up -d
 ```
 
 ### Opción B: Ejecución en Entorno de Desarrollo Local
+
 ```bash
 # 1. Iniciar el Backend API
 cd backend
@@ -159,6 +182,7 @@ npm run dev
 ```
 
 ### Opción C: Compilación de Entregables Ofimáticos y Validación
+
 ```powershell
 # Ejecutar validación de integridad formal (0 errores, 0 emojis, 25 slides)
 python scripts/proyecto_final/validate_deliverables.py

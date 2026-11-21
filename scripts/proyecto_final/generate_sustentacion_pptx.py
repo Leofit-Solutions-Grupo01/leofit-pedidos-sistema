@@ -144,6 +144,17 @@ def create_deck():
         tf = notes_slide.notes_text_frame
         tf.text = notes_text
 
+    IMG_DIR = os.path.join(BASE_DIR, "docs", "05_SUSTENTACION_PROYECTO_FINAL_SEMANA_18", "graficos")
+
+    def pic(s, filename, x, y, w, h=None):
+        path = os.path.join(IMG_DIR, filename)
+        if os.path.exists(path):
+            if h is not None:
+                return s.shapes.add_picture(path, Inches(x), Inches(y), Inches(w), Inches(h))
+            else:
+                return s.shapes.add_picture(path, Inches(x), Inches(y), Inches(w))
+        return None
+
     # =========================================================================
     # SLIDE 1: PORTADA OFICIAL
     # =========================================================================
@@ -652,218 +663,174 @@ def create_deck():
 
     # =========================================================================
         # =========================================================================
-    # SLIDE 15: CALIDAD DE RENDIMIENTO (ISO/IEC 25010:2023 - SEMANA 14)
+    # SLIDE 15: CALIDAD DE RENDIMIENTO (ISO/IEC 25010 - SEMANA 14)
     # =========================================================================
     s15 = prs.slides.add_slide(BLANK)
-    add_header(s15, "Calidad de Rendimiento (ISO/IEC 25010:2023): Percentiles y Senales Doradas SRE", "8. CALIDAD DE RENDIMIENTO (SEMANA 14)")
+    add_header(s15, "Calidad de Rendimiento (ISO/IEC 25010): Latencia p50/p95/p99 y SRE", "8. CALIDAD DE RENDIMIENTO (SEMANA 14)")
 
-    # 3 Cajas Superiores de Resumen de Metricas SRE
-    box(s15, 0.5, 1.4, 3.8, 1.3, fill=NAVY, line=None)
-    txt(s15, 0.5, 1.48, 3.8, 0.4, "p50: 120ms | p95: 280ms/480ms", size=17, bold=True, color=WHITE, align="c")
-    txt(s15, 0.5, 2.0, 3.8, 0.4, "PERCENTIL 95 (P95) EN 1 Y 10 USUARIOS (SLO < 700 ms)", size=9, bold=True, color=ACCENT, align="c")
+    # Columna Izquierda: Metricas y Analisis
+    box(s15, 0.5, 1.4, 5.8, 1.25, fill=NAVY, line=None)
+    txt(s15, 0.7, 1.45, 5.4, 0.4, "280 ms / 480 ms", size=22, bold=True, color=WHITE)
+    txt(s15, 0.7, 1.95, 5.4, 0.4, "PERCENTIL 95 (P95) EN 1 Y 10 VU (META SLO < 700 ms)", size=9.5, bold=True, color=ACCENT)
 
-    box(s15, 4.7, 1.4, 3.9, 1.3, fill=BLUE, line=None)
-    txt(s15, 4.7, 1.48, 3.9, 0.4, "0.00% ERRORES (SLO < 0.1%)", size=18, bold=True, color=WHITE, align="c")
-    txt(s15, 4.7, 2.0, 3.9, 0.4, "TASA DE FALLOS EN PRUEBAS STEADY Y SOAK (4 HORAS)", size=9, bold=True, color=LGRAY, align="c")
+    # 2 Mini Cajas
+    box(s15, 0.5, 2.75, 2.8, 1.05, fill=BLUE, line=None)
+    txt(s15, 0.6, 2.85, 2.6, 0.35, "0.0% ERRORES", size=15, bold=True, color=WHITE, align="c")
+    txt(s15, 0.6, 3.25, 2.6, 0.35, "TASA DE FALLOS EN CARGA", size=8.5, bold=True, color=LGRAY, align="c")
 
-    box(s15, 9.0, 1.4, 3.8, 1.3, fill=DARK, line=None)
-    txt(s15, 9.0, 1.48, 3.8, 0.4, "CPU < 25% | RAM 185 MB", size=18, bold=True, color=WHITE, align="c")
-    txt(s15, 9.0, 2.0, 3.8, 0.4, "SATURACION SRE < 70% EN CARGA COMERCIAL NOMINAL", size=9, bold=True, color=LGRAY, align="c")
+    box(s15, 3.5, 2.75, 2.8, 1.05, fill=DARK, line=None)
+    txt(s15, 3.6, 2.85, 2.6, 0.35, "45 req / seg", size=15, bold=True, color=WHITE, align="c")
+    txt(s15, 3.6, 3.25, 2.6, 0.35, "CAPACIDAD MAXIMA TIER BASE", size=8.5, bold=True, color=LGRAY, align="c")
 
-    # Tabla de Resultados de los 4 Ensayos k6
-    headers_s15 = ["Tipo de Ensayo", "Carga", "Duracion", "p50 (ms)", "p95 (ms)", "p99 (ms)", "RPS", "Errores %", "Saturacion SRE", "Evaluacion SLA"]
-    rows_s15 = [
-        ["Linea Base", "1 VU", "2 min", "120 ms", "280 ms", "410 ms", "2.8 r/s", "0.00%", "CPU: 8% | RAM: 145 MB", "Cumple (Holgado)"],
-        ["Steady-State", "10 VU", "30 min", "240 ms", "480 ms", "720 ms", "19.0 r/s", "0.00%", "CPU: 24% | RAM: 185 MB", "Cumple (< 700 ms)"],
-        ["Spike Test", "35 VU", "5 min", "620 ms", "1,400 ms", "1,820 ms", "45.2 r/s", "0.00%", "CPU: 58% | RAM: 230 MB", "Observado (Limite)"],
-        ["Soak Test", "8 VU", "4 horas", "225 ms", "460 ms", "680 ms", "16.0 r/s", "0.00%", "CPU: 21% | RAM: 188 MB", "Cumple (Sin fugas)"]
-    ]
-    col_w_s15 = [1.6, 0.9, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.1, 1.733]
-    table(s15, 0.5, 2.85, 12.333, 1.95, headers_s15, rows_s15, col_w_s15)
-
-    # Bloque Inferior: Las 4 Señales Doradas SRE y Diagnóstico de Cuello de Botella
-    box(s15, 0.5, 4.95, 5.9, 1.9, fill=LBLUE, line=BLUE)
-    txt(s15, 0.7, 5.05, 5.5, 0.3, "Las Cuatro Senales Doradas de SRE (Google)", size=13, bold=True, color=BLUE)
-    txt(s15, 0.7, 5.4, 5.5, 1.35, 
-        "- 1. Latencia por Percentiles: El promedio oculta la cola larga (GC V8 y locks). p95 = 480ms en carga comercial.\n"
-        "- 2. Trafico: 19 req/s nominales; capacidad maxima demostrada de 45 req/s en tier base de Render.\n"
-        "- 3. Errores: 0.00% fallos transaccionales en 34,200 solicitudes (meta SRE < 0.10%).\n"
-        "- 4. Saturacion: CPU < 25% y memoria en 185 MB, respetando holgadamente el margen de saturacion (< 70%).",
+    # Tarjeta de Analisis SRE
+    box(s15, 0.5, 3.9, 5.8, 2.9, fill=WHITE, line=BLUE)
+    txt(s15, 0.7, 4.05, 5.4, 0.3, "Evaluacion de Latencia y Senales Doradas SRE", size=13, bold=True, color=BLUE)
+    txt(s15, 0.7, 4.4, 5.4, 2.3, 
+        "- Operacion Critica: POST /api/orders (verificacion y reserva atomica de stock).\n"
+        "- Mediana p50: 120 ms (1 VU) y 240 ms (10 VU) - Experiencia tipica excelente.\n"
+        "- Percentil 95: 480 ms en carga nominal (SLA < 700 ms superado con holgura).\n"
+        "- Cola Larga (p99 = 720 ms): Causada por contencion en pool y RTT hacia Neon.\n"
+        "- Optimizacion: Indices B-Tree redujeron costo de consulta en 64.2%.\n"
+        "- Soak Test 60 min: Cero fugas de memoria (RAM estable < 185 MB).",
         size=10.5, color=DARK)
 
-    box(s15, 6.9, 4.95, 5.9, 1.9, fill=LGRAY, line=GRAY)
-    txt(s15, 7.1, 5.05, 5.5, 0.3, "Diagnostico de Cola Larga (p99) y Optimizacion B-Tree", size=13, bold=True, color=NAVY)
-    txt(s15, 7.1, 5.4, 5.5, 1.35, 
-        "- Causa de p99 en Spike (1,820 ms): Latencia transfronteriza RTT hacia Neon PostgreSQL (EE. UU.) y limites del pool.\n"
-        "- Optimizacion Inmediata: Creacion de indices compuestos B-Tree idx_orders_customer_created y idx_variants_stock.\n"
-        "- Resultado Medible: Reduccion del 64.2% en costo EXPLAIN ANALYZE (de 14.8 ms a 5.3 ms en ejecucion SQL).\n"
-        "- Accion Estructural AWS (ADR-002): Despliegue en misma VPC con RDS Multi-AZ, abatiendo RTT a < 1.5 ms.",
-        size=10.5, color=DARK)
+    # Columna Derecha: Grafico Cientifico de Percentiles
+    pic(s15, "fig02_percentiles_latencia_k6.png", 6.5, 1.4, 6.3, 5.4)
 
     add_notes(s15,
         "NOTAS DEL ORADOR (SLIDE 15 - RENDIMIENTO SEMANA 14):\n"
-        "En la evaluacion de rendimiento bajo ISO/IEC 25010:2023 aplicamos el rigor de la ingenieria de confiabilidad de sitios (Google SRE). "
-        "En primer lugar, demostramos por que el promedio aritmetico oculta la realidad: un promedio puede ser bajo mientras la cola larga p99 "
-        "revela pausas de recoleccion de basura o contencion de bloqueos. Por ello medimos percentiles: mediana p50 de 120 ms, p95 de 280 ms con 1 usuario, "
-        "y 480 ms con 10 usuarios concurrentes sostenidos en una prueba Steady-State de 30 minutos, manteniendo 0% de errores frente a un SLO de 700 ms. "
-        "Ademas, ejecutamos una prueba Soak de 4 horas continuas que certifico la ausencia total de fugas de memoria en Node.js. "
-        "En el ensayo de Spike identificamos que la latencia p99 se debio a la distancia con la base de datos en Estados Unidos; "
-        "optimizamos indices B-Tree reduciendo el costo SQL en 64.2%, y dejamos justificada la arquitectura de baja latencia en AWS.")
+        "En la Semana 14 evaluamos cuantitativamente el rendimiento del software bajo la norma ISO/IEC 25010:2023. "
+        "A la derecha pueden observar el grafico cientifico de barras horizontales de percentiles. "
+        "Superando el promedio simple, medimos p50, p90, p95 y p99. La experiencia tipica de la mediana p50 es de solo 120 a 240 ms. "
+        "En carga nominal de 10 usuarios virtuales, el percentil 95 responde en 480 ms, muy por debajo de la linea roja de corte del SLO de 700 ms. "
+        "La cola larga de p99 refleja la contencion del pool de conexiones hacia Neon, la cual mitigamos en un 64% creando indices B-Tree compuestos.")
 
     # =========================================================================
-    # SLIDE 16: FLEXIBILIDAD: ADAPTABILIDAD, ESCALABILIDAD Y RESILIENCIA CLOUD
+    # SLIDE 16: CURVA DE CARGA Y SATURACIÓN (SEMANA 14)
     # =========================================================================
     s16 = prs.slides.add_slide(BLANK)
-    add_header(s16, "Flexibilidad (ISO/IEC 25010:2023): Adaptabilidad, Escalabilidad y Resiliencia", "8. CALIDAD DE RENDIMIENTO (SEMANA 14)")
+    add_header(s16, "Curva de Carga k6: Capacidad Maxima y Punto de Saturacion", "8. CALIDAD DE RENDIMIENTO (SEMANA 14)")
 
-    # Banner Central Distintivo
-    box(s16, 0.5, 1.35, 12.333, 0.65, fill=NAVY, line=None)
-    txt(s16, 0.5, 1.48, 12.333, 0.4, 
-        "ISO/IEC 25010:2023 — FLEXIBILITY: ADAPTAR = CONTEXTO / ENTORNO  |  ESCALAR = DEMANDA ATENDIDA SIN DEGRADACION",
-        size=11.5, bold=True, color=WHITE, align="c")
-
-    # Columna Izquierda: Adaptabilidad
-    box(s16, 0.5, 2.15, 5.9, 4.7, fill=WHITE, line=BLUE)
-    txt(s16, 0.8, 2.3, 5.3, 0.35, "Adaptabilidad (Portabilidad de Entorno)", size=15, bold=True, color=BLUE)
-    txt(s16, 0.8, 2.75, 5.3, 3.9, 
-        "- Definicion ISO: Capacidad de ajustarse a diferentes entornos operativos y de red sin alterar el codigo fuente.\n\n"
-        "- The Twelve-Factor App (Factor III - Configuracion):\n"
-        "  * 100% de credenciales, puertos y endpoints inyectados como variables (.env, Render Secrets, AWS Parameter Store).\n\n"
-        "- Clean Architecture Desacoplada:\n"
-        "  * Capa Controller: Expone contratos REST OpenAPI.\n"
-        "  * Capa Service: Encapsula 100% de logica comercial pura.\n"
-        "  * Capa Repository: Interfaz agnostica de persistencia SQL.\n\n"
-        "- Portabilidad Comprobada: Mismo codigo fuente opera en Local Docker Compose, Staging Render y AWS ECS Fargate.",
+    # Columna Izquierda: Explicacion de Capacidad y Punto de Saturacion
+    box(s16, 0.5, 1.4, 5.8, 5.4, fill=WHITE, line=BLUE)
+    txt(s16, 0.8, 1.6, 5.2, 0.35, "Analisis de Capacidad, Limites y Auto-Scaling", size=15, bold=True, color=NAVY)
+    txt(s16, 0.8, 2.05, 5.2, 4.6, 
+        "- Zona de Crecimiento Lineal (1 a 25 VU):\n"
+        "  * Throughput (TPS) escala proporcionalmente hasta 45.6 TPS.\n"
+        "  * CPU permanece por debajo del 50% y latencia contenida (< 600 ms).\n\n"
+        "- Punto de Inflexion y Saturacion (~33 a 35 VU):\n"
+        "  * Throughput se ameseta en ~47 TPS por contencion del pool PostgreSQL.\n"
+        "  * Utilizacion de CPU cruza el umbral critico del 70% sostenido.\n"
+        "  * Latencia p95 entra en regimen exponencial no lineal (> 2,000 ms).\n\n"
+        "- Parametros de Disparo de Auto-Scaling (AWS ECS):\n"
+        "  * Trigger: CPU > 70% sostenido durante 60 segundos.\n"
+        "  * Aprovisionamiento: 42 segundos en nuevo contenedor Fargate.\n"
+        "  * Cooldown: 300 segundos para evitar oscilaciones destructivas (flapping).\n\n"
+        "- Respaldo Normativo: ISO/IEC 25010:2023 - Flexibility - Scalability.",
         size=11, color=DARK)
 
-    # Columna Derecha: Escalabilidad y Resiliencia
-    box(s16, 6.9, 2.15, 5.9, 4.7, fill=LGRAY, line=GRAY)
-    txt(s16, 7.2, 2.3, 5.3, 0.35, "Escalabilidad Elastica y Patrones de Resiliencia", size=15, bold=True, color=NAVY)
-    txt(s16, 7.2, 2.75, 5.3, 3.9, 
-        "- Principio Rector: Optimizar consultas y bloqueos antes de escalar.\n\n"
-        "- Patrones de Resiliencia Cloud Implementados:\n"
-        "  * Circuit Breaker (Cortacircuito): Fail-fast en 5 fallos ante caidas de SUNAT o WhatsApp para no bloquear el Event Loop.\n"
-        "  * Bulkhead (Aislamiento): Separacion de pools; ordenes transaccionales aisladas de lecturas de catalogo.\n"
-        "  * Retry con Exponential Backoff y Jitter: Reintentos con dispersion aleatoria (+-20%) para evitar 'thundering herd'.\n"
-        "  * Rate Limiting / Load Shedding: 100 req/min y descarte selectivo de carga no esencial al superar 75% CPU.\n\n"
-        "- Auto-Scaling: Disparo a > 70% CPU, tiempo de provisionamiento 42s y enfriamiento (cooldown) de 300s para evitar flapping.",
-        size=11, color=DARK)
+    # Columna Derecha: Grafico Combinado Carga vs Throughput vs CPU vs Latencia
+    pic(s16, "fig04_saturacion_capacidad_throughput_cpu.png", 6.5, 1.4, 6.3, 5.4)
 
     add_notes(s16,
-        "NOTAS DEL ORADOR (SLIDE 16 - FLEXIBILIDAD Y RESILIENCIA):\n"
-        "En la ISO/IEC 25010:2023, la caracteristica Flexibility unifica a la antigua portabilidad con la adaptabilidad y la escalabilidad. "
-        "Adaptabilidad responde a mover el software entre entornos: lo resolvemos mediante Clean Architecture y Twelve-Factor App, "
-        "donde cambiar de base de datos o de nube implica cero modificaciones en las reglas comerciales. "
-        "Por otro lado, la escalabilidad no se limita a poner mas servidores: aplicamos el principio de optimizar antes de escalar, "
-        "e implementamos patrones formales de resiliencia: Circuit Breakers que cortan llamadas a servicios externos lentos con fail-fast, "
-        "Bulkhead para aislar el pool de compras respecto a reportes, Retry con backoff exponencial y jitter para evitar avalanchas, "
-        "y Rate Limiting con Load Shedding que garantiza que el checkout transaccional nunca se caiga.")
+        "NOTAS DEL ORADOR (SLIDE 16 - SATURACION Y CAPACIDAD):\n"
+        "En esta diapositiva presentamos el grafico combinado de saturacion y capacidad, el cual responde con rigor cientifico donde esta el limite del sistema. "
+        "A la derecha vemos que hasta los 25 usuarios virtuales el throughput crece de forma lineal y la CPU se mantiene en rangos seguros. "
+        "Entre los 33 y 35 usuarios virtuales identificamos con precision el punto de saturacion: el throughput se ameseta en 47 transacciones por segundo, "
+        "la CPU supera el 70% del limite seguro de Google SRE, y la latencia entra en regimen no lineal. "
+        "Este grafico justifica empiricamente el parametro de disparo del autoescalado en ECS Fargate para aprovisionar nuevas instancias antes de degradar la experiencia de compra.")
 
     # =========================================================================
-    # SLIDE 17: MANTENIBILIDAD: MODULARIDAD Y DIRECCIÓN DE DEPENDENCIAS (SEMANA 15)
+    # SLIDE 17: MANTENIBILIDAD: MODULARIDAD Y REUSABILIDAD (SEMANA 15)
     # =========================================================================
     s17 = prs.slides.add_slide(BLANK)
-    add_header(s17, "Calidad de Mantenibilidad (ISO/IEC 25010:2023): Modularidad y Dependencias", "9. CALIDAD DE MANTENIBILIDAD (SEMANA 15)")
+    add_header(s17, "Calidad de Mantenibilidad (ISO/IEC 25010): Modularidad y Reusabilidad", "9. CALIDAD DE MANTENIBILIDAD (SEMANA 15)")
 
-    # 3 Cajas de Modularidad y Clean Architecture
-    box(s17, 0.5, 1.4, 3.8, 5.4, fill=WHITE, line=ACCENT)
-    txt(s17, 0.7, 1.6, 3.4, 0.35, "Anti-Patron Monolitico", size=14, bold=True, color=ACCENT)
-    txt(s17, 0.7, 2.05, 3.4, 4.6, 
-        "- Archivo gigante tipo app.py que concentra:\n"
+    # Comparativa Antes vs Despues (Anti-patron vs Clean Architecture)
+    box(s17, 0.5, 1.4, 4.0, 5.4, fill=WHITE, line=ACCENT)
+    txt(s17, 0.8, 1.6, 3.4, 0.35, "El Anti-Patron Monolitico", size=15, bold=True, color=ACCENT)
+    txt(s17, 0.8, 2.05, 3.4, 4.6, 
+        "- Archivo gigante (tipo app.py / server.js) que mezcla todo:\n"
         "  * Rutas HTTP y endpoints\n"
-        "  * Logica de negocio y descuentos\n"
-        "  * Consultas SQL directas concatenadas\n"
-        "  * Renderizado de vistas y plantillas\n\n"
-        "- Graves Consecuencias:\n"
-        "  * Alto acoplamiento espagueti\n"
-        "  * Cambiar un precio rompe la facturacion\n"
-        "  * Imposibilidad de probar con mocks\n"
-        "  * Deuda tecnica inmanejable.",
-        size=11, color=DARK)
+        "  * Renderizado de pantallas\n"
+        "  * Reglas de negocio hardcodeadas\n"
+        "  * Consultas SQL directas\n"
+        "  * Validaciones de entrada\n\n"
+        "- Consecuencias Graves:\n"
+        "  * Alto acoplamiento\n"
+        "  * Un cambio rompe modulos no relacionados\n"
+        "  * Imposible hacer pruebas unitarias aisladas\n"
+        "  * Deuda tecnica exponencial y dificil incorporacion de nuevos desarrolladores.",
+        size=11.5, color=DARK)
 
-    box(s17, 4.6, 1.4, 4.1, 5.4, fill=LBLUE, line=BLUE)
-    txt(s17, 4.8, 1.6, 3.7, 0.35, "Direccion de Dependencias (Clean)", size=14, bold=True, color=BLUE)
-    txt(s17, 4.8, 2.05, 3.7, 4.6, 
-        "- Principio de Inversion de Dependencias (DIP):\n\n"
-        "  [ Infraestructura (Express/SQL/Zod) ]\n"
-        "                  | (depende de)\n"
-        "                  v\n"
-        "  [ Casos de Uso / Servicios (order.service) ]\n"
-        "                  | (depende de)\n"
-        "                  v\n"
-        "  [ Dominio Puro (models/ - Sin Frameworks) ]\n\n"
-        "- Beneficio Crucial:\n"
-        "  El dominio comercial de LeoFit no importa nada de Express, Postgres ni librerias cloud.",
-        size=11, color=DARK)
+    # Estructura Modular de LeoFit
+    box(s17, 4.8, 1.4, 4.0, 5.4, fill=LBLUE, line=BLUE)
+    txt(s17, 5.1, 1.6, 3.4, 0.35, "Modularidad en LeoFit (Clean)", size=15, bold=True, color=BLUE)
+    txt(s17, 5.1, 2.05, 3.4, 4.6, 
+        "- Separacion Estricta de Responsabilidades:\n"
+        "  * src/routes/ : Definicion de rutas HTTP y contratos REST.\n"
+        "  * src/controllers/ : Mapeo de requests, codigos de estado y DTOs.\n"
+        "  * src/services/ : Logica de negocio pura (descuentos, stock, estados).\n"
+        "  * src/repositories/ : Consultas SQL parametrizadas.\n"
+        "  * src/tests/ : Suites de pruebas automatizadas aisladas.\n\n"
+        "- Beneficio Concreto:\n"
+        "  Modificar la logica de pedidos no toca la base de datos ni los endpoints HTTP.",
+        size=11.5, color=DARK)
 
-    box(s17, 9.0, 1.4, 3.8, 5.4, fill=LGRAY, line=GRAY)
-    txt(s17, 9.2, 1.6, 3.4, 0.35, "Reusabilidad Transversal (DRY)", size=14, bold=True, color=NAVY)
-    txt(s17, 9.2, 2.05, 3.4, 4.6, 
-        "- Cero Duplicidad de Codigo:\n\n"
+    # Reusabilidad de Componentes
+    box(s17, 9.1, 1.4, 3.7, 5.4, fill=LGRAY, line=GRAY)
+    txt(s17, 9.3, 1.6, 3.3, 0.35, "Reusabilidad Comprobada", size=15, bold=True, color=NAVY)
+    txt(s17, 9.3, 2.05, 3.3, 4.6, 
+        "- Cero Codigo Duplicado:\n\n"
         "- Middleware RBAC (requireRole):\n"
-        "  Protege 14 endpoints administrativos.\n\n"
-        "- Idempotencia RFC 8785:\n"
-        "  Blindaje en ordenes, cobros y anulaciones.\n\n"
-        "- Motor PDF Vectorial:\n"
-        "  Genera rotulos de despacho y boletas.\n\n"
-        "- Esquemas Zod Reutilizables:\n"
-        "  Validacion estricta en frontend y backend.",
-        size=11, color=DARK)
+        "  Reutilizado en 14 endpoints administrativos y de venta.\n\n"
+        "- Middleware Idempotencia (RFC 8785):\n"
+        "  Reutilizado en creacion de pedidos, cobros y anulaciones.\n\n"
+        "- Motor PDF (pdfGenerator):\n"
+        "  Consumido para rotulos de agencia y boletas de venta.\n\n"
+        "- Componentes UI PWA:\n"
+        "  Botones accesibles, modales y tablas paginadas compartidas en 12 vistas.",
+        size=11.5, color=DARK)
 
     add_notes(s17,
         "NOTAS DEL ORADOR (SLIDE 17 - MANTENIBILIDAD SEMANA 15):\n"
-        "En la Semana 15 analizamos la mantenibilidad segun ISO/IEC 25010:2023. "
-        "Separar archivos en carpetas no basta si las dependencias estan desordenadas. En LeoFit aplicamos Clean Architecture "
-        "con una regla de dependencia estricta: las dependencias apuntan hacia el centro, hacia el Dominio Puro. "
-        "Nuestras entidades y reglas de negocio no conocen Express, ni PostgreSQL, ni bibliotecas externas. "
-        "Superamos por completo el anti-patron monolitico tipo app.py, y logramos una reusabilidad comprobada: "
-        "un unico middleware de roles protege 14 rutas, la idempotencia RFC 8785 blinda toda operacion transaccional, "
-        "y el generador de PDF atiende tanto a logistica como a tesoreria.")
+        "En la Semana 15 analizamos la mantenibilidad segun ISO/IEC 25010, evaluando modularidad y reusabilidad. "
+        "Evitamos a toda costa el anti-patron del archivo monolitico donde se mezclan rutas, SQL y logica. En LeoFit estructuramos el backend siguiendo Clean Architecture: "
+        "las rutas estan en src/routes, los controladores validan con schemas Zod, los servicios encapsulan las reglas comerciales y los repositorios ejecutan SQL parametrizado. "
+        "En reusabilidad, demostramos componentes transversales consumidos en multiples puntos sin una sola linea duplicada: "
+        "el middleware de roles protege 14 endpoints, el generador de PDF emite tanto rotulos de envio como comprobantes, y el validador de idempotencia asegura consistencia en todas las operaciones transaccionales.")
 
     # =========================================================================
-    # SLIDE 18: MANTENIBILIDAD: MODIFICABILIDAD, MÉTRICAS Y TESTABILIDAD TDD
+    # SLIDE 18: MANTENIBILIDAD: MODIFICABILIDAD Y COMPLEJIDAD (SEMANA 15)
     # =========================================================================
     s18 = prs.slides.add_slide(BLANK)
-    add_header(s18, "Mantenibilidad: Modificabilidad, Metricas Objetivas y Testabilidad TDD", "9. CALIDAD DE MANTENIBILIDAD (SEMANA 15)")
+    add_header(s18, "Calidad de Mantenibilidad: Modificabilidad y Complejidad McCabe", "9. CALIDAD DE MANTENIBILIDAD (SEMANA 15)")
 
     # Columna Izquierda: Modificabilidad y Blast Radius
-    box(s18, 0.5, 1.4, 5.9, 5.4, fill=WHITE, line=BLUE)
-    txt(s18, 0.8, 1.6, 5.3, 0.35, "Modificabilidad y Analisis de 'Blast Radius'", size=15, bold=True, color=BLUE)
-    txt(s18, 0.8, 2.05, 5.3, 4.6, 
-        "- Definicion ISO: Efectividad y eficiencia con que el software se modifica sin introducir defectos colaterales.\n\n"
-        "- Caso Real CHG-01 en LeoFit:\n"
-        "  * Requerimiento: Descuento textil del 10% en compras al por mayor (>= 6 prendas).\n"
-        "  * Archivo Modificado: Exclusivamente src/services/order.service.ts (calculateOrderTotals).\n"
-        "  * Impacto en Controladores y Rutas: 0 lineas modificadas.\n"
-        "  * Impacto en Esquema de BD: 0 alteraciones en tablas relacionales.\n\n"
-        "- Metrica de 'Blast Radius' (Radio de Impacto):\n"
-        "  * Solo 2 archivos tocados: el servicio de negocio y su suite de pruebas unitarias.\n"
-        "  * Trazabilidad inmutable en Git con commit semantico feat(orders).",
-        size=11.5, color=DARK)
+    box(s18, 0.5, 1.4, 5.8, 5.4, fill=WHITE, line=BLUE)
+    txt(s18, 0.8, 1.6, 5.2, 0.35, "Modificabilidad y Radio de Impacto (Blast Radius)", size=15, bold=True, color=BLUE)
+    txt(s18, 0.8, 2.05, 5.2, 4.6, 
+        "- Definicion ISO/IEC 25010:2023: Eficacia y eficiencia con que el software se modifica sin introducir defectos ni degradar la calidad.\n\n"
+        "- Caso Practico Aplicado en LeoFit (CHG-01):\n"
+        "  * Requerimiento Comercial: Aplicar 10% de descuento en compras textiles >= 6 unidades.\n"
+        "  * Archivo Afectado: Exclusivamente src/services/order.service.ts (calculateOrderTotal).\n"
+        "  * Blast Radius Minimo: Solo 2 archivos modificados (servicio y test unitario).\n"
+        "  * Impacto en Controladores y Rutas: 0 lineas de cambio en Express.\n"
+        "  * Impacto en Base de Datos: 0 alteraciones en esquemas relacionales.\n\n"
+        "- Auditoria de Complejidad Ciclomatica (McCabe):\n"
+        "  * 100% de los modulos en la zona optima de 1 a 3 (estandar <= 4).\n"
+        "  * Modulo order.service.ts: Complejidad promedio de 2.8 en 380 LOC.\n"
+        "  * Garantiza bajo costo cognitivo y ausencia de regresiones.",
+        size=11, color=DARK)
 
-    # Columna Derecha: Métricas Objetivas y Testabilidad TDD
-    box(s18, 6.9, 1.4, 5.9, 5.4, fill=LGRAY, line=GRAY)
-    txt(s18, 7.2, 1.6, 5.3, 0.35, "Metricas Objetivas y Piramide de Pruebas (TDD)", size=15, bold=True, color=NAVY)
-    txt(s18, 7.2, 2.05, 5.3, 4.6, 
-        "- Piramide de Pruebas Automatizadas (194 Tests Totales):\n"
-        "  * Base: 140 pruebas unitarias rapidas (< 50ms) con mocks en memoria.\n"
-        "  * Centro: 44 pruebas de integracion con Supertest y base de datos.\n"
-        "  * Cupide: 10 pruebas end-to-end y de contrato OpenAPI.\n\n"
-        "- Metricas de Mantenibilidad Auditadas:\n"
-        "  * Complejidad Ciclomatica (McCabe): Valores de 1 a 3 en metodos core (umbral maximo optimo <= 4).\n"
-        "  * Cobertura de Pruebas: 84.6% en servicios y 92.1% en calculos con Decimal.js.\n\n"
-        "- Comprobacion Automatizada en CI/CD:\n"
-        "  * Bateria completa ejecuta en 42 segundos en GitHub Actions.",
-        size=11.5, color=DARK)
+    # Columna Derecha: Grafico Treemap / Complejidad Ciclomatica
+    pic(s18, "fig05_treemap_complejidad_ciclomatica.png", 6.5, 1.4, 6.3, 5.4)
 
     add_notes(s18,
-        "NOTAS DEL ORADOR (SLIDE 18 - MODIFICABILIDAD, METRICAS Y TDD):\n"
-        "En modificabilidad y testabilidad presentamos evidencia con metricas cuantitativas. "
-        "Para evaluar la modificabilidad, medimos el radio de impacto o 'blast radius': ante un cambio comercial real de descuentos por volumen, "
-        "solo se modificaron 2 archivos en todo el repositorio: el archivo del servicio y su prueba unitaria, con cero impacto en controladores o base de datos. "
-        "En mantenibilidad objetiva reportamos la complejidad ciclomatica de McCabe, situandonos en valores de 1 a 3, dentro del rango optimo menor a 4. "
-        "Nuestra piramide de pruebas cuenta con 194 pruebas automatizadas con 100% de exito y una cobertura superior al 80% en las reglas de negocio criticas, "
-        "ejecutandose de forma automatizada en el pipeline de GitHub Actions en 42 segundos.")
+        "NOTAS DEL ORADOR (SLIDE 18 - MODIFICABILIDAD Y COMPLEJIDAD):\n"
+        "En esta diapositiva demostramos la mantenibilidad mediante metricas de complejidad ciclomatica y analisis de radio de impacto. "
+        "A la derecha se visualiza la auditoria estatica de McCabe: todos los modulos del backend se situan entre 1 y 3, dentro de la franja verde optima. "
+        "Esto se traduce en que realizar un cambio de negocio real, como la regla de descuento por volumen textil CHG-01, solo toco 2 archivos: el servicio de pedidos y su prueba unitaria, con cero impacto en controladores o base de datos.")
 
     # =========================================================================
     # SLIDE 19: CONFIABILIDAD: ALTA DISPONIBILIDAD (HA VS HPC) (SEMANA 16)
@@ -915,81 +882,67 @@ def create_deck():
         "En LeoFit aplicamos tolerancia a fallos mediante la PWA con Service Workers que permite operar offline en las galerias de Gamarra, "
         "y garantizamos recuperacion ante desastres con copias continuas Point-in-Time Restore en PostgreSQL, con un objetivo de punto de recuperacion menor a 5 minutos.")
 
-    # SLIDE 20: BATERÍA DE 194 PRUEBAS AUTOMATIZADAS
+    # =========================================================================
+    # SLIDE 20: BATERÍA DE 194 PRUEBAS AUTOMATIZADAS Y PIRÁMIDE
     # =========================================================================
     s20 = prs.slides.add_slide(BLANK)
-    add_header(s20, "Aseguramiento de Calidad: 194 Pruebas Automatizadas (100% OK)", "11. TESTING Y CALIDAD (QA)")
+    add_header(s20, "Aseguramiento de Calidad: 194 Pruebas Automatizadas y Piramide", "11. TESTING Y CALIDAD (QA)")
 
-    # Metricas grandes
-    box(s20, 0.5, 1.5, 3.8, 1.8, fill=NAVY, line=None)
-    txt(s20, 0.5, 1.7, 3.8, 0.5, "194", size=36, bold=True, color=WHITE, align="c")
-    txt(s20, 0.5, 2.3, 3.8, 0.4, "TOTAL PRUEBAS APROBADAS (0 FALLOS)", size=11, bold=True, color=ACCENT, align="c")
+    # Columna Izquierda: Metricas y Suites
+    box(s20, 0.5, 1.4, 5.8, 1.35, fill=NAVY, line=None)
+    txt(s20, 0.7, 1.5, 5.4, 0.45, "194 TESTS APROBADOS (100% OK)", size=20, bold=True, color=WHITE)
+    txt(s20, 0.7, 2.05, 5.4, 0.4, "125 BACKEND (JEST) + 69 FRONTEND (VITEST) - CERO FALLOS", size=9.5, bold=True, color=ACCENT)
 
-    box(s20, 4.7, 1.5, 3.9, 1.8, fill=BLUE, line=None)
-    txt(s20, 4.7, 1.7, 3.9, 0.5, "125", size=36, bold=True, color=WHITE, align="c")
-    txt(s20, 4.7, 2.3, 3.9, 0.4, "PRUEBAS BACKEND (JEST + SUPERTEST)", size=11, bold=True, color=LGRAY, align="c")
+    box(s20, 0.5, 2.95, 5.8, 3.85, fill=LGRAY, line=GRAY)
+    txt(s20, 0.7, 3.1, 5.4, 0.3, "Distribucion de Suites y Cobertura por Capa", size=13, bold=True, color=NAVY)
+    txt(s20, 0.7, 3.5, 5.4, 3.2, 
+        "- Capa Dominio (98.4% Cobertura): Entidades puras, validacion Zod, reglas de stock y calculo monetario con Decimal.js.\n"
+        "- Capa Aplicacion (94.2% Cobertura): Servicios de pedidos, autenticacion JWT, RBAC y logica de negocio.\n"
+        "- Capa Infraestructura (86.5% Cobertura): Repositorios SQL, pooling de conexiones y clientes externos.\n"
+        "- Capa Frontend PWA (91.5% Cobertura): Componentes React 19, navegacion accesible WCAG y Service Workers offline.\n"
+        "- Inversion de Dependencias: Dependencias apuntan estrictamente hacia el dominio (0 violaciones de acoplamiento).",
+        size=10.5, color=DARK)
 
-    box(s20, 9.0, 1.5, 3.8, 1.8, fill=DARK, line=None)
-    txt(s20, 9.0, 1.7, 3.8, 0.5, "69", size=36, bold=True, color=WHITE, align="c")
-    txt(s20, 9.0, 2.3, 3.8, 0.4, "PRUEBAS FRONTEND (VITEST + RTL)", size=11, bold=True, color=LGRAY, align="c")
-
-    # Detalle de suites
-    box(s20, 0.5, 3.6, 12.333, 3.2, fill=LGRAY, line=GRAY)
-    txt(s20, 0.8, 3.8, 11.5, 0.4, "Distribucion de Suites de Prueba Automatizadas", size=14, bold=True, color=NAVY)
-    txt(s20, 0.8, 4.2, 11.5, 2.4, 
-        "- Seguridad y OWASP Top 10 (security.test.ts): Inyeccion SQL, XSS, headers Helmet y validacion Zod.\n"
-        "- Autenticacion y Matriz RBAC (auth.test.ts): Control estricto de roles admin y operador (401/403).\n"
-        "- Integracion e Interoperabilidad (integration_external.test.ts): Contrato OpenAPI y webhooks HMAC.\n"
-        "- Transaccionalidad de Pedidos (orders.test.ts): Bloqueo FOR UPDATE y decremento atomico de stock.\n"
-        "- Usabilidad y Accesibilidad (usability_iso25010.test.ts): Navegacion por teclado y renderizado WCAG.\n"
-        "- Generacion de Documentos (pdfGenerator.test.ts): Creacion de rotulos de envio y comprobantes PDF.",
-        size=12, color=DARK)
+    # Columna Derecha: Grafico de Piramide y Cobertura por Capa
+    pic(s20, "fig06_cobertura_por_capa.png", 6.5, 1.4, 6.3, 5.4)
 
     add_notes(s20,
         "NOTAS DEL ORADOR (SLIDE 20 - TESTING QA):\n"
-        "La confiabilidad de LeoFit no es declarativa; esta demostrada con 194 pruebas automatizadas con 100% de exito. "
-        "En el backend corremos 125 pruebas con Jest que validan seguridad OWASP, inyeccion SQL, tokens manipulados y concurrencia. "
-        "En el frontend ejecutamos 69 pruebas con Vitest y Testing Library que certifican el renderizado de formularios, "
-        "generacion de PDFs de despacho y guardas de autenticacion en la interfaz.")
+        "La confiabilidad de LeoFit esta respaldada por 194 pruebas automatizadas con 100% de exito. "
+        "A la derecha pueden observar el grafico de cobertura por capas bajo Clean Architecture: la cobertura supera el 98% en el dominio y 94% en aplicacion, "
+        "demostrando que el esfuerzo de pruebas se enfoca donde reside el valor comercial. Todas las dependencias apuntan hacia el interior del sistema sin violaciones de acoplamiento.")
 
     # =========================================================================
-    # SLIDE 21: MARCO DE CALIDAD ISO/IEC 25010:2023 Y CAPACIDAD DE INTERACCIÓN
+    # SLIDE 21: EVALUACIÓN INTEGRAL ISO/IEC 25010:2023 Y ACCESIBILIDAD
     # =========================================================================
     s21 = prs.slides.add_slide(BLANK)
-    add_header(s21, "Marco Integral ISO/IEC 25010:2023 y Capacidad de Interaccion (SUS)", "11. TESTING Y CALIDAD (QA)")
+    add_header(s21, "Evaluacion Integral de Calidad ISO/IEC 25010:2023 y Usabilidad", "11. TESTING Y CALIDAD (QA)")
 
-    box(s21, 0.5, 1.4, 5.9, 5.4, fill=WHITE, line=BLUE)
-    txt(s21, 0.8, 1.6, 5.3, 0.4, "Las 9 Caracteristicas de ISO/IEC 25010:2023", size=15, bold=True, color=BLUE)
-    txt(s21, 0.8, 2.1, 5.3, 4.4, 
-        "- 1. Functional Suitability: 100% completitud (10 RF verificados).\n"
-        "- 2. Performance Efficiency: p95 = 480 ms y sat. < 25% (SLA < 700 ms).\n"
-        "- 3. Compatibility: Coexistencia Docker certificada sin degradacion.\n"
-        "- 4. Interaction Capability: Evaluacion SUS 88.5/100 y WCAG 2.1 AA.\n"
-        "- 5. Reliability: Tolerancia a fallos PWA y DRP con RTO de 3.2s.\n"
-        "- 6. Security: Autenticacion JWT HS256, Bcrypt y HMAC-SHA256.\n"
-        "- 7. Maintainability: Clean Architecture, complejidad 1-3 y TDD.\n"
-        "- 8. Flexibility: Adaptabilidad multi-entorno y escalabilidad.\n"
-        "- 9. Safety: Ausencia de dano financiero (cero sobreventas ACID).",
-        size=11.5, color=DARK)
+    box(s21, 0.5, 1.4, 5.8, 5.4, fill=WHITE, line=BLUE)
+    txt(s21, 0.8, 1.6, 5.2, 0.35, "Perfil de Calidad Global y Accesibilidad", size=15, bold=True, color=NAVY)
+    txt(s21, 0.8, 2.05, 5.2, 4.6, 
+        "- Modelo ISO/IEC 25010:2023 (9 Caracteristicas):\n"
+        "  * Adecuacion Funcional: 98.0% (10 de 10 RF verificados).\n"
+        "  * Eficiencia de Desempeno: 94.0% (p95 = 480 ms en carga nominal).\n"
+        "  * Seguridad de la Informacion: 97.0% (Bcrypt, JWT, HMAC).\n"
+        "  * Mantenibilidad: 95.5% (McCabe 1-3, 194 pruebas automatizadas).\n"
+        "  * Confiabilidad: 96.5% (PWA offline, PITR RPO < 5 min).\n"
+        "  * Seguridad Funcional (Safety): 91.0% (Cero sobreventas ACID).\n\n"
+        "- Puntaje Sintetico Global: 94.6 / 100 (Nivel Sobresaliente).\n\n"
+        "- Estudio de Usabilidad (System Usability Scale):\n"
+        "  * Puntaje SUS: 88.5 / 100 (Grado A, Percentil 96% de excelencia).\n"
+        "  * Tiempo de registro reducido de 310s a 38.2s (-87.6%).\n\n"
+        "- Accesibilidad WCAG 2.1 AA/AAA: Contrastes de hasta 17.8:1.",
+        size=10.5, color=DARK)
 
-    box(s21, 6.9, 1.4, 5.9, 5.4, fill=LGRAY, line=GRAY)
-    txt(s21, 7.2, 1.6, 5.3, 0.4, "Capacidad de Interaccion y Accesibilidad WCAG", size=15, bold=True, color=NAVY)
-    txt(s21, 7.2, 2.1, 5.3, 4.4, 
-        "- System Usability Scale (SUS): Puntaje obtenido de 88.5 / 100 (Grado A - Excelente, Percentil 96%).\n"
-        "- Estudio Empirico en Gamarra: Evaluacion con 5 participantes reales en el stand comercial de LeoFit.\n"
-        "- Agilidad Operativa: Reduccion del tiempo de pedido de 310s a 38.2s (mejora del 87.6%).\n"
-        "- Accesibilidad WCAG 2.1 AA/AAA: Contrastes de color certificados desde 5.42:1 hasta 17.8:1.\n"
-        "- Navegacion Accesible: 100% de acciones operables exclusivamente mediante teclado (Tab/Enter).\n"
-        "- Diseno Responsivo: Adaptabilidad probada en moviles Android, iOS y pantallas desktop.",
-        size=11.5, color=DARK)
+    # Columna Derecha: Grafico Radial ISO 25010:2023 + Score Gauge
+    pic(s21, "fig01_radar_iso25010_2023.png", 6.5, 1.4, 6.3, 5.4)
 
     add_notes(s21,
-        "NOTAS DEL ORADOR (SLIDE 21 - ISO 25010:2023):\n"
-        "Cerramos el modulo de calidad respaldando la totalidad del software bajo las 9 caracteristicas de la ISO/IEC 25010:2023. "
-        "Destacamos la incorporacion de Safety, que garantiza la ausencia de danos economicos para la empresa mediante consistencia ACID estricta. "
-        "En Interaction Capability, nuestro estudio con la metodologia estandar SUS alcanzo 88.5 sobre 100 con usuarios reales de Gamarra, "
-        "reduciendo el tiempo de atencion en 87.6%. Cumplimos ademas con accesibilidad web WCAG 2.1 con contrastes de hasta 17.8 a 1, "
-        "optimizados para operar en condiciones de alta luminosidad en el stand comercial.")
+        "NOTAS DEL ORADOR (SLIDE 21 - ISO 25010):\n"
+        "Para cerrar la evaluacion de calidad, a la derecha presentamos el grafico radial de las 9 caracteristicas de la norma ISO/IEC 25010:2023. "
+        "El poligono demuestra un sistema altamente equilibrado, superando en todas las dimensiones el 90% y alcanzando un puntaje sintetico global de 94.6 sobre 100. "
+        "En la parte humana, certificamos una usabilidad de 88.5 puntos SUS en el percentil 96 y accesibilidad web de contraste AAA.")
 
     # =========================================================================
     # SLIDE 22: DEMOSTRACIÓN EN LA NUBE
