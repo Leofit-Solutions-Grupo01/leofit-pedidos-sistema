@@ -33,6 +33,7 @@ docs/
 │   └── 02_ESTRUCTURA_ACADEMICA/                   (Estructura de 7 carpetas según rúbrica UTP)
 │
 ├── 02_CALIDAD_Y_AUDITORIA/                        [CALIDAD E INGENIERÍA]
+│   ├── COMPENDIO_TECNICO_CALIDAD_TESTING_Y_CRIPTOGRAFIA_SSL_TLS.md (Compendio Maestro S21-S29 y Cripto SSL/TLS)
 │   ├── 01_plan_de_pruebas_iso29119/               (Plan Maestro de Pruebas ISO/IEC/IEEE 29119-3/4)
 │   ├── 02_calidad_iso25010_semanas_10_11/         (Informe de Calidad ISO 25010 y Coexistencia)
 │   ├── 03_auditoria_y_cierre_proyecto/            (Dashboard Excel ISO 29119 y Deuda Técnica)
