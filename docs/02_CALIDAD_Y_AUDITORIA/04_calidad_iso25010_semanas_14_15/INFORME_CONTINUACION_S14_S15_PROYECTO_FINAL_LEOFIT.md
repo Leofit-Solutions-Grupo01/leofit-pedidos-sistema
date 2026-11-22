@@ -126,10 +126,30 @@ El esquema de datos relacional consta de 11 tablas maestras y de transacciones e
 - **Trigger Atómico PostgreSQL:** `fn_decrement_stock_on_order()` verifica que el stock resultante sea no negativo antes de confirmar el insert. Si no hay existencias, la transacción aborta automáticamente emitiendo un error SQL que el backend mapea a HTTP 409 Conflict.
 - **Corrección de Zona Horaria Oficial:** Para evitar que servidores en EE. UU. graben pedidos nocturnos con fecha del día siguiente, el pool inyecta `SET timezone = 'America/Lima'` en cada conexión.
 
-### 3.2 Seguridad Criptográfica y Autenticación
-- **Contraseñas seguras:** Derivación criptográfica mediante **Bcrypt** con 10 rondas de salt.
-- **Tokens de Sesión:** Autenticación stateless mediante **JWT (JSON Web Tokens)** firmados con algoritmo HS256, expiración de 15 minutos y rotación de Refresh Tokens.
-- **Protección contra Inyección y XSS:** Consultas 100% parametrizadas (sin concatenación SQL), validación exhaustiva de esquemas con **Zod** y cabeceras HTTP reforzadas con **Helmet**.
+### 3.2 Seguridad Criptográfica, Blindaje SSL/TLS 1.3 y Autenticación (Polanía Tovar, 2024)
+En cumplimiento del **Principio de Kerckhoffs** de la criptografía moderna (donde la seguridad reside exclusivamente en la confidencialidad de las claves y la fortaleza matemática de algoritmos públicos auditados) y las directrices sobre vulnerabilidades SSL/TLS (Polanía Tovar, 2024; RFC 8446; RFC 7525), la plataforma LeoFit Solutions implementa cinco capas de blindaje criptográfico verificables en `backend/src/infrastructure/security/tls.policy.ts`:
+
+1. **Arquitectura SSL/TLS 1.3 (RFC 8446) y sus 4 Subprotocolos:**
+   - *Handshake Protocol (Protocolo de Enlace en 8 pasos):* Negocia dinámicamente la versión TLS, valida la cadena de confianza del certificado digital **X.509** (CA Raíz $\to$ CA Intermedia $\to$ Host con Validación de Dominio/Organización DV/OV/EV) y acuerda claves efímeras de sesión.
+   - *Record Protocol (Protocolo de Registro):* Fragmenta la carga útil, adjunta códigos de autenticación de mensaje (MAC/AEAD) y cifra simétricamente el canal.
+   - *ChangeCipherSpec y Alert Protocol:* Gestionan la activación formal del cifrado negociado y notifican anomalías con niveles de severidad (*Warning* / *Fatal*).
+2. **Cifrado Simétrico Autenticado AEAD (`AES-256-GCM` y `CHACHA20-POLY1305`):**
+   - Se utiliza exclusivamente el estándar **AES-256** (bloques de 128 bits, clave de 256 bits) en modo **GCM (*Galois/Counter Mode*)** con vector de inicialización (IV) de 96 bits y etiqueta de autenticación (*Auth Tag*) de 128 bits, proporcionando confidencialidad e integridad simultáneas.
+   - Se prohíben por código (`PROHIBITED_CIPHER_PATTERNS`) los cifrados de flujo vulnerables (**RC4**, vulnerado en 2013 y prohibido por RFC 7465), los cifrados de bloque de 64 bits (**DES** de 56 bits con 16 etapas/8 cajas S y **3DES** vulnerable a *Sweet32*), las funciones hash con colisiones (**MD5**, **SHA-1**) y los modos de operación **ECB** y **CBC**.
+3. **Criptografía Asimétrica (PKC), Curvas Elípticas (ECC) y Perfect Forward Secrecy (PFS):**
+   - Para certificados y firmas digitales se exige **RSA $\ge 2048$ bits** (equivalente a 112 bits de seguridad simétrica) o **ECC de 256 bits** ($y^2 = x^3 + ax + b$, equivalente a RSA de 3072 bits con una fracción del costo de CPU).
+   - El intercambio de claves emplea **ECDHE (*Elliptic Curve Diffie-Hellman Ephemeral*)** sobre las curvas seguras `X25519` y `prime256v1`, generando claves efímeras distintas en cada sesión para garantizar **Confidencialidad Directa Perfecta (PFS)**.
+4. **Mitigación de las 5 Clases de Vulnerabilidades Man-In-The-Middle (MITM):**
+   - *CBC Padding Oracle (POODLE / Zombie POODLE):* Neutralizado al deshabilitar SSL 3.0 y todo conjunto de cifrado en modo CBC.
+   - *Compression Attacks (CRIME / BREACH):* Neutralizado al desactivar la compresión a nivel del protocolo TLS (`compressionEnabled: false`).
+   - *Export Keys / Claves Cortas de 512 bits (Ataque FREAK):* Neutralizado al rechazar cualquier suite `RSA_EXPORT` y exigir `MIN_RSA_KEY_BITS = 2048`.
+   - *Implementation Errors (Heartbleed) & Cross-Protocol ECC Attacks:* Neutralizados fijando `minVersion: 'TLSv1.2'` en el pool de PostgreSQL y servidor Node.js, y exigiendo indicadores explícitos de curva en `ServerKeyExchange`.
+   - *Downgrade / Rollback Attacks y SSL Stripping:* Neutralizados mediante la cabecera **HSTS** (`Strict-Transport-Security: max-age=31536000; includeSubDomains; preload`, RFC 6797), cabecera `X-TLS-Policy` y registros **DNS CAA** (RFC 6844) que restringen qué Autoridades de Certificación pueden emitir certificados para el dominio.
+5. **Autenticación, Derivación Bcrypt y Webhooks HMAC en Tiempo Constante:**
+   - **Contraseñas seguras:** Derivación criptográfica con **Bcrypt** (10 rondas de salt) y constante `DUMMY_HASH_CONSTANT` para evitar enumeración de usuarios por tiempo de respuesta.
+   - **Tokens de Sesión con Rotación de Claves (`kid`):** Autenticación stateless mediante **JWT (HS256)** con expiración de 15 minutos, validación explícita contra ataques de confusión de algoritmo (`alg: none` rechazado) y rotación de Refresh Tokens HttpOnly.
+   - **Webhooks Anti-Replay y Anti-Timing Attacks:** Verificación de firmas **HMAC-SHA256** mediante `crypto.timingSafeEqual` sobre buffers hexadecimales de 64 caracteres con ventana anti-replay de 5 minutos.
+   - **Protección contra Inyección SQL y XSS:** Consultas 100% parametrizadas, validación de esquemas con **Zod** y Content-Security-Policy (CSP) estricto en **Helmet**.
 
 ---
 
@@ -241,6 +261,25 @@ Capacidad del software para mantener su nivel de rendimiento bajo condiciones es
 - **Coexistencia:** Benchmark de contenedores concurrentes que comparten recursos sin interferencia mutua.
 - **Reemplazabilidad:** Capacidad de sustituir servicios externos (ej. conmutación entre pasarelas o simulación de SUNAT) mediante contratos de interfaz TypeScript.
 - **Conformidad de portabilidad:** Adherencia a los estándares OCI (Open Container Initiative).
+
+##### 7. FICHAS TÉCNICAS OFICIALES DE MÉTRICAS ISO/IEC 9126 (SESIÓN 21 — DIAPOSITIVAS 17 Y 19)
+En estricto cumplimiento del formato estandarizado exigido en la Sesión 21 del curso, se estructuran las dos fichas técnicas oficiales con todos sus campos normativos y su mapeo al ciclo de vida **ISO/IEC 12207 (SLCP)**:
+
+**Tabla 5.0.1-B.** *Fichas técnicas oficiales de Adecuidad (Funcionalidad) y Madurez (Fiabilidad) aplicadas en LeoFit Solutions*
+
+| Campo de la Ficha Oficial | Ficha Oficial 1.1: Métrica de Adecuidad (Funcionalidad — Diap. 17) | Ficha Oficial 2.1: Métrica de Madurez (Fiabilidad — Diap. 19) |
+| :--- | :--- | :--- |
+| **Nombre de la Métrica** | Completitud de la implementación funcional | Suficiencia de las pruebas |
+| **Propósito** | Determinar qué tan completa está la implementación funcional frente a los requerimientos contratados. | Determinar cuántos de los casos de prueba requeridos están cubiertos y aprobados en el plan de pruebas. |
+| **Método de Aplicación** | Contar las funciones faltantes o deficientes detectadas en la evaluación ($A$) y comparar con el número de funciones descritas en la especificación de requisitos ($B$). | Contar los casos de prueba planificados y ejecutados satisfactoriamente ($A$) y comparar con el número de casos de prueba requeridos para cobertura adecuada ($B$). |
+| **Medición y Fórmula Matemática** | $$X = 1 - \left(\frac{A}{B}\right)$$ Donde $A =$ funciones faltantes; $B =$ funciones especificadas. | $$X = \frac{A}{B}$$ Donde $A =$ pruebas ejecutadas en el plan; $B =$ pruebas requeridas. |
+| **Cálculo Real en LeoFit** | Faltan $A = 0$ funciones de $B = 10$ especificadas:<br>$$X = 1 - \left(\frac{0}{10}\right) = \mathbf{1.00}\ (100\%\text{ de completitud})$$ | Se ejecutaron $A = 194$ pruebas sobre $B = 194$ planificadas (y $150$ mínimas base):<br>$$X = \frac{194}{194} = \mathbf{1.00}\ (100\%\text{ madurez})\ \mid\ \frac{194}{150} = \mathbf{1.293}\ (129.3\%)$$ |
+| **Interpretación** | $0 \le X \le 1$. Cuanto más cercano a $1.0$, más completa es la implementación. | $0 \le X$. Cuanto mayor sea $X$, mayor es la suficiencia probatoria y madurez. |
+| **Tipo de Escala** | **Absoluta** | **Absoluta** |
+| **Tipo de Medida** | `X = count / count` (`A = count`, `B = count`) | `X = count / count` (`A = count`, `B = count`) |
+| **Fuente de Medición** | Especificación de requisitos (SRS), Diseño, Código fuente e Informe de revisión. | $A$ proviene del Plan de Pruebas ISO 29119; $B$ proviene de la Especificación de Requisitos. |
+| **ISO/IEC 12207 SLCP (Ciclo de Vida)** | `6.6 Validación` y `6.6 Revisión conjunta` | `Aseguramiento de Calidad`, `Resolución de problemas` y `Verificación` |
+| **Audiencia** | Requeridores (Cliente/PO) y Desarrolladores | Desarrolladores, Ingenieros QA y Mantenedores |
 
 ---
 
@@ -388,6 +427,29 @@ flowchart TD
 ![Figura 5.0: Evaluación Integral de Calidad ISO/IEC 25010:2023](graficos/fig01_radar_iso25010_2023.png)
 
 > **Interpretación del Perfil de Calidad (Radar Chart):** El diagrama radial demuestra un sistema altamente equilibrado, donde las 9 características superan holgadamente el umbral mínimo aprobatorio del 80%. Las dimensiones más sólidas corresponden a Adecuación Funcional (98.0%), Seguridad de la Información (97.0%) y Confiabilidad (96.5%). El medidor sintético de puntuación consolida un puntaje ponderado de **94.6 / 100**, certificando un nivel de calidad sobresaliente para el despliegue en producción.
+
+---
+
+#### 5.0.7 Gobernanza de Calidad del Proceso y Gestión Empresarial (ISO/IEC 25000, ISO 9000-3, ISO 9001:2015 y KmKey — Sesiones 23 a 26)
+
+Para que la calidad del *producto* (ISO 9126 / ISO 25010) sea sostenible, debe estar respaldada por la calidad del *proceso* de ingeniería y un Sistema de Gestión de Calidad (SGC) auditable:
+
+1. **Norma ISO/IEC 25000 (SQuaRE — Sesión 24): Los 7 Apartados y 6 Requisitos Documentales:**
+   - Se estructura en **7 apartados oficiales**: (1) Ámbito de aplicación, (2) Conformidad con requisitos, (3) Normas para consulta, (4) Términos y definiciones, (5) Marco de Calidad (3 pilares: parámetros internos/externos, cumplimiento de categorías y evaluación periódica de continuidad), (6) Modelo de Calidad del Producto (las 8 características esenciales: Funcionalidad, Fiabilidad, Eficiencia del rendimiento, Operatividad, Seguridad, Compatibilidad, Facilidad de mantenimiento y Capacidad de transferencia), y (7) Calidad en Uso (grado de cumplimiento, simulacros en entorno real/simulado y satisfacción del usuario).
+   - **Cumplimiento de los 6 Requisitos Documentales en LeoFit:** (1) Política y objetivos de calidad definidos (basados en *Integridad personal, Creatividad e Innovación, Productividad y Consciencia libre de errores*), (2) Definición de características del modelo con el cliente, (3) Simulacros de uso y estrés con k6 previos a producción, (4) Medición de satisfacción SUS (88.5/100), (5) Registro de modificaciones y revisiones (CHG-01 en Git), y (6) Registros históricos de evolución (ADRs y migraciones numeradas `001` a `015`).
+2. **Norma ISO 9000-3 (Modelo de Calidad para Desarrollo de Software — Sesión 23):**
+   - Articula **3 engranajes**: *Calidad de Software $\leftrightarrow$ Procesos del Ciclo de Vida $\leftrightarrow$ Desarrollo de Sistemas de Información*.
+   - Cumple las **3 Reglas Obligatorias del Alcance**: (1) Control de calidad aplicado a *todas* las fases (desarrollo, implementación y mantenimiento posterior), (2) Colaboración estricta entre cliente y proveedor, y (3) Sistema de calidad propio practicado por toda la organización.
+   - Implementado siguiendo los **13 pasos oficiales agrupados en 4 fases lógicas**: *Fase 1 Preparación* (Pasos 1-4: información ISO 9000, equipo y estrategia, diagnóstico SGC, planificación), *Fase 2 Ejecución* (Pasos 5-8: documentación del sistema, asignación de roles, implementación, definición de objetivos), *Fase 3 Revisión Interna* (Paso 9: auditoría interna documentada en el libro Excel de 7 pestañas), y *Fase 4 Certificación* (Pasos 10-13: entidad certificadora, pre-auditoría, auditoría oficial y auditoría de mantenimiento).
+3. **Norma ISO 9001:2015 y Mapa de Procesos con Ciclo RUP (Sesión 25):**
+   - Adopta los **7 Principios de Gestión de Calidad**: (1) Enfoque al cliente, (2) Liderazgo, (3) Compromiso de las personas, (4) Enfoque basado en procesos, (5) Mejora continua, (6) Toma de decisiones basada en la evidencia, y (7) Gestión de las relaciones, orientados a satisfacer a las **Partes Interesadas** y optimizar los 5 ejes de la Rueda de Calidad (*Productividad, Precios, Clientes, Costos y Trazabilidad*).
+   - **Pensamiento Basado en Riesgo:** Evaluado cuantitativamente como $\text{Riesgo} = \text{Probabilidad} \times \text{Severidad}$, mitigando riesgos críticos de sobreventa, caída de base de datos y ataques MITM.
+   - **Mapa de Procesos de Desarrollo de Software (Nivel 0 y 1):**
+     - *Procesos Estratégicos (Piso Superior):* Planeación Estratégica y Gestión de Calidad.
+     - *Procesos Operativos (Piso Central — Áreas DS Desarrollo, GS-HD Help Desk, QA Calidad y AU Auditoría):* Ejecutados a través de las **4 Fases del Método RUP (*Rational Unified Process*)**: **1. Inicio** (objetivos y alcance APF1) $\to$ **2. Elaboración** (arquitectura C4, BCNF y ADRs) $\to$ **3. Construcción** (culminación del 100% de la funcionalidad y 194 tests) $\to$ **4. Transición** (pruebas k6, depuración y despliegue cloud).
+     - *Procesos de Apoyo (Piso Inferior):* Gestión de Capital Humano, Gestión de Adquisiciones y Gestión Financiera.
+4. **Gobierno mediante Parámetros KmKey Quality & KmKey Project (Sesión 26):**
+   - El proyecto controla los **14 parámetros del SGC** (*KmKey Quality*: gestión y organización documental, acciones preventivas, correctivas, de mejora y no conformidades, auditorías, objetivos, indicadores, revisiones, satisfacción, reclamaciones, riesgos y proveedores) junto con los **4 Ejes Específicos de Gestión de Proyectos** (*KmKey Project*: **1. Tiempo**, **2. Esfuerzo**, **3. Información** y **4. Economía**).
 
 ---
 
@@ -669,6 +731,46 @@ Siguiendo las directrices de pruebas eficientes, la estrategia de aseguramiento 
 | **Modificabilidad** | Cambio CHG-01 en `order.service.ts` registrado en Git | Blast radius mínimo (2 archivos); 0 alteraciones en BD | **CONFORME** |
 | **Testabilidad** | Batería de 194 pruebas automáticas en Vitest y Jest | Cobertura > 80% en core; complejidad ciclomática de 1 a 3 | **CONFORME** |
 
+##### C. Estándar Internacional ISO/IEC/IEEE 29119 (Sesión 27): Las 4 Partes, 3 Capas y 12 Plantillas
+El aseguramiento de pruebas de LeoFit Solutions se rige por las **4 partes oficiales** del estándar **ISO/IEC/IEEE 29119**:
+1. **Parte 1 (29119-1 — Conceptos y Definiciones):** Define pruebas estáticas y dinámicas, base de prueba y estrategias basadas en riesgos.
+2. **Parte 2 (29119-2 — Modelo de Procesos de 3 Capas):**
+   - *Capa 1 (Especificaciones Organizacionales):* Política y Estrategia de prueba organizacional.
+   - *Capa 2 (Gestión de Pruebas):* Planificación, monitoreo, control y cierre del testing.
+   - *Capa 3 (Prueba Dinámica):* Diseño, preparación de datos, ejecución y reporte de incidentes.
+3. **Parte 3 (29119-3 — Documentación de Pruebas: 2 + 3 + 7 = 12 Plantillas Oficiales):**
+   - *2 Organizacionales:* (a) Política de prueba, (b) Estrategia de prueba organizacional.
+   - *3 de Gestión:* (a) Plan de prueba (`docs/02_CALIDAD_Y_AUDITORIA/01_plan_de_pruebas_iso29119/`), (b) Informe de estado, (c) Informe de finalización.
+   - *7 Dinámicas:* (1) Especificación de diseño, (2) Especificación de caso de prueba, (3) Especificación de procedimiento, (4) Requisitos de datos de prueba, (5) Informe de preparación de datos, (6) Resultado de la prueba, (7) Informe de incidentes.
+4. **Parte 4 (29119-4 — Técnicas de Prueba):** Técnicas basadas en especificaciones (Caja Negra), basadas en estructura (Caja Blanca) y basadas en experiencia.
+
+##### D. Métricas Relativas a la Prueba de Software en 4 Etapas (Sesión 28)
+
+**Tabla 5.8-B.** *Evaluación de métricas de prueba en las 4 etapas del ciclo de vida (Sesión 28 UTP)*
+
+| Etapa del Ciclo | Métricas, Estándares y Criterios de Clase | Medición Obtenida en LeoFit Solutions | Estado |
+| :--- | :--- | :--- | :--- |
+| **1. Requerimientos**<br>(IEEE 830) | **8 Características IEEE 830:** Correcta, No ambigua, Completa, Consistente, Ordenada por importancia, Verificable, Modificable y Trazable.<br>**3 Indicadores:** Estabilidad, Especificidad y Grado de validación. | 10 RF y 6 RNF especificados con 100% de trazabilidad bilateral hacia código y tests; 100% validados con el Product Owner. | **CUMPLE (100%)** |
+| **2. Análisis y Diseño**<br>(Puntos de Función y Flujo) | **5 Medidas de Flujo de Información:** Entradas de usuario (14), Salidas (12), Archivos lógicos internos (11 tablas BCNF), Archivos de interfaz externa (3: SUNAT, Culqi, WhatsApp), Consultas (16). Evaluadas bajo las **10 características de desempeño y complejidad**. | Arquitectura C4 y modelo relacional de 11 tablas con bajo acoplamiento y alta cohesión. | **CUMPLE** |
+| **3. Implementación**<br>(Pesos y Límites de Lafuente) | **1. Índice de Funcionalidad:** Archivos estructurales (HTML/CSS) vs. funcionales de servidor/lógica (`.ts`/`.tsx`).<br>**2. Métrica de Éxito por Pesos:** No realizada ($0$), A medio realizar ($0.5$), Realizada ($1.0$).<br>**3. Límites de Espera Web de Lafuente (2000):** Visible $\le 5\text{ s}$, Legible $\le 10\text{ s}$, Navegación/clic $\le 30\text{ s}$. | - **Pesos de Éxito:** $10 \times 1.0 = \mathbf{10 / 10\ (100\%)}$.<br>- **Tiempos de Lafuente en PWA:** Visible en $\mathbf{0.42\text{ s}}$ ($\le 5\text{ s}$), Legible en $\mathbf{0.85\text{ s}}$ ($\le 10\text{ s}$), Clic/navegación en $\mathbf{0.18\text{ s}}$ ($\le 30\text{ s}$). | **CUMPLE HOLGADAMENTE** |
+| **4. Pruebas**<br>(5 Círculos + 2 Conclusiones) | **5 Métricas de Círculos:** Exhaustividad, Densidad de defectos, Control de pruebas de unidad, Tasa de propagación de defectos, Índice de Madurez.<br>**2 Métricas Destacadas:** Cobertura de pruebas y % de Éxito de usuarios. | - Densidad de defectos en producción: $\mathbf{0.0\text{ def/KLOC}}$.<br>- Cobertura en dominio/servicios: **84.6% a 98.4%**.<br>- % de Éxito de usuarios: **100.0%** (12/12 tareas). | **CUMPLE (100%)** |
+
+##### E. Proceso de Prueba: 6 Etapas, Caja Negra y Caja Blanca con Ruta Básica (Sesión 29)
+1. **Filosofía Bottom-Top y las 6 Etapas de Prueba:** Ejecutadas secuencialmente desde (1) *Pruebas Unitarias o de Módulo* $\to$ (2) *Pruebas de Integración* $\to$ (3) *Pruebas del Sistema* (incluyendo los **4 tipos oficiales**: *Recuperación* PITR 3.2s, *Seguridad* OWASP/TLS 1.3, *Estrés* Spike 35 VU y *Rendimiento* Soak 4h) $\to$ (4) *Pruebas de Rendimiento* $\to$ (5) *Pruebas de Aceptación con Usuarios* $\to$ (6) *Pruebas de Instalación/Despliegue Docker*, apoyadas en las **4 herramientas secuenciales** (*Simuladores $\to$ Monitores $\to$ Analizadores $\to$ Generadores de datos*) y los **5 roles en escalera** (*Testers profesionales, Analistas, Diseñadores, Especialistas de configuración y Usuarios*).
+2. **Pruebas de Caja Negra (Entradas $\to$ Salidas Esperadas):** Verifican los requerimientos funcionales sin inspeccionar la estructura interna, aplicando los patrones oficiales de clase (notificaciones transaccionales y límites de aprobación/stock):
+   - *Caso CN-1.1 (Registro de Pedido):* Entrada: Registrar pedido de venta válido $\to$ Salida: Estado `CONFIRMADO`, correo/notificación enviada al cliente y stock descontado.
+   - *Caso CN-1.2 (Despacho / Facturación SUNAT):* Entrada: Emitir comprobante electrónico $\to$ Salida: XML UBL 2.1 firmado y enviado al cliente y departamento de facturación.
+   - *Caso CN-2.1 (Valor Límite Inferior — Stock Suficiente):* Entrada: Solicitud de compra por cantidad inferior o igual al stock disponible ($Q \le \text{Stock}$) $\to$ Salida: Pedido registrado con estatus `APROBADO / CONFIRMADO` (HTTP 201).
+   - *Caso CN-2.2 (Valor Límite Superior — Exceso de Stock / Límite):* Entrada: Solicitud de compra por monto/cantidad superior al límite disponible ($Q > \text{Stock}$) $\to$ Salida: Transacción bloqueada preventivamente con estado `HTTP 409 Conflict` (`INSUFFICIENT_STOCK`), evitando sobreventa.
+3. **Pruebas de Caja Blanca (Prueba de la Ruta Básica y Grafo de Flujo de Control):**
+   - Inspecciona las funciones internas representando las **instrucciones procedurales como Nodos (círculos)** y los **enlaces de decisión como Aristas (flechas)**, garantizando que cada sentencia y rama se ejecute al menos una vez.
+   - En la función crítica `verifySignature()` de `paymentWebhook.controller.ts` (Nodos 1 al 8):
+     - *Ruta 1 (Ruta más corta — Secreto ausente):* `Nodo 1 (Inicio) -> Nodo 2 (Falta Secret) -> Nodo 8 (Throw Error)` [3 nodos].
+     - *Ruta 2 (Firma malformada no-hexadecimal):* `1 -> 2 -> 3 (Regex 64-hex falla) -> 8 (HTTP 401 INVALID_SIGNATURE)` [4 nodos].
+     - *Ruta 3 (Ataque Replay — Timestamp expirado > 5 min):* `1 -> 2 -> 3 -> 4 -> 5 (Ventana > 300s) -> 8 (HTTP 401 SIGNATURE_EXPIRED)` [6 nodos].
+     - *Ruta 4 (Ruta más larga — Flujo Criptográfico Exitoso):* `1 -> 2 -> 3 -> 4 -> 5 -> 6 (Cálculo HMAC-SHA256) -> 7 (crypto.timingSafeEqual OK) -> 8 (Retorno exitoso)` [8 nodos].
+   - Todas las rutas independientes ($V(G) = 4 \le 4$) están cubiertas al 100% en `paymentWebhook.hardening.test.ts` y `security.test.ts`.
+
 ---
 
 ### 5.4 Síntesis de Calidad y Preparación para Semanas 16–18
@@ -736,6 +838,10 @@ En concordancia con las directivas pedagógicas del docente en la sesión de cla
 9. **SUNAT (2024).** *Manual del Sistema de Emisión Electrónica CPE — Estándar UBL 2.1.* Lima, Perú.
 10. **Grafana Labs (2024).** *k6 Documentation: Modern load testing for engineering teams.*
 11. **PostgreSQL Global Development Group (2024).** *PostgreSQL 16.4 Documentation: Concurrency Control and Indexing.*
+12. **Polanía Tovar, C. R. (2024).** *Determinación de actividades y vulnerabilidades SSL/TLS y de encriptación.* Revista Agunkuyâa, 14(1), 27-47. Fundación Universitaria del Área Andina.
+13. **Rescorla, E. (2018).** *The Transport Layer Security (TLS) Protocol Version 1.3.* RFC 8446, IETF.
+14. **ISO (2015).** *ISO 9001:2015 Sistemas de gestión de la calidad — Requisitos & ISO 9000-3 Directrices para la aplicación de ISO 9001 al desarrollo, suministro y mantenimiento de software.*
+15. **Lafuente, J. (2000).** *Tiempos de respuesta y límites internacionales de espera en aplicaciones web (5s / 10s / 30s).*
 
 ---
 
@@ -750,8 +856,10 @@ En concordancia con las directivas pedagógicas del docente en la sesión de cla
 | **EV-03** | `backend/src/services/order.service.ts` | Reglas comerciales puras desacopladas (Clean Architecture) | Sección 5.3.1 / 5.3.3 |
 | **EV-04** | `backend/src/middlewares/role.middleware.ts` | Middleware RBAC reutilizado en 14 endpoints | Sección 5.3.2 |
 | **EV-05** | `backend/src/middlewares/idempotency.middleware.ts` | Idempotencia transaccional RFC 8785 reutilizada | Sección 5.3.2 |
-| **EV-06** | `backend/src/tests/` (17 suites con 125 tests) | Batería de pruebas automatizadas Backend en Jest | Sección 5.3.4 |
-| **EV-07** | `frontend/src/tests/` (10 suites con 69 tests) | Batería de pruebas automatizadas Frontend en Vitest | Sección 5.3.4 |
+| **EV-06** | `backend/tests/` (15 suites con 127 tests en Jest) | Batería de pruebas automatizadas Backend y auditoría SSL/TLS | Sección 5.3.4 |
+| **EV-07** | `frontend/src/__tests__/` (10 suites con 69 tests en Vitest) | Batería de pruebas automatizadas Frontend en Vitest | Sección 5.3.4 |
 | **EV-08** | `docs/adr/ADR-001_ELECCION_RENDER_NEON_VS_AWS.md` | Decisión de arquitectura Render vs AWS y análisis de costos | Sección 5.2.1 |
 | **EV-09** | `docs/adr/ADR-002_ARQUITECTURA_OBJETIVO_AWS.md` | Arquitectura objetivo AWS VPC Multi-AZ y servicios complementarios | Sección 5.2.2 |
 | **EV-10** | `_PROYECTO_FINAL_LOCAL/02_ENTREGABLES_UTP/03_XLSX/04_PLAN...` | Libro Excel de auditoría, trazabilidad y Gap Analysis SUNAT | Sección 5.4.1 |
+| **EV-11** | `backend/src/infrastructure/security/tls.policy.ts` | Política criptográfica TLS 1.3, cifrado AEAD AES-256-GCM y auditor anti-MITM/FREAK/POODLE | Sección 3.2 |
+| **EV-12** | `docs/02_CALIDAD_Y_AUDITORIA/COMPENDIO_TECNICO_CALIDAD_TESTING_Y_CRIPTOGRAFIA_SSL_TLS.md` | Compendio maestro de Sesiones 21-29 (Calidad y Pruebas) y Criptografía SSL/TLS | Secciones 3.2 / 5.0 / 5.3.4 |

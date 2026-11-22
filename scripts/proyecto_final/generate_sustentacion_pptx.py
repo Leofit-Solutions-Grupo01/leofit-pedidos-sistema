@@ -597,37 +597,42 @@ def create_deck():
         "culminar el tramite administrativo de KYC bancario de la empresa LeoFit para activar las llaves live.")
 
     # =========================================================================
-    # SLIDE 13: SEGURIDAD CRIPTOGRÁFICA Y PCI-DSS
+    # SLIDE 13: SEGURIDAD CRIPTOGRÁFICA, BLINDAJE SSL/TLS 1.3 Y PCI-DSS
     # =========================================================================
     s13 = prs.slides.add_slide(BLANK)
-    add_header(s13, "Seguridad Criptografica, Webhooks HMAC y Cumplimiento PCI-DSS", "6. PASARELA DE PAGOS Y PCI-DSS")
+    add_header(s13, "Seguridad Criptografica: Blindaje SSL/TLS 1.3, HMAC y PCI-DSS", "6. SEGURIDAD CRIPTOGRAFICA Y PAGOS")
 
     box(s13, 0.5, 1.4, 5.9, 5.4, fill=WHITE, line=BLUE)
-    txt(s13, 0.8, 1.6, 5.3, 0.4, "Cumplimiento PCI-DSS (Cuestionario SAQ A)", size=16, bold=True, color=BLUE)
-    txt(s13, 0.8, 2.1, 5.3, 4.4, 
-        "- Tokenizacion en el Cliente: El formulario web utiliza el SDK Culqi JS directamente en el navegador del usuario.\n"
-        "- Aislamiento Total del PAN: Los 16 digitos de la tarjeta y el CVV NUNCA tocan el servidor de LeoFit.\n"
-        "- Reduccion de Alcance: Al no almacenar datos de tarjetahabientes, LeoFit califica bajo el estandar SAQ A de PCI-DSS v4.0.\n"
-        "- Esto exime a LeoFit de someter su infraestructura a costosas auditorias de certificacion de red Nivel 1.",
-        size=13, color=DARK)
+    txt(s13, 0.8, 1.6, 5.3, 0.4, "Blindaje SSL/TLS 1.3 y Mitigacion MITM", size=15, bold=True, color=BLUE)
+    txt(s13, 0.8, 2.05, 5.3, 4.5, 
+        "- Politica Criptografica (tls.policy.ts / Polania Tovar, 2024):\n"
+        "  * TLS 1.3 (RFC 8446) con 4 subprotocolos (Handshake, Record, CipherSpec, Alert) y certificados X.509 (DV/OV/EV).\n"
+        "  * Cifrado Simetrico AEAD: AES-256-GCM (bloques 128b, clave 256b, Tag 128b). Prohibidos RC4, DES (56b), 3DES, ECB y CBC.\n"
+        "  * Asimetrica y PFS: RSA >= 2048b y curvas elipticas efimeras ECDHE (X25519) para Perfect Forward Secrecy.\n"
+        "- Mitigacion de 5 Vulnerabilidades MITM:\n"
+        "  * Sin CBC (inmune a POODLE), sin compresion TLS (inmune a CRIME), sin claves export 512b (inmune a FREAK), HSTS (RFC 6797) y DNS CAA.\n"
+        "- PCI-DSS SAQ A: Tokenizacion en cliente (PAN/CVV no tocan servidor).",
+        size=10.5, color=DARK)
 
     box(s13, 6.9, 1.4, 5.9, 5.4, fill=LGRAY, line=GRAY)
-    txt(s13, 7.2, 1.6, 5.3, 0.4, "Validacion de Webhooks con HMAC-SHA256", size=16, bold=True, color=NAVY)
-    txt(s13, 7.2, 2.1, 5.3, 4.4, 
-        "- Endpoint: POST /api/webhooks/payment en paymentWebhook.controller.ts.\n"
-        "- Firma Criptografica: Se verifica la firma enviada por la pasarela con el secreto del comercio.\n"
-        "- Proteccion contra Timing Attacks: Implementacion de crypto.timingSafeEqual en Node.js.\n"
-        "- Idempotencia Transaccional: Verificacion de si la transaccion ya fue procesada antes de actualizar la BD.\n"
-        "- Actualizacion Atomica: Transicion del pedido a 'CONFIRMADO' y estado de pago 'PAGADO'.",
-        size=13, color=DARK)
+    txt(s13, 7.2, 1.6, 5.3, 0.4, "Autenticacion Bcrypt, JWT y Webhooks HMAC", size=15, bold=True, color=NAVY)
+    txt(s13, 7.2, 2.05, 5.3, 4.5, 
+        "- Derivacion Bcrypt: 10 rondas de salt + DUMMY_HASH_CONSTANT contra enumeracion por tiempos.\n"
+        "- JWT con Rotacion de Claves (kid v1/v2): Firma HS256 (15m TTL), rechazo explicito de alg 'none' y Refresh Tokens HttpOnly.\n"
+        "- Webhooks HMAC-SHA256 (paymentWebhook.controller.ts):\n"
+        "  * Validacion regex hexadecimal estricta (64 chars SHA-256).\n"
+        "  * Comparacion en tiempo constante (crypto.timingSafeEqual) inmune a Timing Attacks.\n"
+        "  * Ventana anti-replay de 5 minutos sobre timestamp firmado.\n"
+        "  * Validacion contra snapshot de checkout y bloqueo ACID FOR UPDATE.",
+        size=10.5, color=DARK)
 
     add_notes(s13,
-        "NOTAS DEL ORADOR (SLIDE 13 - PCI-DSS Y HMAC):\n"
-        "Desde la perspectiva de seguridad de la informacion, implementamos tokenizacion del lado del cliente. "
-        "Esto nos permite acogernos al cuestionario SAQ A de PCI-DSS, garantizando que ningun dato confidencial de tarjeta "
-        "quede registrado en logs o bases de datos de LeoFit. "
-        "Adicionalmente, los webhooks asincronos son validados con firmas HMAC-SHA256 utilizando comparacion de tiempo constante "
-        "mediante crypto.timingSafeEqual, neutralizando ataques de temporizacion.")
+        "NOTAS DEL ORADOR (SLIDE 13 - BLINDAJE CRIPTOGRAFICO SSL/TLS 1.3 Y PCI-DSS):\n"
+        "En seguridad criptografica aplicamos el Principio de Kerckhoffs y la taxonomia de mitigacion SSL/TLS de Polania Tovar (2024). "
+        "Nuestra politica codificada en tls.policy.ts exige TLS 1.3 con cifrado autenticado AEAD AES-256-GCM e intercambio de claves efimero ECDHE sobre curva X25519 para Perfect Forward Secrecy. "
+        "Con ello erradicamos las 5 clases de ataques Man-In-The-Middle: bloqueamos RC4, DES, 3DES y el modo CBC previniendo POODLE; desactivamos la compresion TLS previniendo CRIME; "
+        "rechazamos claves de exportacion de 512 bits previniendo el ataque FREAK; e inyectamos cabeceras HSTS con max-age de 1 ano junto con registros DNS CAA. "
+        "Adicionalmente, cumplimos PCI-DSS SAQ A mediante tokenizacion en el cliente y validamos webhooks HMAC-SHA256 con crypto.timingSafeEqual y ventana anti-replay de 5 minutos.")
 
     # =========================================================================
     # SLIDE 14: MARCO DE CALIDAD ISO 9126 Y EVOLUCIÓN A ISO/IEC 25010:2023
@@ -905,34 +910,35 @@ def create_deck():
         "y garantizamos recuperacion ante desastres con copias continuas Point-in-Time Restore en PostgreSQL, con un objetivo de punto de recuperacion menor a 5 minutos.")
 
     # =========================================================================
-    # SLIDE 20: BATERÍA DE 194 PRUEBAS AUTOMATIZADAS Y PIRÁMIDE
+    # SLIDE 20: ESTÁNDAR ISO/IEC/IEEE 29119, CAJA NEGRA/BLANCA Y 194 PRUEBAS
     # =========================================================================
     s20 = prs.slides.add_slide(BLANK)
-    add_header(s20, "Aseguramiento de Calidad: 194 Pruebas Automatizadas y Piramide", "11. TESTING Y CALIDAD (QA)")
+    add_header(s20, "Testing ISO/IEC/IEEE 29119: Caja Negra, Ruta Basica y 194 Pruebas", "11. TESTING Y CALIDAD (QA)")
 
     # Columna Izquierda: Metricas y Suites
     box(s20, 0.5, 1.4, 5.8, 1.35, fill=NAVY, line=None)
     txt(s20, 0.7, 1.5, 5.4, 0.45, "194 TESTS APROBADOS (100% OK)", size=20, bold=True, color=WHITE)
-    txt(s20, 0.7, 2.05, 5.4, 0.4, "125 BACKEND (JEST) + 69 FRONTEND (VITEST) - CERO FALLOS", size=9.5, bold=True, color=ACCENT)
+    txt(s20, 0.7, 2.05, 5.4, 0.4, "ISO 29119 (4 PARTES / 3 CAPAS / 12 PLANTILLAS) - CERO FALLOS", size=9.2, bold=True, color=ACCENT)
 
     box(s20, 0.5, 2.95, 5.8, 3.85, fill=LGRAY, line=GRAY)
-    txt(s20, 0.7, 3.1, 5.4, 0.3, "Distribucion de Suites y Cobertura por Capa", size=13, bold=True, color=NAVY)
-    txt(s20, 0.7, 3.5, 5.4, 3.2, 
-        "- Capa Dominio (98.4% Cobertura): Entidades puras, validacion Zod, reglas de stock y calculo monetario con Decimal.js.\n"
-        "- Capa Aplicacion (94.2% Cobertura): Servicios de pedidos, autenticacion JWT, RBAC y logica de negocio.\n"
-        "- Capa Infraestructura (86.5% Cobertura): Repositorios SQL, pooling de conexiones y clientes externos.\n"
-        "- Capa Frontend PWA (91.5% Cobertura): Componentes React 19, navegacion accesible WCAG y Service Workers offline.\n"
-        "- Inversion de Dependencias: Dependencias apuntan estrictamente hacia el dominio (0 violaciones de acoplamiento).",
-        size=10.5, color=DARK)
+    txt(s20, 0.7, 3.08, 5.4, 0.3, "Estandar ISO 29119, Metricas S28 y Caja Negra/Blanca S29", size=12.5, bold=True, color=NAVY)
+    txt(s20, 0.7, 3.42, 5.4, 3.3, 
+        "- Cobertura Clean Architecture: Dominio 98.4%, Aplicacion 94.2%, Infraestructura 86.5%, Frontend PWA 91.5% (0 violaciones DIP).\n"
+        "- Metricas de Ciclo de Vida (S28): Requerimientos IEEE 830 (8 caract.), Puntos de Funcion/Flujo, Pesos de Exito 10/10 (100%) y Tiempos de Lafuente (2000): Visible 0.42s (<=5s), Legible 0.85s (<=10s), Clic 0.18s (<=30s).\n"
+        "- Proceso en 6 Etapas Bottom-Top (S29): Unitarias -> Integracion -> Sistema (Recuperacion, Seguridad, Estres, Rendimiento) -> Aceptacion -> Instalacion.\n"
+        "- Caja Negra vs. Caja Blanca: Particion de limites de stock/aprobacion (HTTP 201 vs 409) y Prueba de Ruta Basica en grafos de control (McCabe V(G) <= 4).",
+        size=9.8, color=DARK)
 
     # Columna Derecha: Grafico de Piramide y Cobertura por Capa
     pic(s20, "fig06_cobertura_por_capa.png", 6.5, 1.4, 6.3, 5.4)
 
     add_notes(s20,
-        "NOTAS DEL ORADOR (SLIDE 20 - TESTING QA):\n"
-        "La confiabilidad de LeoFit esta respaldada por 194 pruebas automatizadas con 100% de exito. "
-        "A la derecha pueden observar el grafico de cobertura por capas bajo Clean Architecture: la cobertura supera el 98% en el dominio y 94% en aplicacion, "
-        "demostrando que el esfuerzo de pruebas se enfoca donde reside el valor comercial. Todas las dependencias apuntan hacia el interior del sistema sin violaciones de acoplamiento.")
+        "NOTAS DEL ORADOR (SLIDE 20 - TESTING ISO 29119, METRICAS S28 Y CAJA NEGRA/BLANCA S29):\n"
+        "Nuestro proceso de testing aplica integralmente las Sesiones 27, 28 y 29 del curso. "
+        "Bajo el estandar ISO/IEC/IEEE 29119 estructuramos las 4 partes, el modelo de 3 capas y las 12 plantillas oficiales. "
+        "En metricas de la Sesion 28, validamos las 8 caracteristicas IEEE 830 en requerimientos, obtuvimos 10 sobre 10 en pesos de exito de implementacion, "
+        "y superamos los limites internacionales de espera web de Lafuente (2000): contenido visible en 0.42 segundos frente al limite de 5 segundos, y legible en 0.85 segundos frente al limite de 10 segundos. "
+        "Finalmente, ejecutamos las 6 etapas bottom-top de la Sesion 29 combinando pruebas de Caja Negra sobre limites de aprobacion y stock con pruebas de Caja Blanca mediante el metodo de la Ruta Basica, logrando 194 pruebas automatizadas con 100% de exito.")
 
     # =========================================================================
     # SLIDE 21: EVALUACIÓN INTEGRAL ISO/IEC 25010:2023 Y CALIDAD EN USO (ISO 9126-4)

@@ -22,10 +22,14 @@ const normalizedConnectionString = rawDatabaseUrl
       .replace(/[?&]$/, '')
   : undefined;
 
+const sslOptions = requiresSsl
+  ? { rejectUnauthorized: false, minVersion: 'TLSv1.2' as const }
+  : undefined;
+
 const poolConfig: PoolConfig = normalizedConnectionString
   ? {
       connectionString: normalizedConnectionString,
-      ssl: requiresSsl ? { rejectUnauthorized: false } : undefined,
+      ssl: sslOptions,
       max: 20,
       idleTimeoutMillis: 30000,
       connectionTimeoutMillis: 15000,
@@ -36,7 +40,7 @@ const poolConfig: PoolConfig = normalizedConnectionString
       user: process.env.DB_USER || 'postgres',
       password: process.env.DB_PASSWORD || 'postgres',
       database: process.env.DB_NAME || 'leofit_db',
-      ssl: requiresSsl ? { rejectUnauthorized: false } : undefined,
+      ssl: sslOptions,
       max: 20,
       idleTimeoutMillis: 30000,
       connectionTimeoutMillis: 15000,

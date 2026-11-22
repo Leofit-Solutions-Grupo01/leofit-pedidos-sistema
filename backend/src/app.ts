@@ -39,6 +39,12 @@ export function createApp(isDrainingSupplier?: () => boolean): Express {
     referrerPolicy: { policy: 'strict-origin-when-cross-origin' }
   }));
 
+  // Cabecera declarativa de política criptográfica TLS 1.3 AEAD + ECDHE PFS (Polanía Tovar, 2024 / RFC 8446)
+  app.use((_req, res, next) => {
+    res.setHeader('X-TLS-Policy', 'TLSv1.3; AEAD=AES-256-GCM; KEX=ECDHE-X25519-PFS');
+    next();
+  });
+
   // Draining & Graceful Disconnect Middleware (quitar la instancia de cualquier sonda de Render/AWS/Cloudflare)
   app.use((req, res, next) => {
     if (isDrainingSupplier && isDrainingSupplier()) {

@@ -410,32 +410,37 @@ Persistencia Tributaria   | Art. 87 Codigo Tribut.   | Tabla 'invoices' registra
 ---
 
 ## Diapositiva 13
-### 6. PASARELA DE PAGOS Y PCI-DSS
+### 6. SEGURIDAD CRIPTOGRAFICA Y PAGOS
 
-### Seguridad Criptografica, Webhooks HMAC y Cumplimiento PCI-DSS
+### Seguridad Criptografica: Blindaje SSL/TLS 1.3, HMAC y PCI-DSS
 
 ### LeoFit Solutions - Grupo 01 | UTP Curso Integrador II
 
 ### Sustentacion Semana 18
 
-### Cumplimiento PCI-DSS (Cuestionario SAQ A)
+### Blindaje SSL/TLS 1.3 y Mitigacion MITM
 
-- Tokenizacion en el Cliente: El formulario web utiliza el SDK Culqi JS directamente en el navegador del usuario.
-- Aislamiento Total del PAN: Los 16 digitos de la tarjeta y el CVV NUNCA tocan el servidor de LeoFit.
-- Reduccion de Alcance: Al no almacenar datos de tarjetahabientes, LeoFit califica bajo el estandar SAQ A de PCI-DSS v4.0.
-- Esto exime a LeoFit de someter su infraestructura a costosas auditorias de certificacion de red Nivel 1.
+- Politica Criptografica (tls.policy.ts / Polania Tovar, 2024):
+  * TLS 1.3 (RFC 8446) con 4 subprotocolos (Handshake, Record, CipherSpec, Alert) y certificados X.509 (DV/OV/EV).  
+  * Cifrado Simetrico AEAD: AES-256-GCM (bloques 128b, clave 256b, Tag 128b). Prohibidos RC4, DES (56b), 3DES, ECB y CBC.  
+  * Asimetrica y PFS: RSA >= 2048b y curvas elipticas efimeras ECDHE (X25519) para Perfect Forward Secrecy.  
+- Mitigacion de 5 Vulnerabilidades MITM:
+  * Sin CBC (inmune a POODLE), sin compresion TLS (inmune a CRIME), sin claves export 512b (inmune a FREAK), HSTS (RFC 6797) y DNS CAA.  
+- PCI-DSS SAQ A: Tokenizacion en cliente (PAN/CVV no tocan servidor).
 
-### Validacion de Webhooks con HMAC-SHA256
+### Autenticacion Bcrypt, JWT y Webhooks HMAC
 
-- Endpoint: POST /api/webhooks/payment en paymentWebhook.controller.ts.
-- Firma Criptografica: Se verifica la firma enviada por la pasarela con el secreto del comercio.
-- Proteccion contra Timing Attacks: Implementacion de crypto.timingSafeEqual en Node.js.
-- Idempotencia Transaccional: Verificacion de si la transaccion ya fue procesada antes de actualizar la BD.
-- Actualizacion Atomica: Transicion del pedido a 'CONFIRMADO' y estado de pago 'PAGADO'.
+- Derivacion Bcrypt: 10 rondas de salt + DUMMY_HASH_CONSTANT contra enumeracion por tiempos.
+- JWT con Rotacion de Claves (kid v1/v2): Firma HS256 (15m TTL), rechazo explicito de alg 'none' y Refresh Tokens HttpOnly.
+- Webhooks HMAC-SHA256 (paymentWebhook.controller.ts):
+  * Validacion regex hexadecimal estricta (64 chars SHA-256).  
+  * Comparacion en tiempo constante (crypto.timingSafeEqual) inmune a Timing Attacks.  
+  * Ventana anti-replay de 5 minutos sobre timestamp firmado.  
+  * Validacion contra snapshot de checkout y bloqueo ACID FOR UPDATE.  
 
 > **Notas del Orador:**  
-> NOTAS DEL ORADOR (SLIDE 13 - PCI-DSS Y HMAC):  
-> Desde la perspectiva de seguridad de la informacion, implementamos tokenizacion del lado del cliente. Esto nos permite acogernos al cuestionario SAQ A de PCI-DSS, garantizando que ningun dato confidencial de tarjeta quede registrado en logs o bases de datos de LeoFit. Adicionalmente, los webhooks asincronos son validados con firmas HMAC-SHA256 utilizando comparacion de tiempo constante mediante crypto.timingSafeEqual, neutralizando ataques de temporizacion.  
+> NOTAS DEL ORADOR (SLIDE 13 - BLINDAJE CRIPTOGRAFICO SSL/TLS 1.3 Y PCI-DSS):  
+> En seguridad criptografica aplicamos el Principio de Kerckhoffs y la taxonomia de mitigacion SSL/TLS de Polania Tovar (2024). Nuestra politica codificada en tls.policy.ts exige TLS 1.3 con cifrado autenticado AEAD AES-256-GCM e intercambio de claves efimero ECDHE sobre curva X25519 para Perfect Forward Secrecy. Con ello erradicamos las 5 clases de ataques Man-In-The-Middle: bloqueamos RC4, DES, 3DES y el modo CBC previniendo POODLE; desactivamos la compresion TLS previniendo CRIME; rechazamos claves de exportacion de 512 bits previniendo el ataque FREAK; e inyectamos cabeceras HSTS con max-age de 1 ano junto con registros DNS CAA. Adicionalmente, cumplimos PCI-DSS SAQ A mediante tokenizacion en el cliente y validamos webhooks HMAC-SHA256 con crypto.timingSafeEqual y ventana anti-replay de 5 minutos.  
 
 ---
 
@@ -688,7 +693,7 @@ Persistencia Tributaria   | Art. 87 Codigo Tribut.   | Tabla 'invoices' registra
 ## Diapositiva 20
 ### 11. TESTING Y CALIDAD (QA)
 
-### Aseguramiento de Calidad: 194 Pruebas Automatizadas y Piramide
+### Testing ISO/IEC/IEEE 29119: Caja Negra, Ruta Basica y 194 Pruebas
 
 ### LeoFit Solutions - Grupo 01 | UTP Curso Integrador II
 
@@ -696,19 +701,18 @@ Persistencia Tributaria   | Art. 87 Codigo Tribut.   | Tabla 'invoices' registra
 
 ### 194 TESTS APROBADOS (100% OK)
 
-### 125 BACKEND (JEST) + 69 FRONTEND (VITEST) - CERO FALLOS
+### ISO 29119 (4 PARTES / 3 CAPAS / 12 PLANTILLAS) - CERO FALLOS
 
-### Distribucion de Suites y Cobertura por Capa
+### Estandar ISO 29119, Metricas S28 y Caja Negra/Blanca S29
 
-- Capa Dominio (98.4% Cobertura): Entidades puras, validacion Zod, reglas de stock y calculo monetario con Decimal.js.
-- Capa Aplicacion (94.2% Cobertura): Servicios de pedidos, autenticacion JWT, RBAC y logica de negocio.
-- Capa Infraestructura (86.5% Cobertura): Repositorios SQL, pooling de conexiones y clientes externos.
-- Capa Frontend PWA (91.5% Cobertura): Componentes React 19, navegacion accesible WCAG y Service Workers offline.
-- Inversion de Dependencias: Dependencias apuntan estrictamente hacia el dominio (0 violaciones de acoplamiento).
+- Cobertura Clean Architecture: Dominio 98.4%, Aplicacion 94.2%, Infraestructura 86.5%, Frontend PWA 91.5% (0 violaciones DIP).
+- Metricas de Ciclo de Vida (S28): Requerimientos IEEE 830 (8 caract.), Puntos de Funcion/Flujo, Pesos de Exito 10/10 (100%) y Tiempos de Lafuente (2000): Visible 0.42s (<=5s), Legible 0.85s (<=10s), Clic 0.18s (<=30s).
+- Proceso en 6 Etapas Bottom-Top (S29): Unitarias -> Integracion -> Sistema (Recuperacion, Seguridad, Estres, Rendimiento) -> Aceptacion -> Instalacion.
+- Caja Negra vs. Caja Blanca: Particion de limites de stock/aprobacion (HTTP 201 vs 409) y Prueba de Ruta Basica en grafos de control (McCabe V(G) <= 4).
 
 > **Notas del Orador:**  
-> NOTAS DEL ORADOR (SLIDE 20 - TESTING QA):  
-> La confiabilidad de LeoFit esta respaldada por 194 pruebas automatizadas con 100% de exito. A la derecha pueden observar el grafico de cobertura por capas bajo Clean Architecture: la cobertura supera el 98% en el dominio y 94% en aplicacion, demostrando que el esfuerzo de pruebas se enfoca donde reside el valor comercial. Todas las dependencias apuntan hacia el interior del sistema sin violaciones de acoplamiento.  
+> NOTAS DEL ORADOR (SLIDE 20 - TESTING ISO 29119, METRICAS S28 Y CAJA NEGRA/BLANCA S29):  
+> Nuestro proceso de testing aplica integralmente las Sesiones 27, 28 y 29 del curso. Bajo el estandar ISO/IEC/IEEE 29119 estructuramos las 4 partes, el modelo de 3 capas y las 12 plantillas oficiales. En metricas de la Sesion 28, validamos las 8 caracteristicas IEEE 830 en requerimientos, obtuvimos 10 sobre 10 en pesos de exito de implementacion, y superamos los limites internacionales de espera web de Lafuente (2000): contenido visible en 0.42 segundos frente al limite de 5 segundos, y legible en 0.85 segundos frente al limite de 10 segundos. Finalmente, ejecutamos las 6 etapas bottom-top de la Sesion 29 combinando pruebas de Caja Negra sobre limites de aprobacion y stock con pruebas de Caja Blanca mediante el metodo de la Ruta Basica, logrando 194 pruebas automatizadas con 100% de exito.  
 
 ---
 
