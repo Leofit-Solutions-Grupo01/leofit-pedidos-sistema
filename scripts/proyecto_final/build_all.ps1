@@ -1,4 +1,4 @@
-# ==============================================================================
+﻿# ==============================================================================
 # build_all.ps1 — Orquestador Maestro de Exportación Markdown -> Office (LeoFit)
 # Proyecto Final - Semana 18 | UTP Curso Integrador II
 # ==============================================================================
@@ -80,9 +80,24 @@ if ($LASTEXITCODE -ne 0) {
 Write-Host ""
 
 # ------------------------------------------------------------------------------
-# 5. VALIDACION RIGUROSA DE INTEGRIDAD Y REPORTE DE TAMANOS
+# 5. GENERACION DEL INFORME ACUMULATIVO Y VISOR WEB
 # ------------------------------------------------------------------------------
-Write-Host "[5/5] Validando integridad de todos los archivos generados..." -ForegroundColor Yellow
+Write-Host "[5/7] Generando Informe Acumulativo Final y Visor Web..." -ForegroundColor Yellow
+python "$scriptDir\build_informe_s14_s15.py"
+python "$scriptDir\generate_slides_viewer.py"
+Write-Host ""
+
+# ------------------------------------------------------------------------------
+# 6. EXPORTACION A CARPETA EXCLUSIVA UTP+ CLASS / CANVAS
+# ------------------------------------------------------------------------------
+Write-Host "[6/7] Exportando archivos exclusivos a _SUBIR_A_UTP_CLASS/..." -ForegroundColor Yellow
+python "$scriptDir\export_subir_utp_class.py"
+Write-Host ""
+
+# ------------------------------------------------------------------------------
+# 7. VALIDACION RIGUROSA DE INTEGRIDAD Y REPORTE DE TAMANOS
+# ------------------------------------------------------------------------------
+Write-Host "[7/7] Validando integridad de todos los archivos generados..." -ForegroundColor Yellow
 
 python "$scriptDir\validate_deliverables.py"
 
@@ -93,20 +108,18 @@ if ($LASTEXITCODE -ne 0) {
 
 Write-Host ""
 Write-Host "======================================================================" -ForegroundColor Green
-Write-Host "INVENTARIO OFICIAL DE ENTREGABLES GENERADOS Y TAMANOS EN DISCO" -ForegroundColor Green
+Write-Host "INVENTARIO DE ARCHIVOS LISTOS PARA SUBIR A UTP+ CLASS (CANVAS)" -ForegroundColor Green
 Write-Host "======================================================================" -ForegroundColor Green
 
-$allGenerated = Get-ChildItem -Path "$entregablesDir\00_HTML", "$entregablesDir\01_DOCX", "$entregablesDir\02_PPTX", "$entregablesDir\03_XLSX" -File
+$utpFiles = Get-ChildItem -Path "$baseDir\_SUBIR_A_UTP_CLASS" -File
 $tableReport = @()
 
-foreach ($f in $allGenerated) {
+foreach ($f in $utpFiles) {
     $sizeKb = [math]::Round($f.Length / 1KB, 1)
-    $folder = $f.Directory.Name
     $tableReport += [PSCustomObject]@{
-        "Carpeta" = $folder
         "Nombre del Archivo" = $f.Name
-        "Tamano (KB)" = $sizeKb
-        "Estado" = "VALIDADO [OK]"
+        "Tamano (KB)"        = $sizeKb
+        "Prioridad"          = if ($f.Extension -eq ".docx") { "1 - Word (Principal)" } elseif ($f.Extension -eq ".pdf") { "2 - PDF" } elseif ($f.Extension -eq ".xlsx") { "3 - Excel" } elseif ($f.Extension -eq ".pptx") { "4 - PowerPoint" } else { "Informativo" }
     }
 }
 

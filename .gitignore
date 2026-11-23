@@ -204,9 +204,15 @@ docs/01_ENTREGA_OFICIAL_APF3/**/00_ENTREGA_OFICIAL_CANVAS/
 docs/99_HISTORICO_ENTREGAS_ANTERIORES/**/00_ENTREGA_OFICIAL_CANVAS/
 
 # ==============================================================================
+# CARPETAS LOCALES EXCLUSIVAS PARA SUBIDA A UTP+ CLASS / CANVAS (NO SUBIR AL REPO)
+# ==============================================================================
+_SUBIR_A_UTP_CLASS/
+_SUBIR_UTP_CLASS/
+_PROYECTO_FINAL_LOCAL/
+
+# ==============================================================================
 # PROYECTO FINAL SEMANA 18 (OFICIAL)
 # ==============================================================================
-_PROYECTO_FINAL_LOCAL/
 !docs/01_ENTREGA_FINAL_PROYECTO_SEMANA_18/
 !docs/01_ENTREGA_FINAL_PROYECTO_SEMANA_18/**
 
