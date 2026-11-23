@@ -1,148 +1,144 @@
 # -*- coding: utf-8 -*-
 """
 @file export_subir_utp_class.py
-@description Prepara y exporta exclusivamente los archivos para subir a UTP+ Class / Canvas
-             siguiendo la jerarquía estricta de prioridad: Word > PDF > Excel > PPT
-             Esta carpeta destino (_SUBIR_A_UTP_CLASS/) se encuentra excluida del repositorio Git.
+@description Exporta exclusivamente 1 archivo de cada tipo a _SUBIR_A_UTP_CLASS/ (sin duplicados):
+             1. Word (.docx)       -> 01_INFORME_FINAL_PROYECTO_LEOFIT_GRUPO01.docx
+             2. PDF (.pdf)         -> 02_INFORME_FINAL_PROYECTO_LEOFIT_GRUPO01.pdf
+             3. Excel (.xlsx)      -> 03_PLAN_AUDITORIA_CALIDAD_Y_TRAZABILIDAD_LEOFIT_GRUPO01.xlsx
+             4. PowerPoint (.pptx) -> 04_PRESENTACION_OFICIAL_SUSTENTACION_LEOFIT_GRUPO01.pptx
 @project LeoFit Pedidos Sistema (UTP - Curso Integrador II)
 @author Grupo 01 - UTP
 """
 
 import os
 import shutil
-import glob
 
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 DOCS_DIR = os.path.join(BASE_DIR, "docs", "01_ENTREGA_FINAL_PROYECTO_SEMANA_18")
 DEST_DIR = os.path.join(BASE_DIR, "_SUBIR_A_UTP_CLASS")
 
+# Limpiar carpeta destino para garantizar que no existan archivos residuales ni duplicados
+if os.path.exists(DEST_DIR):
+    shutil.rmtree(DEST_DIR)
 os.makedirs(DEST_DIR, exist_ok=True)
 
 print("======================================================================")
-print("EXPORTACION DE ARCHIVOS PARA UTP+ CLASS (CANVAS)")
+print("EXPORTACION EXCLUSIVA PARA UTP+ CLASS (1 ARCHIVO POR TIPO)")
 print("======================================================================")
-print(f"Carpeta Destino (Ignorada por Git): {DEST_DIR}\n")
+print(f"Carpeta Destino (Ignorada en Git): {DEST_DIR}\n")
 
-# 1. Prioridad 1: Documentos Word (.docx)
-print("  --- [PRIORIDAD 1] Copiando Documentos Word (.docx) ---")
-docx_mapping = [
-    (
-        os.path.join(DOCS_DIR, "00_HOJA_DE_ENTREGA_Y_ENLACES_DOCENTE.docx"),
-        os.path.join(DEST_DIR, "00_HOJA_DE_ENTREGA_Y_ENLACES_DOCENTE_GRUPO01.docx")
-    ),
-    (
-        os.path.join(DOCS_DIR, "01_INFORME_FINAL_PROYECTO_LEOFIT.docx"),
-        os.path.join(DEST_DIR, "01_INFORME_FINAL_PROYECTO_LEOFIT_GRUPO01.docx")
-    )
-]
+# 1. ARCHIVO 1: WORD (.docx) - PRIORIDAD 1
+src_word = os.path.join(DOCS_DIR, "01_INFORME_FINAL_PROYECTO_LEOFIT.docx")
+dst_word = os.path.join(DEST_DIR, "01_INFORME_FINAL_PROYECTO_LEOFIT_GRUPO01.docx")
+if os.path.exists(src_word):
+    shutil.copy2(src_word, dst_word)
+    sz = os.path.getsize(dst_word) / 1024.0
+    print(f"[1/4] [WORD OK]  {os.path.basename(dst_word)} ({sz:.1f} KB)")
+else:
+    print(f"[ERROR] No se encontro Word en: {src_word}")
 
-for src, dst in docx_mapping:
-    if os.path.exists(src):
-        shutil.copy2(src, dst)
-        sz = os.path.getsize(dst) / 1024.0
-        print(f"    [OK] {os.path.basename(dst)} ({sz:.1f} KB)")
+# 2. ARCHIVO 2: PDF (.pdf) - PRIORIDAD 2 (Generado fielmente con Word COM)
+dst_pdf = os.path.join(DEST_DIR, "02_INFORME_FINAL_PROYECTO_LEOFIT_GRUPO01.pdf")
+try:
+    import pythoncom
+    import win32com.client
+    pythoncom.CoInitialize()
+    word_app = win32com.client.DispatchEx("Word.Application")
+    word_app.Visible = False
+    doc = word_app.Documents.Open(os.path.abspath(dst_word))
+    try:
+        doc.Fields.Update()
+        for toc in doc.TablesOfContents:
+            toc.Update()
+    except Exception:
+        pass
+    doc.SaveAs(os.path.abspath(dst_pdf), FileFormat=17) # 17 = wdFormatPDF
+    doc.Close(False)
+    word_app.Quit()
+    sz = os.path.getsize(dst_pdf) / 1024.0
+    print(f"[2/4] [PDF OK]   {os.path.basename(dst_pdf)} ({sz:.1f} KB)")
+except Exception as e:
+    # Si falla Word COM por entorno restringido, copiar de la caché si existe
+    cached_pdf = os.path.join(DOCS_DIR, "01_INFORME_FINAL_PROYECTO_LEOFIT.pdf")
+    if os.path.exists(cached_pdf):
+        shutil.copy2(cached_pdf, dst_pdf)
+        sz = os.path.getsize(dst_pdf) / 1024.0
+        print(f"[2/4] [PDF OK (Caché)] {os.path.basename(dst_pdf)} ({sz:.1f} KB)")
     else:
-        print(f"    [ERROR] No se encontro origen: {src}")
+        print(f"[AVISO] Word COM no disponible: {e}")
 
-# 2. Prioridad 2: Documentos PDF (.pdf)
-print("\n  --- [PRIORIDAD 2] Generando/Copiando Documentos PDF (.pdf) ---")
-pdf_mapping = [
-    (
-        os.path.join(DOCS_DIR, "00_HOJA_DE_ENTREGA_Y_ENLACES_DOCENTE.pdf"),
-        os.path.join(DEST_DIR, "00_HOJA_DE_ENTREGA_Y_ENLACES_DOCENTE_GRUPO01.pdf")
-    ),
-    (
-        os.path.join(DOCS_DIR, "01_INFORME_FINAL_PROYECTO_LEOFIT.pdf"),
-        os.path.join(DEST_DIR, "01_INFORME_FINAL_PROYECTO_LEOFIT_GRUPO01.pdf")
-    )
-]
+# 3. ARCHIVO 3: EXCEL (.xlsx) - PRIORIDAD 3
+src_xlsx = os.path.join(DOCS_DIR, "03_PLAN_AUDITORIA_CALIDAD_Y_TRAZABILIDAD_LEOFIT.xlsx")
+dst_xlsx = os.path.join(DEST_DIR, "03_PLAN_AUDITORIA_CALIDAD_Y_TRAZABILIDAD_LEOFIT_GRUPO01.xlsx")
+if os.path.exists(src_xlsx):
+    shutil.copy2(src_xlsx, dst_xlsx)
+    sz = os.path.getsize(dst_xlsx) / 1024.0
+    print(f"[3/4] [EXCEL OK] {os.path.basename(dst_xlsx)} ({sz:.1f} KB)")
+else:
+    print(f"[ERROR] No se encontro Excel en: {src_xlsx}")
 
-for src, dst in pdf_mapping:
-    if os.path.exists(src):
-        shutil.copy2(src, dst)
-        sz = os.path.getsize(dst) / 1024.0
-        print(f"    [OK] {os.path.basename(dst)} ({sz:.1f} KB)")
-        # Remover PDF temporal del directorio docs para no ensuciar el git status
+# 4. ARCHIVO 4: POWERPOINT (.pptx) - PRIORIDAD 4
+src_pptx = os.path.join(DOCS_DIR, "02_PRESENTACION_OFICIAL_SUSTENTACION_LEOFIT.pptx")
+dst_pptx = os.path.join(DEST_DIR, "04_PRESENTACION_OFICIAL_SUSTENTACION_LEOFIT_GRUPO01.pptx")
+if os.path.exists(src_pptx):
+    shutil.copy2(src_pptx, dst_pptx)
+    sz = os.path.getsize(dst_pptx) / 1024.0
+    print(f"[4/4] [PPTX OK]  {os.path.basename(dst_pptx)} ({sz:.1f} KB)")
+else:
+    print(f"[ERROR] No se encontro PPTX en: {src_pptx}")
+
+# 5. ARCHIVO DE TEXTO EXPLICATIVO (1 por tipo: .txt)
+txt_path = os.path.join(DEST_DIR, "00_LEEME_PRIORIDAD_DE_SUBIDA_UTP_CLASS.txt")
+with open(txt_path, "w", encoding="utf-8") as f:
+    f.write("""================================================================================
+GUIA DE SUBIDA A UTP+ CLASS (CANVAS) - PROYECTO FINAL (SEMANA 18)
+Curso Integrador II: Software (100000S12F) - Seccion 35374
+Docente Evaluador: Ing. Enrique Lee Huamani Uriarte
+Equipo de Ingenieria: Grupo 01 - LeoFit Solutions
+================================================================================
+
+Esta carpeta contiene exactamente 1 archivo por cada formato (sin duplicados):
+
+--------------------------------------------------------------------------------
+ORDEN DE PRIORIDAD PARA SUBIR A UTP+ CLASS:
+--------------------------------------------------------------------------------
+1. WORD (.docx)       -> 01_INFORME_FINAL_PROYECTO_LEOFIT_GRUPO01.docx
+   * Documento principal editable con portada oficial, codigos de alumnos,
+     credenciales de acceso, URLs y el reporte tecnico acumulativo completo.
+
+2. PDF (.pdf)         -> 02_INFORME_FINAL_PROYECTO_LEOFIT_GRUPO01.pdf
+   * Version formal no editable para lectura rapida del docente.
+
+3. EXCEL (.xlsx)      -> 03_PLAN_AUDITORIA_CALIDAD_Y_TRAZABILIDAD_LEOFIT_GRUPO01.xlsx
+   * Matriz integral con 7 pestanas: Dashboard, Trazabilidad, Auditoria ISO 25010,
+     Resultados de Testing, Criptografia, Inventario de Entregables y Equipo.
+
+4. POWERPOINT (.pptx) -> 04_PRESENTACION_OFICIAL_SUSTENTACION_LEOFIT_GRUPO01.pptx
+   * Presentacion ejecutiva de 20 diapositivas tecnicas con notas de orador completas.
+
+--------------------------------------------------------------------------------
+SI CANVAS / UTP+ CLASS SOLO TE PERMITE SUBIR WORD Y EXCEL:
+Sube unicamente:
+  - 01_INFORME_FINAL_PROYECTO_LEOFIT_GRUPO01.docx
+  - 03_PLAN_AUDITORIA_CALIDAD_Y_TRAZABILIDAD_LEOFIT_GRUPO01.xlsx
+--------------------------------------------------------------------------------
+""")
+
+# Limpiar cualquier PDF temporal suelto en docs
+for stray in [
+    os.path.join(DOCS_DIR, "00_HOJA_DE_ENTREGA_Y_ENLACES_DOCENTE.pdf"),
+    os.path.join(DOCS_DIR, "01_INFORME_FINAL_PROYECTO_LEOFIT.pdf")
+]:
+    if os.path.exists(stray):
         try:
-            os.remove(src)
+            os.remove(stray)
         except Exception:
             pass
-    elif not os.path.exists(dst):
-        print(f"    [AVISO] Archivo PDF no encontrado: {src}")
 
-# 3. Prioridad 3: Hojas de Calculo Excel (.xlsx)
-print("\n  --- [PRIORIDAD 3] Copiando Libro de Calculo Excel (.xlsx) ---")
-xlsx_src = os.path.join(DOCS_DIR, "03_PLAN_AUDITORIA_CALIDAD_Y_TRAZABILIDAD_LEOFIT.xlsx")
-xlsx_dst = os.path.join(DEST_DIR, "02_PLAN_AUDITORIA_CALIDAD_Y_TRAZABILIDAD_LEOFIT_GRUPO01.xlsx")
-
-if os.path.exists(xlsx_src):
-    shutil.copy2(xlsx_src, xlsx_dst)
-    sz = os.path.getsize(xlsx_dst) / 1024.0
-    print(f"    [OK] {os.path.basename(xlsx_dst)} ({sz:.1f} KB)")
-else:
-    print(f"    [ERROR] No se encontro origen Excel: {xlsx_src}")
-
-# 4. Prioridad 4: Presentacion PowerPoint (.pptx)
-print("\n  --- [PRIORIDAD 4] Copiando Presentacion PowerPoint (.pptx) ---")
-pptx_src = os.path.join(DOCS_DIR, "02_PRESENTACION_OFICIAL_SUSTENTACION_LEOFIT.pptx")
-pptx_dst = os.path.join(DEST_DIR, "03_PRESENTACION_OFICIAL_SUSTENTACION_LEOFIT_GRUPO01.pptx")
-
-if os.path.exists(pptx_src):
-    shutil.copy2(pptx_src, pptx_dst)
-    sz = os.path.getsize(pptx_dst) / 1024.0
-    print(f"    [OK] {os.path.basename(pptx_dst)} ({sz:.1f} KB)")
-else:
-    print(f"    [ERROR] No se encontro origen PPTX: {pptx_src}")
-
-# 5. Generar archivo de instrucciones y resumen de entrega
-readme_txt = """================================================================================
-GUIA Y ORDEN DE PRIORIDAD PARA SUBIDA A UTP+ CLASS (CANVAS)
-Curso Integrador II: Software (100000S12F) - Grupo 01 (LeoFit Solutions)
-Docente Asesor: Ing. Enrique Lee Huamani Uriarte
-================================================================================
-
-Esta carpeta contiene EXCLUSIVAMENTE los archivos finales preparados para la
-plataforma institucional UTP+ Class / Canvas.
-
-ORDEN DE PRIORIDAD PARA LA SUBIDA:
---------------------------------------------------------------------------------
-1. PRIORIDAD 1: DOCUMENTOS WORD (.docx) -> FORMATO PRINCIPAL DE CALIFICACION
-   [1] 00_HOJA_DE_ENTREGA_Y_ENLACES_DOCENTE_GRUPO01.docx
-       - Caratula formal con los 5 integrantes, codigos UTP, roles, enlaces cloud
-         activos (GitHub, PWA, Render API, Swagger) y credenciales de prueba.
-   [2] 01_INFORME_FINAL_PROYECTO_LEOFIT_GRUPO01.docx
-       - Memoria tecnica acumulativa completa (156 parrafos, 14 tablas, TOC dinamica).
-         Cumple con ISO/IEC 25010:2023, ISO 9126, percentiles k6, arquitectura y
-         politica criptografica TLS 1.3 / AES-256-GCM.
-
-2. PRIORIDAD 2: DOCUMENTOS PDF (.pdf) -> VERSION EDITORIAL BLOQUEADA
-   [1] 00_HOJA_DE_ENTREGA_Y_ENLACES_DOCENTE_GRUPO01.pdf
-   [2] 01_INFORME_FINAL_PROYECTO_LEOFIT_GRUPO01.pdf
-   * Nota: Subir estos PDFs si Canvas solicita especificamente formato PDF o si se
-     desea garantizar una visualizacion inalterable de la tipografia y tablas.
-
-3. PRIORIDAD 3: LIBRO DE CALCULO EXCEL (.xlsx) -> AUDITORIA Y METRICAS
-   [1] 02_PLAN_AUDITORIA_CALIDAD_Y_TRAZABILIDAD_LEOFIT_GRUPO01.xlsx
-       - Contiene 7 pestanas: Dashboard Ejecutivo, Metricas ISO 25010, Casos de Prueba,
-         Deuda Tecnica Sonar, Matriz de Trazabilidad, Percentiles k6 y Cierre Formal.
-
-4. PRIORIDAD 4: PRESENTACION POWERPOINT (.pptx) -> DIAPOSITIVAS DE SUSTENTACION
-   [1] 03_PRESENTACION_OFICIAL_SUSTENTACION_LEOFIT_GRUPO01.pptx
-       - 25 diapositivas ejecutivas widescreen 16:9, diseno sin emojis, paleta WCAG AAA,
-         graficos cientificos a 300 DPI y notas de orador integradas (25/25).
-
---------------------------------------------------------------------------------
-NOTA DE SEGURIDAD Y CONTROL DE VERSIONES:
-Esta carpeta (_SUBIR_A_UTP_CLASS/) esta configurada en .gitignore para uso
-estrictamente local del estudiante, garantizando que el repositorio Git permanezca
-ligero y limpio.
-================================================================================
-"""
-
-with open(os.path.join(DEST_DIR, "LEEME_PRIORIDAD_Y_ARCHIVOS_UTP_CLASS.txt"), "w", encoding="utf-8") as f:
-    f.write(readme_txt)
-
-print(f"\n  [OK] Generado: LEEME_PRIORIDAD_Y_ARCHIVOS_UTP_CLASS.txt")
 print("\n======================================================================")
-print("[OK] EXPORTACION A _SUBIR_A_UTP_CLASS COMPLETADA EXITOSAMENTE.")
+print("INVENTARIO FINAL EN _SUBIR_A_UTP_CLASS/ (EXACTAMENTE 4 ARCHIVOS, 1 POR TIPO):")
+for f in sorted(os.listdir(DEST_DIR)):
+    fp = os.path.join(DEST_DIR, f)
+    sz = os.path.getsize(fp) / 1024.0
+    print(f"  * {f} ({sz:.1f} KB)")
 print("======================================================================")

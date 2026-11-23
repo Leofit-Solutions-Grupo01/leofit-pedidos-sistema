@@ -19,11 +19,6 @@ OFFICIAL_XLSX_DIR = os.path.join(BASE_DIR, "docs", "01_ENTREGA_FINAL_PROYECTO_SE
 os.makedirs(OFFICIAL_XLSX_DIR, exist_ok=True)
 OFFICIAL_XLSX = os.path.join(OFFICIAL_XLSX_DIR, "03_PLAN_AUDITORIA_CALIDAD_Y_TRAZABILIDAD_LEOFIT.xlsx")
 
-PROYECTO_FINAL_DIR = os.path.join(BASE_DIR, "_PROYECTO_FINAL_LOCAL")
-OUT_DIR = os.path.abspath(os.path.join(PROYECTO_FINAL_DIR, "02_ENTREGABLES_UTP", "03_XLSX"))
-os.makedirs(OUT_DIR, exist_ok=True)
-OUT_XLSX = os.path.join(OUT_DIR, "04_PLAN_AUDITORIA_Y_TRAZABILIDAD_PROYECTO_FINAL.xlsx")
-
 def create_audit_workbook():
     wb = openpyxl.Workbook()
     # Eliminar hoja por defecto
@@ -463,12 +458,10 @@ def create_audit_workbook():
                         max_len = len(line)
             ws.column_dimensions[col_letter].width = min(max(max_len + 4, 12), 48)
 
-    wb.save(OUT_XLSX)
     wb.save(OFFICIAL_XLSX)
     size_kb = os.path.getsize(OFFICIAL_XLSX) / 1024.0
     print(f"[OK] Libro Excel generado exitosamente:")
     print(f"     Oficial: {OFFICIAL_XLSX}")
-    print(f"     Local:   {OUT_XLSX}")
     print(f"     Pestanas: {len(wb.sheetnames)} ({', '.join(wb.sheetnames)})")
     print(f"     Tamano: {size_kb:.1f} KB")
     return OFFICIAL_XLSX, len(wb.sheetnames), size_kb

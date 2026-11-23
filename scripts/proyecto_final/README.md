@@ -1,23 +1,25 @@
 # Cadena de Herramientas y Scripts de Sustentación del Proyecto Final
 ## Sistema de Gestión de Pedidos Multicanal — LeoFit Solutions (Ciclo 2026-I)
 
-Este directorio contiene las herramientas de automatización para compilar la documentación ofimática oficial del Proyecto Final (Semana 18) y los mecanismos de exposición/ocultamiento temporal para el día de la sustentación académica.
+Este directorio contiene las herramientas de automatización para compilar la documentación ofimática oficial del Proyecto Final (Semana 18) y exportar los entregables oficiales para su presentación y subida a la plataforma académica UTP+ Class / Canvas.
 
 ---
 
-## 1. Requisito de Dependencia Local
+## 1. Estructura de Entregables Oficiales
 
-> [!IMPORTANT]
-> Los scripts de generación leen la documentación de anexos y emiten sus entregables en el directorio local:  
-> `_PROYECTO_FINAL_LOCAL/02_ENTREGABLES_UTP/`  
-> 
-> Dicho directorio se encuentra en la raíz del repositorio y está explícitamente excluido del control de versiones (`.gitignore`) para mantener la visibilidad del repositorio enfocada exclusivamente en **APF3**.
+Los documentos finales se gestionan en dos ubicaciones complementarias:
 
-### ¿Qué hacer si `_PROYECTO_FINAL_LOCAL/` no existe?
-Si usted ha clonado este repositorio en una máquina nueva y no dispone de la carpeta:
-1. No intente ejecutar los scripts de compilación sin antes contar con el paquete base.
-2. Solicite el respaldo comprimido oficial al equipo de ingeniería (Lady Loayza / Grupo 01) o descárguelo desde la carpeta compartida en **Google Drive / OneDrive** del equipo.
-3. Descomprima el contenido en la raíz del repositorio respetando el nombre exacto: `_PROYECTO_FINAL_LOCAL/`.
+1. **Documentación Oficial Versionada:**  
+   `docs/01_ENTREGA_FINAL_PROYECTO_SEMANA_18/`  
+   Contiene el paquete maestro oficial para el docente y el repositorio (Word, Markdown, Presentación PPTX, Visor Web HTML, Libro Excel de auditoría, compendio técnico y anexos).
+
+2. **Carpeta Exclusiva de Subida a UTP+ Class (Ignorada en Git):**  
+   `_SUBIR_A_UTP_CLASS/`  
+   Carpeta local generada automáticamente que contiene **exactamente 1 archivo por tipo** (sin duplicados ni redundancias), respetando la jerarquía de prioridad del docente:
+   - **Prioridad 1 (Word):** `01_INFORME_FINAL_PROYECTO_LEOFIT_GRUPO01.docx`
+   - **Prioridad 2 (PDF):** `02_INFORME_FINAL_PROYECTO_LEOFIT_GRUPO01.pdf`
+   - **Prioridad 3 (Excel):** `03_PLAN_AUDITORIA_CALIDAD_Y_TRAZABILIDAD_LEOFIT_GRUPO01.xlsx`
+   - **Prioridad 4 (PowerPoint):** `04_PRESENTACION_OFICIAL_SUSTENTACION_LEOFIT_GRUPO01.pptx`
 
 ---
 
@@ -25,38 +27,27 @@ Si usted ha clonado este repositorio en una máquina nueva y no dispone de la ca
 
 | Script | Lenguaje / Entorno | Propósito y Responsabilidad |
 | :--- | :--- | :--- |
-| **`build_all.ps1`** | PowerShell (`pwsh`) | **Orquestador Maestro.** Verifica dependencias del sistema (`pandoc`, `mmdc`, paquetes Python), ejecuta la exportación DOCX, genera la presentación PPTX, compila el libro XLSX y ejecuta la validación rigurosa de integridad. |
-| **`export_markdown_to_docx.py`** | Python 3 + Pandoc + python-docx | Compila la documentación técnica a una versión HTML formal, ejecutiva y estilizada (`00_HTML/`) y posteriormente la convierte a documentos Word completamente editables (`01_DOCX/`), aplicando paleta corporativa Navy LeoFit, tablas con cabecera oscura y filas alternadas. |
-| **`generate_sustentacion_pptx.py`** | Python 3 + python-pptx | Genera la presentación ejecutiva de sustentación de **20 diapositivas** en formato widescreen 16:9 con paleta institucional Navy/Blue/Accent, contraste WCAG AAA y notas de orador integradas en cada lámina. |
-| **`generate_audit_xlsx.py`** | Python 3 + openpyxl | Genera el libro Excel de auditoría y trazabilidad con 4 pestañas formateadas: `Matriz_Trazabilidad_Jurado`, `Inventario_Servicios_Cloud`, `Auditoria_Codigo_ISO25010` y `Gap_Analysis_SUNAT_CPE`. |
-| **`validate_deliverables.py`** | Python 3 | Verifica que todos los archivos DOCX, PPTX y XLSX se abran sin errores, confirma el conteo mínimo de párrafos, tablas, 20 diapositivas con notas de orador y certifica la ausencia de emojis residuales. |
-| **`expose_semana_18.ps1`** | PowerShell (`pwsh`) | **Toggle de Publicación.** Copia `_PROYECTO_FINAL_LOCAL/` hacia `docs/01_PROYECTO_FINAL_SEMANA_18/`, ejecuta `git add -f`, crea el commit temporal de sustentación y realiza el push a `origin/main`. |
-| **`hide_semana_18.ps1`** | PowerShell (`pwsh`) | **Toggle de Ocultamiento.** Desindexa `docs/01_PROYECTO_FINAL_SEMANA_18/` mediante `git rm -r --cached`, elimina la copia en `docs/`, comitea el cambio y hace push a `origin/main`, regresando el repositorio a su estado seguro de solo APF3. |
+| **`build_all.ps1`** | PowerShell (`pwsh`) | **Orquestador Maestro.** Verifica dependencias (`pandoc`, `mmdc`, librerías Python), compila el informe final acumulativo, genera la presentación PPTX, el visor web HTML, el libro Excel XLSX, exporta a `_SUBIR_A_UTP_CLASS/` y ejecuta la validación de integridad. |
+| **`build_informe_s14_s15.py`** | Python 3 + Pandoc | Genera el informe final acumulativo (`01_INFORME_FINAL_PROYECTO_LEOFIT.docx` y `.md`) con portada formal, códigos de estudiantes, credenciales de acceso, URLs verificables y evaluación integral ISO 25010 / ISO 9126. |
+| **`generate_sustentacion_pptx.py`** | Python 3 + python-pptx | Genera la presentación ejecutiva oficial de **20 diapositivas** en formato widescreen 16:9 con paleta institucional Navy/Blue/Accent, contraste WCAG AAA y notas de orador integradas. |
+| **`generate_slides_viewer.py`** | Python 3 | Genera el visor web interactivo (`02_VISOR_WEB_PRESENTACION_SUSTENTACION.html`) para previsualizar y proyectar las diapositivas con notas de orador en cualquier navegador. |
+| **`generate_audit_xlsx.py`** | Python 3 + openpyxl | Genera el libro Excel de auditoría y trazabilidad con 7 pestañas formateadas: Dashboard, Trazabilidad, Auditoría ISO 25010, Resultados Testing, Criptografía, Inventario y Equipo. |
+| **`export_subir_utp_class.py`** | Python 3 | Empaqueta exclusivamente los 4 archivos sin duplicados en `_SUBIR_A_UTP_CLASS/` y genera la versión PDF fidedigna vía Word COM. |
+| **`validate_deliverables.py`** | Python 3 | Verifica que todos los archivos DOCX, PPTX y XLSX se abran sin errores, confirma el conteo de diapositivas con notas, pestañas de Excel y certifica la ausencia de emojis. |
 
 ---
 
-## 3. Instrucciones de Uso Típico
+## 3. Instrucciones de Compilación
 
-### Compilación completa de entregables ofimáticos:
+Para compilar y exportar todos los entregables con un único comando:
+
 ```powershell
-pwsh scripts/proyecto_final/build_all.ps1
-# O en Windows PowerShell 5.1:
 powershell -ExecutionPolicy Bypass -File scripts\proyecto_final\build_all.ps1
 ```
-
-### Flujo del Día de la Sustentación:
-1. **Antes de ingresar a la sala de sustentación:**
-   ```powershell
-   powershell -ExecutionPolicy Bypass -File scripts\proyecto_final\expose_semana_18.ps1
-   ```
-2. **Al concluir la defensa y evaluación académica:**
-   ```powershell
-   powershell -ExecutionPolicy Bypass -File scripts\proyecto_final\hide_semana_18.ps1
-   ```
 
 ---
 
 ## 4. Política de Control de Versiones
 
-> [!WARNING]
-> Todos los artefactos generados en `_PROYECTO_FINAL_LOCAL/02_ENTREGABLES_UTP/` (`00_HTML/`, `01_DOCX/`, `02_PPTX/`, `03_XLSX/`) quedan **estrictamente ignorados por Git**. Únicamente los scripts fuente de este directorio forman parte del control de versiones principal.
+> [!NOTE]
+> La carpeta `_SUBIR_A_UTP_CLASS/` se encuentra expresamente en el `.gitignore` para no sobrecargar el repositorio Git con binarios duplicados. Los archivos ofimáticos oficiales maestros se preservan en `docs/01_ENTREGA_FINAL_PROYECTO_SEMANA_18/`.

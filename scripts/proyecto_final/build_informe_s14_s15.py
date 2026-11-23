@@ -21,7 +21,6 @@ TARGET_DIR = os.path.join(BASE_DIR, "docs", "02_CALIDAD_Y_AUDITORIA", "04_calida
 os.makedirs(TARGET_DIR, exist_ok=True)
 OUT_MD_LEGACY = os.path.join(TARGET_DIR, "INFORME_CONTINUACION_S14_S15_PROYECTO_FINAL_LEOFIT.md")
 OUT_DOCX_LEGACY = os.path.join(TARGET_DIR, "INFORME_CONTINUACION_S14_S15_PROYECTO_FINAL_LEOFIT.docx")
-OUT_DOCX_LOCAL = os.path.join(BASE_DIR, "_PROYECTO_FINAL_LOCAL", "02_ENTREGABLES_UTP", "01_DOCX", "INFORME_CONTINUACION_S14_S15_PROYECTO_FINAL_LEOFIT.docx")
 
 md_content = r"""# UNIVERSIDAD TECNOLÓGICA DEL PERÚ
 ## FACULTAD DE INGENIERÍA DE SISTEMAS E INFORMÁTICA
@@ -33,19 +32,21 @@ md_content = r"""# UNIVERSIDAD TECNOLÓGICA DEL PERÚ
 ## Evaluación Integral de Calidad (ISO/IEC 25010:2023, ISO 9126, ISO 29119), Arquitectura Cloud y Criptografía
 ### Plataforma de Gestión de Pedidos, Facturación Electrónica y Control de Inventario Multicanal
 
-**Empresa Patrocinadora:** LeoFit Confecciones y Diseños Deportivos S.A.C.  
+**Empresa Patrocinadora:** LeoFit Confecciones y Diseños Deportivos S.A.C. (RUC: 20608912345)  
 **Docente Asesor:** Ing. Enrique Lee Huamani Uriarte  
 **Equipo de Ingeniería (Grupo 01):**  
-- Lady Luz Loayza Rodriguez (Scrum Master / DevSecOps Lead)
-- Victor Leandro Cardenas Fernandez (Product Owner / Database Administrator)
-- Harley Anthony Roman Delgado (Frontend Lead / UI-UX Designer)
-- Jim Alessandro Davila Morales (QA Lead / Backend Developer)
-- Daniel Enrique Rojas Sanchez (Business Analyst / Cloud Architect)
+- Lady Luz Loayza Rodriguez (`U22221489`) — Scrum Master / DevSecOps Lead
+- Victor Leandro Cardenas Fernandez (`U19217414`) — Product Owner / Database Administrator
+- Harley Anthony Roman Delgado (`U21313032`) — Frontend Lead / UI-UX Designer
+- Jim Alessandro Davila Morales (`U18206081`) — QA Lead / Backend Developer
+- Daniel Enrique Rojas Sanchez (`U21214627`) — Business Analyst / Cloud Architect
 
 **Repositorio Oficial:** `https://github.com/Leofit-Solutions-Grupo01/leofit-pedidos-sistema`  
 **Despliegue Frontend PWA:** `https://leofit-solutions-grupo01.github.io/leofit-pedidos-sistema/`  
 **Despliegue Backend API REST:** `https://leofit-backend-api.onrender.com/api/health`  
-**Fecha de Emisión:** Noviembre de 2026 · Edición Oficial de Sustentación
+**Documentación Swagger OpenAPI:** `https://leofit-backend-api.onrender.com/api/docs`  
+**Credenciales de Acceso:** Administrador: `admin@leofit.pe` (`Admin123!`) · Operador: `operador@leofit.pe` (`Operador123!`)  
+**Fecha de Emisión:** Noviembre de 2026 · Edición Oficial de Sustentación (Semana 18)
 
 ---
 
@@ -921,11 +922,8 @@ try:
     )
     print(f"[OK] Word DOCX generado exitosamente: {OUT_DOCX}")
     
-    # Copiar a respaldo legacy y _PROYECTO_FINAL_LOCAL si existen
+    # Copiar a respaldo legacy
     shutil.copy2(OUT_DOCX, OUT_DOCX_LEGACY)
     print(f"[OK] Copiado a legacy: {OUT_DOCX_LEGACY}")
-    if os.path.exists(os.path.dirname(OUT_DOCX_LOCAL)):
-        shutil.copy2(OUT_DOCX, OUT_DOCX_LOCAL)
-        print(f"[OK] Copiado a local: {OUT_DOCX_LOCAL}")
 except Exception as e:
     print(f"[WARN] No se pudo convertir con pypandoc: {e}")

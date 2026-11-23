@@ -15,14 +15,9 @@ from pptx.enum.shapes import MSO_SHAPE
 from pptx.enum.text import PP_ALIGN, MSO_ANCHOR
 
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
-PROYECTO_FINAL_DIR = os.path.join(BASE_DIR, "_PROYECTO_FINAL_LOCAL")
-
-if not os.path.exists(PROYECTO_FINAL_DIR):
-    raise FileNotFoundError("_PROYECTO_FINAL_LOCAL/ no encontrado. Ejecutar solo en maquina de desarrollo con los anexos presentes.")
-
-OUT_DIR = os.path.abspath(os.path.join(PROYECTO_FINAL_DIR, "02_ENTREGABLES_UTP", "02_PPTX"))
-os.makedirs(OUT_DIR, exist_ok=True)
-OUT_PPTX = os.path.join(OUT_DIR, "03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.pptx")
+OFFICIAL_PPTX_DIR = os.path.join(BASE_DIR, "docs", "01_ENTREGA_FINAL_PROYECTO_SEMANA_18")
+os.makedirs(OFFICIAL_PPTX_DIR, exist_ok=True)
+OFFICIAL_PPTX = os.path.join(OFFICIAL_PPTX_DIR, "02_PRESENTACION_OFICIAL_SUSTENTACION_LEOFIT.pptx")
 
 def C(h): return RGBColor.from_string(h)
 
@@ -1102,8 +1097,6 @@ def create_deck():
         "Quedamos a disposicion del jurado evaluador para absolver cualquier pregunta tecnica sobre el codigo, los diagramas, "
         "la base de datos o las decisiones de arquitectura presentadas. Muchas gracias.")
 
-    prs.save(OUT_PPTX)
-    
     # Guardar en la carpeta oficial de Entrega Final Semana 18
     OFFICIAL_PPTX_DIR = os.path.join(BASE_DIR, "docs", "01_ENTREGA_FINAL_PROYECTO_SEMANA_18")
     os.makedirs(OFFICIAL_PPTX_DIR, exist_ok=True)

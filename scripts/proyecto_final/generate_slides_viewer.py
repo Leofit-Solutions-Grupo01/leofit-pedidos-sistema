@@ -15,13 +15,7 @@ BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 OFFICIAL_FINAL_DIR = os.path.join(BASE_DIR, "docs", "01_ENTREGA_FINAL_PROYECTO_SEMANA_18")
 os.makedirs(OFFICIAL_FINAL_DIR, exist_ok=True)
 OUT_HTML_OFFICIAL = os.path.join(OFFICIAL_FINAL_DIR, "02_VISOR_WEB_PRESENTACION_SUSTENTACION.html")
-
 PPTX_PATH = os.path.join(OFFICIAL_FINAL_DIR, "02_PRESENTACION_OFICIAL_SUSTENTACION_LEOFIT.pptx")
-if not os.path.exists(PPTX_PATH):
-    PPTX_PATH = os.path.join(BASE_DIR, "_PROYECTO_FINAL_LOCAL", "02_ENTREGABLES_UTP", "02_PPTX", "03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.pptx")
-
-OUT_HTML_LOCAL = os.path.join(BASE_DIR, "_PROYECTO_FINAL_LOCAL", "02_ENTREGABLES_UTP", "00_HTML", "03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.html")
-OUT_MD_LOCAL = os.path.join(BASE_DIR, "_PROYECTO_FINAL_LOCAL", "02_ENTREGABLES_UTP", "00_HTML", "03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.md")
 
 prs = pptx.Presentation(PPTX_PATH)
 
@@ -105,10 +99,11 @@ for s in slides_data:
     md_lines.append("---")
     md_lines.append("")
 
-os.makedirs(os.path.dirname(OUT_MD_LOCAL), exist_ok=True)
-with open(OUT_MD_LOCAL, "w", encoding="utf-8") as f:
+# Markdown informativo opcional en docs/
+out_md = os.path.join(OFFICIAL_FINAL_DIR, "02_PRESENTACION_OFICIAL_SUSTENTACION_LEOFIT.md")
+with open(out_md, "w", encoding="utf-8") as f:
     f.write("\n".join(md_lines))
-print(f"Markdown written to {OUT_MD_LOCAL}")
+print(f"Markdown Oficial escrito en {out_md}")
 
 # 2. Generar HTML Interactivo
 html_content = """<!DOCTYPE html>
@@ -491,11 +486,5 @@ html_with_data = html_content.replace("SLIDES_DATA_PLACEHOLDER", json.dumps(slid
 
 with open(OUT_HTML_OFFICIAL, "w", encoding="utf-8") as f:
     f.write(html_with_data)
-print(f"HTML Oficial written to {OUT_HTML_OFFICIAL}")
-
-if os.path.exists(os.path.dirname(OUT_HTML_LOCAL)):
-    with open(OUT_HTML_LOCAL, "w", encoding="utf-8") as f:
-        f.write(html_with_data)
-    print(f"HTML Local written to {OUT_HTML_LOCAL}")
-
+print(f"HTML Oficial escrito en {OUT_HTML_OFFICIAL}")
 print("Slides viewer generation completed successfully!")
