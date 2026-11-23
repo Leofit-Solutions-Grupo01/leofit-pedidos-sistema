@@ -52,10 +52,9 @@ docs/
 │   └── silabo_y_plantillas_utp/                   (Sílabo oficial y plantillas institucionales)
 │
 ├── 05_SUSTENTACION_PROYECTO_FINAL_SEMANA_18/      [MATERIAL OFICIAL DE SUSTENTACIÓN FINAL]
-│   ├── 03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.pptx (Deck 25 slides con notas)
+│   ├── 03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.pptx (Presentación ejecutiva 25 slides)
 │   ├── 03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.html (Visor web interactivo)
-│   ├── 03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.md   (Guion y transcripción completa)
-│   └── README.md                                  (Guía de exposición y navegación)
+│   └── README.md                                  (Estructura temática de la presentación)
 │
 ├── adr/                                           [DECISIONES ARQUITECTÓNICAS (MADR)]
 │   ├── ADR-001_ELECCION_RENDER_NEON_VS_AWS.md
@@ -71,7 +70,7 @@ docs/
 
 | Hito | Documento Principal | Descripción de Contenido |
 | :--- | :--- | :--- |
-| **Sustentación Final (Semana 18)** | [**`03_PRESENTACION_OFICIAL...pptx`**](05_SUSTENTACION_PROYECTO_FINAL_SEMANA_18/03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.pptx) <br> [**`Visor Web HTML`**](05_SUSTENTACION_PROYECTO_FINAL_SEMANA_18/03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.html) <br> [**`Carpeta y Guion S18`**](05_SUSTENTACION_PROYECTO_FINAL_SEMANA_18/README.md) | Deck de 25 diapositivas ejecutivas con notas de orador completas, tablas dinámicas y paleta accesible WCAG AAA. |
+| **Sustentación Final (Semana 18)** | [**`03_PRESENTACION_OFICIAL...pptx`**](05_SUSTENTACION_PROYECTO_FINAL_SEMANA_18/03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.pptx) <br> [**`Visor Web HTML`**](05_SUSTENTACION_PROYECTO_FINAL_SEMANA_18/03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.html) | Presentación oficial de 25 diapositivas ejecutivas con gráficos científicos, tablas dinámicas y paleta accesible WCAG AAA. |
 | **Continuación Semanas 14 y 15 (Unidad 4)** | [**`INFORME_CONTINUACION...docx`**](02_CALIDAD_Y_AUDITORIA/04_calidad_iso25010_semanas_14_15/INFORME_CONTINUACION_S14_S15_PROYECTO_FINAL_LEOFIT.docx) <br> [**`Memoria Markdown`**](02_CALIDAD_Y_AUDITORIA/04_calidad_iso25010_semanas_14_15/INFORME_CONTINUACION_S14_S15_PROYECTO_FINAL_LEOFIT.md) <br> [**`Carpeta Unidad 4`**](02_CALIDAD_Y_AUDITORIA/04_calidad_iso25010_semanas_14_15/README.md) | Evaluación bajo ISO/IEC 9126 (partes 1-4, fórmulas $X=1-A/B$, $X=A/B$) e ISO/IEC 25010:2023: Rendimiento SRE (k6 p50/p95/p99), Flexibilidad (Circuit Breaker/Bulkhead/Auto-scaling), Mantenibilidad (McCabe 1-3, 194 tests) y Confiabilidad (HA vs HPC). |
 | **Avance Final APF3** | [**`INFORME_FINAL_APF3...docx`**](01_ENTREGA_OFICIAL_APF3/01_DESARROLLO_Y_CALIDAD/INFORME_FINAL_APF3_LEOFIT.docx) | Memoria técnica de 77 páginas con adecuación funcional 100%, compatibilidad Docker, usabilidad SUS 88.5/100 y DRP RTO 3.2s. |
 | **Decisiones de Arquitectura** | [**`ADR-001`**](adr/ADR-001_ELECCION_RENDER_NEON_VS_AWS.md) <br> [**`ADR-002`**](adr/ADR-002_ARQUITECTURA_OBJETIVO_AWS.md) | Justificación de Render+Neon vs AWS y maquetación de arquitectura objetivo VPC Multi-AZ en AWS. |

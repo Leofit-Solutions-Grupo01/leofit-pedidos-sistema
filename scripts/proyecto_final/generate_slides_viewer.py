@@ -17,7 +17,7 @@ if not os.path.exists(PPTX_PATH):
     PPTX_PATH = os.path.join(TARGET_DIR, "03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.pptx")
 OUT_HTML_LOCAL = os.path.join(BASE_DIR, "_PROYECTO_FINAL_LOCAL", "02_ENTREGABLES_UTP", "00_HTML", "03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.html")
 OUT_HTML_DOCS = os.path.join(TARGET_DIR, "03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.html")
-OUT_MD_DOCS = os.path.join(TARGET_DIR, "03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.md")
+OUT_MD_LOCAL = os.path.join(BASE_DIR, "_PROYECTO_FINAL_LOCAL", "02_ENTREGABLES_UTP", "00_HTML", "03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.md")
 
 prs = pptx.Presentation(PPTX_PATH)
 
@@ -101,9 +101,10 @@ for s in slides_data:
     md_lines.append("---")
     md_lines.append("")
 
-with open(OUT_MD_DOCS, "w", encoding="utf-8") as f:
+os.makedirs(os.path.dirname(OUT_MD_LOCAL), exist_ok=True)
+with open(OUT_MD_LOCAL, "w", encoding="utf-8") as f:
     f.write("\n".join(md_lines))
-print(f"Markdown written to {OUT_MD_DOCS}")
+print(f"Markdown written to {OUT_MD_LOCAL}")
 
 # 2. Generar HTML Interactivo
 html_content = """<!DOCTYPE html>
@@ -335,7 +336,6 @@ html_content = """<!DOCTYPE html>
       <button class="btn" onclick="prevSlide()">◀ Anterior</button>
       <span class="slide-counter" id="slideNum">1 / 25</span>
       <button class="btn" onclick="nextSlide()">Siguiente ▶</button>
-      <button class="btn btn-outline" onclick="toggleNotes()">Notas Orador</button>
       <a href="03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.pptx" class="btn" style="text-decoration:none;" download>Descargar PPTX</a>
     </div>
   </header>
@@ -346,9 +346,9 @@ html_content = """<!DOCTYPE html>
         <!-- Rendered dynamically -->
       </div>
     </div>
-    <aside class="notes-panel" id="notesPanel">
+    <aside class="notes-panel collapsed" id="notesPanel">
       <div class="notes-header">
-        <span>Guion del Orador</span>
+        <span>Detalle Técnico</span>
         <span class="badge" id="notesBadge">Slide 1</span>
       </div>
       <div class="notes-content" id="notesContent"></div>

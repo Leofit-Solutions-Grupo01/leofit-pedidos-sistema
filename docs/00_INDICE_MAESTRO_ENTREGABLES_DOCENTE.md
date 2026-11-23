@@ -29,13 +29,12 @@ En cumplimiento de lo expuesto en las sesiones teóricas y en los 3 documentos p
 
 ## 2. Presentación Oficial de Sustentación Final (Semana 18)
 
-La sustentación final del proyecto cuenta con material audiovisual y notas de orador de alto nivel de ingeniería:
+La presentación ejecutiva del proyecto consolida la arquitectura, calidad, pruebas y validación en la nube:
 
 | Recurso de Presentación | Enlace Directo | Características |
 | :--- | :--- | :--- |
-| **Presentación PowerPoint (.pptx)** | [`docs/05_SUSTENTACION_PROYECTO_FINAL_SEMANA_18/03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.pptx`](05_SUSTENTACION_PROYECTO_FINAL_SEMANA_18/03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.pptx) | Widescreen 16:9, **25 diapositivas ejecutivas**, tablas dinámicas nativas, paleta institucional Navy/Cobalt/Terracotta WCAG AAA y notas de orador en el 100% de las láminas. |
-| **Visor Web Interactivo (.html)** | [`docs/05_SUSTENTACION_PROYECTO_FINAL_SEMANA_18/03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.html`](05_SUSTENTACION_PROYECTO_FINAL_SEMANA_18/03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.html) | Visor responsive que permite visualizar las 25 diapositivas en el navegador con navegación por teclado ($\leftarrow/\rightarrow$) y panel de notas (tecla `N`). |
-| **Transcripción y Guion (.md)** | [`docs/05_SUSTENTACION_PROYECTO_FINAL_SEMANA_18/03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.md`](05_SUSTENTACION_PROYECTO_FINAL_SEMANA_18/03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.md) | Guion textual estructurado con todas las tablas, textos y notas para el ensayo del equipo. |
+| **Presentación PowerPoint (.pptx)** | [`docs/05_SUSTENTACION_PROYECTO_FINAL_SEMANA_18/03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.pptx`](05_SUSTENTACION_PROYECTO_FINAL_SEMANA_18/03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.pptx) | Widescreen 16:9, **25 diapositivas ejecutivas**, gráficos científicos de 300 DPI, tablas nativas y paleta institucional Navy/Cobalt/Terracotta WCAG AAA. |
+| **Visor Web Interactivo (.html)** | [`docs/05_SUSTENTACION_PROYECTO_FINAL_SEMANA_18/03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.html`](05_SUSTENTACION_PROYECTO_FINAL_SEMANA_18/03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.html) | Visor responsive que permite navegar las 25 diapositivas directamente en el navegador web. |
 
 ---
 
