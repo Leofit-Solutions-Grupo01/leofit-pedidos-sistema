@@ -16,12 +16,6 @@ os.makedirs(OFFICIAL_FINAL_DIR, exist_ok=True)
 OUT_MD = os.path.join(OFFICIAL_FINAL_DIR, "02_INFORME_CONTINUACION_S14_S15_LEOFIT.md")
 OUT_DOCX = os.path.join(OFFICIAL_FINAL_DIR, "02_INFORME_CONTINUACION_S14_S15_LEOFIT.docx")
 
-# Carpetas de respaldo y compatibilidad histórica
-TARGET_DIR = os.path.join(BASE_DIR, "docs", "02_CALIDAD_Y_AUDITORIA", "04_calidad_iso25010_semanas_14_15")
-os.makedirs(TARGET_DIR, exist_ok=True)
-OUT_MD_LEGACY = os.path.join(TARGET_DIR, "INFORME_CONTINUACION_S14_S15_PROYECTO_FINAL_LEOFIT.md")
-OUT_DOCX_LEGACY = os.path.join(TARGET_DIR, "INFORME_CONTINUACION_S14_S15_PROYECTO_FINAL_LEOFIT.docx")
-
 md_content = r"""# UNIVERSIDAD TECNOLÓGICA DEL PERÚ
 ## FACULTAD DE INGENIERÍA DE SISTEMAS E INFORMÁTICA
 ### CURSO INTEGRADOR II: SOFTWARE (100000S12F) — SECCIÓN 35374 · CICLO 2026-I
@@ -908,9 +902,6 @@ Wiggins, A. (2017). *The Twelve-Factor App*. https://12factor.net/
 with open(OUT_MD, "w", encoding="utf-8") as f:
     f.write(md_content)
 
-with open(OUT_MD_LEGACY, "w", encoding="utf-8") as f:
-    f.write(md_content)
-
 print(f"[OK] Documento Markdown generado: {OUT_MD}")
 print(f"     Lineas: {len(md_content.splitlines())}")
 print(f"     Tamano: {len(md_content)/1024:.1f} KB")
@@ -931,7 +922,7 @@ try:
             "--toc",
             "--toc-depth=3",
             "--syntax-highlighting=tango",
-            f"--resource-path={OFFICIAL_FINAL_DIR};{TARGET_DIR}"
+            f"--resource-path={OFFICIAL_FINAL_DIR}"
         ]
     )
     print(f"[OK] Word DOCX compilado con pypandoc: {OUT_DOCX}")
@@ -947,10 +938,5 @@ try:
         doc_code="INF-S14-S15"
     )
     print(f"[OK] Formato Normas APA 7ma Edición aplicado: {OUT_DOCX} ({np} párrafos, {nt} tablas)")
-
-    # Copiar a respaldo legacy y raíz
-    shutil.copy2(OUT_DOCX, OUT_DOCX_LEGACY)
-    shutil.copy2(OUT_DOCX, os.path.join(BASE_DIR, "02_INFORME_CONTINUACION_S14_S15_LEOFIT.docx"))
-    print(f"[OK] Copiado a legacy: {OUT_DOCX_LEGACY}")
 except Exception as e:
     print(f"[WARN] No se pudo convertir con pypandoc / APA 7: {e}")

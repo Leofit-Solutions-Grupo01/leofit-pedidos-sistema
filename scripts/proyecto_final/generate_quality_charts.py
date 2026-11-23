@@ -25,10 +25,9 @@ plt.rcParams['figure.autolayout'] = True
 
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 OFFICIAL_IMG_DIR = os.path.join(BASE_DIR, "docs", "01_ENTREGA_FINAL_PROYECTO_SEMANA_18", "graficos")
-DOCS_IMG_DIR = os.path.join(BASE_DIR, "docs", "02_CALIDAD_Y_AUDITORIA", "04_calidad_iso25010_semanas_14_15", "graficos")
 LOCAL_IMG_DIR = os.path.join(BASE_DIR, "_PROYECTO_FINAL_LOCAL", "02_ENTREGABLES_UTP", "04_GRAFICOS")
 
-target_dirs = [OFFICIAL_IMG_DIR, DOCS_IMG_DIR]
+target_dirs = [OFFICIAL_IMG_DIR]
 if os.path.exists(os.path.dirname(LOCAL_IMG_DIR)):
     target_dirs.append(LOCAL_IMG_DIR)
 

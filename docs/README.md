@@ -44,10 +44,9 @@ docs/
 │   ├── 01_plan_de_pruebas_iso29119/               (Plan Maestro de Pruebas ISO/IEC/IEEE 29119-3/4)
 │   ├── 02_calidad_iso25010_semanas_10_11/         (Informe de Calidad ISO 25010 y Coexistencia)
 │   ├── 03_auditoria_y_cierre_proyecto/            (Checklist de auditoría y actas de cierre)
-│   ├── 04_calidad_iso25010_semanas_14_15/         (Evidencias intermedias Semanas 14-15)
 │   ├── 05_operaciones_respaldo_drp/               (Protocolo de Continuidad y Simulacro DRP)
 │   ├── METRICAS_SESION_28_UTP/                    (Métricas de Rendimiento y Evidencia Sesión 28)
-│   └── COMPENDIO_TECNICO_CALIDAD_TESTING_Y_CRIPTOGRAFIA_SSL_TLS.md
+│   └── README.md                                  (Índice de marcos de calidad y estándares)
 │
 ├── 03_ARQUITECTURA_Y_DIAGRAMAS/                   [CATÁLOGO DE 25 DIAGRAMAS DE INGENIERÍA]
 │   ├── apf3/                                      (Diagramas compilados en alta resolución PNG)
@@ -75,6 +74,6 @@ docs/
 | Hito | Documento Principal | Descripción de Contenido |
 | :--- | :--- | :--- |
 | **Entrega Final y Sustentación (Semana 18)** | [**`01_INFORME_FINAL_LEOFIT.docx`**](01_ENTREGA_FINAL_PROYECTO_SEMANA_18/01_INFORME_FINAL_LEOFIT.docx) <br> [**`02_INFORME_CONTINUACION_S14_S15_LEOFIT.docx`**](01_ENTREGA_FINAL_PROYECTO_SEMANA_18/02_INFORME_CONTINUACION_S14_S15_LEOFIT.docx) <br> [**`03_PRESENTACION_OFICIAL_SUSTENTACION_LEOFIT.pptx`**](01_ENTREGA_FINAL_PROYECTO_SEMANA_18/03_PRESENTACION_OFICIAL_SUSTENTACION_LEOFIT.pptx) <br> [**`Visor Web HTML`**](01_ENTREGA_FINAL_PROYECTO_SEMANA_18/03_VISOR_WEB_PRESENTACION_SUSTENTACION.html) <br> [**`Carpeta Oficial S18`**](01_ENTREGA_FINAL_PROYECTO_SEMANA_18/) | Paquete completo y definitivo del proyecto: memoria acumulativa integral, informe de continuación de calidad S14-S15, presentación de 25 diapositivas ejecutivas con notas de orador, y libro de auditoría Excel con 7 hojas. |
-| **Calidad ISO 25010 (Unidad 4)** | [**`INFORME_CONTINUACION...docx`**](02_CALIDAD_Y_AUDITORIA/04_calidad_iso25010_semanas_14_15/INFORME_CONTINUACION_S14_S15_PROYECTO_FINAL_LEOFIT.docx) <br> [**`Carpeta Unidad 4`**](02_CALIDAD_Y_AUDITORIA/04_calidad_iso25010_semanas_14_15/README.md) | Evaluación bajo ISO/IEC 9126 (partes 1-4, fórmulas $X=1-A/B$, $X=A/B$) e ISO/IEC 25010:2023: Rendimiento SRE (k6 p50/p95/p99), Flexibilidad (Circuit Breaker/Bulkhead/Auto-scaling), Mantenibilidad (McCabe 1-3, 194 tests) y Confiabilidad (HA vs HPC). |
+| **Calidad ISO 25010 (Unidad 4)** | [**`02_INFORME_CONTINUACION_S14_S15_LEOFIT.docx`**](01_ENTREGA_FINAL_PROYECTO_SEMANA_18/02_INFORME_CONTINUACION_S14_S15_LEOFIT.docx) <br> [**`Carpeta Oficial S18`**](01_ENTREGA_FINAL_PROYECTO_SEMANA_18/) | Evaluación bajo ISO/IEC 9126 (partes 1-4, fórmulas $X=1-A/B$, $X=A/B$) e ISO/IEC 25010:2023: Rendimiento SRE (k6 p50/p95/p99), Flexibilidad (Circuit Breaker/Bulkhead/Auto-scaling), Mantenibilidad (McCabe 1-3, 194 tests) y Confiabilidad (HA vs HPC). |
 | **Histórico Avance APF3** | [**`APF3/`**](99_HISTORICO_ENTREGAS_ANTERIORES/APF3/) | Memoria técnica de 77 páginas con adecuación funcional 100%, compatibilidad Docker, usabilidad SUS 88.5/100 y DRP RTO 3.2s. |
 | **Decisiones de Arquitectura** | [**`ADR-001`**](adr/ADR-001_ELECCION_RENDER_NEON_VS_AWS.md) <br> [**`ADR-002`**](adr/ADR-002_ARQUITECTURA_OBJETIVO_AWS.md) | Justificación de Render+Neon vs AWS y maquetación de arquitectura objetivo VPC Multi-AZ en AWS. |
