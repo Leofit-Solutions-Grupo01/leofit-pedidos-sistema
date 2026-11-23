@@ -829,21 +829,35 @@ En concordancia con las directivas pedagógicas del docente en la sesión de cla
 
 ## Referencias Normativas y Bibliográficas
 
-1. **ISO/IEC (2001).** *ISO/IEC 9126 Software engineering — Product quality (Part 1: Quality model; Part 2: External metrics; Part 3: Internal metrics; Part 4: Quality in use metrics).* International Organization for Standardization, Geneva, Switzerland.
-2. **ISO/IEC (2023).** *ISO/IEC 25010:2023 Systems and software engineering — Systems and software Quality Requirements and Evaluation (SQuaRE) — Product quality model.* International Organization for Standardization, Geneva, Switzerland.
-3. **ISO/IEC/IEEE (2021).** *ISO/IEC/IEEE 29119 Software Testing (Parts 1-4).* IEEE Computer Society.
-4. **Beyer, B., Jones, C., Petoff, J., & Murphy, N. R. (2016).** *Site Reliability Engineering: How Google Runs Production Systems.* O'Reilly Media.
-5. **Martin, R. C. (2017).** *Clean Architecture: A Craftsman's Guide to Software Structure and Design.* Prentice Hall.
-6. **Wiggins, A. (2017).** *The Twelve-Factor App.* `https://12factor.net/`
-7. **McCabe, T. J. (1976).** *A Complexity Measure.* IEEE Transactions on Software Engineering, SE-2(4), 308-320.
-8. **Nygard, M. T. (2018).** *Release It!: Design and Deploy Production-Ready Software (2nd ed.).* Pragmatic Bookshelf.
-9. **SUNAT (2024).** *Manual del Sistema de Emisión Electrónica CPE — Estándar UBL 2.1.* Lima, Perú.
-10. **Grafana Labs (2024).** *k6 Documentation: Modern load testing for engineering teams.*
-11. **PostgreSQL Global Development Group (2024).** *PostgreSQL 16.4 Documentation: Concurrency Control and Indexing.*
-12. **Polanía Tovar, C. R. (2024).** *Determinación de actividades y vulnerabilidades SSL/TLS y de encriptación.* Revista Agunkuyâa, 14(1), 27-47. Fundación Universitaria del Área Andina.
-13. **Rescorla, E. (2018).** *The Transport Layer Security (TLS) Protocol Version 1.3.* RFC 8446, IETF.
-14. **ISO (2015).** *ISO 9001:2015 Sistemas de gestión de la calidad — Requisitos & ISO 9000-3 Directrices para la aplicación de ISO 9001 al desarrollo, suministro y mantenimiento de software.*
-15. **Lafuente, J. (2000).** *Tiempos de respuesta y límites internacionales de espera en aplicaciones web (5s / 10s / 30s).*
+Beyer, B., Jones, C., Petoff, J., & Murphy, N. R. (2016). *Site reliability engineering: How Google runs production systems*. O'Reilly Media.
+
+Grafana Labs. (2024). *k6 documentation: Modern load testing for engineering teams*. https://grafana.com/docs/k6/latest/
+
+International Organization for Standardization. (2001). *Software engineering — Product quality (Part 1: Quality model; Part 2: External metrics; Part 3: Internal metrics; Part 4: Quality in use metrics)* (ISO/IEC Standard No. 9126).
+
+International Organization for Standardization. (2015). *Sistemas de gestión de la calidad — Requisitos & ISO 9000-3 Directrices para la aplicación de ISO 9001 al desarrollo, suministro y mantenimiento de software* (ISO Standard No. 9001:2015).
+
+International Organization for Standardization. (2021). *Software and systems engineering — Software testing (Parts 1-4)* (ISO/IEC/IEEE Standard No. 29119).
+
+International Organization for Standardization. (2023). *Systems and software engineering — Systems and software Quality Requirements and Evaluation (SQuaRE) — Product quality model* (ISO/IEC Standard No. 25010:2023).
+
+Lafuente, J. (2000). *Tiempos de respuesta y límites internacionales de espera en aplicaciones web (5s / 10s / 30s)*. Ediciones de Ingeniería Web.
+
+Martin, R. C. (2017). *Clean architecture: A craftsman's guide to software structure and design*. Prentice Hall.
+
+McCabe, T. J. (1976). A complexity measure. *IEEE Transactions on Software Engineering*, *SE-2*(4), 308–320. https://doi.org/10.1109/TSE.1976.233837
+
+Nygard, M. T. (2018). *Release it!: Design and deploy production-ready software* (2nd ed.). Pragmatic Bookshelf.
+
+Polanía Tovar, C. R. (2024). Determinación de actividades y vulnerabilidades SSL/TLS y de encriptación. *Revista Agunkuyâa*, *14*(1), 27–47. Fundación Universitaria del Área Andina.
+
+PostgreSQL Global Development Group. (2024). *PostgreSQL 16.4 documentation: Concurrency control and indexing*. https://www.postgresql.org/docs/16/
+
+Rescorla, E. (2018). *The Transport Layer Security (TLS) Protocol Version 1.3* (RFC 8446). Internet Engineering Task Force (IETF). https://doi.org/10.17487/RFC8446
+
+Superintendencia Nacional de Aduanas y de Administración Tributaria. (2024). *Manual del Sistema de Emisión Electrónica CPE — Estándar UBL 2.1*. SUNAT.
+
+Wiggins, A. (2017). *The Twelve-Factor App*. https://12factor.net/
 
 ---
 
@@ -854,14 +868,14 @@ En concordancia con las directivas pedagógicas del docente en la sesión de cla
 | ID Evidencia | Nombre de Archivo / URL en Repositorio | Qué Demuestra | Sección Citada |
 | :--- | :--- | :--- | :--- |
 | **EV-01** | `scripts/proyecto_final/generate_sustentacion_pptx.py` | Generador automatizado de la presentación oficial de 25 slides | Presentación PPTX |
-| **EV-02** | `docs/05_SUSTENTACION_PROYECTO_FINAL_SEMANA_18/03_PRESENTACION...pptx` | Presentación ejecutiva de sustentación final con notas de orador | Sustentación S18 |
+| **EV-02** | `docs/01_ENTREGA_FINAL_PROYECTO_SEMANA_18/03_PRESENTACION_OFICIAL_SUSTENTACION_LEOFIT.pptx` | Presentación ejecutiva de sustentación final con notas de orador | Sustentación S18 |
 | **EV-03** | `backend/src/services/order.service.ts` | Reglas comerciales puras desacopladas (Clean Architecture) | Sección 5.3.1 / 5.3.3 |
 | **EV-04** | `backend/src/middlewares/role.middleware.ts` | Middleware RBAC reutilizado en 14 endpoints | Sección 5.3.2 |
 | **EV-05** | `backend/src/middlewares/idempotency.middleware.ts` | Idempotencia transaccional RFC 8785 reutilizada | Sección 5.3.2 |
-| **EV-06** | `backend/tests/` (15 suites con 127 tests en Jest) | Batería de pruebas automatizadas Backend y auditoría SSL/TLS | Sección 5.3.4 |
+| **EV-06** | `backend/tests/` (15 suites con 125 tests en Jest) | Batería de pruebas automatizadas Backend y auditoría SSL/TLS | Sección 5.3.4 |
 | **EV-07** | `frontend/src/__tests__/` (10 suites con 69 tests en Vitest) | Batería de pruebas automatizadas Frontend en Vitest | Sección 5.3.4 |
 | **EV-08** | `docs/adr/ADR-001_ELECCION_RENDER_NEON_VS_AWS.md` | Decisión de arquitectura Render vs AWS y análisis de costos | Sección 5.2.1 |
 | **EV-09** | `docs/adr/ADR-002_ARQUITECTURA_OBJETIVO_AWS.md` | Arquitectura objetivo AWS VPC Multi-AZ y servicios complementarios | Sección 5.2.2 |
-| **EV-10** | `_PROYECTO_FINAL_LOCAL/02_ENTREGABLES_UTP/03_XLSX/04_PLAN...` | Libro Excel de auditoría, trazabilidad y Gap Analysis SUNAT | Sección 5.4.1 |
+| **EV-10** | `docs/01_ENTREGA_FINAL_PROYECTO_SEMANA_18/04_PLAN_AUDITORIA_CALIDAD_Y_TRAZABILIDAD_LEOFIT.xlsx` | Libro Excel de auditoría, trazabilidad y Gap Analysis SUNAT | Sección 5.4.1 |
 | **EV-11** | `backend/src/infrastructure/security/tls.policy.ts` | Política criptográfica TLS 1.3, cifrado AEAD AES-256-GCM y auditor anti-MITM/FREAK/POODLE | Sección 3.2 |
-| **EV-12** | `docs/02_CALIDAD_Y_AUDITORIA/COMPENDIO_TECNICO_CALIDAD_TESTING_Y_CRIPTOGRAFIA_SSL_TLS.md` | Compendio maestro de Sesiones 21-29 (Calidad y Pruebas) y Criptografía SSL/TLS | Secciones 3.2 / 5.0 / 5.3.4 |
+| **EV-12** | `docs/01_ENTREGA_FINAL_PROYECTO_SEMANA_18/04_COMPENDIO_TECNICO_CALIDAD_TESTING_Y_CRIPTOGRAFIA.md` | Compendio maestro de Sesiones 21-29 (Calidad y Pruebas) y Criptografía SSL/TLS | Secciones 3.2 / 5.0 / 5.3.4 |
