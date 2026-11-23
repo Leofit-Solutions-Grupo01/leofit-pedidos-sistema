@@ -10,17 +10,16 @@ Todos los entregables oficiales exigidos por las rúbricas de la Universidad Tec
 
 ---
 
-## 1. Mapa Rápido de Entregables Oficiales para el Docente
+## 1. Mapa de Entregables Oficiales para el Docente
 
 | Archivo | Formato | Rol en la Evaluación | Enlace Directo |
 | :--- | :---: | :--- | :--- |
-| **`00_HOJA_DE_ENTREGA_Y_ENLACES_DOCENTE.docx`** | DOCX | Hoja formal de presentación académica, credenciales, enlaces a la nube y checklist. | [Descargar DOCX](00_HOJA_DE_ENTREGA_Y_ENLACES_DOCENTE.docx) |
-| **`00_HOJA_DE_ENTREGA_Y_ENLACES_DOCENTE.md`** | MD | Versión auditable en texto plano de la hoja de presentación académica. | [Ver Markdown](00_HOJA_DE_ENTREGA_Y_ENLACES_DOCENTE.md) |
-| **`01_INFORME_FINAL_PROYECTO_LEOFIT.docx`** | DOCX | **Informe Acumulativo Final del Proyecto** (156 párrafos, 14 tablas, tabla de contenidos dinámica). Cumple ISO/IEC 25010:2023, ISO 9126, percentiles k6, arquitectura y criptografía. | [Descargar DOCX](01_INFORME_FINAL_PROYECTO_LEOFIT.docx) |
-| **`01_INFORME_FINAL_PROYECTO_LEOFIT.md`** | MD | Memoria técnica completa en Markdown con código fuente, consultas SQL, tablas y comandos de prueba. | [Ver Markdown](01_INFORME_FINAL_PROYECTO_LEOFIT.md) |
-| **`02_PRESENTACION_OFICIAL_SUSTENTACION_LEOFIT.pptx`** | PPTX | **Presentación Oficial de Sustentación** (25 diapositivas, formato 16:9 widescreen, diseño corporativo sin emojis, gráficos 300 DPI y notas de orador completas). | [Descargar PPTX](02_PRESENTACION_OFICIAL_SUSTENTACION_LEOFIT.pptx) |
-| **`02_VISOR_WEB_PRESENTACION_SUSTENTACION.html`** | HTML | Visor web interactivo responsive para navegar las 25 diapositivas directamente en el navegador. | [Abrir Visor HTML](02_VISOR_WEB_PRESENTACION_SUSTENTACION.html) |
-| **`03_PLAN_AUDITORIA_CALIDAD_Y_TRAZABILIDAD_LEOFIT.xlsx`** | XLSX | **Libro de Auditoría y Métricas** con 7 hojas de trabajo: Dashboard, ISO 25010, Casos de Prueba, Deuda Técnica, Trazabilidad, Percentiles k6 y Cierre. | [Descargar XLSX](03_PLAN_AUDITORIA_CALIDAD_Y_TRAZABILIDAD_LEOFIT.xlsx) |
+| **`01_INFORME_FINAL_LEOFIT.docx`** | DOCX | **Informe General Final del Proyecto** (Memoria técnica integral de 19 capítulos, 703 párrafos, 35 tablas). Incluye la evaluación de calidad ISO 25010 / ISO 9126 de semanas 10-11, arquitectura, base de datos y DevOps. | [Descargar DOCX](01_INFORME_FINAL_LEOFIT.docx) |
+| **`02_INFORME_CONTINUACION_S14_S15_LEOFIT.docx`** | DOCX | **Informe Acumulativo de Calidad y Continuación (Semanas 14 y 15)** según la plantilla oficial del docente (`Plantilla_Informe_Continuacion_S14_S15_UTP`). Evalúa Rendimiento (p95, k6), Flexibilidad (Adaptabilidad y Escalabilidad) y Mantenibilidad (Modularidad, Reusabilidad, Modificabilidad, Testabilidad). | [Descargar DOCX](02_INFORME_CONTINUACION_S14_S15_LEOFIT.docx) |
+| **`02_INFORME_CONTINUACION_S14_S15_LEOFIT.md`** | MD | Versión auditable en Markdown del Informe Acumulativo de Semanas 14 y 15. | [Ver Markdown](02_INFORME_CONTINUACION_S14_S15_LEOFIT.md) |
+| **`03_PRESENTACION_OFICIAL_SUSTENTACION_LEOFIT.pptx`** | PPTX | **Presentación Oficial de Sustentación** (25 diapositivas, formato 16:9 widescreen, diseño corporativo sin emojis, gráficos 300 DPI y notas de orador completas en cada lámina). | [Descargar PPTX](03_PRESENTACION_OFICIAL_SUSTENTACION_LEOFIT.pptx) |
+| **`03_VISOR_WEB_PRESENTACION_SUSTENTACION.html`** | HTML | Visor web interactivo responsive para proyectar y navegar las 25 diapositivas con sus notas de orador directamente en cualquier navegador. | [Abrir Visor HTML](03_VISOR_WEB_PRESENTACION_SUSTENTACION.html) |
+| **`04_PLAN_AUDITORIA_CALIDAD_Y_TRAZABILIDAD_LEOFIT.xlsx`** | XLSX | **Libro de Auditoría y Trazabilidad** con 7 hojas de trabajo: Dashboard, Trazabilidad Jurado, Inventario Cloud, Auditoría ISO 25010, Gap SUNAT CPE, Dimensionamiento y Estándares. | [Descargar XLSX](04_PLAN_AUDITORIA_CALIDAD_Y_TRAZABILIDAD_LEOFIT.xlsx) |
 | **`04_COMPENDIO_TECNICO_CALIDAD_TESTING_Y_CRIPTOGRAFIA.md`** | MD | Compendio integral de las Sesiones 21 a 29 (ISO 9126, ISO 25000, ISO 29119) y Criptografía SSL/TLS (Polanía Tovar, 2024). | [Ver Compendio](04_COMPENDIO_TECNICO_CALIDAD_TESTING_Y_CRIPTOGRAFIA.md) |
 
 ---

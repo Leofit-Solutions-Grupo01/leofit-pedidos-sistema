@@ -17,7 +17,7 @@ from pptx.enum.text import PP_ALIGN, MSO_ANCHOR
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 OFFICIAL_PPTX_DIR = os.path.join(BASE_DIR, "docs", "01_ENTREGA_FINAL_PROYECTO_SEMANA_18")
 os.makedirs(OFFICIAL_PPTX_DIR, exist_ok=True)
-OFFICIAL_PPTX = os.path.join(OFFICIAL_PPTX_DIR, "02_PRESENTACION_OFICIAL_SUSTENTACION_LEOFIT.pptx")
+OFFICIAL_PPTX = os.path.join(OFFICIAL_PPTX_DIR, "03_PRESENTACION_OFICIAL_SUSTENTACION_LEOFIT.pptx")
 
 def C(h): return RGBColor.from_string(h)
 
@@ -1086,7 +1086,7 @@ def create_deck():
     txt(s25, 2.2, 4.0, 8.933, 1.8, 
         "PANEL DE PREGUNTAS Y DEFENSA TECNICA ABIERTO:\n\n"
         "- Repositorio Oficial: github.com/Leofit-Solutions-Grupo01/leofit-pedidos-sistema\n"
-        "- Documentacion de Anexos: _PROYECTO_FINAL_LOCAL/01_ANEXOS_TECNICOS/\n"
+        "- Documentacion de Anexos: docs/01_ENTREGA_FINAL_PROYECTO_SEMANA_18/anexos_tecnicos/\n"
         "- Sistema en Vivo: leofit-solutions-grupo01.github.io/leofit-pedidos-sistema/",
         size=13, color=WHITE, align="c")
 
@@ -1098,14 +1098,16 @@ def create_deck():
         "la base de datos o las decisiones de arquitectura presentadas. Muchas gracias.")
 
     # Guardar en la carpeta oficial de Entrega Final Semana 18
-    OFFICIAL_PPTX_DIR = os.path.join(BASE_DIR, "docs", "01_ENTREGA_FINAL_PROYECTO_SEMANA_18")
-    os.makedirs(OFFICIAL_PPTX_DIR, exist_ok=True)
-    OFFICIAL_PPTX = os.path.join(OFFICIAL_PPTX_DIR, "02_PRESENTACION_OFICIAL_SUSTENTACION_LEOFIT.pptx")
     prs.save(OFFICIAL_PPTX)
+
+    # Guardar también en la raíz del repositorio
+    root_pptx = os.path.join(BASE_DIR, "03_PRESENTACION_OFICIAL_SUSTENTACION_LEOFIT.pptx")
+    prs.save(root_pptx)
 
     size_kb = os.path.getsize(OFFICIAL_PPTX) / 1024.0
     print(f"[OK] Presentacion PPTX generada con exito:")
     print(f"     Oficial: {OFFICIAL_PPTX}")
+    print(f"     Raiz:    {root_pptx}")
     print(f"     Diapositivas: {len(prs.slides)} slides (Requisito >= 18 slides)")
     print(f"     Tamano: {size_kb:.1f} KB")
     return OFFICIAL_PPTX, len(prs.slides), size_kb

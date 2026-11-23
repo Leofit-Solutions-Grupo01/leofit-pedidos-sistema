@@ -20,7 +20,7 @@ Write-Host ""
 # ------------------------------------------------------------------------------
 # 1. VERIFICACION DE DEPENDENCIAS
 # ------------------------------------------------------------------------------
-Write-Host "[1/6] Verificando dependencias del sistema..." -ForegroundColor Yellow
+Write-Host "[1/7] Verificando dependencias del sistema..." -ForegroundColor Yellow
 
 $pandocVer = pandoc --version | Select-Object -First 1
 Write-Host "  [OK] Pandoc: $pandocVer" -ForegroundColor Green
@@ -37,20 +37,31 @@ Write-Host "  [OK] Python Packages (docx, pptx, openpyxl, pypandoc) disponibles.
 Write-Host ""
 
 # ------------------------------------------------------------------------------
-# 2. GENERACION DEL INFORME ACUMULATIVO FINAL (WORD Y MARKDOWN)
+# 2. GENERACION DEL INFORME GENERAL FINAL CONSOLIDADO (DOC 1)
 # ------------------------------------------------------------------------------
-Write-Host "[2/6] Compilando Informe Acumulativo Final (.docx y .md)..." -ForegroundColor Yellow
-python "$scriptDir\build_informe_s14_s15.py"
+Write-Host "[2/7] Consolidando Informe General Final (01_INFORME_FINAL_LEOFIT.docx)..." -ForegroundColor Yellow
+python "$scriptDir\merge_informe_final.py"
 if ($LASTEXITCODE -ne 0) {
-    Write-Host "  [ERROR] Fallo la compilacion del Informe Final." -ForegroundColor Red
+    Write-Host "  [ERROR] Fallo la consolidacion de 01_INFORME_FINAL_LEOFIT.docx." -ForegroundColor Red
     exit 1
 }
 Write-Host ""
 
 # ------------------------------------------------------------------------------
-# 3. GENERACION DE PRESENTACION PPTX Y VISOR WEB
+# 3. GENERACION DEL INFORME DE CONTINUACION SEMANAS 14-15 (DOC 2)
 # ------------------------------------------------------------------------------
-Write-Host "[3/6] Generando presentacion ejecutiva (.pptx) y visor web (.html)..." -ForegroundColor Yellow
+Write-Host "[3/7] Compilando Informe de Continuacion S14-S15 (02_INFORME_CONTINUACION_S14_S15_LEOFIT.docx)..." -ForegroundColor Yellow
+python "$scriptDir\build_informe_s14_s15.py"
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "  [ERROR] Fallo la compilacion del Informe de Continuacion S14-S15." -ForegroundColor Red
+    exit 1
+}
+Write-Host ""
+
+# ------------------------------------------------------------------------------
+# 4. GENERACION DE PRESENTACION PPTX Y VISOR WEB (DOC 3)
+# ------------------------------------------------------------------------------
+Write-Host "[4/7] Generando presentacion ejecutiva (.pptx) y visor web (.html)..." -ForegroundColor Yellow
 python "$scriptDir\generate_sustentacion_pptx.py"
 if ($LASTEXITCODE -ne 0) {
     Write-Host "  [ERROR] Fallo la generacion de PPTX." -ForegroundColor Red
@@ -60,9 +71,9 @@ python "$scriptDir\generate_slides_viewer.py"
 Write-Host ""
 
 # ------------------------------------------------------------------------------
-# 4. GENERACION DE LIBRO DE AUDITORIA Y TRAZABILIDAD XLSX
+# 5. GENERACION DE LIBRO DE AUDITORIA Y TRAZABILIDAD XLSX (DOC 4)
 # ------------------------------------------------------------------------------
-Write-Host "[4/6] Generando libro Excel (.xlsx) de auditoria y trazabilidad..." -ForegroundColor Yellow
+Write-Host "[5/7] Generando libro Excel (.xlsx) de auditoria y trazabilidad..." -ForegroundColor Yellow
 python "$scriptDir\generate_audit_xlsx.py"
 if ($LASTEXITCODE -ne 0) {
     Write-Host "  [ERROR] Fallo la generacion de XLSX." -ForegroundColor Red
@@ -71,9 +82,9 @@ if ($LASTEXITCODE -ne 0) {
 Write-Host ""
 
 # ------------------------------------------------------------------------------
-# 5. EXPORTACION A CARPETA EXCLUSIVA UTP+ CLASS (1 ARCHIVO POR TIPO)
+# 6. EXPORTACION A CARPETA EXCLUSIVA UTP+ CLASS
 # ------------------------------------------------------------------------------
-Write-Host "[5/6] Exportando archivos exclusivos a _SUBIR_A_UTP_CLASS/..." -ForegroundColor Yellow
+Write-Host "[6/7] Exportando entregables oficiales a _SUBIR_A_UTP_CLASS/..." -ForegroundColor Yellow
 python "$scriptDir\export_subir_utp_class.py"
 if ($LASTEXITCODE -ne 0) {
     Write-Host "  [ERROR] Fallo la exportacion a _SUBIR_A_UTP_CLASS." -ForegroundColor Red
@@ -82,9 +93,9 @@ if ($LASTEXITCODE -ne 0) {
 Write-Host ""
 
 # ------------------------------------------------------------------------------
-# 6. VALIDACION RIGUROSA DE INTEGRIDAD Y REPORTE DE TAMANOS
+# 7. VALIDACION RIGUROSA DE INTEGRIDAD Y REPORTE DE TAMANOS
 # ------------------------------------------------------------------------------
-Write-Host "[6/6] Validando integridad de todos los archivos generados..." -ForegroundColor Yellow
+Write-Host "[7/7] Validando integridad de todos los archivos generados..." -ForegroundColor Yellow
 python "$scriptDir\validate_deliverables.py"
 if ($LASTEXITCODE -ne 0) {
     Write-Host "  [ERROR] Fallo la validacion de integridad." -ForegroundColor Red

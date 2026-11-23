@@ -17,7 +17,7 @@ BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 # Carpeta oficial de Entrega Final Semana 18
 OFFICIAL_XLSX_DIR = os.path.join(BASE_DIR, "docs", "01_ENTREGA_FINAL_PROYECTO_SEMANA_18")
 os.makedirs(OFFICIAL_XLSX_DIR, exist_ok=True)
-OFFICIAL_XLSX = os.path.join(OFFICIAL_XLSX_DIR, "03_PLAN_AUDITORIA_CALIDAD_Y_TRAZABILIDAD_LEOFIT.xlsx")
+OFFICIAL_XLSX = os.path.join(OFFICIAL_XLSX_DIR, "04_PLAN_AUDITORIA_CALIDAD_Y_TRAZABILIDAD_LEOFIT.xlsx")
 
 def create_audit_workbook():
     wb = openpyxl.Workbook()

@@ -14,8 +14,8 @@ BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 # Carpeta oficial de Entrega Final Semana 18
 OFFICIAL_FINAL_DIR = os.path.join(BASE_DIR, "docs", "01_ENTREGA_FINAL_PROYECTO_SEMANA_18")
 os.makedirs(OFFICIAL_FINAL_DIR, exist_ok=True)
-OUT_HTML_OFFICIAL = os.path.join(OFFICIAL_FINAL_DIR, "02_VISOR_WEB_PRESENTACION_SUSTENTACION.html")
-PPTX_PATH = os.path.join(OFFICIAL_FINAL_DIR, "02_PRESENTACION_OFICIAL_SUSTENTACION_LEOFIT.pptx")
+OUT_HTML_OFFICIAL = os.path.join(OFFICIAL_FINAL_DIR, "03_VISOR_WEB_PRESENTACION_SUSTENTACION.html")
+PPTX_PATH = os.path.join(OFFICIAL_FINAL_DIR, "03_PRESENTACION_OFICIAL_SUSTENTACION_LEOFIT.pptx")
 
 prs = pptx.Presentation(PPTX_PATH)
 
@@ -100,7 +100,7 @@ for s in slides_data:
     md_lines.append("")
 
 # Markdown informativo opcional en docs/
-out_md = os.path.join(OFFICIAL_FINAL_DIR, "02_PRESENTACION_OFICIAL_SUSTENTACION_LEOFIT.md")
+out_md = os.path.join(OFFICIAL_FINAL_DIR, "03_PRESENTACION_OFICIAL_SUSTENTACION_LEOFIT.md")
 with open(out_md, "w", encoding="utf-8") as f:
     f.write("\n".join(md_lines))
 print(f"Markdown Oficial escrito en {out_md}")

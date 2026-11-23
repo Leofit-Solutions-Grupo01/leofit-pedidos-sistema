@@ -13,8 +13,8 @@ BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 # Carpeta oficial de entrega final Semana 18 para el docente evaluador
 OFFICIAL_FINAL_DIR = os.path.join(BASE_DIR, "docs", "01_ENTREGA_FINAL_PROYECTO_SEMANA_18")
 os.makedirs(OFFICIAL_FINAL_DIR, exist_ok=True)
-OUT_MD = os.path.join(OFFICIAL_FINAL_DIR, "01_INFORME_FINAL_PROYECTO_LEOFIT.md")
-OUT_DOCX = os.path.join(OFFICIAL_FINAL_DIR, "01_INFORME_FINAL_PROYECTO_LEOFIT.docx")
+OUT_MD = os.path.join(OFFICIAL_FINAL_DIR, "02_INFORME_CONTINUACION_S14_S15_LEOFIT.md")
+OUT_DOCX = os.path.join(OFFICIAL_FINAL_DIR, "02_INFORME_CONTINUACION_S14_S15_LEOFIT.docx")
 
 # Carpetas de respaldo y compatibilidad histórica
 TARGET_DIR = os.path.join(BASE_DIR, "docs", "02_CALIDAD_Y_AUDITORIA", "04_calidad_iso25010_semanas_14_15")
@@ -28,8 +28,8 @@ md_content = r"""# UNIVERSIDAD TECNOLÓGICA DEL PERÚ
 
 ---
 
-# INFORME FINAL ACUMULATIVO DEL PROYECTO INTEGRADOR
-## Evaluación Integral de Calidad (ISO/IEC 25010:2023, ISO 9126, ISO 29119), Arquitectura Cloud y Criptografía
+# INFORME ACUMULATIVO DEL PROYECTO INTEGRADOR
+## Continuación · Semanas 14 y 15 (APF1 + APF2 + APF3 + Unidad 4: Calidad de Software)
 ### Plataforma de Gestión de Pedidos, Facturación Electrónica y Control de Inventario Multicanal
 
 **Empresa Patrocinadora:** LeoFit Confecciones y Diseños Deportivos S.A.C. (RUC: 20608912345)  

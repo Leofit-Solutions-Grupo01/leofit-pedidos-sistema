@@ -4,8 +4,8 @@
 
 ---
 
-# INFORME FINAL ACUMULATIVO DEL PROYECTO INTEGRADOR
-## Evaluación Integral de Calidad (ISO/IEC 25010:2023, ISO 9126, ISO 29119), Arquitectura Cloud y Criptografía
+# INFORME ACUMULATIVO DEL PROYECTO INTEGRADOR
+## Continuación · Semanas 14 y 15 (APF1 + APF2 + APF3 + Unidad 4: Calidad de Software)
 ### Plataforma de Gestión de Pedidos, Facturación Electrónica y Control de Inventario Multicanal
 
 **Empresa Patrocinadora:** LeoFit Confecciones y Diseños Deportivos S.A.C. (RUC: 20608912345)  

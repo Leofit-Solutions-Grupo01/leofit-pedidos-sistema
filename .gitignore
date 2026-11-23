@@ -259,3 +259,9 @@ docs/INFORME_FINAL_*.docx
 temp_raw_*.pdf
 leofit_raw_*.pdf
 
+# Archivos ofimáticos y guías locales en la raíz (los oficiales se versionan en docs/01_ENTREGA_FINAL_PROYECTO_SEMANA_18/)
+/*.docx
+/*.pptx
+/*.pdf
+
+
