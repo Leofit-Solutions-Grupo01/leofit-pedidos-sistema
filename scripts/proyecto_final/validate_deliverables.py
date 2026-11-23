@@ -8,26 +8,52 @@
 
 import os
 import glob
+import re
 import docx
 import pptx
 import openpyxl
 
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+OFFICIAL_DIR = os.path.join(BASE_DIR, "docs", "01_ENTREGA_FINAL_PROYECTO_SEMANA_18")
 PROYECTO_FINAL_DIR = os.path.join(BASE_DIR, "_PROYECTO_FINAL_LOCAL")
-
-if not os.path.exists(PROYECTO_FINAL_DIR):
-    raise FileNotFoundError("_PROYECTO_FINAL_LOCAL/ no encontrado. Ejecutar solo en maquina de desarrollo con los anexos presentes.")
-
-ENTREGABLES_DIR = os.path.join(PROYECTO_FINAL_DIR, "02_ENTREGABLES_UTP")
+ENTREGABLES_DIR = os.path.join(PROYECTO_FINAL_DIR, "02_ENTREGABLES_UTP") if os.path.exists(PROYECTO_FINAL_DIR) else None
 
 def validate():
-    print("  --- Validando archivos Word (.docx) ---")
-    docx_files = glob.glob(os.path.join(ENTREGABLES_DIR, "01_DOCX", "*.docx"))
-    if not docx_files:
-        print("    [ERROR] No se encontraron archivos .docx en 01_DOCX")
+    print("======================================================================")
+    print("VALIDACION DE ENTREGABLES OFICIALES (docs/01_ENTREGA_FINAL_PROYECTO_SEMANA_18)")
+    print("======================================================================")
+    
+    # 1. Validar existencia del paquete oficial
+    if not os.path.exists(OFFICIAL_DIR):
+        print(f"[ERROR] No existe el directorio oficial: {OFFICIAL_DIR}")
         return False
         
-    for df in sorted(docx_files):
+    required_files = [
+        "00_HOJA_DE_ENTREGA_Y_ENLACES_DOCENTE.docx",
+        "00_HOJA_DE_ENTREGA_Y_ENLACES_DOCENTE.md",
+        "01_INFORME_FINAL_PROYECTO_LEOFIT.docx",
+        "01_INFORME_FINAL_PROYECTO_LEOFIT.md",
+        "02_PRESENTACION_OFICIAL_SUSTENTACION_LEOFIT.pptx",
+        "02_VISOR_WEB_PRESENTACION_SUSTENTACION.html",
+        "03_PLAN_AUDITORIA_CALIDAD_Y_TRAZABILIDAD_LEOFIT.xlsx",
+        "04_COMPENDIO_TECNICO_CALIDAD_TESTING_Y_CRIPTOGRAFIA.md",
+        "README.md"
+    ]
+    
+    for rf in required_files:
+        p = os.path.join(OFFICIAL_DIR, rf)
+        if not os.path.exists(p):
+            print(f"  [ERROR] Falta archivo oficial obligatorio: {rf}")
+            return False
+        sz = os.path.getsize(p)
+        print(f"  [OK] {rf} ({sz / 1024:.1f} KB)")
+        
+    print("\n  --- Validando archivos Word (.docx) ---")
+    docx_files = glob.glob(os.path.join(OFFICIAL_DIR, "*.docx"))
+    if ENTREGABLES_DIR and os.path.exists(os.path.join(ENTREGABLES_DIR, "01_DOCX")):
+        docx_files.extend(glob.glob(os.path.join(ENTREGABLES_DIR, "01_DOCX", "*.docx")))
+        
+    for df in sorted(set(docx_files)):
         try:
             d = docx.Document(df)
             p_count = len(d.paragraphs)
@@ -37,13 +63,12 @@ def validate():
             print(f"    [ERROR] {os.path.basename(df)} no pudo abrirse: {e}")
             return False
 
-    print("  --- Validando presentacion PowerPoint (.pptx) ---")
-    pptx_files = glob.glob(os.path.join(ENTREGABLES_DIR, "02_PPTX", "*.pptx"))
-    if not pptx_files:
-        print("    [ERROR] No se encontraron archivos .pptx en 02_PPTX")
-        return False
+    print("\n  --- Validando presentacion PowerPoint (.pptx) ---")
+    pptx_files = glob.glob(os.path.join(OFFICIAL_DIR, "*.pptx"))
+    if ENTREGABLES_DIR and os.path.exists(os.path.join(ENTREGABLES_DIR, "02_PPTX")):
+        pptx_files.extend(glob.glob(os.path.join(ENTREGABLES_DIR, "02_PPTX", "*.pptx")))
         
-    for pf in pptx_files:
+    for pf in sorted(set(pptx_files)):
         try:
             prs = pptx.Presentation(pf)
             num_slides = len(prs.slides)
@@ -59,13 +84,12 @@ def validate():
             print(f"    [ERROR] {os.path.basename(pf)} fallo: {e}")
             return False
 
-    print("  --- Validando libro Excel (.xlsx) ---")
-    xlsx_files = glob.glob(os.path.join(ENTREGABLES_DIR, "03_XLSX", "*.xlsx"))
-    if not xlsx_files:
-        print("    [ERROR] No se encontraron archivos .xlsx en 03_XLSX")
-        return False
+    print("\n  --- Validando libro Excel (.xlsx) ---")
+    xlsx_files = glob.glob(os.path.join(OFFICIAL_DIR, "*.xlsx"))
+    if ENTREGABLES_DIR and os.path.exists(os.path.join(ENTREGABLES_DIR, "03_XLSX")):
+        xlsx_files.extend(glob.glob(os.path.join(ENTREGABLES_DIR, "03_XLSX", "*.xlsx")))
         
-    for xf in xlsx_files:
+    for xf in sorted(set(xlsx_files)):
         try:
             wb = openpyxl.load_workbook(xf, data_only=True)
             sheet_names = wb.sheetnames
@@ -78,13 +102,25 @@ def validate():
             print(f"    [ERROR] {os.path.basename(xf)} fallo: {e}")
             return False
 
-    print("  --- Validando ausencia de emojis residuales ---")
-    import re
+    print("\n  --- Validando graficos cientificos ---")
+    graficos = glob.glob(os.path.join(OFFICIAL_DIR, "graficos", "*.png"))
+    print(f"    [OK] Total de graficos encontrados: {len(graficos)} (Requisito >= 6)")
+    if len(graficos) < 6:
+        print("    [ERROR] Se esperaban al menos 6 graficos de calidad en graficos/")
+        return False
+
+    print("\n  --- Validando anexos tecnicos de sustentacion ---")
+    anexos = glob.glob(os.path.join(OFFICIAL_DIR, "anexos_tecnicos", "*.md"))
+    print(f"    [OK] Total de anexos tecnicos encontrados: {len(anexos)} (Requisito >= 6)")
+    if len(anexos) < 6:
+        print("    [ERROR] Se esperaban al menos 6 anexos tecnicos en anexos_tecnicos/")
+        return False
+
+    print("\n  --- Validando ausencia de emojis residuales ---")
     emoji_pattern = re.compile(r'[\U00010000-\U0010ffff\u2600-\u27bf]', flags=re.UNICODE)
     found_emoji = False
     
-    # Validar docx
-    for df in docx_files:
+    for df in sorted(set(docx_files)):
         d = docx.Document(df)
         full_text = " ".join(p.text for p in d.paragraphs)
         if emoji_pattern.search(full_text):
@@ -94,10 +130,11 @@ def validate():
     if not found_emoji:
         print("    [OK] Verificacion de Cero Emojis: LIMPIO en todos los entregables.")
 
-    print("\n[OK] VALIDACION DE INTEGRIDAD COMPLETADA EXITOSAMENTE.")
+    print("\n======================================================================")
+    print("[OK] VALIDACION DE INTEGRIDAD COMPLETADA EXITOSAMENTE (100% CONFORME)")
+    print("======================================================================")
     return True
 
 if __name__ == "__main__":
-    import sys
     success = validate()
-    sys.exit(0 if success else 1)
+    exit(0 if success else 1)

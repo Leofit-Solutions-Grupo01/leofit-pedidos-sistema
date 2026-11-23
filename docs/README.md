@@ -13,33 +13,41 @@
 
 > [!IMPORTANT]
 > **Acceso Inmediato para el Docente Evaluador:**  
-> Consulte el documento [**`00_INDICE_MAESTRO_ENTREGABLES_DOCENTE.md`**](00_INDICE_MAESTRO_ENTREGABLES_DOCENTE.md) para acceder directamente a cada informe, presentación, rúbrica y evidencia del curso.
+> Todos los entregables oficiales de la **Entrega Final y Sustentación del Proyecto (Semana 18)** se encuentran centralizados en [**`01_ENTREGA_FINAL_PROYECTO_SEMANA_18/`**](01_ENTREGA_FINAL_PROYECTO_SEMANA_18/).  
+> También puede consultar el índice rápido en [**`00_INDICE_MAESTRO_ENTREGABLES_DOCENTE.md`**](00_INDICE_MAESTRO_ENTREGABLES_DOCENTE.md).
 
 ---
 
 ## Estructura Consolidada de la Documentación
 
-La documentación de este repositorio organiza toda la evidencia acumulativa del ciclo en los siguientes módulos temáticos ordenados cronológicamente y por dominio de ingeniería:
+La documentación de este repositorio organiza toda la evidencia técnica acumulativa del ciclo de forma limpia, modular y jerárquica:
 
 ```text
 docs/
 ├── 00_INDICE_MAESTRO_ENTREGABLES_DOCENTE.md       [ÍNDICE EJECUTIVO PARA EL PROFESOR]
 ├── README.md                                      [ESTE DIRECTORIO MAESTRO]
 │
-├── 01_ENTREGA_OFICIAL_APF3/                       [ENTREGA OFICIAL EVALUADA - APF3]
-│   ├── README.md                                  (Guía de entrega oficial APF3)
-│   ├── 00_ENTREGA_OFICIAL_CANVAS/                 (Paquete oficial entregado en Canvas para APF3)
-│   ├── 01_DESARROLLO_Y_CALIDAD/                   (Informe maestro APF3 de 77 páginas y enlaces)
-│   └── 02_ESTRUCTURA_ACADEMICA/                   (Estructura de 7 carpetas según rúbrica UTP)
+├── 01_ENTREGA_FINAL_PROYECTO_SEMANA_18/           [PAQUETE OFICIAL DE ENTREGA FINAL Y SUSTENTACIÓN]
+│   ├── README.md                                  (Guía de evaluación del paquete final)
+│   ├── 00_HOJA_DE_ENTREGA_Y_ENLACES_DOCENTE.docx  (Carátula oficial, credenciales y checklist)
+│   ├── 00_HOJA_DE_ENTREGA_Y_ENLACES_DOCENTE.md    (Versión Markdown auditable)
+│   ├── 01_INFORME_FINAL_PROYECTO_LEOFIT.docx      (Informe Acumulativo Final completo del proyecto)
+│   ├── 01_INFORME_FINAL_PROYECTO_LEOFIT.md        (Memoria técnica completa en Markdown)
+│   ├── 02_PRESENTACION_OFICIAL_SUSTENTACION_LEOFIT.pptx (Presentación ejecutiva de 25 slides)
+│   ├── 02_VISOR_WEB_PRESENTACION_SUSTENTACION.html (Visor web interactivo responsive)
+│   ├── 03_PLAN_AUDITORIA_CALIDAD_Y_TRAZABILIDAD_LEOFIT.xlsx (Dashboard Excel con 7 hojas)
+│   ├── 04_COMPENDIO_TECNICO_CALIDAD_TESTING_Y_CRIPTOGRAFIA.md (Compendio S21-S29 y Cripto SSL/TLS)
+│   ├── graficos/                                  (6 gráficos científicos de calidad a 300 DPI)
+│   └── anexos_tecnicos/                           (6 anexos de respuestas técnicas al jurado)
 │
-├── 02_CALIDAD_Y_AUDITORIA/                        [CALIDAD E INGENIERÍA]
-│   ├── COMPENDIO_TECNICO_CALIDAD_TESTING_Y_CRIPTOGRAFIA_SSL_TLS.md (Compendio Maestro S21-S29 y Cripto SSL/TLS)
+├── 02_CALIDAD_Y_AUDITORIA/                        [EVIDENCIAS DE CALIDAD Y PRUEBAS]
 │   ├── 01_plan_de_pruebas_iso29119/               (Plan Maestro de Pruebas ISO/IEC/IEEE 29119-3/4)
 │   ├── 02_calidad_iso25010_semanas_10_11/         (Informe de Calidad ISO 25010 y Coexistencia)
-│   ├── 03_auditoria_y_cierre_proyecto/            (Dashboard Excel ISO 29119 y Deuda Técnica)
-│   ├── 04_calidad_iso25010_semanas_14_15/         (Informe Acumulativo S14-S15 Rendimiento/Flexibilidad)
+│   ├── 03_auditoria_y_cierre_proyecto/            (Checklist de auditoría y actas de cierre)
+│   ├── 04_calidad_iso25010_semanas_14_15/         (Evidencias intermedias Semanas 14-15)
 │   ├── 05_operaciones_respaldo_drp/               (Protocolo de Continuidad y Simulacro DRP)
-│   └── METRICAS_SESION_28_UTP/                    (Métricas de Rendimiento y Evidencia Sesión 28)
+│   ├── METRICAS_SESION_28_UTP/                    (Métricas de Rendimiento y Evidencia Sesión 28)
+│   └── COMPENDIO_TECNICO_CALIDAD_TESTING_Y_CRIPTOGRAFIA_SSL_TLS.md
 │
 ├── 03_ARQUITECTURA_Y_DIAGRAMAS/                   [CATÁLOGO DE 25 DIAGRAMAS DE INGENIERÍA]
 │   ├── apf3/                                      (Diagramas compilados en alta resolución PNG)
@@ -51,17 +59,13 @@ docs/
 │   ├── rubricas_evaluacion_utp/                   (Rúbricas oficiales APF1, APF2 y APF3)
 │   └── silabo_y_plantillas_utp/                   (Sílabo oficial y plantillas institucionales)
 │
-├── 05_SUSTENTACION_PROYECTO_FINAL_SEMANA_18/      [MATERIAL OFICIAL DE SUSTENTACIÓN FINAL]
-│   ├── 03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.pptx (Presentación ejecutiva 25 slides)
-│   ├── 03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.html (Visor web interactivo)
-│   └── README.md                                  (Estructura temática de la presentación)
-│
 ├── adr/                                           [DECISIONES ARQUITECTÓNICAS (MADR)]
 │   ├── ADR-001_ELECCION_RENDER_NEON_VS_AWS.md
 │   └── ADR-002_ARQUITECTURA_OBJETIVO_AWS.md
 │
-└── 99_HISTORICO_ENTREGAS_ANTERIORES/              [ARCHIVO HISTÓRICO]
-    └── APF1_APF2/                                 (Informes y presentaciones de APF1 y APF2)
+└── 99_HISTORICO_ENTREGAS_ANTERIORES/              [ARCHIVO HISTÓRICO DE ENTREGAS]
+    ├── APF1_APF2/                                 (Informes y presentaciones de APF1 y APF2)
+    └── APF3/                                      (Paquete completo del Avance Final 3)
 ```
 
 ---
@@ -70,7 +74,7 @@ docs/
 
 | Hito | Documento Principal | Descripción de Contenido |
 | :--- | :--- | :--- |
-| **Sustentación Final (Semana 18)** | [**`03_PRESENTACION_OFICIAL...pptx`**](05_SUSTENTACION_PROYECTO_FINAL_SEMANA_18/03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.pptx) <br> [**`Visor Web HTML`**](05_SUSTENTACION_PROYECTO_FINAL_SEMANA_18/03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.html) | Presentación oficial de 25 diapositivas ejecutivas con gráficos científicos, tablas dinámicas y paleta accesible WCAG AAA. |
-| **Continuación Semanas 14 y 15 (Unidad 4)** | [**`INFORME_CONTINUACION...docx`**](02_CALIDAD_Y_AUDITORIA/04_calidad_iso25010_semanas_14_15/INFORME_CONTINUACION_S14_S15_PROYECTO_FINAL_LEOFIT.docx) <br> [**`Memoria Markdown`**](02_CALIDAD_Y_AUDITORIA/04_calidad_iso25010_semanas_14_15/INFORME_CONTINUACION_S14_S15_PROYECTO_FINAL_LEOFIT.md) <br> [**`Carpeta Unidad 4`**](02_CALIDAD_Y_AUDITORIA/04_calidad_iso25010_semanas_14_15/README.md) | Evaluación bajo ISO/IEC 9126 (partes 1-4, fórmulas $X=1-A/B$, $X=A/B$) e ISO/IEC 25010:2023: Rendimiento SRE (k6 p50/p95/p99), Flexibilidad (Circuit Breaker/Bulkhead/Auto-scaling), Mantenibilidad (McCabe 1-3, 194 tests) y Confiabilidad (HA vs HPC). |
-| **Avance Final APF3** | [**`INFORME_FINAL_APF3...docx`**](01_ENTREGA_OFICIAL_APF3/01_DESARROLLO_Y_CALIDAD/INFORME_FINAL_APF3_LEOFIT.docx) | Memoria técnica de 77 páginas con adecuación funcional 100%, compatibilidad Docker, usabilidad SUS 88.5/100 y DRP RTO 3.2s. |
+| **Entrega Final y Sustentación (Semana 18)** | [**`01_INFORME_FINAL_PROYECTO_LEOFIT.docx`**](01_ENTREGA_FINAL_PROYECTO_SEMANA_18/01_INFORME_FINAL_PROYECTO_LEOFIT.docx) <br> [**`02_PRESENTACION_OFICIAL_SUSTENTACION_LEOFIT.pptx`**](01_ENTREGA_FINAL_PROYECTO_SEMANA_18/02_PRESENTACION_OFICIAL_SUSTENTACION_LEOFIT.pptx) <br> [**`Visor Web HTML`**](01_ENTREGA_FINAL_PROYECTO_SEMANA_18/02_VISOR_WEB_PRESENTACION_SUSTENTACION.html) <br> [**`Carpeta Oficial S18`**](01_ENTREGA_FINAL_PROYECTO_SEMANA_18/) | Paquete completo y definitivo del proyecto: memoria acumulativa (ISO 25010:2023, ISO 9126, percentiles k6, TLS 1.3/AES-256-GCM), presentación de 25 diapositivas ejecutivas con notas de orador, y libro de auditoría Excel con 7 hojas. |
+| **Calidad ISO 25010 (Unidad 4)** | [**`INFORME_CONTINUACION...docx`**](02_CALIDAD_Y_AUDITORIA/04_calidad_iso25010_semanas_14_15/INFORME_CONTINUACION_S14_S15_PROYECTO_FINAL_LEOFIT.docx) <br> [**`Carpeta Unidad 4`**](02_CALIDAD_Y_AUDITORIA/04_calidad_iso25010_semanas_14_15/README.md) | Evaluación bajo ISO/IEC 9126 (partes 1-4, fórmulas $X=1-A/B$, $X=A/B$) e ISO/IEC 25010:2023: Rendimiento SRE (k6 p50/p95/p99), Flexibilidad (Circuit Breaker/Bulkhead/Auto-scaling), Mantenibilidad (McCabe 1-3, 194 tests) y Confiabilidad (HA vs HPC). |
+| **Histórico Avance APF3** | [**`APF3/`**](99_HISTORICO_ENTREGAS_ANTERIORES/APF3/) | Memoria técnica de 77 páginas con adecuación funcional 100%, compatibilidad Docker, usabilidad SUS 88.5/100 y DRP RTO 3.2s. |
 | **Decisiones de Arquitectura** | [**`ADR-001`**](adr/ADR-001_ELECCION_RENDER_NEON_VS_AWS.md) <br> [**`ADR-002`**](adr/ADR-002_ARQUITECTURA_OBJETIVO_AWS.md) | Justificación de Render+Neon vs AWS y maquetación de arquitectura objetivo VPC Multi-AZ en AWS. |

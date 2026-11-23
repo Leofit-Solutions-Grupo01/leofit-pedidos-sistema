@@ -144,7 +144,7 @@ def create_deck():
         tf = notes_slide.notes_text_frame
         tf.text = notes_text
 
-    IMG_DIR = os.path.join(BASE_DIR, "docs", "05_SUSTENTACION_PROYECTO_FINAL_SEMANA_18", "graficos")
+    IMG_DIR = os.path.join(BASE_DIR, "docs", "01_ENTREGA_FINAL_PROYECTO_SEMANA_18", "graficos")
 
     def pic(s, filename, x, y, w, h=None):
         path = os.path.join(IMG_DIR, filename)
@@ -1103,16 +1103,19 @@ def create_deck():
         "la base de datos o las decisiones de arquitectura presentadas. Muchas gracias.")
 
     prs.save(OUT_PPTX)
-    DOCS_PPTX_DIR = os.path.join(BASE_DIR, "docs", "05_SUSTENTACION_PROYECTO_FINAL_SEMANA_18")
-    os.makedirs(DOCS_PPTX_DIR, exist_ok=True)
-    DOCS_PPTX = os.path.join(DOCS_PPTX_DIR, "03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.pptx")
-    prs.save(DOCS_PPTX)
-    size_kb = os.path.getsize(OUT_PPTX) / 1024.0
+    
+    # Guardar en la carpeta oficial de Entrega Final Semana 18
+    OFFICIAL_PPTX_DIR = os.path.join(BASE_DIR, "docs", "01_ENTREGA_FINAL_PROYECTO_SEMANA_18")
+    os.makedirs(OFFICIAL_PPTX_DIR, exist_ok=True)
+    OFFICIAL_PPTX = os.path.join(OFFICIAL_PPTX_DIR, "02_PRESENTACION_OFICIAL_SUSTENTACION_LEOFIT.pptx")
+    prs.save(OFFICIAL_PPTX)
+
+    size_kb = os.path.getsize(OFFICIAL_PPTX) / 1024.0
     print(f"[OK] Presentacion PPTX generada con exito:")
-    print(f"     Ruta: {OUT_PPTX}")
+    print(f"     Oficial: {OFFICIAL_PPTX}")
     print(f"     Diapositivas: {len(prs.slides)} slides (Requisito >= 18 slides)")
     print(f"     Tamano: {size_kb:.1f} KB")
-    return OUT_PPTX, len(prs.slides), size_kb
+    return OFFICIAL_PPTX, len(prs.slides), size_kb
 
 if __name__ == "__main__":
     create_deck()

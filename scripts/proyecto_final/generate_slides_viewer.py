@@ -10,13 +10,17 @@ import pptx
 import html
 
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
-TARGET_DIR = os.path.join(BASE_DIR, "docs", "05_SUSTENTACION_PROYECTO_FINAL_SEMANA_18")
-os.makedirs(TARGET_DIR, exist_ok=True)
-PPTX_PATH = os.path.join(BASE_DIR, "_PROYECTO_FINAL_LOCAL", "02_ENTREGABLES_UTP", "02_PPTX", "03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.pptx")
+
+# Carpeta oficial de Entrega Final Semana 18
+OFFICIAL_FINAL_DIR = os.path.join(BASE_DIR, "docs", "01_ENTREGA_FINAL_PROYECTO_SEMANA_18")
+os.makedirs(OFFICIAL_FINAL_DIR, exist_ok=True)
+OUT_HTML_OFFICIAL = os.path.join(OFFICIAL_FINAL_DIR, "02_VISOR_WEB_PRESENTACION_SUSTENTACION.html")
+
+PPTX_PATH = os.path.join(OFFICIAL_FINAL_DIR, "02_PRESENTACION_OFICIAL_SUSTENTACION_LEOFIT.pptx")
 if not os.path.exists(PPTX_PATH):
-    PPTX_PATH = os.path.join(TARGET_DIR, "03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.pptx")
+    PPTX_PATH = os.path.join(BASE_DIR, "_PROYECTO_FINAL_LOCAL", "02_ENTREGABLES_UTP", "02_PPTX", "03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.pptx")
+
 OUT_HTML_LOCAL = os.path.join(BASE_DIR, "_PROYECTO_FINAL_LOCAL", "02_ENTREGABLES_UTP", "00_HTML", "03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.html")
-OUT_HTML_DOCS = os.path.join(TARGET_DIR, "03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.html")
 OUT_MD_LOCAL = os.path.join(BASE_DIR, "_PROYECTO_FINAL_LOCAL", "02_ENTREGABLES_UTP", "00_HTML", "03_PRESENTACION_OFICIAL_SUSTENTACION_PROYECTO_FINAL.md")
 
 prs = pptx.Presentation(PPTX_PATH)
@@ -485,12 +489,13 @@ html_content = """<!DOCTYPE html>
 import json
 html_with_data = html_content.replace("SLIDES_DATA_PLACEHOLDER", json.dumps(slides_data, ensure_ascii=False))
 
-with open(OUT_HTML_LOCAL, "w", encoding="utf-8") as f:
+with open(OUT_HTML_OFFICIAL, "w", encoding="utf-8") as f:
     f.write(html_with_data)
-print(f"HTML Local written to {OUT_HTML_LOCAL}")
+print(f"HTML Oficial written to {OUT_HTML_OFFICIAL}")
 
-with open(OUT_HTML_DOCS, "w", encoding="utf-8") as f:
-    f.write(html_with_data)
-print(f"HTML Docs written to {OUT_HTML_DOCS}")
+if os.path.exists(os.path.dirname(OUT_HTML_LOCAL)):
+    with open(OUT_HTML_LOCAL, "w", encoding="utf-8") as f:
+        f.write(html_with_data)
+    print(f"HTML Local written to {OUT_HTML_LOCAL}")
 
 print("Slides viewer generation completed successfully!")

@@ -13,11 +13,13 @@ from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 from openpyxl.utils import get_column_letter
 
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+
+# Carpeta oficial de Entrega Final Semana 18
+OFFICIAL_XLSX_DIR = os.path.join(BASE_DIR, "docs", "01_ENTREGA_FINAL_PROYECTO_SEMANA_18")
+os.makedirs(OFFICIAL_XLSX_DIR, exist_ok=True)
+OFFICIAL_XLSX = os.path.join(OFFICIAL_XLSX_DIR, "03_PLAN_AUDITORIA_CALIDAD_Y_TRAZABILIDAD_LEOFIT.xlsx")
+
 PROYECTO_FINAL_DIR = os.path.join(BASE_DIR, "_PROYECTO_FINAL_LOCAL")
-
-if not os.path.exists(PROYECTO_FINAL_DIR):
-    raise FileNotFoundError("_PROYECTO_FINAL_LOCAL/ no encontrado. Ejecutar solo en maquina de desarrollo con los anexos presentes.")
-
 OUT_DIR = os.path.abspath(os.path.join(PROYECTO_FINAL_DIR, "02_ENTREGABLES_UTP", "03_XLSX"))
 os.makedirs(OUT_DIR, exist_ok=True)
 OUT_XLSX = os.path.join(OUT_DIR, "04_PLAN_AUDITORIA_Y_TRAZABILIDAD_PROYECTO_FINAL.xlsx")
@@ -462,12 +464,14 @@ def create_audit_workbook():
             ws.column_dimensions[col_letter].width = min(max(max_len + 4, 12), 48)
 
     wb.save(OUT_XLSX)
-    size_kb = os.path.getsize(OUT_XLSX) / 1024.0
+    wb.save(OFFICIAL_XLSX)
+    size_kb = os.path.getsize(OFFICIAL_XLSX) / 1024.0
     print(f"[OK] Libro Excel generado exitosamente:")
-    print(f"     Ruta: {OUT_XLSX}")
+    print(f"     Oficial: {OFFICIAL_XLSX}")
+    print(f"     Local:   {OUT_XLSX}")
     print(f"     Pestanas: {len(wb.sheetnames)} ({', '.join(wb.sheetnames)})")
     print(f"     Tamano: {size_kb:.1f} KB")
-    return OUT_XLSX, len(wb.sheetnames), size_kb
+    return OFFICIAL_XLSX, len(wb.sheetnames), size_kb
 
 if __name__ == "__main__":
     create_audit_workbook()

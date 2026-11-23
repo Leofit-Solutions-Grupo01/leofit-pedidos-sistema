@@ -24,15 +24,19 @@ plt.rcParams['font.family'] = 'sans-serif'
 plt.rcParams['figure.autolayout'] = True
 
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+OFFICIAL_IMG_DIR = os.path.join(BASE_DIR, "docs", "01_ENTREGA_FINAL_PROYECTO_SEMANA_18", "graficos")
 DOCS_IMG_DIR = os.path.join(BASE_DIR, "docs", "02_CALIDAD_Y_AUDITORIA", "04_calidad_iso25010_semanas_14_15", "graficos")
-PPTX_IMG_DIR = os.path.join(BASE_DIR, "docs", "05_SUSTENTACION_PROYECTO_FINAL_SEMANA_18", "graficos")
 LOCAL_IMG_DIR = os.path.join(BASE_DIR, "_PROYECTO_FINAL_LOCAL", "02_ENTREGABLES_UTP", "04_GRAFICOS")
 
-for d in [DOCS_IMG_DIR, PPTX_IMG_DIR, LOCAL_IMG_DIR]:
+target_dirs = [OFFICIAL_IMG_DIR, DOCS_IMG_DIR]
+if os.path.exists(os.path.dirname(LOCAL_IMG_DIR)):
+    target_dirs.append(LOCAL_IMG_DIR)
+
+for d in target_dirs:
     os.makedirs(d, exist_ok=True)
 
 def save_fig_all(fig, filename):
-    for d in [DOCS_IMG_DIR, PPTX_IMG_DIR, LOCAL_IMG_DIR]:
+    for d in target_dirs:
         path = os.path.join(d, filename)
         fig.savefig(path, dpi=300, bbox_inches='tight', facecolor='#FFFFFF')
     print(f"[OK] Grafico guardado: {filename}")

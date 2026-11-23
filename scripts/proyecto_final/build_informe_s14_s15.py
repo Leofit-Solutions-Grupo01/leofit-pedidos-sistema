@@ -9,10 +9,18 @@
 import os
 
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+
+# Carpeta oficial de entrega final Semana 18 para el docente evaluador
+OFFICIAL_FINAL_DIR = os.path.join(BASE_DIR, "docs", "01_ENTREGA_FINAL_PROYECTO_SEMANA_18")
+os.makedirs(OFFICIAL_FINAL_DIR, exist_ok=True)
+OUT_MD = os.path.join(OFFICIAL_FINAL_DIR, "01_INFORME_FINAL_PROYECTO_LEOFIT.md")
+OUT_DOCX = os.path.join(OFFICIAL_FINAL_DIR, "01_INFORME_FINAL_PROYECTO_LEOFIT.docx")
+
+# Carpetas de respaldo y compatibilidad histórica
 TARGET_DIR = os.path.join(BASE_DIR, "docs", "02_CALIDAD_Y_AUDITORIA", "04_calidad_iso25010_semanas_14_15")
 os.makedirs(TARGET_DIR, exist_ok=True)
-OUT_MD = os.path.join(TARGET_DIR, "INFORME_CONTINUACION_S14_S15_PROYECTO_FINAL_LEOFIT.md")
-OUT_DOCX = os.path.join(TARGET_DIR, "INFORME_CONTINUACION_S14_S15_PROYECTO_FINAL_LEOFIT.docx")
+OUT_MD_LEGACY = os.path.join(TARGET_DIR, "INFORME_CONTINUACION_S14_S15_PROYECTO_FINAL_LEOFIT.md")
+OUT_DOCX_LEGACY = os.path.join(TARGET_DIR, "INFORME_CONTINUACION_S14_S15_PROYECTO_FINAL_LEOFIT.docx")
 OUT_DOCX_LOCAL = os.path.join(BASE_DIR, "_PROYECTO_FINAL_LOCAL", "02_ENTREGABLES_UTP", "01_DOCX", "INFORME_CONTINUACION_S14_S15_PROYECTO_FINAL_LEOFIT.docx")
 
 md_content = r"""# UNIVERSIDAD TECNOLÓGICA DEL PERÚ
@@ -21,8 +29,8 @@ md_content = r"""# UNIVERSIDAD TECNOLÓGICA DEL PERÚ
 
 ---
 
-# INFORME ACUMULATIVO DEL PROYECTO INTEGRADOR
-## Continuación · Semanas 14 y 15: Calidad de Rendimiento, Flexibilidad y Mantenibilidad (ISO/IEC 25010:2023)
+# INFORME FINAL ACUMULATIVO DEL PROYECTO INTEGRADOR
+## Evaluación Integral de Calidad (ISO/IEC 25010:2023, ISO 9126, ISO 29119), Arquitectura Cloud y Criptografía
 ### Plataforma de Gestión de Pedidos, Facturación Electrónica y Control de Inventario Multicanal
 
 **Empresa Patrocinadora:** LeoFit Confecciones y Diseños Deportivos S.A.C.  
@@ -885,6 +893,9 @@ En concordancia con las directivas pedagógicas del docente en la sesión de cla
 with open(OUT_MD, "w", encoding="utf-8") as f:
     f.write(md_content)
 
+with open(OUT_MD_LEGACY, "w", encoding="utf-8") as f:
+    f.write(md_content)
+
 print(f"[OK] Documento Markdown generado: {OUT_MD}")
 print(f"     Lineas: {len(md_content.splitlines())}")
 print(f"     Tamano: {len(md_content)/1024:.1f} KB")
@@ -901,14 +912,20 @@ try:
         OUT_MD,
         "docx",
         outputfile=OUT_DOCX,
-        extra_args=["--toc", "--toc-depth=3", "--syntax-highlighting=tango", f"--resource-path={TARGET_DIR}"]
+        extra_args=[
+            "--toc",
+            "--toc-depth=3",
+            "--syntax-highlighting=tango",
+            f"--resource-path={OFFICIAL_FINAL_DIR};{TARGET_DIR}"
+        ]
     )
     print(f"[OK] Word DOCX generado exitosamente: {OUT_DOCX}")
     
-    # Copiar a _PROYECTO_FINAL_LOCAL si existe
+    # Copiar a respaldo legacy y _PROYECTO_FINAL_LOCAL si existen
+    shutil.copy2(OUT_DOCX, OUT_DOCX_LEGACY)
+    print(f"[OK] Copiado a legacy: {OUT_DOCX_LEGACY}")
     if os.path.exists(os.path.dirname(OUT_DOCX_LOCAL)):
-        import shutil
         shutil.copy2(OUT_DOCX, OUT_DOCX_LOCAL)
-        print(f"[OK] Copiado a: {OUT_DOCX_LOCAL}")
+        print(f"[OK] Copiado a local: {OUT_DOCX_LOCAL}")
 except Exception as e:
     print(f"[WARN] No se pudo convertir con pypandoc: {e}")
