@@ -891,13 +891,17 @@ print(f"     Tamano: {len(md_content)/1024:.1f} KB")
 
 # Ahora convertimos el Markdown a DOCX con estilos profesionales
 try:
+    import shutil
+    pandoc_bin = shutil.which("pandoc")
+    if pandoc_bin:
+        os.environ.setdefault("PYPANDOC_PANDOC", pandoc_bin)
     import pypandoc
     print("Compilando Markdown a DOCX con pypandoc...")
     pypandoc.convert_file(
         OUT_MD,
         "docx",
         outputfile=OUT_DOCX,
-        extra_args=["--toc", "--toc-depth=3", "--highlight-style=tango", f"--resource-path={TARGET_DIR}"]
+        extra_args=["--toc", "--toc-depth=3", "--syntax-highlighting=tango", f"--resource-path={TARGET_DIR}"]
     )
     print(f"[OK] Word DOCX generado exitosamente: {OUT_DOCX}")
     

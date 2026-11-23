@@ -4,7 +4,7 @@
   "description": "Backend API REST & Data Access Layer for Leofit Orders Management System",
   "main": "dist/server.js",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc -p tsconfig.build.json",
     "start": "node dist/server.js",
     "dev": "tsx watch src/server.ts",
     "seed": "tsx src/database/seed.ts",

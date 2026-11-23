@@ -66,7 +66,7 @@ export default function PedidoForm() {
   const [errores, setErrores] = useState<string[]>([]);
   const [enviando, setEnviando] = useState(false);
   const [errorApi, setErrorApi] = useState<string | null>(null);
-  const borradorPedidoRef = useRef<{ id: string; numero: string } | null>(null);
+  const borradorPedidoRef = useRef<{ id: string; numero: string; idempotencyKey?: string } | null>(null);
 
   const fechaHoy = getLimaDisplayDate();
 
