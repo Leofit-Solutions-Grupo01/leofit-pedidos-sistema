@@ -1,7 +1,7 @@
 # HOJA OFICIAL DE ENTREGA ACADÉMICA Y ENLACES DEL PROYECTO FINAL (SEMANA 18)
 ## Universidad Tecnológica del Perú (UTP) — Ciclo 2026-I
 ### Curso Integrador II: Software (100000S12F) — Sección 35374 (Turno Noche)
-**Evaluación:** PROYECTO FINAL (PROY) — Sustentación y Auditoría Técnica de Arquitectura  
+**Evaluación:** PROYECTO FINAL (PROY) — Sustentación y Auditoría Técnica de Arquitectura (Sesión Lunes — Semana 18)  
 **Docente Asesor:** **Ing. Enrique Lee Huamani Uriarte**  
 
 ---
@@ -13,7 +13,7 @@
 | **1** | **Lady Luz Loayza Rodríguez** | **`U22221489`** | Scrum Master / DevSecOps Lead | Arquitectura Clean Architecture, CI/CD, Seguridad OWASP, TLS 1.3 y Criptografía AES-256-GCM |
 | **2** | **Víctor Leandro Cárdenas Fernández** | **`U19217414`** | Product Owner / DBA | Modelado relacional PostgreSQL 16 (BCNF), ACID y Bloqueo Pesimista anti-sobreventa |
 | **3** | **Harley Anthony Roman Delgado** | **`U21313032`** | Frontend Lead / UI-UX | PWA React 19 / Vite 6, Service Workers, WCAG 2.1 AA y Facturación Electrónica SUNAT |
-| **4** | **Jim Alessandro Dávila Morales** | **`U18206081`** | QA Engineer Lead / Backend | Automatización 190 pruebas (Jest + Vitest), API REST y Validación de Esquemas Zod |
+| **4** | **Jim Alessandro Dávila Morales** | **`U18206081`** | QA Engineer Lead / Backend | Automatización 194 pruebas (125 Jest + 69 Vitest), API REST y Validación de Esquemas Zod |
 | **5** | **Daniel Enrique Rojas Sánchez** | **`U21214627`** | Business Analyst / Cloud DevOps | Despliegue Cloud en Render / GitHub Pages, Métricas k6 Percentiles y Simulación DRP |
 
 * **Empresa Beneficiaria:** **LeoFit Confecciones y Diseños Deportivos S.A.C.** (RUC: **`20608912345`**)  
@@ -26,7 +26,7 @@
 
 | Recurso Oficial | URL de Acceso Directo | Observación / Credenciales de Prueba |
 | :--- | :--- | :--- |
-| **Repositorio GitHub (Oficial)** | [**`github.com/Leofit-Solutions-Grupo01/leofit-pedidos-sistema`**](https://github.com/Leofit-Solutions-Grupo01/leofit-pedidos-sistema) | Código fuente íntegro, historial Git, 190 pruebas automáticas, scripts y documentación técnica. |
+| **Repositorio GitHub (Oficial)** | [**`github.com/Leofit-Solutions-Grupo01/leofit-pedidos-sistema`**](https://github.com/Leofit-Solutions-Grupo01/leofit-pedidos-sistema) | Código fuente íntegro, historial Git, 194 pruebas automáticas, scripts y documentación técnica. |
 | **Frontend Web PWA (Cloud Staging)** | [**`leofit-solutions-grupo01.github.io/leofit-pedidos-sistema/`**](https://leofit-solutions-grupo01.github.io/leofit-pedidos-sistema/) | Desplegado en **GitHub Pages Edge CDN** con soporte PWA Offline y Responsive Mobile. |
 | **Backend API REST (Render Cloud)** | [**`leofit-backend-api.onrender.com/api/health`**](https://leofit-backend-api.onrender.com/api/health) | API en **Render Cloud Platform** con conexión SSL a PostgreSQL 16 Cloud y TLS 1.3. |
 | **Documentación OpenAPI / Swagger** | [**`leofit-backend-api.onrender.com/api/docs`**](https://leofit-backend-api.onrender.com/api/docs) | Catálogo interactivo de endpoints REST con validación de esquemas Zod. |
